@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="true" android:drawable="@drawable/alivc_biginteractiveclass_rotate_camera"/>
+    <item>
+        <layer-list>
+            <item android:drawable="@drawable/alivc_biginteractiveclass_rotate_camera"/>
+            <item>
+                <shape android:shape="oval" android:useLevel="false">
+                    <solid android:color="#80000000"/>
+                </shape>
+            </item>
+        </layer-list>
+    </item>
+</selector>

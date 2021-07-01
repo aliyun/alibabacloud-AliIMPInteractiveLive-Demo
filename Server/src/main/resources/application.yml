@@ -1,0 +1,17 @@
+paas:
+  accessKey: LTAI****Vjjv
+
+  secretKey: 9NQrLHR****QIc4hExzF
+
+  appId: l***cu
+
+impServer:
+
+  appId: imp-room
+
+  # appServerUrl
+  # 假如将本工程部署在ecs **.**.**.**, 应为http://**.**.**.**:****
+  appServerUrl: http://**.**.**.**:8080
+
+  # 回调鉴权码
+  appSignSecret: h***2

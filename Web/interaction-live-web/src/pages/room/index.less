@@ -1,0 +1,180 @@
+.full-content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+}
+.room-page {
+  position: relative;
+  height: 100%;
+}
+.player-container {
+  height: 100%;
+  position: relative;
+  background-color: #333;
+  z-index: 1;
+  position: relative;
+}
+.player {
+  height: 100% !important;
+  width: 100%;
+}
+.live-container {
+  .full-content;
+  z-index: 2;
+  color: #fff;
+}
+.nolive {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #fff;
+  span {
+    display: inline-block;
+    margin-top: 0.3rem;
+    font-size: 0.4rem;
+  }
+  z-index: 1;
+}
+.top {
+  position: relative;
+  margin-top: 0.2rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.3rem;
+}
+.room-info-container {
+  min-width: 3.5rem;
+}
+.room-info {
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  padding: 0.1rem 0.3rem 0.1rem 0.1rem;
+  border-radius: 0.5rem;
+}
+.avatar {
+  width: 0.8rem;
+  height: 0.8rem;
+  background-image: url('https://img.alicdn.com/imgextra/i4/O1CN01BQZKz41EGtPZp3U5P_!!6000000000325-2-tps-1160-1108.png');
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.info {
+  padding-top: 0.05rem;
+  padding-left: 0.15rem;
+}
+.title {
+  font-size: 0.32rem;
+  line-height: 1;
+}
+.data {
+  span {
+    display: inline-block;
+    font-size: 0.26rem;
+    line-height: 1;
+    &:last-child {
+      margin-left: 0.3rem;
+    }
+  }
+}
+.notice {
+  cursor: pointer;
+  margin-top: 0.2rem;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: inline-block;
+  border-radius: 0.4rem;
+  padding: 0.08rem 0.23rem;
+  max-width: 3.1rem;
+  font-size: 0.26rem;
+  color: rgba(255, 255, 255, 0.9);
+  background-image: url('https://img.alicdn.com/imgextra/i1/O1CN01oQHoBF1fSKvrp3GAh_!!6000000004005-55-tps-16-16.svg');
+  background-repeat: no-repeat;
+  background-position: 0.2rem 0.1rem;
+  background-size: 0.34rem auto;
+  span {
+    font-size: 0.28rem;
+    display: inline-block;
+    padding-left: 0.4rem;
+  }
+}
+.close {
+  font-size: 0.4rem;
+  height: 0.7rem;
+  width: 0.7rem;
+  background-color: rgba(0, 0, 0, 0.3);
+  text-align: center;
+  vertical-align: middle;
+  line-height: 0.7rem;
+  border-radius: 50%;
+}
+.interaction {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  font-size: 0.27rem;
+  padding-bottom: 0.15rem;
+}
+.chat-window {
+  height: 4.5rem;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow: scroll;
+  padding: 0 0.2rem 0;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+}
+.chat-item {
+  max-width: 85%;
+  display: inline-block;
+  background-color: rgba(0, 0, 0, 0.3);
+  margin: 0.05rem 0;
+  padding: 0.17rem 0.2rem;
+  border-radius: 7px;
+  align-self: flex-start;
+  span {
+    color: #52ede3;
+  }
+}
+.chat-item-notice {
+  color: #52ede3;
+}
+.operations {
+  display: flex;
+  padding: 0.1rem 0.2rem 0.4rem;
+}
+.chat-input {
+  color: #fff;
+  flex-grow: 1;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: none;
+  outline: none;
+  border-radius: 0.5rem;
+  padding-left: 0.4rem;
+  &::-webkit-input-placeholder {
+    color: #fff;
+  }
+}
+.operation-btn {
+  position: relative;
+  box-sizing: content-box;
+  width: 0.8rem;
+  height: 0.8rem;
+  padding: 0 0 0 0.2rem;
+  img {
+    height: 100%;
+    width: auto;
+  }
+}
+.like-anime-container {
+  position: absolute;
+  bottom: 80%;
+  width: 120%;
+  height: 2rem;
+  left: 0;
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:orientation="vertical"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <Button
+        android:id="@+id/view_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="展开"
+        android:textColor="#ffffff"
+        android:textSize="14sp"
+        tools:ignore="HardcodedText" />
+
+    <com.aliyun.roompaas.app.view.LimitSizeRecyclerView
+        android:id="@+id/view_recycler_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+</merge>

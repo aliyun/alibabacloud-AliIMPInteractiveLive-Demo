@@ -1,0 +1,6 @@
+framework module AlivcLivePusher {
+  umbrella header "AlivcLivePusher.h"
+
+  export *
+  module * { export * }
+}
