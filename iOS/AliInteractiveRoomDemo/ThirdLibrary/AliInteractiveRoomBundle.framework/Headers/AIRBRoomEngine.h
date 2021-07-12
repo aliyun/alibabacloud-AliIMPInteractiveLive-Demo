@@ -19,36 +19,39 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol AIRBRoomEngineDelegate <NSObject>
 @required
-- (void) onRoomEngineEvent:(AIRBRoomEngineEvent)event info:(nullable NSDictionary*)info object:(AIRBRoomEngine*)object;
-- (void) onRoomEngineErrorWithCode:(AIRBErrorCode)code errorMessage:(NSString*)msg object:(AIRBRoomEngine*)object;
-- (void) requestLoginTokenWithCompletion:(void(^)(AIRBRoomEngineAuthToken* token))onTokenGotten;
+- (void) onAIRBRoomEngineEvent:(AIRBRoomEngineEvent)event info:(nullable NSDictionary*)info;
+- (void) onAIRBRoomEngineErrorWithCode:(AIRBErrorCode)code errorMessage:(NSString*)msg;
 
 @optional
-- (void) onLog:(NSString*)message object:(AIRBRoomEngine*)object;
+- (void) onLog:(NSString*)message;
 @end
 
 @interface AIRBRoomEngine : NSObject
 
 @property (weak, nonatomic) id<AIRBRoomEngineDelegate> delegate;
+@property (assign, nonatomic) AIRBLoggerLevel logLevel; //默认AIRBLoggerLevelError
 
 /**
  * 获取RoomEngine全局单例对象
  */
 + (AIRBRoomEngine*)sharedInstance;
+
 /**
  *全局初始化，只需要调用一次
  */
-- (void) globalSetupOnceWithConfig:(nonnull AIRBRoomEngineConfig*)config;
+- (void) globalInitOnceWithConfig:(nonnull AIRBRoomEngineConfig*)config;
+
 /**
  * 登陆
- * @param userID  需要登陆的用户ID
+ * @param userID  需要登陆的用户ID, 必须是阿拉伯数字或者英文字母或二者的混合
+ * @param token  登陆鉴权需要的token，具体见AIRBRoomEngineAuthToken
  */
-- (void)loginWithUserID:(nonnull NSString*)userID;
+- (void)loginWithUserID:(nonnull NSString*)userID token:(nonnull AIRBRoomEngineAuthToken*)token;
+
 /**
  * 登出
- * @param userID  需要登出的用户ID
  */
-- (void)logoutWithUserID:(nonnull NSString*)userID;
+- (void)logout;
 
 /**
  * 登陆成功后 ，获取RoomChannel实例
@@ -58,12 +61,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * 获取房间列表
- * @param bizType 房间业务类型，default，business，classroom
  * @param pageNum 页码，从1开始
  * @param pageSize 当前页面房间数量
  */
-- (void) getRoomListWithBizType:(nonnull NSString *)bizType
-                        PageNum:(int32_t)pageNum
+- (void) getRoomListWithPageNum:(int32_t)pageNum
                        pageSize:(int32_t)pageSize
                       onSuccess:(void (^)(AIRBRoomEngineRoomListResponse * _Nonnull response))onSuccess
                       onFailure:(void (^)(NSString* errorMessage))onFailure;

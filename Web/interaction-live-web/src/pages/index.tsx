@@ -23,7 +23,7 @@ export default function IndexPage() {
   const roomEngineInstance = RoomEngine.getInstance();
   window.roomEngine = roomEngineInstance;
   // 3. 配置登录用的config
-  const { appKey, appId, wsUrl, debug } = roomEngineConfig;
+  const { appKey, appId, debug } = roomEngineConfig;
   const init = (userId: string) => {
     const deviceId = encodeURIComponent(roomEngineInstance.getDeviceId()); // 获取deviceId
     const origin = 'https://server.xxx.com/'; // 自己的server地址，配跨域，也可以代理
@@ -31,7 +31,6 @@ export default function IndexPage() {
       // login需要的config
       appKey,
       appId,
-      wsUrl,
       debug,
       deviceId,
       authTokenCallback: async () => {
@@ -80,7 +79,7 @@ export default function IndexPage() {
       // 6. 调用初始化方法
       init(userId);
       // 7. 登录
-      await roomEngineInstance.login(userId);
+      await roomEngineInstance.auth(userId);
       message.success('登录成功');
       history.push('/roomList');
     } catch (err) {

@@ -86,15 +86,15 @@ static const int roomPageSize = 20;
         button.contentMode = UIViewContentModeScaleAspectFit;
         [button setBackgroundImage:[UIImage imageNamed:@"img-button_newlive"] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(gotoSetRoomViewController) forControlEvents:UIControlEventTouchUpInside];
-//        UILabel *label = [[UILabel alloc] init];
-//        label.frame = CGRectMake(4, 4, 52, 52);
-//        label.numberOfLines = 0;
-//        label.text = @"开启\n直播";
-//        label.lineBreakMode = NSLineBreakByCharWrapping;
-//        label.textAlignment = NSTextAlignmentCenter;
-//        label.font = [UIFont fontWithName:@"AlibabaPuHuiTiM" size:16];
-//        label.textColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0/1.0];
-//        [button addSubview:label];
+        UILabel *label = [[UILabel alloc] init];
+        label.frame = CGRectMake(4, 4, 52, 52);
+        label.numberOfLines = 0;
+        label.text = @"开启\n直播";
+        label.lineBreakMode = NSLineBreakByCharWrapping;
+        label.textAlignment = NSTextAlignmentCenter;
+        label.font = [UIFont fontWithName:@"AlibabaPuHuiTiM" size:16];
+        label.textColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0/1.0];
+        [button addSubview:label];
         _createRoomButton = button;
     }
     return _createRoomButton;
@@ -140,7 +140,7 @@ static const int roomPageSize = 20;
     if(!_roomModelArray){
         _roomModelArray = [[NSMutableArray alloc]init];
     }
-    [[AIRBRoomEngine sharedInstance] getRoomListWithBizType:@"business" PageNum:(int32_t)self.currentRoomPage pageSize:roomPageSize onSuccess:^(AIRBRoomEngineRoomListResponse * _Nonnull response) {
+    [[AIRBRoomEngine sharedInstance] getRoomListWithPageNum:(int32_t)self.currentRoomPage pageSize:roomPageSize onSuccess:^(AIRBRoomEngineRoomListResponse * _Nonnull response) {
         for (AIRBRoomBasicInfo* info in response.roomBasicInfoList) {
             AIRBDRoomInfoModel* model = [[AIRBDRoomInfoModel alloc]init];
             model.roomID = info.roomID;

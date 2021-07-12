@@ -10,12 +10,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AIRBDEnvironments : NSObject
-@property (copy, nonatomic) NSString* appID;
-@property (copy, nonatomic) NSString* appKey;
-@property (copy, nonatomic) NSString* releaseLongLinkURL;
-@property (copy, nonatomic) NSString* prereleaseLongLinkURL;
-@property (copy, nonatomic) NSString* appServerHost;
-@property (copy, nonatomic) NSString* signSecret;
+@property (copy, nonatomic) NSString* interactiveLiveRoomAppID; // 在阿里云互动直播控制台上开通应用后获得
+@property (copy, nonatomic) NSString* interactiveClassRoomAppID; // 在阿里云互动直播控制台上开通应用后获得
+@property (copy, nonatomic) NSString* interactiveLiveRoomAppKey; // 在阿里云互动直播控制台上开通应用后获得
+@property (copy, nonatomic) NSString* interactiveClassRoomAppKey; // 在阿里云互动直播控制台上开通应用后获得
+@property (copy, nonatomic) NSString* appServerHost; // 业务方自己的appserver域名
+@property (copy, nonatomic) NSString* signSecret; // 业务方自定义的加签secret
 
 + (instancetype)shareInstance;
 @end

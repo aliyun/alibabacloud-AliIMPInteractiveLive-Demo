@@ -76,7 +76,7 @@
         label.textColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1.0/1.0];
         [view addSubview:label];
         [view addSubview:self.userIDInputField];
-        NSString * userIDLast = [[NSUserDefaults standardUserDefaults] stringForKey:@"userID"];
+        NSString * userIDLast = [[NSUserDefaults standardUserDefaults] stringForKey:@"AIRBDUserID"];
         self.userIDInputField.text = userIDLast;
         _userIDInputHolder = view;
     }
@@ -129,12 +129,12 @@
         [button setBackgroundImage:[UIImage imageNamed:@"img-button_login"] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(loginButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         
-//        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(103, 13, 109.4, 28)];
-//        label.text = @"登录";
-//        label.textAlignment = NSTextAlignmentCenter;
-//        label.font = [UIFont fontWithName:@"PingFangSC-Semibold" size:22];
-//        label.textColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0/1.0];
-//        [button addSubview:label];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(103, 13, 109.4, 28)];
+        label.text = @"登录";
+        label.textAlignment = NSTextAlignmentCenter;
+        label.font = [UIFont fontWithName:@"PingFangSC-Semibold" size:22];
+        label.textColor = [UIColor colorWithRed:255/255.0 green:255/255.0 blue:255/255.0 alpha:1.0/1.0];
+        [button addSubview:label];
         _loginButton = button;
     }
     return _loginButton;
@@ -156,8 +156,8 @@
     if(!_sceneButton){
         UIButton* button = [[UIButton alloc]initWithFrame:CGRectMake(10, 40, 100, 40)];
         [button setBackgroundColor:[UIColor colorWithWhite:0.5 alpha:0.8]];
-        int sceneButtonTag = [[[NSUserDefaults standardUserDefaults] stringForKey:@"sceneButtonTag"] intValue];
-        if (sceneButtonTag == 1){
+        int AIRBDSceneButtonTag = [[[NSUserDefaults standardUserDefaults] stringForKey:@"AIRBDSceneButtonTag"] intValue];
+        if (AIRBDSceneButtonTag == 1){
             [button setTag:1];
             [button setTitle:@"互动直播" forState:UIControlStateNormal];
         } else {
@@ -187,14 +187,18 @@
     }else{
         [self.sceneButton setTitle:@"互动课堂" forState:UIControlStateNormal];
     }
-    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLong:self.sceneButton.tag] forKey:@"sceneButtonTag"];
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLong:self.sceneButton.tag] forKey:@"AIRBDSceneButtonTag"];
 }
 
 -(void)setUpUI{
     [self.view sendSubviewToBack:self.backgroundView];
     [self.view bringSubviewToFront:self.userIDInputHolder];
     [self.view bringSubviewToFront:self.loginButton];
+    
+#ifdef DEBUG
     [self.view addSubview:self.environmentButton];
+#endif
+    
     [self.view addSubview:self.sceneButton];
 }
 
@@ -223,10 +227,10 @@
 
 #pragma mark - AIRBRoomEngineDelegate
 
-- (void) onRoomEngineEvent:(AIRBRoomEngineEvent)event info:(NSDictionary *)info object:(AIRBRoomEngine *)object {
+- (void) onAIRBRoomEngineEvent:(AIRBRoomEngineEvent)event info:(NSDictionary *)info {
     switch (event) {
         case AIRBRoomEngineEventEngineStarted:
-            [[AIRBRoomEngine sharedInstance] loginWithUserID:self.userID];
+            [self requestTokenAndLogin];
             break;
         case AIRBRoomEngineEventEngineLogined: {
             static dispatch_once_t onceToken;
@@ -254,17 +258,20 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"登录出错(%ld, %@)", (long)code, msg] duration:3.0];
         self.loginButton.enabled = YES;
-//        for (UILabel* label in [self.loginButton subviews]) {
-//            [label setText:@"重新登录"];
-//        }
+        for (id obj in [self.loginButton subviews]) {
+            if([obj isKindOfClass:[UILabel class]]){
+                [obj setText:@"重新登录"];
+                break;
+            }
+        }
         self.userIDInputField.enabled = YES;
     });
     
 }
 
-- (void) requestLoginTokenWithCompletion:(void (^)(AIRBRoomEngineAuthToken * _Nonnull))onTokenGotten {
+- (void) requestTokenAndLogin {
     NSString* path = [NSString stringWithFormat:@"http://%@/api/login/getToken", [AIRBDEnvironments shareInstance].appServerHost];
-    NSString* s = [NSString stringWithFormat:@"%@?appId=%@&appKey=%@&appUid=%@&deviceId=%@", path, self.config.appID, self.config.appKey, _userID, self.config.deviceID];
+    NSString* s = [NSString stringWithFormat:@"%@?appId=%@&appKey=%@&userId=%@&deviceId=%@", path, self.config.appID, self.config.appKey, _userID, self.config.deviceID];
     
     NSString* dateString = [Utility currentDateString];
     NSString* nonce = [Utility randomNumString];
@@ -280,7 +287,7 @@
     NSDictionary* params = @{
         @"appId" : self.config.appID,
         @"appKey" : self.config.appKey,
-        @"appUid" : self.userID,
+        @"userId" : self.userID,
         @"deviceId" : self.config.deviceID
     };
     
@@ -299,7 +306,7 @@
     
     NSURLSession* session = [NSURLSession sharedSession];
     NSURLSessionTask* task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        AIRBRoomEngineAuthToken* token = [[AIRBRoomEngineAuthToken alloc] init];
+        
         if (data && !error) {
             NSDictionary* dic = [NSJSONSerialization JSONObjectWithData:data
                                                                 options:NSJSONReadingMutableContainers
@@ -308,9 +315,10 @@
             if ([dic isKindOfClass:[NSDictionary class]] && dic.count > 0 && [dic valueForKey:@"result"]) {
                 NSDictionary* resultDic = [dic valueForKey:@"result"];
                 if ([resultDic isKindOfClass:[NSDictionary class]] && resultDic.count > 1 && [resultDic valueForKey:@"accessToken"] && [resultDic valueForKey:@"refreshToken"]) {
+                    AIRBRoomEngineAuthToken* token = [[AIRBRoomEngineAuthToken alloc] init];
                     token.accessToken = [NSString stringWithString:[resultDic valueForKey:@"accessToken"]];
                     token.refreshToken = [NSString stringWithString:[resultDic valueForKey:@"refreshToken"]];
-                    onTokenGotten(token);
+                    [[AIRBRoomEngine sharedInstance] loginWithUserID:self.userID token:token];
                     return;
                 }
             }
@@ -354,28 +362,38 @@
         self.userID = [Utility randomNumString];
     }
     if (self.userID.length > 0) {
-//        for (UILabel* label in [self.loginButton subviews]) {
-//            [label setText:@"登录中"];
-//        }
+        for (id obj in [self.loginButton subviews]) {
+            if([obj isKindOfClass:[UILabel class]]){
+                [obj setText:@"登录中"];
+                break;
+            }
+        }
         self.loginButton.alpha = 0.8;
         self.loginButton.enabled = NO;
         self.userIDInputField.enabled = NO;
         
         self.config = [[AIRBRoomEngineConfig alloc] init];
-        self.config.appID = [AIRBDEnvironments shareInstance].appID; //imp-room
-        if(self.environmentButton.tag == 0){
-            self.config.longLinkURL = [AIRBDEnvironments shareInstance].prereleaseLongLinkURL;
-        }else{
-            self.config.longLinkURL = [AIRBDEnvironments shareInstance].releaseLongLinkURL;
+        if (self.sceneButton.tag == 0) {
+            self.config.appID = [AIRBDEnvironments shareInstance].interactiveClassRoomAppID;
+            self.config.appKey = [AIRBDEnvironments shareInstance].interactiveClassRoomAppKey;
+        } else {
+            self.config.appID = [AIRBDEnvironments shareInstance].interactiveLiveRoomAppID;
+            self.config.appKey = [AIRBDEnvironments shareInstance].interactiveLiveRoomAppKey;
         }
-        self.config.appKey = [AIRBDEnvironments shareInstance].appKey;
+        
+        if (self.environmentButton.tag == 0) {
+            self.config.environmentType = 0;
+        } else {
+            self.config.environmentType = 1;
+        }
+        
         self.config.deviceID = [[UIDevice currentDevice] identifierForVendor].UUIDString;
         self.userID = self.userID;
         [AIRBRoomEngine sharedInstance].delegate = self;
-        [[AIRBRoomEngine sharedInstance] globalSetupOnceWithConfig:self.config];
+        [[AIRBRoomEngine sharedInstance] globalInitOnceWithConfig:self.config];
     }
     
-    [[NSUserDefaults standardUserDefaults] setObject:self.userIDInputField.text forKey:@"userID"];
+    [[NSUserDefaults standardUserDefaults] setObject:self.userIDInputField.text forKey:@"AIRBDUserID"];
 }
 
 @end

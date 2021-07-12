@@ -8,6 +8,8 @@ import android.util.TypedValue;
 
 import com.aliyun.roompaas.app.App;
 
+import java.net.URL;
+
 /**
  * @author puke
  * @version 2021/5/12
@@ -28,11 +30,25 @@ public class AppUtil {
         context.startActivity(new Intent(context, activityType));
     }
 
+    public static Context getAppContext(){
+        return App.getAppContext();
+    }
+
     public static int getScreenHeight() {
         return App.getApplication().getResources().getDisplayMetrics().heightPixels;
     }
 
     public static int getScreenWidth() {
         return App.getApplication().getResources().getDisplayMetrics().widthPixels;
+    }
+
+    public static boolean isUrlValid(String url){
+        try {
+            URL u = new URL(url);
+            u.toURI();
+            return true;
+        } catch (Throwable ignore) {
+            return false;
+        }
     }
 }

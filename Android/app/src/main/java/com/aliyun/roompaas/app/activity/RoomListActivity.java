@@ -1,18 +1,15 @@
 package com.aliyun.roompaas.app.activity;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -20,23 +17,21 @@ import com.alibaba.dingpaas.room.RoomBasicInfo;
 import com.aliyun.roompaas.app.Const;
 import com.aliyun.roompaas.app.R;
 import com.aliyun.roompaas.app.activity.base.BaseActivity;
-import com.aliyun.roompaas.app.activity.classroom.ClassroomActivity;
 import com.aliyun.roompaas.app.api.DestroyRoomApi;
-import com.aliyun.roompaas.app.enums.RoomType;
+import com.aliyun.roompaas.app.helper.RoomHelper;
+import com.aliyun.roompaas.app.helper.Router;
 import com.aliyun.roompaas.app.request.DestroyRoomRequest;
-import com.aliyun.roompaas.app.util.AppUtil;
 import com.aliyun.roompaas.app.util.ClipboardUtil;
 import com.aliyun.roompaas.app.util.DialogUtil;
-import com.aliyun.roompaas.base.callback.Callback;
+import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.callback.Callbacks;
 import com.aliyun.roompaas.base.util.CollectionUtil;
+import com.aliyun.roompaas.base.util.ViewUtil;
 import com.aliyun.roompaas.biz.RoomEngine;
-import com.aliyun.roompaas.biz.model.RoomParam;
+import com.aliyun.roompaas.biz.exposable.model.RoomParam;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author puke
@@ -44,22 +39,11 @@ import java.util.Map;
  */
 public class RoomListActivity extends BaseActivity {
 
-    private static final String PARAM_KEY_ROOM_TYPE = "room_type";
-    private static final RoomType DEFAULT_ROOM_TYPE = RoomType.BUSINESS;
     private static final int PAGE_SIZE = 10;
     private SwipeRefreshLayout refreshLayout;
+    private View startCreateRoom;
 
-    public static void open(Context context, @Nullable RoomType roomType) {
-        if (roomType == null) {
-            roomType = DEFAULT_ROOM_TYPE;
-        }
-        Intent intent = new Intent(context, RoomListActivity.class);
-        intent.putExtra(PARAM_KEY_ROOM_TYPE, roomType.name());
-        context.startActivity(intent);
-    }
-
-    private final Map<RoomType, TabInfo> roomType2TabInfo = new HashMap<>();
-    private RoomType roomType;
+    private TabInfo roomType2TabInfo = new TabInfo();
     private Adapter adapter;
     private boolean isRequesting;
 
@@ -67,15 +51,10 @@ public class RoomListActivity extends BaseActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // 解析页面参数
-        String roomTypeStr = getIntent().getStringExtra(PARAM_KEY_ROOM_TYPE);
-        roomType = RoomType.valueOf(roomTypeStr);
-
         setContentView(R.layout.activity_room_list);
-        findViewById(R.id.icon_back).setOnClickListener(v -> finish());
 
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -96,24 +75,25 @@ public class RoomListActivity extends BaseActivity {
         adapter = new Adapter();
         recyclerView.setAdapter(adapter);
 
-        RadioGroup radioGroup = findViewById(R.id.room_list_radio_group);
-        radioGroup.check(roomType == RoomType.BUSINESS
-                ? R.id.room_list_option_business : R.id.room_list_option_classroom);
         notifyRadioChange();
-
-        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            roomType = checkedId == R.id.room_list_option_business
-                    ? RoomType.BUSINESS : RoomType.CLASSROOM;
-            notifyRadioChange();
-        });
 
         refreshLayout = findViewById(R.id.refresh_layout);
         refreshLayout.setOnRefreshListener(() -> loadData(false));
+
+        startCreateRoom = findViewById(R.id.startCreateRoom);
+        ViewUtil.bindClickActionWithClickCheck(startCreateRoom, this::startCreateRoom);
+
+        TextView startCreateRoomButtonText = findViewById(R.id.startCreateRoomButtonText);
+        ViewUtil.applyText(startCreateRoomButtonText, RoomHelper.isTypeBusiness()
+                ? "开启\n直播" : "开启\n上课");
+    }
+
+    private void startCreateRoom(){
+        Router.openEnterRoomInfoPage(context);
     }
 
     private void notifyRadioChange() {
-        TabInfo tabInfo = getCurrentTabInfo();
-        if (tabInfo != null) {
+        if (roomType2TabInfo != null && CollectionUtil.isNotEmpty(roomType2TabInfo.dataList)) {
             // 当前tab已有数据, 直接更新
             adapter.notifyDataSetChanged();
             return;
@@ -127,7 +107,7 @@ public class RoomListActivity extends BaseActivity {
             return;
         }
 
-        final TabInfo tabInfo = getCurrentTabInfo();
+        final TabInfo tabInfo = roomType2TabInfo;
 
         if (tabInfo != null && !tabInfo.hasMore && loadMore) {
             return;
@@ -137,7 +117,6 @@ public class RoomListActivity extends BaseActivity {
         final int targetPage = loadMore ? (currentPage + 1) : 1;
 
         RoomParam param = new RoomParam();
-        param.bizType = roomType.getBizType();
         param.pageNum = targetPage;
         param.pageSize = PAGE_SIZE;
         isRequesting = true;
@@ -157,7 +136,7 @@ public class RoomListActivity extends BaseActivity {
                         newTabInfo.pageNum = targetPage;
                         newTabInfo.dataList = requestList;
                         newTabInfo.hasMore = hasMore;
-                        roomType2TabInfo.put(roomType, newTabInfo);
+                        roomType2TabInfo= newTabInfo;
                         adapter.notifyDataSetChanged();
                     } else {
                         tabInfo.pageNum = targetPage;
@@ -182,12 +161,7 @@ public class RoomListActivity extends BaseActivity {
     }
 
     private List<RoomBasicInfo> getDataList() {
-        TabInfo currentTabInfo = getCurrentTabInfo();
-        return currentTabInfo == null ? null : currentTabInfo.dataList;
-    }
-
-    private TabInfo getCurrentTabInfo() {
-        return roomType2TabInfo.get(roomType);
+        return roomType2TabInfo == null ? null : roomType2TabInfo.dataList;
     }
 
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {
@@ -211,40 +185,17 @@ public class RoomListActivity extends BaseActivity {
             final RoomBasicInfo model = dataList.get(position);
             holder.title.setText(model.title);
             boolean isOwner = TextUtils.equals(currentUserId, model.ownerId);
-            holder.isOwner.setVisibility(isOwner ? View.VISIBLE : View.GONE);
+            ViewUtil.setVisibilityIfNecessary(holder.isOwner, isOwner ? View.VISIBLE : View.GONE);
             holder.id.setText(model.roomId);
-
-            boolean isFirst = position == 0;
-            boolean isLast = position == getItemCount() - 1;
-
-            holder.dividerUp.setVisibility(isFirst ? View.VISIBLE : View.GONE);
-
-            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) holder.dividerDown.getLayoutParams();
-            int marginH = isLast ? 0 : AppUtil.dp(12);
-            layoutParams.leftMargin = marginH;
-            layoutParams.rightMargin = marginH;
-            holder.dividerDown.setLayoutParams(layoutParams);
 
             holder.copy.setOnClickListener(v -> {
                 ClipboardUtil.copyText(model.roomId);
                 showToast("已复制: " + model.roomId);
             });
 
-            holder.itemView.setOnClickListener(v -> {
-                switch (roomType) {
-                    case BUSINESS:
-                        // 去电商房间
-                        BusinessActivity.open(context, model.roomId, model.title, currentUserId);
-                        break;
-                    case CLASSROOM:
-                        // 去课堂房间
-                        ClassroomActivity.open(context, model.roomId, model.title, currentUserId);
-                        break;
-                    default:
-                        showToast("未识别的房间类型: " + roomType);
-                        break;
-                }
-            });
+            // avoid frequent click
+            ViewUtil.bindClickActionWithClickCheck(holder.itemView, () ->
+                    Router.openRoomViaBizType(context, model.roomId, model.title, currentUserId));
 
             holder.itemView.setOnLongClickListener(v -> {
                 if (!TextUtils.equals(model.ownerId, currentUserId)) {
@@ -256,7 +207,7 @@ public class RoomListActivity extends BaseActivity {
                     String roomId = model.roomId;
 
                     DestroyRoomRequest request = new DestroyRoomRequest();
-                    request.domain = Const.APP_ID;
+                    request.appId = Const.getAppId();
                     request.roomId = roomId;
                     request.userId = currentUserId;
                     DestroyRoomApi.destroyRoom(request, new Callback<Void>() {
@@ -298,8 +249,6 @@ public class RoomListActivity extends BaseActivity {
         final View isOwner;
         final TextView id;
         final View copy;
-        final View dividerUp;
-        final View dividerDown;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -307,8 +256,6 @@ public class RoomListActivity extends BaseActivity {
             isOwner = itemView.findViewById(R.id.item_is_owner);
             id = itemView.findViewById(R.id.item_id);
             copy = itemView.findViewById(R.id.item_copy);
-            dividerUp = itemView.findViewById(R.id.item_divider_up);
-            dividerDown = itemView.findViewById(R.id.item_divider_down);
         }
     }
 

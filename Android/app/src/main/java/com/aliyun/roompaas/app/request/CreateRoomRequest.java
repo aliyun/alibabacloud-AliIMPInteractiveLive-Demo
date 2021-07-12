@@ -8,20 +8,18 @@ import java.util.Map;
  */
 public class CreateRoomRequest extends BaseReq {
 
-    public String domain;
-    public String bizType;
+    public String appId;
     public String templateId;
     public String title;
     public String notice;
-    public String ownerId;
+    public String roomOwnerId;
 
     @Override
     public void appendParams(Map<String, String> params) {
-        params.put("domain", this.domain);
-        params.put("bizType", this.bizType);
+        params.put("appId", this.appId);
         params.put("templateId", this.templateId);
         params.put("title", this.title);
         params.put("notice", this.notice);
-        params.put("ownerId", this.ownerId);
+        params.put("roomOwnerId", this.roomOwnerId);
     }
 }

@@ -8,13 +8,13 @@ import java.util.Map;
  */
 public class DestroyRoomRequest extends BaseReq {
 
-    public String domain;
+    public String appId;
     public String roomId;
     public String userId;
 
     @Override
     public void appendParams(Map<String, String> params) {
-        params.put("domain", this.domain);
+        params.put("appId", this.appId);
         params.put("roomId", this.roomId);
         params.put("userId", this.userId);
     }

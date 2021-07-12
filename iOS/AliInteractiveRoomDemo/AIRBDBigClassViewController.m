@@ -22,6 +22,7 @@ static NSString * const DMClassTableCellIdentifier = @"DMClassTableCellIdentifie
 
 
 @property (copy, nonatomic) NSString* roomID;
+@property (copy, nonatomic) NSString* roomOwnerID;
 @property (copy, nonatomic) NSString* userNick;
 @property (assign, nonatomic) BOOL isTeacher;
 @property (strong, nonatomic) AIRBDTeacherView* teacherView;
@@ -262,7 +263,7 @@ static NSString * const DMClassTableCellIdentifier = @"DMClassTableCellIdentifie
     
     // 请求房间列表
     if (!self.classRoomList){
-        [[AIRBRoomEngine sharedInstance] getRoomListWithBizType:@"classroom" PageNum:1 pageSize:20 onSuccess:^(AIRBRoomEngineRoomListResponse * _Nonnull response) {
+        [[AIRBRoomEngine sharedInstance] getRoomListWithPageNum:1 pageSize:20 onSuccess:^(AIRBRoomEngineRoomListResponse * _Nonnull response) {
             self.classRoomList = response.roomBasicInfoList;
         } onFailure:^(NSString * _Nonnull errorMessage) {
             [[AIRBDToast shareInstance]makeToast:[NSString stringWithFormat:@"获取房间列表失败,%@",errorMessage] duration:3.0];
@@ -307,6 +308,17 @@ static NSString * const DMClassTableCellIdentifier = @"DMClassTableCellIdentifie
 }
 
 - (void)enterClassRoomButtonAction:(UIButton*)sender {
+    if (self.classNumberInput.text.length > 0 && self.isTeacher && ![self.userID isEqualToString:self.roomOwnerID]){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"您不是该教室的老师" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                ;
+            }]];
+            [self presentViewController:alertController animated:YES completion:nil];
+        });
+        return;
+    }
+    
     if (self.userNickInput.text.length > 0){
         self.userNick = self.userNickInput.text;
     }
@@ -323,6 +335,7 @@ static NSString * const DMClassTableCellIdentifier = @"DMClassTableCellIdentifie
             teacherViewController.view = self.teacherView;
             [self.navigationController pushViewController:teacherViewController animated:YES];
         } else {
+            self.roomOwnerID = self.userID;
             self.teacherView = [[AIRBDTeacherView alloc]  initWithFrame:CGRectMake(0, 0, self.view.bounds.size.height, self.view.bounds.size.width)];
             AIRBDTeacherViewController* teacherViewController = [[AIRBDTeacherViewController alloc]init];
             teacherViewController.view = self.teacherView;
@@ -351,7 +364,7 @@ static NSString * const DMClassTableCellIdentifier = @"DMClassTableCellIdentifie
         if (self.classNumberInput.text.length > 0) {
             self.roomID = self.classNumberInput.text;
             self.studentView = [[AIRBDStudentView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
-            [self.studentView startWithRoomID:self.roomID userID:self.userID];
+            [self.studentView startWithRoomID:self.roomID userID:self.userID roomOwnerID:self.roomOwnerID];
             AIRBDStudentViewController* studentViewController = [[AIRBDStudentViewController alloc]init];
             studentViewController.view = self.studentView;
             [self.navigationController pushViewController:studentViewController animated:YES];
@@ -438,6 +451,7 @@ static NSString * const DMClassTableCellIdentifier = @"DMClassTableCellIdentifie
 #pragma mark - UITableViewDelegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     self.classNumberInput.text = self.classRoomList[indexPath.row].roomID;
+    self.roomOwnerID = self.classRoomList[indexPath.row].ownerID;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     self.classRoomListTableView.hidden = YES;
 }

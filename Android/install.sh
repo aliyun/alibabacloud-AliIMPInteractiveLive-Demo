@@ -1,7 +1,6 @@
 if ! [ $1 ]; then
   echo 'start build..'
-  ./gradlew app:clean biz:clean;
-  ./gradlew biz:assembleDebug --stacktrace --info;
+  ./gradlew app:clean
   ./gradlew app:assembleDebug --stacktrace --info;
   
 fi

@@ -27,11 +27,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, nonnull) NSString * ownerID;
 
-/**
- * 业务类型
- */
-@property (nonatomic, nonnull) NSString * bizType;
-
 @end
 
 NS_ASSUME_NONNULL_END

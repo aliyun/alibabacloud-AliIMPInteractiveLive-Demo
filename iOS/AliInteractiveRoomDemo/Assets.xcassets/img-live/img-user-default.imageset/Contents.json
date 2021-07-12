@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "img-user-default.png",
+      "filename" : "互动直播MVP-默认头像-2.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "互动直播MVP-默认头像-1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "互动直播MVP-默认头像.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -18,7 +18,7 @@ export default function IndexPage() {
       return;
     }
     window.roomEngine
-      .getRoomList(appId, 'business', 1, 50)
+      .getRoomList(1, 50)
       .then((res: any) => setRoomList(res.roomInfoList))
       .catch((err: any) => {
         console.error(err);

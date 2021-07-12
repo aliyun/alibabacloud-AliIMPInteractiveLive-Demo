@@ -18,3 +18,7 @@
 /src/.umi-production
 /src/.umi-test
 /.env.local
+
+RoomPaasInteractionSdk.web.min.js
+RoomPaasSdk.web.min.js
+

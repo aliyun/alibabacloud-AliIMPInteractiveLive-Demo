@@ -1,7 +1,9 @@
 package com.aliyun.roompaas.app;
 
 import android.app.Application;
+import android.content.Context;
 
+import com.aliyun.roompaas.app.sensitive.AllSensitive;
 import com.aliyun.roompaas.base.callback.Callbacks;
 import com.aliyun.roompaas.biz.EngineConfig;
 import com.aliyun.roompaas.biz.RoomEngine;
@@ -21,14 +23,12 @@ public class App extends Application {
         super.onCreate();
         sApp = this;
 
-        final RoomEngine roomEngine = RoomEngine.getInstance();
-
+        RoomEngine roomEngine = RoomEngine.getInstance();
+        AllSensitive.environmentConcern(roomEngine);
         roomEngine.init(this,
                 new EngineConfig.Builder()
-                        .appId(Const.APP_ID)
-                        .appKey(Const.APP_KEY)
-                        .longLinkUrl(Const.LONG_LINK_URL)
-                        .envType(Const.ENV_TYPE)
+                        .appId(Const.getAppId())
+                        .appKey(Const.getAppKey())
                         .deviceId(Const.DEVICE_ID)
                         .build(),
                 new Callbacks.Log<>(TAG, "init engine")
@@ -38,4 +38,9 @@ public class App extends Application {
     public static App getApplication() {
         return sApp;
     }
+
+    public static Context getAppContext() {
+        return sApp.getApplicationContext();
+    }
+
 }

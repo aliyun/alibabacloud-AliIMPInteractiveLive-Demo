@@ -1,86 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:ignore="HardcodedText">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="44dp">
-
-        <ImageView
-            android:id="@+id/icon_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="12dp"
-            android:contentDescription="@null"
-            android:src="@drawable/icon_back" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="房间列表"
-            android:textColor="#333333"
-            android:textSize="15sp"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
-    </FrameLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="#d4d4d4" />
-
-    <RadioGroup
-        android:id="@+id/room_list_radio_group"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:background="#ffffff"
-        android:checkedButton="@id/room_list_option_business"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <RadioButton
-            android:id="@+id/room_list_option_business"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="电商"
-            android:textColor="#333333"
-            android:textSize="14sp" />
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <RadioButton
-            android:id="@+id/room_list_option_classroom"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="课堂"
-            android:textColor="#333333"
-            android:textSize="14sp" />
-
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-    </RadioGroup>
-
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"
+        android:layout_marginTop="7dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginRight="7dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -91,4 +22,28 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</LinearLayout>
+    <com.aliyun.roompaas.base.view.RoundImageView
+        android:id="@+id/startCreateRoom"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="20dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:cornerRadius="30dp"
+        app:type="round"
+        android:src="@drawable/start_create_room"
+        />
+
+    <TextView
+        android:id="@+id/startCreateRoomButtonText"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:text="开启\n直播"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_marginBottom="20dp"
+        />
+
+
+</FrameLayout>

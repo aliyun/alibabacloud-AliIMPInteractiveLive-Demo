@@ -10,7 +10,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface AIRBDStudentView : UIView
--(void) startWithRoomID:(NSString*)roomID userID:(NSString*)userID;
+-(void) startWithRoomID:(NSString*)roomID userID:(NSString*)userID roomOwnerID:(NSString*)roomOwnerID;
 - (void) stop;
 @end
 

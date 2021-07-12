@@ -36,8 +36,8 @@
 
         <dependency>
             <groupId>com.aliyun</groupId>
-            <artifactId>imp_room20210515</artifactId>
-            <version>2.0.0</version>
+            <artifactId>imp20210630</artifactId>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>

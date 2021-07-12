@@ -523,16 +523,6 @@
                     [_commentView insertNewComment:comment];
                 }
                     break;
-                case AIRBRoomChannelMessageTypeLiveNotStarted:{
-                    messageType = @"LiveNotStarted";
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [[AIRBDToast shareInstance] makeToast:@"直播未开始" duration:3.0];
-                        [self.room.livePlayer stop];
-                    });
-                    comment = @"直播未开始";
-                    [_commentView insertNewComment:comment];
-                }
-                    break;
                 case AIRBRoomChannelMessageTypeChatLikeReceived:
                     messageType = @"ChatLikeReceived";
                     break;
@@ -583,7 +573,12 @@
             
         case AIRBLivePlayerEventStartLoading:
             break;
-            
+        case AIRBLivePlayerEventNotification:{
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [[AIRBDToast shareInstance] makeToast:[info valueForKey:@"data"] duration:3.0];
+//            });
+        }
+            break;
         default:
             break;
     }

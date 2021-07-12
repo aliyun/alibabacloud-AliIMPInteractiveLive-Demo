@@ -71,11 +71,8 @@
     dispatch_async(dispatch_get_main_queue(), ^{
         [self addSubview:self.imageView];
         UIImageView *shadow = [[UIImageView alloc]initWithFrame:self.bounds];
-        [shadow setBackgroundColor:[UIColor colorWithWhite:0.3 alpha:0.2]];
+        [shadow setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.2]];
         [self addSubview:shadow];
-        UIImageView *shadow2 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 165, self.bounds.size.width, self.bounds.size.height-160)];
-        [shadow2 setBackgroundColor:[UIColor colorWithWhite:0.3 alpha:0.4]];
-        [self addSubview:shadow2];
         [self addSubview:self.userImage];
 
         [self addSubview:self.roomTitleLabel];

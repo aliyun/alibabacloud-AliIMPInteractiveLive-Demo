@@ -5,7 +5,7 @@ import androidx.annotation.Nullable;
 import com.alibaba.fastjson.JSONException;
 import com.aliyun.roompaas.app.Const;
 import com.aliyun.roompaas.app.request.BaseReq;
-import com.aliyun.roompaas.base.callback.Callback;
+import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.callback.UICallback;
 import com.aliyun.roompaas.base.util.SignUtil;
 import com.aliyun.roompaas.base.util.ThreadUtil;
@@ -30,7 +30,7 @@ import java.util.Map;
 public class BaseAPI {
 
     public static void request(String api, @Nullable final BaseReq request, @Nullable Callback<String> callback) {
-        final String apiURL = Const.APP_SERVER_URL + api;
+        final String apiURL = Const.getAppServer() + api;
         final UICallback<String> uiCallback = new UICallback<>(callback);
         ThreadUtil.runOnSubThread(() -> {
             try {
@@ -46,8 +46,8 @@ public class BaseAPI {
                 headers.put("a-signature-nonce", nonce);
 
                 Map<String, String> params = new HashMap<>();
-                params.put("appId", Const.APP_ID);
-                params.put("appKey", Const.APP_KEY);
+                params.put("appId", Const.getAppId());
+                params.put("appKey", Const.getAppKey());
                 params.put("deviceId", Const.DEVICE_ID);
                 if (request != null) {
                     request.appendParams(params);

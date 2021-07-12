@@ -3,28 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/live_bg"
     tools:ignore="HardcodedText">
 
     <Button
         android:id="@+id/env"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="12dp"
+        android:padding="30dp"
         android:textColor="#333333"
         android:textSize="15sp"
-        android:visibility="visible"
+        android:alpha="0"
+        tools:alpha="0.5"
         tools:text="环境: 线上" />
 
     <Button
-        android:id="@+id/to_room_list_page"
+        android:id="@+id/roomTypeSwitch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="30dp"
         android:layout_gravity="end"
-        android:layout_margin="12dp"
-        android:onClick="onToRoomListPage"
-        android:text="已有房间，点击进入"
         android:textColor="#333333"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:alpha="0"
+        tools:alpha="0.5"
+        tools:text="房间类型切换" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,26 +41,55 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="bottom"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/form_user_id"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
-                android:lines="1"
-                android:hint="仅支持数字|字母"
-                android:layout_weight="1" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:background="@drawable/bg_gray_radius_10dp"
+                android:orientation="horizontal">
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onLogin"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="14dp"
+                    android:gravity="center_vertical"
+                    android:text="昵称"
+                    android:textColor="#f2f2f2"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/form_user_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+                    android:hint="仅支持数字|字母"
+                    android:lines="1"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="#999999"
+                    />
+        </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="120dp"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="22sp"
+                android:background="@drawable/bg_orange_button_radius_10dp"
+                android:id="@+id/loginButton"
                 android:text="登录" />
 
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="bottom"
@@ -77,6 +109,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -95,40 +128,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:gravity="bottom"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="房间类型"
-                android:textColor="#333333"
-                android:textSize="13sp" />
-
-            <Spinner
-                android:id="@+id/form_room_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="6dp" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/form_submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginTop="20dp"
-            android:onClick="onCreateRoom"
-            android:text="创建房间"
-            android:textColor="#333333"
-            android:textSize="15sp" />
 
     </LinearLayout>
 

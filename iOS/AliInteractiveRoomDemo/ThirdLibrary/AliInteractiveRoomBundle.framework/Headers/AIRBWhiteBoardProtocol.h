@@ -25,6 +25,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) id<AIRBWhiteBoardDelegate> delegate;
 
 - (void) openWithConfig:(AIRBWhiteBoardConfig*)config;
+
+- (void) startRecording;
+- (void) pauseRecording;
+- (void) resumeRecording;
+- (void) stopRecording;
+
+- (void) pauseReplay;
+- (void) resumeReplay;
+- (void) stepTo:(int64_t)timestamp;
+
 - (void) destroy;
 @end
 

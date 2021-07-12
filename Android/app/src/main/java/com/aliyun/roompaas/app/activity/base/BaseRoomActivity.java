@@ -13,15 +13,14 @@ import androidx.annotation.Nullable;
 import com.alibaba.dingpaas.room.RoomDetail;
 import com.aliyun.roompaas.app.helper.PermissionHelper;
 import com.aliyun.roompaas.app.util.DialogUtil;
-import com.aliyun.roompaas.base.callback.Callback;
+import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.callback.Callbacks;
-import com.aliyun.roompaas.biz.RoomChannel;
+import com.aliyun.roompaas.biz.exposable.RoomChannel;
 import com.aliyun.roompaas.biz.RoomEngine;
-import com.aliyun.roompaas.biz.RoomEvent;
-import com.aliyun.roompaas.chat.ChatEvent;
-import com.aliyun.roompaas.chat.ChatService;
-import com.aliyun.roompaas.live.LiveEvent;
-import com.aliyun.roompaas.live.LiveService;
+import com.aliyun.roompaas.chat.exposable.ChatService;
+import com.aliyun.roompaas.live.exposable.LivePlayerService;
+import com.aliyun.roompaas.live.exposable.LivePusherService;
+import com.aliyun.roompaas.live.exposable.LiveService;
 
 /**
  * 房间Activity, 封装房间相关的通用处理逻辑
@@ -56,6 +55,8 @@ public abstract class BaseRoomActivity extends BaseActivity {
     protected RoomChannel roomChannel;
     protected ChatService chatService;
     protected LiveService liveService;
+    protected LivePlayerService livePlayerService;
+    protected LivePusherService livePusherService;
 
     // 解析参数
     private void parseParams() {
@@ -99,10 +100,8 @@ public abstract class BaseRoomActivity extends BaseActivity {
         // 获取插件服务
         chatService = roomChannel.getPluginService(ChatService.class);
         liveService = roomChannel.getPluginService(LiveService.class);
-        // 监听事件
-        roomChannel.setEventHandler(this::onRoomEvent);
-        chatService.setEventHandler(this::onChatEvent);
-        liveService.setEventHandler(this::onLiveEvent);
+        livePlayerService = liveService.getPlayerService();
+        livePusherService = liveService.getPusherService();
         // 进房间
         roomChannel.enterRoom(nick, new Callback<Void>() {
             @Override
@@ -117,30 +116,6 @@ public abstract class BaseRoomActivity extends BaseActivity {
             }
         });
     }
-
-    /**
-     * 房间事件回调
-     *
-     * @param event 事件类型
-     * @param obj   事件参数
-     */
-    protected abstract void onRoomEvent(RoomEvent event, Object obj);
-
-    /**
-     * Chat事件回调
-     *
-     * @param event 事件类型
-     * @param obj   事件参数
-     */
-    protected abstract void onChatEvent(ChatEvent event, Object obj);
-
-    /**
-     * Live回调
-     *
-     * @param event 事件类型
-     * @param obj   事件参数
-     */
-    protected abstract void onLiveEvent(LiveEvent event, Object obj);
 
     /**
      * 进房间成功的回调
@@ -177,7 +152,7 @@ public abstract class BaseRoomActivity extends BaseActivity {
     /**
      * 子类复用的页面打开逻辑
      */
-    protected static void open(Context context, Intent intent, String roomId, String roomTitle, String nick) {
+    public static void open(Context context, Intent intent, String roomId, String roomTitle, String nick) {
         intent.putExtra(PARAM_KEY_ROOM_ID, roomId);
         intent.putExtra(PARAM_KEY_ROOM_TITLE, roomTitle);
         intent.putExtra(PARAM_KEY_NICK, nick);

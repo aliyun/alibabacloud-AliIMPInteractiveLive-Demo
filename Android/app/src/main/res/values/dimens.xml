@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="room_bottom_layout_margin_bottom">70dp</dimen>
+    <dimen name="room_bottom_layout_margin_bottom">20dp</dimen>
     <dimen name="general_margin">18dp</dimen>
     <dimen name="vertical_margin">@dimen/general_margin</dimen>
     <dimen name="horizontal_margin">@dimen/general_margin</dimen>

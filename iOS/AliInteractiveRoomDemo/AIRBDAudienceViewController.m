@@ -6,7 +6,6 @@
 //
 
 #import "AIRBDAudienceViewController.h"
-#import "AIRBDAudienceView.h"
 #import "AIRBDRoomInfoModel.h"
 #import <AliInteractiveRoomBundle/AliInteractiveRoomBundle.h>
 #import <Masonry/Masonry.h>
@@ -18,17 +17,18 @@
 #import "AIRBDMorePanelView.h"
 #import "AIRBDItemsView.h"
 #import "UIColor+HexColor.h"
+#import "AIRBDetailsButton.h"
 @interface AIRBDAudienceViewController ()<UITextFieldDelegate,AIRBRoomChannelDelegate,UIGestureRecognizerDelegate, AIRBLivePlayerDelegate,AIRBDMorePanelDelegate,AIRBDItemsViewDelegate>
 
 @property (strong, nonatomic) UIImageView* backgroundView;
 
 @property (strong, nonatomic) UIView* roomInfoHolder;
-@property (strong, nonatomic) UILabel* roomNoticeLabel;
 @property (strong, nonatomic) UIImageView* userImg;
 @property (strong, nonatomic) UILabel* roomtitleLabel;
 @property (strong, nonatomic) UILabel* roomOnlineCountLabel;
 @property (strong, nonatomic) UILabel* roomLikeCountlabel;
 @property (strong, nonatomic) UIButton* membersButton;
+@property (strong, nonatomic) AIRBDetailsButton* noticeButton;
 @property (strong, nonatomic) UIButton* exitButton;
 
 @property (strong, nonatomic) UITextField* sendField;
@@ -162,34 +162,23 @@
     return _roomLikeCountlabel;
 }
 
-- (UILabel *)roomNoticeLabel{
-    if(!_roomNoticeLabel){
-        UILabel *label = [[UILabel alloc] init];
-        [self.view addSubview:label];
-        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+- (AIRBDetailsButton *)noticeButton{
+    if (!_noticeButton) {
+        AIRBDetailsButton* button = [[AIRBDetailsButton alloc]initWithFrame:CGRectMake(0, 0, 60, 21) image:[UIImage imageNamed:@"icon-notice"] title:@"公告"];
+        [self.view addSubview:button];
+        [button mas_makeConstraints:^(MASConstraintMaker *make) {
             if (@available(iOS 11.0, *)) {
                 make.top.equalTo(self.view.mas_safeAreaLayoutGuideTop).with.offset(73);
             } else {
                 make.top.equalTo(self.view).with.offset(73);
             }
             make.left.equalTo(self.view).with.offset(19);
-            make.width.mas_equalTo(171);
-            make.height.mas_equalTo(121);
+            make.width.mas_equalTo(60);
+            make.height.mas_equalTo(21);
         }];
-        //有bug未解决（更新公告后重新绘制了，造成frame异常），先不做展开动画
-//        UITapGestureRecognizer* tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(changeNoticeLabelScale)];
-//        [label addGestureRecognizer:tap];
-//        label.userInteractionEnabled = YES;
-        label.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.3];
-        label.layer.masksToBounds = YES;
-        label.layer.cornerRadius = 8;
-        label.textAlignment = NSTextAlignmentLeft;
-        label.text = [NSString stringWithFormat:@"房间公告: %@",self.roomModel.notice];
-        label.font = [UIFont fontWithName:@"PingFangSC-Regular" size:12];
-        label.textColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0/1.0];
-        _roomNoticeLabel = label;
+        _noticeButton = button;
     }
-    return _roomNoticeLabel;
+    return _noticeButton;
 }
 
 - (UIButton*) exitButton{
@@ -316,7 +305,7 @@
         [self.view sendSubviewToBack:self.backgroundView];
         [self.view bringSubviewToFront:self.roomInfoHolder];
         [self.view bringSubviewToFront:self.exitButton];
-        [self.view bringSubviewToFront:self.roomNoticeLabel];
+        [self.view bringSubviewToFront:self.noticeButton];
         [self.view bringSubviewToFront:self.sendField];
         [self.view bringSubviewToFront:self.shareButton];
         [self.view bringSubviewToFront:self.likeButton];
@@ -326,29 +315,6 @@
 
 
 #pragma mark -- UI Action
-
--(void)changeNoticeLabelScale{
-    static BOOL changed;
-    if(changed){
-        changed = NO;
-        [UIView animateWithDuration:0.2 animations:^{
-            CGRect frame = self.roomNoticeLabel.layer.frame;
-            frame.size.width -= 100;
-            frame.size.height -= 100;
-            self.roomNoticeLabel.layer.frame = frame;
-            [self.roomNoticeLabel.layer display];
-        }];
-    }else{
-        changed = YES;
-        [UIView animateWithDuration:0.2 animations:^{
-            CGRect frame = self.roomNoticeLabel.layer.frame;
-            frame.size.width += 100;
-            frame.size.height += 100;
-            self.roomNoticeLabel.layer.frame = frame;
-            [self.roomNoticeLabel.layer display];
-        }];
-    }
-}
 
 -(void)exitButtonAction:(UIButton*)sender{
 //    [self.room stopLiveStreaming];
@@ -364,15 +330,16 @@
 }
 
 - (void)likeButtonAction:(UIButton*)sender {
-    [self.room.chat sendLikeWithCount:1 onSuccess:^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[AIRBDToast shareInstance] makeToast:@"点赞成功" duration:1.0];
-        });
-    } onFailure:^(NSString * _Nonnull errorMessage) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[AIRBDToast shareInstance] makeToast:@"点赞失败" duration:1.0];
-        });
-    }];
+    [self.room.chat sendLike];
+//    [self.room.chat sendLikeWithCount:1 onSuccess:^{
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [[AIRBDToast shareInstance] makeToast:@"点赞成功" duration:1.0];
+//        });
+//    } onFailure:^(NSString * _Nonnull errorMessage) {
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            [[AIRBDToast shareInstance] makeToast:@"点赞失败" duration:1.0];
+//        });
+//    }];
 }
 
 #pragma mark --LifeCircle
@@ -443,6 +410,7 @@
     if(self.roomEntered){
         [self.room leaveRoom];
         self.roomEntered = NO;
+        self.room = nil;
     }
     dispatch_async(dispatch_get_main_queue(), ^{
         [UIApplication sharedApplication].idleTimerDisabled = NO;
@@ -473,9 +441,15 @@
         case AIRBRoomChannelEventRoomInfoGotten:{
             self.roomModel.title = [info valueForKey:@"title"];
             self.roomModel.notice = [info valueForKey:@"notice"];
-            self.roomModel.onlineCount = [[info valueForKey:@"onlineCount"]intValue];
-            self.roomModel.likeCount = [[info valueForKey:@"likeCount"]intValue];
-            [self updateRoomInfo];
+            self.roomModel.onlineCount = [[info valueForKey:@"onlineCount"] intValue];
+            [self.room.chat getCurrentChatInfoOnSuccess:^(int32_t totalComment, int32_t totalLike) {
+                self.roomModel.likeCount = totalLike;
+                [self updateRoomInfo];
+            } onFailure:^(NSString * _Nonnull errMessage) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"failed to get chat detail:(%@)", errMessage] duration:3.0];
+                });
+            }];
         }
             break;
             
@@ -495,20 +469,12 @@
                     BOOL enter = [[dataDic valueForKey:@"enter"] boolValue];
                     NSString* userID = [dataDic valueForKey:@"userId"];
                     if (userID.length > 0) {
-                        if (enter) {
-                            int count = [[NSString stringWithFormat:@"%@",[dataDic valueForKey:@"onlineCount"]]intValue];
-                            comment = [NSString stringWithFormat:@"%@ 进入了房间",[dataDic valueForKey:@"nick"]];
-                            self.roomModel.onlineCount = count;
-                            [self updateRoomInfo];
-                            [_commentView insertNewComment:comment];
-                            
-                        } else {
-                            int count = [[NSString stringWithFormat:@"%@",[dataDic valueForKey:@"onlineCount"]]intValue];
-                            comment = [NSString stringWithFormat:@"%@ 离开了房间",[dataDic valueForKey:@"nick"]];
-                            self.roomModel.onlineCount = count;
-                            [self updateRoomInfo];
-                            [_commentView insertNewComment:comment];
-                        }
+                        int count = [[NSString stringWithFormat:@"%@",[dataDic valueForKey:@"onlineCount"]]intValue];
+                        NSString* nick = ([[dataDic valueForKey:@"userId"] isEqualToString:self.roomModel.ownerID])?@"主播":[dataDic valueForKey:@"nick"];
+                        comment = [NSString stringWithFormat:@"%@ %@了直播间",nick,enter?@"进入":@"离开"];
+                        self.roomModel.onlineCount = count;
+                        [self updateRoomInfo];
+                        [_commentView insertNewComment:comment];
                     }
                 }
                     break;
@@ -529,32 +495,23 @@
                     messageType = @"LiveStartedByOther";
                     [self.room.livePlayer start];
 //                    [self updatePlayerView];
-                    comment = @"直播开始";
-                    [_commentView insertNewComment:comment];
+                    [self.commentView insertNewComment:@"系统提示: 直播已开始"];
                     break;
                 case AIRBRoomChannelMessageTypeLiveStoppedByOther:{
                     messageType = @"LiveStoppedByOther";
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [[AIRBDToast shareInstance] makeToast:@"直播已结束" duration:3.0];
+//                        [[AIRBDToast shareInstance] makeToast:@"直播已结束" duration:3.0];
                         [self.room.livePlayer stop];
+                        [self.room.livePlayer.playerView removeFromSuperview];
+                        [self.view setBackgroundColor:[UIColor colorWithHexString:@"#333333" alpha:1.0]];
+                        [self.view sendSubviewToBack:self.backgroundView];
                     });
-                    comment = @"直播已结束";
-                    [_commentView insertNewComment:comment];
-                }
-                    break;
-                case AIRBRoomChannelMessageTypeLiveNotStarted:{
-                    messageType = @"LiveNotStarted";
-//                    dispatch_async(dispatch_get_main_queue(), ^{
-//                        [[AIRBDToast shareInstance] makeToast:@"直播未开始" duration:3.0];
-//                        [self.room.livePlayer stop];
-//                    });
-//                    comment = @"直播未开始";
-//                    [_commentView insertNewComment:comment];
+                    [self.commentView insertNewComment:@"系统提示: 直播已结束"];
                 }
                     break;
                 case AIRBRoomChannelMessageTypeChatLikeReceived:
                     messageType = @"ChatLikeReceived";
-                    self.roomModel.likeCount = [[dataDic valueForKey:@"likeCount"]intValue];
+                    self.roomModel.likeCount = [[dataDic valueForKey:@"likeCount"] intValue];
                     [self updateRoomInfo];
                     break;
                 case AIRBRoomChannelMessageTypeChatCommentReceived:
@@ -565,18 +522,18 @@
                 case AIRBRoomChannelMessageTypeChatOneUserMutedOrUnmuted:
                     messageType = @"OneUserWasMuted";
                     if([[dataDic valueForKey:@"mute"] boolValue] == YES){
-                        comment = [NSString stringWithFormat:@" %@被禁言%@秒",[dataDic valueForKey:@"muteUserNick"],[dataDic valueForKey:@"muteTime"]];
+                        comment = [NSString stringWithFormat:@" %@被管理员禁言%@秒",[dataDic valueForKey:@"muteUserNick"],[dataDic valueForKey:@"muteTime"]];
                     }else{
-                        comment = [NSString stringWithFormat:@" %@被取消禁言",[dataDic valueForKey:@"muteUserNick"]];
+                        comment = [NSString stringWithFormat:@" %@被管理员取消禁言",[dataDic valueForKey:@"muteUserNick"]];
                     }
                     [_commentView insertNewComment:comment];
                     break;
                 case AIRBRoomChannelMessageTypeRoomOneUserKickedOut:
                     messageType = @"OneUserWasKickedOutRoom";
-                    if([[dataDic valueForKey:@"kickUserName"] isEqualToString:self.roomModel.userID]){
+                    if([[dataDic valueForKey:@"kickUser"] isEqualToString:self.roomModel.userID]){
                         [self exitButtonAction:nil];
                     }else{
-                        comment = [NSString stringWithFormat:@" %@被踢出房间",[dataDic valueForKey:@"kickUserName"]];
+                        comment = [NSString stringWithFormat:@" %@被管理员踢出直播间",[dataDic valueForKey:@"kickUserName"]];
                         [_commentView insertNewComment:comment];
                     }
 //                    [self updateUsersList];
@@ -617,7 +574,12 @@
             
         case AIRBLivePlayerEventStartLoading:
             break;
-            
+        case AIRBLivePlayerEventNotification:{
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                [[AIRBDToast shareInstance] makeToast:[info valueForKey:@"data"] duration:3.0];
+//            });
+        }
+            break;
         default:
             break;
     }
@@ -720,7 +682,7 @@
         self.roomLikeCountlabel.text = [NSString stringWithFormat:@"%d点赞",self.roomModel.likeCount];
         self.roomOnlineCountLabel.text = [NSString stringWithFormat:@"%d观看",self.roomModel.onlineCount];
         [UIView animateWithDuration:0.2 animations:^{
-            self.roomNoticeLabel.text = [NSString stringWithFormat:@"房间公告: %@",self.roomModel.notice];
+            self.noticeButton.text = [NSString stringWithFormat:@"直播间公告: %@",self.roomModel.notice];
         }];
     });
 }

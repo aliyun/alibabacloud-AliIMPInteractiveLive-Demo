@@ -11,6 +11,35 @@
         android:layout_height="match_parent">
 
     </FrameLayout>
+    <LinearLayout
+        android:id="@+id/rtc_camera_close"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#333333"
+        android:orientation="vertical"
+        >
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/alivc_biginteractiveclass_byn_camera_close3x"
+            android:layout_marginTop="12dp"
+            android:layout_gravity="center_horizontal"
+            />
+
+        <TextView
+            android:textSize="12sp"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="#ffffff"
+            android:layout_centerInParent="true"
+            android:text="摄像头已关闭"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="2dp"
+            />
+
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/item_nick"

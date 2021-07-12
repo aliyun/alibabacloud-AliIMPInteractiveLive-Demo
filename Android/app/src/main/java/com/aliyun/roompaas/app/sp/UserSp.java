@@ -10,6 +10,6 @@ public interface UserSp {
     @SpHelper.Setter
     void setUserId(String userId);
 
-    @SpHelper.Getter(defValue = "jianli")
+    @SpHelper.Getter
     String getUserId();
 }

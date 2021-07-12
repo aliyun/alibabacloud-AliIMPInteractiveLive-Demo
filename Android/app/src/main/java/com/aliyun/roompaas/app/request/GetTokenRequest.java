@@ -14,6 +14,6 @@ public class GetTokenRequest extends BaseReq{
 
     @Override
     public void appendParams(Map<String, String> params) {
-        params.put("appUid", uid);
+        params.put("userId", uid);
     }
 }

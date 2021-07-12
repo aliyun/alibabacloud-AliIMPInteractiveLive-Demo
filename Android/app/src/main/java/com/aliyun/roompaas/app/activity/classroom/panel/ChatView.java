@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -64,14 +65,17 @@ public class ChatView extends FrameLayout {
         );
     }
 
+    @MainThread
     public void addSystemMessage(String content) {
         addMessage("系统", content);
     }
 
+    @MainThread
     public void addMessage(String type, String content) {
         addMessage(Collections.singletonList(new MessageModel(type, content)));
     }
 
+    @MainThread
     public void addMessage(List<MessageModel> addedData) {
         recyclerViewHelper.addData(addedData);
 

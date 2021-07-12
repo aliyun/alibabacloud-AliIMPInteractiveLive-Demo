@@ -6,17 +6,17 @@ import com.alibaba.dingpaas.room.RoomUserModel;
 import com.alibaba.dingpaas.rtc.ConfUserModel;
 import com.alibaba.fastjson.JSON;
 import com.aliyun.roompaas.app.model.RtcUser;
-import com.aliyun.roompaas.base.callback.Callback;
+import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.callback.UICallback;
 import com.aliyun.roompaas.base.log.Logger;
 import com.aliyun.roompaas.base.model.PageModel;
 import com.aliyun.roompaas.base.util.CollectionUtil;
-import com.aliyun.roompaas.biz.RoomChannel;
-import com.aliyun.roompaas.biz.model.UserParam;
+import com.aliyun.roompaas.biz.exposable.RoomChannel;
+import com.aliyun.roompaas.biz.exposable.model.UserParam;
 import com.aliyun.roompaas.rtc.RtcApplyUserParam;
-import com.aliyun.roompaas.rtc.RtcService;
-import com.aliyun.roompaas.rtc.RtcUserParam;
-import com.aliyun.roompaas.rtc.RtcUserStatus;
+import com.aliyun.roompaas.rtc.exposable.RtcService;
+import com.aliyun.roompaas.rtc.exposable.RtcUserParam;
+import com.aliyun.roompaas.rtc.exposable.RtcUserStatus;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -73,6 +73,10 @@ public class RtcUserManager {
      */
     public void updateUser(RtcUser user) {
         if (user == null) {
+            return;
+        }
+        if (isTeacher(user.userId)) {
+            // 忽略老师
             return;
         }
 
@@ -153,6 +157,11 @@ public class RtcUserManager {
                     // 房间用户列表的用户都是会议离开的状态, 不需要做排序处理
                     List<RtcUser> result = new ArrayList<>();
                     for (RoomUserModel userModel : list) {
+                        if (isTeacher(userModel.openId)) {
+                            // 忽略老师
+                            continue;
+                        }
+
                         RtcUser rtcUser = roomUser2RtcUser(userModel);
                         result.add(rtcUser);
                         userId2User.put(userModel.openId, rtcUser);
@@ -185,6 +194,10 @@ public class RtcUserManager {
                     // 已添加过, 不再重复添加, 去重
                     continue;
                 }
+                if (isTeacher(userId)) {
+                    // 忽略老师
+                    continue;
+                }
 
                 RtcUser rtcUser = new RtcUser();
                 rtcUser.userId = userId;
@@ -201,6 +214,14 @@ public class RtcUserManager {
         if (hasRtcApplyUserList) {
             for (ConfUserModel confUserModel : applyUserList) {
                 String userId = confUserModel.userId;
+                if (userId2User.containsKey(userId)) {
+                    // 已添加过, 不再重复添加, 去重
+                    continue;
+                }
+                if (isTeacher(userId)) {
+                    // 忽略老师
+                    continue;
+                }
 
                 RtcUser rtcUser = new RtcUser();
                 rtcUser.userId = userId;
@@ -216,6 +237,10 @@ public class RtcUserManager {
         if (CollectionUtil.isNotEmpty(roomUserModels)) {
             for (RoomUserModel roomUserModel : roomUserModels) {
                 String userId = roomUserModel.openId;
+                if (isTeacher(userId)) {
+                    // 忽略老师
+                    continue;
+                }
 
                 RtcUser rtcUser = userId2User.get(userId);
                 if (rtcUser != null) {
@@ -337,6 +362,16 @@ public class RtcUserManager {
     }
 
     public void addUser(RtcUser rtcUser) {
-        userId2User.put(rtcUser.userId, rtcUser);
+        if (!isTeacher(rtcUser.userId)) {
+            userId2User.put(rtcUser.userId, rtcUser);
+        }
+    }
+
+    public boolean hasUser(String userId) {
+        return !TextUtils.isEmpty(userId) && userId2User.containsKey(userId);
+    }
+
+    private boolean isTeacher(String userId) {
+        return roomChannel.isOwner(userId);
     }
 }

@@ -1,20 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="end"
-    android:layout_marginBottom="9dp">
+    android:paddingHorizontal="18dp"
+    android:paddingVertical="5dp"
+    android:layout_marginBottom="9dp"
+    >
 
-    <TextView xmlns:tools="http://schemas.android.com/tools"
+    <com.aliyun.roompaas.base.view.RoundImageView
+        android:id="@+id/avatar"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="17dp"
+        android:layout_marginRight="7dp"
+        android:src="@drawable/live_default_avatar" />
+
+    <TextView
         android:id="@+id/item_text"
+        android:layout_toRightOf="@+id/avatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_item_user"
-        android:paddingStart="12dp"
-        android:paddingTop="3dp"
-        android:paddingEnd="12dp"
-        android:paddingBottom="3dp"
-        android:textColor="#ffffff"
+        android:paddingBottom="2dp"
+        android:textColor="#333333"
         android:textSize="12sp"
-        tools:text="666" />
-</FrameLayout>
+        tools:text="name" />
+
+    <TextView
+        android:id="@+id/item_id"
+        android:layout_toRightOf="@+id/avatar"
+        android:layout_below="@id/item_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="2dp"
+        android:textColor="#999999"
+        android:textSize="12sp"
+        tools:text="id" />
+</RelativeLayout>

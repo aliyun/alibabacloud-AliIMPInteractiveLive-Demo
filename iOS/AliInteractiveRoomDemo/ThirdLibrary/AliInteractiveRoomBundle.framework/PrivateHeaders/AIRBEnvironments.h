@@ -13,31 +13,15 @@ NS_ASSUME_NONNULL_BEGIN
 @interface AIRBEnvironments : NSObject
 
 + (instancetype)shareInstance;
+/**
+ 预发网关长连接服务器地址
+*/
+@property(nonatomic, copy) NSString* _Nonnull prereleaseLongLinkAddr;
 
 /**
-应用的唯一标识
+ 线上网关长连接服务器地址
 */
-@property(nonatomic, copy) NSString* _Nonnull appKey;
-
-/**
- 网关长连接服务器地址
-*/
-@property(nonatomic, copy) NSString* _Nonnull longLinkAddr;
-
-/**
-token主机地址： token host
-*/
-@property(nonatomic, copy) NSString* _Nonnull tokenUrl;
-
-/**
-设备id：mocked deviceId based on UUID
-*/
-@property(nonatomic, copy) NSString* _Nonnull deviceId;
-
-/**
- Demo 默认的业务标识
-*/
-@property(nonatomic, copy) NSString* _Nonnull bizType;
+@property(nonatomic, copy) NSString* _Nonnull releaseLongLinkAddr;
 
 /**
 应用的语言设置, 默认为设备的locale信息
@@ -58,11 +42,6 @@ token主机地址： token host
 时区名称
 */
 @property(nonatomic, copy) NSString* _Nonnull timeZoneName;
-
-/**
-应用名称
-*/
-@property(nonatomic, copy) NSString* _Nonnull appName;
 
 /**
 应用版本

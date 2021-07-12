@@ -1,6 +1,7 @@
 package com.aliyun.roompaas.app.activity.classroom.panel;
 
 import android.text.TextUtils;
+import android.util.Pair;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -13,6 +14,7 @@ import com.aliyun.roompaas.app.activity.classroom.ClassroomActivity;
 import com.aliyun.roompaas.app.helper.RecyclerViewHelper;
 import com.aliyun.roompaas.app.model.RtcUser;
 import com.aliyun.roompaas.app.util.DialogUtil;
+import com.aliyun.roompaas.rtc.exposable.RtcUserStatus;
 
 import java.lang.ref.WeakReference;
 import java.util.Collections;
@@ -46,13 +48,22 @@ public class StudentView extends FrameLayout {
                     boolean isJoined = activity.isJoined();
 
                     // 设置昵称
-                    nick.setText(model.nick);
+                    String nickName = (TextUtils.isEmpty(model.nick) ? model.userId : model.nick);
+                    nickName = nickName.equals(activity.getUserId()) ? nickName + "(我)" : nickName;
+                    nick.setText(nickName);
 
                     boolean isTeacherSelf = isTeacherSelf(model);
                     // 设置会议状态 (仅限老师或入会的人才展示状态)
                     if ((isTeacher || isJoined) && !isTeacherSelf) {
                         status.setVisibility(VISIBLE);
-                        status.setText(model.status.getDesc());
+                        final String statusText;
+                        if (model.status == RtcUserStatus.JOIN_FAILED) {
+                            // 入会失败的状态, 跟"离会"保持一致
+                            statusText = RtcUserStatus.LEAVE.getDesc();
+                        } else {
+                            statusText = model.status.getDesc();
+                        }
+                        status.setText(statusText);
                     } else {
                         status.setVisibility(INVISIBLE);
                     }
@@ -71,10 +82,10 @@ public class StudentView extends FrameLayout {
                                 break;
                             case APPLYING:
                                 action.setText("处理连麦申请");
-                                action.setOnClickListener(v -> DialogUtil.doAction(
+                                action.setOnClickListener(v -> DialogUtil.showCustomDialog(
                                         activity, "是否允许上麦?",
-                                        new DialogUtil.Action("同意", () -> activity.onHandleUserApply(model, true)),
-                                        new DialogUtil.Action("拒绝", () -> activity.onHandleUserApply(model, false))
+                                        new Pair<>("同意", () -> activity.onHandleUserApply(model, true)),
+                                        new Pair<>("拒绝", () -> activity.onHandleUserApply(model, false))
                                 ));
                                 break;
                             case LEAVE:
@@ -97,7 +108,7 @@ public class StudentView extends FrameLayout {
 
     private boolean isTeacherSelf(RtcUser model) {
         ClassroomActivity act = activityRef != null ? activityRef.get() : null;
-        String userId =  act != null ? act.getUserId() : "";
+        String userId = act != null ? act.getUserId() : "";
         boolean isOwner = act != null && act.isOwner();
         return isOwner && TextUtils.equals(userId, model.userId);
     }
@@ -115,5 +126,9 @@ public class StudentView extends FrameLayout {
             }
         }
         recyclerViewHelper.addData(Collections.singletonList(model));
+    }
+
+    public List<RtcUser> getData() {
+        return recyclerViewHelper.getDataList();
     }
 }

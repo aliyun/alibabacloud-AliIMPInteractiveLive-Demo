@@ -18,28 +18,22 @@
     return singleton;
 }
 
-- (NSString*) appID {
-    return [NSString stringWithFormat:@"%@", @"xxx"];
+- (NSString*) interactiveLiveRoomAppID {
 }
 
-- (NSString*) appKey {
-    return [NSString stringWithFormat:@"%@", @"xxxx"];
+- (NSString*) interactiveClassRoomAppID {
+}
+
+- (NSString*) interactiveLiveRoomAppKey {
+}
+
+- (NSString*) interactiveClassRoomAppKey {
 }
 
 - (NSString*) appServerHost {
-    return [NSString stringWithFormat:@"%@", @"xxxx"];
-}
-
-- (NSString*) releaseLongLinkURL {
-    return [NSString stringWithFormat:@"%@", @"xxx"];
-}
-
-- (NSString*) prereleaseLongLinkURL {
-    return [NSString stringWithFormat:@"%@", @"xxx"];
 }
 
 - (NSString*) signSecret {
-    return [NSString stringWithFormat:@"%@", @"xxxx"];
 }
 
 @end

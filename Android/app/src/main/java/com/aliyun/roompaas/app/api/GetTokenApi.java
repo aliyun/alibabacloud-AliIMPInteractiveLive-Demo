@@ -6,7 +6,7 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.TypeReference;
 import com.aliyun.roompaas.app.request.GetTokenRequest;
 import com.aliyun.roompaas.app.response.Response;
-import com.aliyun.roompaas.base.callback.Callback;
+import com.aliyun.roompaas.base.exposable.Callback;
 
 import java.lang.reflect.Type;
 

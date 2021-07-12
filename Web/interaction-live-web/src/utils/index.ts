@@ -12,3 +12,7 @@ export const createDom = (type = 'div', options: any, content = '') => {
   if (content) dom.append(content);
   return dom;
 };
+
+export const randomNum = (max: number, min: number) => {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+};

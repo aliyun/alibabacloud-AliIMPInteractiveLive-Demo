@@ -198,6 +198,7 @@ const int32_t kStudentListRoomMemberPageSize = 10;
         [_recordButton addTarget:self action:@selector(recordButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [_recordButton setTitle:@"⏺️" forState:UIControlStateNormal];
         _recordButton.layer.cornerRadius = 5;
+        _recordButton.enabled = NO;
         [_controlPanel addSubview:_recordButton];
         [_recordButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(weakSelf.controlPanel);
@@ -216,6 +217,7 @@ const int32_t kStudentListRoomMemberPageSize = 10;
         [_recordPauseButton addTarget:self action:@selector(recordPauseButtonAction:) forControlEvents:UIControlEventTouchUpInside];
         [_recordPauseButton setTitle:@"⏸️" forState:UIControlStateNormal];
         _recordPauseButton.layer.cornerRadius = 2.0;
+        _recordPauseButton.enabled = NO;
         [_controlPanel addSubview:_recordPauseButton];
         [_recordPauseButton mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(weakSelf.controlPanel);
@@ -734,8 +736,7 @@ const int32_t kStudentListRoomMemberPageSize = 10;
     [self mainContentView];
     [self interactiveHolderView];
     [self layoutSubviews];
-    [_commentsListView insertNewComment:@"老师进入了房间"];
-    
+//    [_commentsListView insertNewComment:@"老师进入了房间"];
 }
 
 - (void) queryAllRTCPeers {
@@ -835,6 +836,7 @@ const int32_t kStudentListRoomMemberPageSize = 10;
 //    [self.room stopLiveStreaming];
     if (self.roomEntered){
         [self.room leaveRoom];
+        self.room = nil;
         self.roomEntered = NO;
     }
 }
@@ -848,12 +850,11 @@ const int32_t kStudentListRoomMemberPageSize = 10;
     self.config = config;
     
     NSString* templateId = @"default";
-    NSString* bizType = @"classroom";
-    NSString* title = [Utility encodeToPercentEscapeString:[NSString stringWithFormat:@"%@的课堂", self.userID]];
-    NSString* notice = [Utility encodeToPercentEscapeString:[NSString stringWithFormat:@"%@的课堂公告", self.userID]];
+    NSString* title = [NSString stringWithFormat:@"%@的课堂", self.userID];
+    NSString* notice = [NSString stringWithFormat:@"%@的课堂公告", self.userID];
     
     NSString* path = [NSString stringWithFormat:@"http://%@/api/login/createRoom", [AIRBDEnvironments shareInstance].appServerHost];
-    NSString* s = [NSString stringWithFormat:@"%@?domain=%@&bizType=%@&templateId=%@&title=%@&notice=%@&ownerId=%@", path, self.config.appID, bizType, templateId, title, notice, self.userID];
+    NSString* s = [NSString stringWithFormat:@"%@?appId=%@&templateId=%@&title=%@&notice=%@&roomOwnerId=%@", path, self.config.appID, templateId, title, notice, self.userID];
     
     NSString* dateString = [Utility currentDateString];
     NSString* nonce = [Utility randomNumString];
@@ -867,17 +868,17 @@ const int32_t kStudentListRoomMemberPageSize = 10;
     };
     
     NSDictionary* params = @{
-        @"domain" : self.config.appID,
-        @"bizType" : bizType,
+        @"appId" : self.config.appID,
         @"templateId" : templateId,
         @"title" : title,
         @"notice" : notice,
-        @"ownerId" : self.userID
+        @"roomOwnerId" : self.userID
     };
     
     NSString* signedString = [Utility AIRBRequestSignWithSignSecret:[AIRBDEnvironments shareInstance].signSecret method:@"POST" path:path parameters:params headers:headers];
     NSLog(@"signedString:%@", signedString);
     
+    s = [NSString stringWithFormat:@"%@?appId=%@&templateId=%@&title=%@&notice=%@&roomOwnerId=%@", path, self.config.appID, templateId, [Utility encodeToPercentEscapeString:title], [Utility encodeToPercentEscapeString:notice], self.userID];
     NSURL* url = [[NSURL alloc] initWithString:s];
     
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL:url];
@@ -918,9 +919,8 @@ const int32_t kStudentListRoomMemberPageSize = 10;
         [self setupUI];
     });
     [self.room enterRoom];
-    
+    [[AIRBDToast shareInstance] makeToast:@"初始化" duration:0.0];
 }
-
 
 - (void) queryMoreRoomMemberInfoOnce {
     if (self.hasMoreRoomMembers) {
@@ -1060,7 +1060,7 @@ const int32_t kStudentListRoomMemberPageSize = 10;
                     }
                 }
                     break;
-                case AIRBRoomChannelMessageTypePeerJoinRTCSucceeded: {
+                case AIRBRoomChannelMessageTypePeerJoinRTCSucceeded: {  // 某人加入了RTC
                     /*
                      {
                      "confId":"AliRtcxxxxxxxxxxx",
@@ -1087,10 +1087,24 @@ const int32_t kStudentListRoomMemberPageSize = 10;
                         [self.studentsListView reloadData];
                     });
                 }
-                    break;// 某人加入了RTC
-                case AIRBRoomChannelMessageTypePeerJoinRTCFailed:
-                    break;// 某人加入RTC超时或者拒绝加入RTC
-                case AIRBRoomChannelMessageTypePeerLeaveRTC: {
+                    break;
+                case AIRBRoomChannelMessageTypePeerJoinRTCFailed:{   // 某人加入RTC超时或者拒绝加入RTC
+                    NSArray* userList = [dicData valueForKey:@"userList"];
+                    if ([userList isKindOfClass:[NSArray class]] && userList.count > 0) {
+                        for (NSDictionary* userInfo in userList) {
+                            [self updateStudent:[userInfo valueForKey:@"userId"] toNewStatus:AIRBDStudentStatusReadyForCalled];
+                            
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@拒绝了连麦邀请", [userInfo valueForKey:@"userId"]] duration:3.0];
+                            });
+                        }
+                    }
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self.studentsListView reloadData];
+                    });
+                }
+                    break;
+                case AIRBRoomChannelMessageTypePeerLeaveRTC: {  // 某人离开RTC
                     NSArray* userList = [dicData valueForKey:@"userList"];
                     if ([userList isKindOfClass:[NSArray class]] && userList.count > 0) {
                         for (NSDictionary* userInfo in userList) {
@@ -1103,8 +1117,8 @@ const int32_t kStudentListRoomMemberPageSize = 10;
                         
                     });
                 }
-                    break;// 某人离开RTC
-                case AIRBRoomChannelMessageTypePeerKickedFromRTC: {
+                    break;
+                case AIRBRoomChannelMessageTypePeerKickedFromRTC: { // 某人被踢出了RTC
                     /*
                      {
                      "confId":"AliRtcbed04681daba472995",
@@ -1138,7 +1152,7 @@ const int32_t kStudentListRoomMemberPageSize = 10;
                         [self.studentsListView reloadData];
                     });
                 }
-                    break;// 某人被踢出了RTC
+                    break;
                 case AIRBRoomChannelMessageTypeRTCStarted:
                     break;
                 case AIRBRoomChannelMessageTypeRTCStopped:
@@ -1163,6 +1177,9 @@ const int32_t kStudentListRoomMemberPageSize = 10;
                         BOOL applyingOrCancel = [[dicData valueForKey:@"isApply"] boolValue];
                         if (applyingOrCancel) {
                             [self updateStudent:userID toNewStatus:AIRBDStudentStatusNowApplying];
+                            dispatch_async(dispatch_get_main_queue(), ^{
+                                [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@申请连麦", userID] duration:3.0];
+                            });
                         } else {
                             [self updateStudent:userID toNewStatus:AIRBDStudentStatusReadyForCalled];
                         }
@@ -1242,7 +1259,7 @@ const int32_t kStudentListRoomMemberPageSize = 10;
             });
         }
             break;
-        case AIRBRTCEventStatusNotificationReceived:{
+        case AIRBRTCEventNotification:{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[AIRBDToast shareInstance] makeToast:[info valueForKey:@"data"] duration:3.0];
             });
@@ -1260,8 +1277,41 @@ const int32_t kStudentListRoomMemberPageSize = 10;
                 self.room.whiteboard.whiteboardView.frame = CGRectMake(0, (self.whiteBoardContentView.bounds.size.height - self.room.whiteboard.whiteboardView.bounds.size.height) / 2, self.room.whiteboard.whiteboardView.bounds.size.width, self.room.whiteboard.whiteboardView.bounds.size.height);
                 [self.whiteBoardContentView addSubview:self.room.whiteboard.whiteboardView];
                 [self.mainContentView sendSubviewToBack:self.whiteBoardContentView];
+                self.recordButton.enabled = YES;
+                self.recordPauseButton.enabled = YES;
             });
         }
+            break;
+            
+        case AIRBWhiteBoardEventRecordingStarted: {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.recordButton setTitle:@"⏹️" forState:UIControlStateNormal];
+            });
+        }
+            [_commentsListView insertNewComment:@"白板录制已开始"];
+            break;
+        case AIRBWhiteBoardEventRecordingPaused: {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.recordPauseButton setTitle:@"◀️" forState:UIControlStateNormal];
+            });
+            [_commentsListView insertNewComment:@"白板录制已暂停"];
+        }
+            break;
+        case AIRBWhiteBoardEventRecordingResumed: {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.recordPauseButton setTitle:@"⏸️" forState:UIControlStateNormal];
+            });
+            [_commentsListView insertNewComment:@"白板录制已恢复"];
+        }
+            break;
+        case AIRBWhiteBoardEventRecordingStopped: {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.recordButton setTitle:@"🚫" forState:UIControlStateNormal];
+                [self.recordPauseButton setTitle:@"🚫" forState:UIControlStateNormal];
+            });
+            [_commentsListView insertNewComment:@"白板录制已结束"];
+        }
+            
             break;
         case AIRBWhiteBoardEventDestroied:
             break;
@@ -1526,10 +1576,19 @@ const int32_t kStudentListRoomMemberPageSize = 10;
 }
 
 - (void)recordButtonAction:(UIButton*)sender {
-    
+    if ([sender.currentTitle isEqualToString:@"⏺️"]) {
+        [self.room.whiteboard startRecording];
+    } else if ([sender.currentTitle isEqualToString:@"⏹️"]) {
+        [self.room.whiteboard stopRecording];
+    }
 }
 
 - (void)recordPauseButtonAction:(UIButton*)sender {
+    if ([sender.currentTitle isEqualToString:@"⏸️"]) {
+        [self.room.whiteboard pauseRecording];
+    } else if ([sender.currentTitle isEqualToString:@"◀️"]) {
+        [self.room.whiteboard resumeRecording];
+    }
     
 }
 

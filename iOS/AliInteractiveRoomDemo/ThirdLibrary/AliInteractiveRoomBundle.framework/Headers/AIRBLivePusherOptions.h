@@ -13,17 +13,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AIRBLivePusherUserDefinedLiveInfo : NSObject
-@property (copy, nonatomic) NSString* liveTitle;
-@property (copy, nonatomic) NSString* liveIntroduction;
-@property (assign, nonatomic) int64_t liveStartDate;
-@property (assign, nonatomic) int64_t liveEndDate;
-@end
-
 @interface AIRBLivePusherFaceBeautyOptions : NSObject
 /**
  美颜模式
- * 默认 : AlivcLivePushBeautyModeProfessional 普通模式
+ * 默认 : AIRBLivePushBeautyModeNormal 普通模式
  */
 @property (nonatomic, assign) AIRBLivePushBeautyMode beautyMode;
 /**
@@ -84,23 +77,40 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AIRBLivePusherMediaStreamingOptions : NSObject
 
+/**
+ * 是否进行仅视频推流（不录制音频），默认NO
+ */
 @property (assign, nonatomic) BOOL onlyVideo;
+
+/**
+ * 视频的帧率，默认20，不建议外部调节
+ */
 @property (assign, nonatomic) int16_t videoFrameRate;
-@property (assign, nonatomic) int64_t videoBitrate; // 单位 kbps，范围[400, 5000)
-@property (assign, nonatomic) AIRBLivePusherVideoProfile videoProfile;
+
+/**
+ * 视频的码率，单位 kbps，范围[400, 5000)，默认 1500，不建议外部调节
+ */
+@property (assign, nonatomic) int32_t videoBitrate;
+
+/**
+ * 视频帧最大关键帧间隔，单位秒，默认4秒，不建议外部调节
+ */
 @property (assign, nonatomic) int16_t maxVideoKeyFrameInterval;
+
+/**
+ * 摄像头的默认类型，默认为前置摄像头
+ */
 @property (assign, nonatomic) AIRBLivePusherCameraType cameraDefaultType;
 
+/**
+ * 是否进行仅音频推流（不录制视频）
+ */
 @property (assign, nonatomic) BOOL onlyAudio;
-@property (assign, nonatomic) int64_t audioBitrate;
-@property (assign, nonatomic) int16_t channels;
-@property (assign, nonatomic) int64_t sampleRate;
 @end
 
 @interface AIRBLivePusherOptions : NSObject
 @property (strong, nonatomic) AIRBLivePusherMediaStreamingOptions* mediaStreamingOptions;
 @property (strong, nonatomic) AIRBLivePusherFaceBeautyOptions* faceBeautyOptions;
-@property (strong, nonatomic) AIRBLivePusherUserDefinedLiveInfo* userLiveInfo;
 
 + (instancetype) defaultOptions;
 @end

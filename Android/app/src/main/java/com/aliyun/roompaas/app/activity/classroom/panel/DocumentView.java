@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 
 import com.aliyun.roompaas.app.R;
 import com.aliyun.roompaas.app.viewmodel.inter.IWhiteBoardOperate;
-import com.aliyun.roompaas.base.callback.Callback;
+import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.util.ViewUtil;
 
 import org.jetbrains.annotations.NotNull;

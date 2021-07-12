@@ -15,9 +15,9 @@ import com.aliyun.roompaas.app.model.DocumentAccessInfo;
 import com.aliyun.roompaas.app.response.OpenWhiteBoardResponse;
 import com.aliyun.roompaas.app.response.Response;
 import com.aliyun.roompaas.app.viewmodel.inter.IWhiteBoardOperate;
-import com.aliyun.roompaas.base.callback.Callback;
-import com.aliyun.roompaas.biz.RoomChannel;
-import com.aliyun.roompaas.whiteboard.WhiteboardService;
+import com.aliyun.roompaas.base.exposable.Callback;
+import com.aliyun.roompaas.biz.exposable.RoomChannel;
+import com.aliyun.roompaas.whiteboard.exposable.WhiteboardService;
 
 /**
  * Created by KyleCe on 2021/5/27

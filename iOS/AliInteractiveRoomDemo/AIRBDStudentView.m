@@ -15,11 +15,12 @@
 #import "Utilities/Utility.h"
 #import "AIRBDEnvironments.h"
 
-const int32_t kStudentListRoomMemberPageSizeForStudentView = 10;
+const int32_t kStudentListRoomMemberPageSizeForStudentView = 50;
 
 @interface AIRBDStudentView() <UITableViewDelegate,UITableViewDataSource,AIRBRoomChannelDelegate,UITextFieldDelegate,AIRBDStudentListCellDelegate,AIRBRTCDelegate, AIRBWhiteBoardDelegate, AIRBLivePlayerDelegate>
 @property (copy, nonatomic) NSString* userID;
 @property (copy, nonatomic) NSString* roomID;
+@property (copy, nonatomic) NSString* roomOwnerID;
 @property (strong, nonatomic) id<AIRBRoomChannelProtocol> room;
 @property (assign, nonatomic) BOOL roomEntered;
 @property (nonatomic) int applyForRTCLinkButtonStatus;  // 0:取消 1:申请 2:结束
@@ -40,7 +41,9 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 10;
 @property (nonatomic, strong) NSMutableDictionary* studentsLists;
 @property (strong, nonatomic) NSLock* studentListLock;
 @property (assign, nonatomic) BOOL hasMoreRoomMembers;
+@property (assign, nonatomic) BOOL hasMoreMembersJoinedRTCAlready;
 @property (assign, nonatomic) int32_t currentRoomMemberListPageNum;
+@property (assign, nonatomic) int32_t currentMemberJoinedRTCAlreadyListPageNum;
 @end
 
 @implementation AIRBDStudentView
@@ -53,10 +56,12 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 10;
         _studentListLock = [[NSLock alloc] init];
         _studentsListDataSource = [[NSMutableArray alloc] init];
         _hasMoreRoomMembers = YES;
-        _studentsLists = [[NSMutableDictionary alloc] init];
-        _studentListLock = [[NSLock alloc] init];
+        _hasMoreMembersJoinedRTCAlready = NO;
+//        _studentsLists = [[NSMutableDictionary alloc] init];
+//        _studentListLock = [[NSLock alloc] init];
         _currentRoomMemberListPageNum = 1;
-        _hasMoreRoomMembers = YES;
+        _currentMemberJoinedRTCAlreadyListPageNum = 1;
+//        _hasMoreRoomMembers = YES;
     }
     return self;
 }
@@ -69,10 +74,12 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 10;
         _studentListLock = [[NSLock alloc] init];
         _studentsListDataSource = [[NSMutableArray alloc] init];
         _hasMoreRoomMembers = YES;
-        _studentsLists = [[NSMutableDictionary alloc] init];
-        _studentListLock = [[NSLock alloc] init];
+        _hasMoreMembersJoinedRTCAlready = NO;
+//        _studentsLists = [[NSMutableDictionary alloc] init];
+//        _studentListLock = [[NSLock alloc] init];
         _currentRoomMemberListPageNum = 1;
-        _hasMoreRoomMembers = YES;
+        _currentMemberJoinedRTCAlreadyListPageNum = 1;
+//        _hasMoreRoomMembers = YES;
     }
     return self;
 }
@@ -86,12 +93,14 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 10;
     if (self.roomEntered){
         [self.room leaveRoom];
         self.roomEntered = NO;
+        self.room = nil;
     }
 }
 
--(void) startWithRoomID:(NSString*)roomID userID:(NSString*)userID {
+-(void) startWithRoomID:(NSString*)roomID userID:(NSString*)userID roomOwnerID:(NSString*)roomOwnerID {
     self.userID = userID;
     self.roomID = roomID;
+    self.roomOwnerID = roomOwnerID;
     self.room = [[AIRBRoomEngine sharedInstance] getRoomChannelWithRoomID:roomID];
     self.room.delegate = self;
     [self.room enterRoom];
@@ -333,11 +342,21 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 10;
     });
     [self.room.rtc startLocalPreview];
     [self.room.rtc joinChannel];
+    [self updateStudentListWhenJoinOrLeaveRTC:YES];
+}
+
+- (void) rejectRTCLinkInvitation{
+    [self.room.rtc acceptCall:NO];
+    self.applyForRTCLinkButtonStatus = 1;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.applyForRTCLinkButton setTitle:@"申请\n连麦" forState:UIControlStateNormal];
+    });
 }
 
 - (void) stopRTCLinkAndStartLivePlayer{
     self.applyForRTCLinkButtonStatus = 1;
     [self.room.rtc leaveChannel];
+    [self updateStudentListWhenJoinOrLeaveRTC:NO];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.playerViewHolder.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         [self.applyForRTCLinkButton setTitle:@"申请\n连麦" forState:UIControlStateNormal];
@@ -351,16 +370,30 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 10;
                                      pageSize:kStudentListRoomMemberPageSizeForStudentView
                                     onSuccess:^(AIRBRoomChannelUserListResponse * _Nonnull response) {
             for (AIRBRoomChannelUser* user in response.userList) {
-                if ([user.openID isEqualToString:self.userID]) {
+                if ([user.openID isEqualToString:self.roomOwnerID]) {   // 排除老师
                     continue;
-                } else {
-                    AIRBDStudentListItemModel* model = [[AIRBDStudentListItemModel alloc] init];
-                    model.userID = user.openID;
-                    model.status = AIRBDStudentStatusReadyForCalled;
-                    [self addStudentListItemModel:model index:self.studentsListDataSource.count];
-                    [self.studentsLists setValue:model forKey:user.openID];
                 }
+                
+                AIRBDStudentListItemModel* model = [[AIRBDStudentListItemModel alloc] init];
+                model.status = AIRBDStudentStatusReadyForCalled;
+                if ([user.openID isEqualToString:self.userID]) {
+                    model.userID = [user.openID stringByAppendingString:@"（我）"];
+                    [self addStudentListItemModel:model index:0];
+                } else {
+                    model.userID = user.openID;
+                    [self addStudentListItemModel:model index:self.studentsListDataSource.count];
+                }
+                [self.studentsLists setValue:model forKey:user.openID];
             }
+            
+            if (![self.studentsLists objectForKey:self.userID]) {   // 保证第一个为自己
+                AIRBDStudentListItemModel* model = [[AIRBDStudentListItemModel alloc] init];
+                model.status = AIRBDStudentStatusReadyForCalled;
+                model.userID = [self.userID stringByAppendingString:@"（我）"];
+                [self addStudentListItemModel:model index:0];
+                [self.studentsLists setValue:model forKey:self.userID];
+            }
+            
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.studentsListView reloadData];
             });
@@ -369,33 +402,39 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 10;
             } else {
                 self.hasMoreRoomMembers = NO;
             }
-        } onFailure:^(NSString * _Nonnull errorMessage) {
             
+        } onFailure:^(NSString * _Nonnull errorMessage) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"获取成员列表失败%@",errorMessage] duration:3.0];
+            });
         }];
     }
-    //请求在RTC的列表
-    [self.room.rtc queryCurrentPeerListWithType:AIRBRTCPeerTypeJoinedAlready pageNum:self.currentRoomMemberListPageNum pageSize:kStudentListRoomMemberPageSizeForStudentView onSuccess:^(AIRBRoomChannelUserListResponse * _Nonnull rsp) {
-        for (AIRBRoomChannelUser* user in rsp.userList) {
-            if ([user.openID isEqualToString:self.userID]) {
-                continue;
-            } else {
-                AIRBDStudentListItemModel* model = [[AIRBDStudentListItemModel alloc] init];
-                if (model) {
-                    [self removeStudentListItemModel:model];
-                }
-                [self.studentsLists removeObjectForKey:user.openID];
-                model.userID = user.openID;
-                model.status = AIRBDStudentStatusAlreadyOnTheCall;
-                [self addStudentListItemModel:model index:self.studentsListDataSource.count];
-                [self.studentsLists setValue:model forKey:user.openID];
+    
+    [self queryMoreMembersJoinedRTCAlreadyInfoOnce];
+}
+
+- (void) queryMoreMembersJoinedRTCAlreadyInfoOnce {
+    if (self.hasMoreMembersJoinedRTCAlready){
+        //请求在RTC的列表
+        [self.room.rtc queryCurrentPeerListWithType:AIRBRTCPeerTypeJoinedAlready pageNum:self.currentMemberJoinedRTCAlreadyListPageNum pageSize:kStudentListRoomMemberPageSizeForStudentView onSuccess:^(AIRBRoomChannelUserListResponse * _Nonnull rsp) {
+            for (AIRBRoomChannelUser* user in rsp.userList) {
+                [self updateStudent:user.openID toNewStatus:AIRBDStudentStatusAlreadyOnTheCall];
             }
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.studentsListView reloadData];
-        });
-    } onFailure:^(NSString * _Nonnull errorMessage) {
-        
-    }];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.studentsListView reloadData];
+            });
+            
+            if (rsp.hasMore) {
+                self.currentMemberJoinedRTCAlreadyListPageNum++;
+            } else {
+                self.hasMoreMembersJoinedRTCAlready = NO;
+            }
+        } onFailure:^(NSString * _Nonnull errorMessage) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"获取连麦中成员列表失败%@",errorMessage] duration:3.0];
+            });
+        }];
+    }
 }
 
 #pragma -mark AIRBRoomChannelDelegate
@@ -429,7 +468,7 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 10;
                     NSDictionary *dataDic = [self getDataDicFromInfo:info];
                     BOOL enter = [[dataDic valueForKey:@"enter"] boolValue];
                     NSString* userID = [dataDic valueForKey:@"userId"];
-                    if (userID.length > 0) {
+                    if (userID.length > 0 && ![userID isEqualToString:self.userID]) {
                         if (enter) {
                             AIRBDStudentListItemModel* model = [[AIRBDStudentListItemModel alloc] init];
                             model.userID = userID;
@@ -519,24 +558,21 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 10;
 //                    NSString *userIDCaller = [[dataDic valueForKey:@"caller"] valueForKey:@"userId"];
 
                     if ([self.userID isEqualToString:userIDCalled]){
-                        if (self.applyForRTCLinkButtonStatus == 0){
-                            [self startTRCLink];
-                        } else if (self.applyForRTCLinkButtonStatus == 1) {    // 呼叫：接受/拒绝
-                            dispatch_async(dispatch_get_main_queue(), ^{
-                                    [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"收到老师的连麦呼叫"] duration:1.0];
-                            
-                            
-                            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"收到老师的连麦呼叫" message:@"" preferredStyle:UIAlertControllerStyleAlert];
-                            [alertController addAction:[UIAlertAction actionWithTitle:@"拒绝" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                                [self.room.rtc acceptCall:NO];
-                            }]];
+//                        if (self.applyForRTCLinkButtonStatus == 0){
+//                            [self startTRCLink];
+//                        } else if (self.applyForRTCLinkButtonStatus == 1) {    // 呼叫：接受/拒绝
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"您收到了老师的连麦邀请\n是否接受？" message:@"连麦成功后，即可与老师进行沟通" preferredStyle:UIAlertControllerStyleAlert];
                             [alertController addAction:[UIAlertAction actionWithTitle:@"接受" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                                 [self startTRCLink];
                             }]];
+                            [alertController addAction:[UIAlertAction actionWithTitle:@"拒绝" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                                [self rejectRTCLinkInvitation];
+                            }]];
                             
                             [[self getViewController] presentViewController:alertController animated:YES completion:nil];
-                            });
-                        }
+                        });
+//                        }
                         
                     }
                     
@@ -554,8 +590,12 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 10;
                     if ([self.userID isEqualToString:userIDApproved] && !approve){
                         self.applyForRTCLinkButtonStatus = 1;
                         dispatch_async(dispatch_get_main_queue(), ^{
-                                [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"连麦申请被拒绝"] duration:1.0];
-                                [self.applyForRTCLinkButton setTitle:@"申请\n连麦" forState:UIControlStateNormal];
+                            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"老师拒绝了你的连麦请求" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+                            [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                                ;
+                            }]];
+                            [[self getViewController] presentViewController:alertController animated:YES completion:nil];
+                            [self.applyForRTCLinkButton setTitle:@"申请\n连麦" forState:UIControlStateNormal];
                         });
                     }
                 }
@@ -567,8 +607,13 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 10;
                     break;
                 case AIRBRoomChannelMessageTypeLiveStoppedByOther:{
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [[AIRBDToast shareInstance] makeToast:@"课堂已结束" duration:3.0];
-                        [self.room.livePlayer stop];
+                        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"课堂已结束" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+                        [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                            [self.room.livePlayer stop];
+                            [self.room.livePlayer.playerView removeFromSuperview];
+                        }]];
+                        [[self getViewController] presentViewController:alertController animated:YES completion:nil];
+                        
                     });
                     [_commentListView insertNewComment:@"课堂已结束"];
                 }
@@ -608,6 +653,18 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 10;
             break;
         case AIRBLivePlayerEventEndLoading:
             break;
+        case AIRBLivePlayerEventNotification:{
+            if ([[info valueForKey:@"data"] isEqualToString:@"直播未开始"]){
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"老师未开始上课" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+                    [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                        ;
+                    }]];
+                    [[self getViewController] presentViewController:alertController animated:YES completion:nil];
+                });
+            }
+        }
+            break;
         default:
             break;
     }
@@ -644,7 +701,7 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 10;
             break;
         case AIRBRTCEventBypassLiveStarted:
             break;
-        case AIRBRTCEventStatusNotificationReceived:{
+        case AIRBRTCEventNotification:{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[AIRBDToast shareInstance] makeToast:[info valueForKey:@"data"] duration:3.0];
             });
@@ -892,10 +949,19 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 10;
         [self.room.rtc applyForJoining:NO];
     }
     else if (self.applyForRTCLinkButtonStatus == 2){
-        [self stopRTCLinkAndStartLivePlayer];
         dispatch_async(dispatch_get_main_queue(), ^{
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"您确定要结束和老师的连麦吗？" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self stopRTCLinkAndStartLivePlayer];
                 [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"结束连麦中..."] duration:1.0];
+            }]];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                ;
+            }]];
+            
+            [[self getViewController] presentViewController:alertController animated:YES completion:nil];
         });
+        
     }
 }
 
@@ -924,7 +990,7 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 10;
         
         if ([indexPath row] == ([self.studentsListDataSource count])) {
             // 定制最后一行的cell
-            cell.textLabel.text = @"加载更多..";
+            cell.textLabel.text = @"点击加载更多";
             cell.textLabel.textColor = [UIColor blackColor];
             cell.studentActionButton.hidden = YES;
         } else {
@@ -987,27 +1053,52 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 10;
 -(void)updateStudent:(NSString*)userID toNewStatus:(AIRBDStudentStatus)status{
     //注意只是更新数据源(单个model),需要列表视图reloadData
     if (userID.length > 0) {
+        AIRBDStudentListItemModel* model = [self.studentsLists valueForKey:userID];
+        if (model) {
+            [self removeStudentListItemModel:model];
+        }
+        [self.studentsLists removeObjectForKey:userID];
+        model = [[AIRBDStudentListItemModel alloc] init];
+        model.status = status;
+        
         if ([userID isEqualToString:self.userID]) {
-            return;
+            model.userID = [userID stringByAppendingString:@"（我）"];
+            [self addStudentListItemModel:model index:0];
         } else {
-            AIRBDStudentListItemModel* model = [self.studentsLists valueForKey:userID];
-            if (model) {
-                [self removeStudentListItemModel:model];
-            }
-            [self.studentsLists removeObjectForKey:userID];
-            model = [[AIRBDStudentListItemModel alloc] init];
             model.userID = userID;
-            model.status = status;
             if(status == AIRBDStudentStatusAlreadyOnTheCall||status == AIRBDStudentStatusNowApplying){
-                [self addStudentListItemModel:model index:0];
+                [self addStudentListItemModel:model index:1];
             }else{
                 [self addStudentListItemModel:model index:self.studentsListDataSource.count];
             }
-            
-            [self.studentsLists setValue:model forKey:userID];
         }
+        
+        [self.studentsLists setValue:model forKey:userID];
     }
 }
 
+- (void) updateStudentListWhenJoinOrLeaveRTC:(BOOL)join {
+    if (join){
+        self.currentMemberJoinedRTCAlreadyListPageNum = 1;
+        self.hasMoreMembersJoinedRTCAlready = YES;
+        [self queryMoreMembersJoinedRTCAlreadyInfoOnce];
+    } else {
+        self.currentMemberJoinedRTCAlreadyListPageNum = 1;
+        self.hasMoreMembersJoinedRTCAlready = NO;
+        
+        for (int indexData = 0; indexData < self.studentsListDataSource.count; ++indexData){
+            AIRBDStudentListItemModel* model = [self.studentsListDataSource objectAtIndex:indexData];
+            if (model.status == AIRBDStudentStatusAlreadyOnTheCall){
+                model.status = AIRBDStudentStatusReadyForCalled;
+            } else if (indexData > 0){
+                break;
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.studentsListView reloadData];
+        });
+    }
+}
 
 @end

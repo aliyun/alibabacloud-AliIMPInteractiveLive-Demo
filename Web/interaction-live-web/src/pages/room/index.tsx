@@ -1,11 +1,12 @@
 import { useRef, useState, useEffect, useMemo, useReducer } from 'react';
-import { IRouteComponentProps, Router } from 'umi';
-import { useHistory } from 'react-router-dom';
-import { createDom } from '@/utils';
+import { IRouteComponentProps } from 'umi';
+import { createDom, randomNum } from '@/utils';
 import { message } from 'antd';
 import update from 'immutability-helper';
 import styles from './index.less';
+import './anime.less';
 
+const maxAnameCount = 6;
 const { EventNameEnum } = window.RoomPaasSdk;
 let likeBubbleCount = 0;
 interface Message {
@@ -57,12 +58,14 @@ export default function IndexPage(props: IRouteComponentProps) {
     }
     return window.roomEngine.getRoomChannel(roomId);
   }, [roomId]);
+  window.roomChannel = roomChannel;
   const liveService = roomChannel.getPluginService('live');
   const chatService = roomChannel.getPluginService('chat');
   const likeClickHandler = () => {
     if (!animeContainerEl || !animeContainerEl.current) return;
+    const animeRdm = randomNum(maxAnameCount, 1);
     const bubble = createDom('div', {
-      class: `bubble anime`,
+      class: `bubble anime-${animeRdm}`,
       id: `bubble-${likeBubbleCount}`,
     });
     let nowCount = likeBubbleCount;
@@ -75,7 +78,7 @@ export default function IndexPage(props: IRouteComponentProps) {
       );
     }, 1500);
     setLikeCount(likeCount + 1);
-    chatService.sendLike(1);
+    chatService.sendLike();
   };
   const noticeClickHandler = () => {
     setShowNotice(!showNotice);
@@ -187,6 +190,10 @@ export default function IndexPage(props: IRouteComponentProps) {
           setIsLiving(true);
           createPlayer();
         }
+        return chatService.getChatDetail();
+      })
+      .then((res: any) => {
+        setLikeCount(res.likeCount || 0);
       });
   }, []);
   return (

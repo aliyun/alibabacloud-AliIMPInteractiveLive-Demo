@@ -206,12 +206,13 @@
         [button setBackgroundImage:[UIImage imageNamed:@"img-button_startlive"] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(gotoAnchorViewController) forControlEvents:UIControlEventTouchUpInside];
         
-//        UILabel *label = [[UILabel alloc] init];
-//        label.frame = CGRectMake(103.5, 17, 109, 20);
-//        label.text = @"创建直播";
-//        label.font = [UIFont fontWithName:@"PingFangSC-Semibold" size:22];
-//        label.textColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0/1.0];
-//        [button addSubview:label];
+        UILabel *label = [[UILabel alloc] init];
+        label.frame = CGRectMake(40, 17, 109, 20);
+        label.text = @"发起直播";
+        label.textAlignment = NSTextAlignmentCenter;
+        label.font = [UIFont fontWithName:@"PingFangSC-Semibold" size:22];
+        label.textColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:1.0/1.0];
+        [button addSubview:label];
         _createRoomButton = button;
     }
     return _createRoomButton;

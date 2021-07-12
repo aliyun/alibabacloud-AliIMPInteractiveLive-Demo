@@ -60,7 +60,7 @@ static int changeCount;
     if(changeCount-- <= 0){
         countTimer.fireDate = [NSDate distantFuture]; //关闭定时器
         [UIView animateWithDuration:0.2f animations:^{
-            dialogsLabel.alpha = 0;
+            self->dialogsLabel.alpha = 0;
         } completion:^(BOOL finished) {
             [self->dialogsLabel removeFromSuperview];
         }];

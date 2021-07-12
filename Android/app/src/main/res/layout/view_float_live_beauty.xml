@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_live_more_toolbar">
+
+    <ImageView
+        android:id="@+id/beauty_line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/beauty_title"
+        android:layout_marginTop="4dp"
+        android:background="#666666"></ImageView>
+
+    <LinearLayout
+        android:id="@+id/beauty_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:paddingTop="8dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/beauty_cheek_pink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="4dp"
+            android:layout_weight="1"
+            android:drawableBottom="@drawable/bg_live_beauty_indicator"
+            android:gravity="center"
+            android:text="腮红"
+            android:textColor="#ffffff"
+            android:textSize="16sp"></TextView>
+
+        <TextView
+            android:id="@+id/beauty_brightness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="4dp"
+            android:layout_weight="1"
+            android:drawableBottom="@drawable/bg_live_beauty_indicator"
+            android:gravity="center"
+            android:text="亮度"
+            android:textColor="#ffffff"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/beauty_white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="4dp"
+            android:layout_weight="1"
+            android:drawableBottom="@drawable/bg_live_beauty_indicator"
+            android:gravity="center"
+            android:text="美白"
+            android:textColor="#ffffff"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/beauty_buffing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="4dp"
+            android:layout_weight="1"
+            android:drawableBottom="@drawable/bg_live_beauty_indicator"
+            android:gravity="center"
+            android:text="磨皮"
+            android:textColor="#ffffff"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/beauty_ruddy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="4dp"
+            android:layout_weight="1"
+            android:drawableBottom="@drawable/bg_live_beauty_indicator"
+            android:gravity="center"
+            android:text="红润"
+            android:textColor="#ffffff"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/beauty_slim_face"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="4dp"
+            android:layout_weight="1"
+            android:drawableBottom="@drawable/bg_live_beauty_indicator"
+            android:gravity="center"
+            android:text="瘦脸"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/beauty_shorten_face"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="4dp"
+            android:layout_weight="1"
+            android:drawableBottom="@drawable/bg_live_beauty_indicator"
+            android:gravity="center"
+            android:text="收下巴"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/beauty_big_eye"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="4dp"
+            android:layout_weight="1"
+            android:drawableBottom="@drawable/bg_live_beauty_indicator"
+            android:gravity="center"
+            android:text="大眼"
+            android:textColor="#ffffff"
+            android:textSize="16sp"></TextView>
+    </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/beauty_seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/beauty_line"
+        android:layout_centerInParent="true"
+        android:maxHeight="4dp"
+        android:progressDrawable="@drawable/live_beauty_seekbar_bg"
+        android:thumb="@drawable/live_beauty_seekbar_thum"
+        android:layout_marginTop="18dp"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp" />
+
+    <TextView
+        android:id="@+id/beauty_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/beauty_seek_bar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="4dp"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="大眼"
+        android:textColor="#ffffff"
+        android:textSize="16sp"></TextView>
+</RelativeLayout>

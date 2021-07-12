@@ -1,41 +1,6 @@
 body, #root {
     height: 100%;
 }
-.bubble{
-    position: absolute;
-    left: 50%;
-    bottom: 0;
-    width: .4rem;
-    height: .4rem;
-    margin-left: -.2rem;
-    background-size: contain;
-    background-repeat: no-repeat;
-}
-.anime {
-    animation-name: bubble;
-    animation-duration: 1.5s;
-    animation-timing-function: linear;
-    animation-iteration-count: infinite;
-    transform: translateY(0) scale(0) rotate(45deg);
-    background-image: url('https://img.alicdn.com/imgextra/i1/O1CN01EIZtCN1fCJ4Tvpyop_!!6000000003970-2-tps-32-32.png');
-}
-@keyframes bubble {
-    from {
-      opacity: 1;
-      transform: translateY(0) scale(0) rotate(45deg);
-    }
-    25% {
-      transform: translateY(-75%) scale(1) rotate(45deg);
-    }
-    50% {
-      opacity: 1;
-      transform: translateY(-150%) scale(1.2) rotate(45deg);
-    }
-    to {
-      opacity: 0;
-      transform: translateY(-500%) scale(1.5) rotate(45deg);
-    }
-}
 .hidden {
   display: none;
 }

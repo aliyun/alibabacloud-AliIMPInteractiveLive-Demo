@@ -10,7 +10,6 @@
 		274B31052683632000E59317 /* AIRBDRoomListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274B30F12683631E00E59317 /* AIRBDRoomListViewController.m */; };
 		274B31062683632000E59317 /* AIRBDAnchorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274B30F42683631F00E59317 /* AIRBDAnchorViewController.m */; };
 		274B31072683632000E59317 /* AIRBDLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274B30F52683631F00E59317 /* AIRBDLoginViewController.m */; };
-		274B31082683632000E59317 /* AIRBDAudienceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 274B30F62683631F00E59317 /* AIRBDAudienceView.m */; };
 		274B310A2683632000E59317 /* AIRBDAudienceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274B30F82683631F00E59317 /* AIRBDAudienceViewController.m */; };
 		274B310B2683632000E59317 /* AIRBDSetRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274B30FA2683631F00E59317 /* AIRBDSetRoomViewController.m */; };
 		274B310C2683632000E59317 /* AIRBDRoomListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 274B30FD2683632000E59317 /* AIRBDRoomListCell.m */; };
@@ -53,10 +52,7 @@
 		EDB40286266E3CA100A581F4 /* AIRBDStudentListItemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EDB40285266E3CA100A581F4 /* AIRBDStudentListItemModel.m */; };
 		EDC9AB06265BC8E300D03163 /* AIRBDStudentView.m in Sources */ = {isa = PBXBuildFile; fileRef = EDC9AB05265BC8E300D03163 /* AIRBDStudentView.m */; };
 		EDCFB0BD268C8BBE00205E2D /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = EDCFB0BB268C8BAA00205E2D /* libresolv.tbd */; };
-		EDCFB0BE268C952E00205E2D /* AliInteractiveRoomBundle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDCFB06E268B557600205E2D /* AliInteractiveRoomBundle.framework */; };
-		EDCFB0BF268C952E00205E2D /* AliInteractiveRoomBundle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDCFB06E268B557600205E2D /* AliInteractiveRoomBundle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EDCFB0C4268C998600205E2D /* AIRBDEnvironments.m in Sources */ = {isa = PBXBuildFile; fileRef = EDCFB0C3268C998600205E2D /* AIRBDEnvironments.m */; };
-		EDCFB0C5268C9E0F00205E2D /* AIRBDAnchorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 274B30F72683631F00E59317 /* AIRBDAnchorView.m */; };
 		EDD116462653B66600B69881 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD116452653B66600B69881 /* AppDelegate.m */; };
 		EDD116492653B66600B69881 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD116482653B66600B69881 /* SceneDelegate.m */; };
 		EDD1164C2653B66600B69881 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD1164B2653B66600B69881 /* ViewController.m */; };
@@ -67,7 +63,8 @@
 		EDD116CF2653B92100B69881 /* AIRBDToast.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD116CE2653B92100B69881 /* AIRBDToast.m */; };
 		EDD117942653BBB600B69881 /* HMACSHA1.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD1177D2653BBB500B69881 /* HMACSHA1.m */; };
 		EDD117952653BBB600B69881 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD1177E2653BBB500B69881 /* Utility.m */; };
-		EDFC28312656A788002B6DA3 /* AIRBDLiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EDFC28302656A788002B6DA3 /* AIRBDLiveViewController.m */; };
+		EDD4F76C2697F4DA00988826 /* AliInteractiveRoomBundle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDCFB06E268B557600205E2D /* AliInteractiveRoomBundle.framework */; };
+		EDD4F76D2697F4DA00988826 /* AliInteractiveRoomBundle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDCFB06E268B557600205E2D /* AliInteractiveRoomBundle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EDFC283426574A40002B6DA3 /* AIRBDBigClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EDFC283326574A40002B6DA3 /* AIRBDBigClassViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -84,7 +81,7 @@
 				7D2AC779265E436800A04E53 /* AlivcLibFace.framework in Embed Frameworks */,
 				ED3BA1ED265E3F3D00011B53 /* AlivcLivePusher.framework in Embed Frameworks */,
 				27B99B7B266A2AD700D68363 /* (null) in Embed Frameworks */,
-				EDCFB0BF268C952E00205E2D /* AliInteractiveRoomBundle.framework in Embed Frameworks */,
+				EDD4F76D2697F4DA00988826 /* AliInteractiveRoomBundle.framework in Embed Frameworks */,
 				7D2AC777265E436700A04E53 /* AlivcLibBeauty.framework in Embed Frameworks */,
 				ED3BA1EF265E3F3E00011B53 /* AliyunPlayer.framework in Embed Frameworks */,
 			);
@@ -99,8 +96,6 @@
 		274B30F32683631F00E59317 /* AIRBDSetRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDSetRoomViewController.h; sourceTree = "<group>"; };
 		274B30F42683631F00E59317 /* AIRBDAnchorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDAnchorViewController.m; sourceTree = "<group>"; };
 		274B30F52683631F00E59317 /* AIRBDLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDLoginViewController.m; sourceTree = "<group>"; };
-		274B30F62683631F00E59317 /* AIRBDAudienceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDAudienceView.m; sourceTree = "<group>"; };
-		274B30F72683631F00E59317 /* AIRBDAnchorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDAnchorView.m; sourceTree = "<group>"; };
 		274B30F82683631F00E59317 /* AIRBDAudienceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDAudienceViewController.m; sourceTree = "<group>"; };
 		274B30F92683631F00E59317 /* AIRBDAudienceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDAudienceViewController.h; sourceTree = "<group>"; };
 		274B30FA2683631F00E59317 /* AIRBDSetRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDSetRoomViewController.m; sourceTree = "<group>"; };
@@ -111,8 +106,6 @@
 		274B30FF2683632000E59317 /* AIRBDRoomListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDRoomListViewController.h; sourceTree = "<group>"; };
 		274B31002683632000E59317 /* AIRBDBeautySetsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDBeautySetsView.m; sourceTree = "<group>"; };
 		274B31012683632000E59317 /* AIRBDRoomInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDRoomInfoModel.m; sourceTree = "<group>"; };
-		274B31022683632000E59317 /* AIRBDAudienceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDAudienceView.h; sourceTree = "<group>"; };
-		274B31032683632000E59317 /* AIRBDAnchorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDAnchorView.h; sourceTree = "<group>"; };
 		274B31042683632000E59317 /* AIRBDAnchorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDAnchorViewController.h; sourceTree = "<group>"; };
 		274B310F2683633700E59317 /* AIRBDCommentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDCommentView.h; sourceTree = "<group>"; };
 		274B31102683633700E59317 /* AIRBDCommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDCommentModel.h; sourceTree = "<group>"; };
@@ -182,8 +175,6 @@
 		EDD1177E2653BBB500B69881 /* Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Utility.m; sourceTree = "<group>"; };
 		EDD1177F2653BBB500B69881 /* HMACSHA1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HMACSHA1.h; sourceTree = "<group>"; };
 		EDD117802653BBB500B69881 /* Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Utility.h; sourceTree = "<group>"; };
-		EDFC282F2656A788002B6DA3 /* AIRBDLiveViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AIRBDLiveViewController.h; sourceTree = "<group>"; };
-		EDFC28302656A788002B6DA3 /* AIRBDLiveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AIRBDLiveViewController.m; sourceTree = "<group>"; };
 		EDFC283226574A40002B6DA3 /* AIRBDBigClassViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AIRBDBigClassViewController.h; sourceTree = "<group>"; };
 		EDFC283326574A40002B6DA3 /* AIRBDBigClassViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AIRBDBigClassViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -195,7 +186,7 @@
 			files = (
 				ED3BA1EC265E3F3D00011B53 /* AlivcLivePusher.framework in Frameworks */,
 				ED3BA1EA265E3F3C00011B53 /* AlivcLibRtmp.framework in Frameworks */,
-				EDCFB0BE268C952E00205E2D /* AliInteractiveRoomBundle.framework in Frameworks */,
+				EDD4F76C2697F4DA00988826 /* AliInteractiveRoomBundle.framework in Frameworks */,
 				7D2AC776265E436700A04E53 /* AlivcLibBeauty.framework in Frameworks */,
 				EDCFB0BD268C8BBE00205E2D /* libresolv.tbd in Frameworks */,
 				ED3BA1E8265E3F3A00011B53 /* alivcffmpeg.framework in Frameworks */,
@@ -375,12 +366,6 @@
 				274B31232689640F00E59317 /* Controller */,
 				274B31222689640A00E59317 /* View */,
 				274B3121268963D300E59317 /* Model */,
-				274B31032683632000E59317 /* AIRBDAnchorView.h */,
-				274B30F72683631F00E59317 /* AIRBDAnchorView.m */,
-				274B31022683632000E59317 /* AIRBDAudienceView.h */,
-				274B30F62683631F00E59317 /* AIRBDAudienceView.m */,
-				EDFC282F2656A788002B6DA3 /* AIRBDLiveViewController.h */,
-				EDFC28302656A788002B6DA3 /* AIRBDLiveViewController.m */,
 			);
 			name = Live;
 			sourceTree = "<group>";
@@ -545,9 +530,6 @@
 				EDD116572653B66700B69881 /* main.m in Sources */,
 				274B310D2683632000E59317 /* AIRBDBeautySetsView.m in Sources */,
 				275B777D267878CA00825192 /* AIRBDMultiRTCView.m in Sources */,
-				274B31082683632000E59317 /* AIRBDAudienceView.m in Sources */,
-				EDFC28312656A788002B6DA3 /* AIRBDLiveViewController.m in Sources */,
-				EDCFB0C5268C9E0F00205E2D /* AIRBDAnchorView.m in Sources */,
 				EDCFB0C4268C998600205E2D /* AIRBDEnvironments.m in Sources */,
 				EDD116CF2653B92100B69881 /* AIRBDToast.m in Sources */,
 				274B31052683632000E59317 /* AIRBDRoomListViewController.m in Sources */,

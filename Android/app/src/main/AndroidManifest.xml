@@ -33,7 +33,8 @@
         </activity>
 
         <activity android:name=".activity.RoomListActivity" />
-        <activity android:name=".activity.BusinessActivity" />
+        <activity android:name=".activity.EnterCreateRoomInfoActivity" />
+        <activity android:name=".activity.business.BusinessActivity" />
         <activity android:name=".activity.classroom.ClassroomActivity"
             android:configChanges="keyboardHidden|screenSize|orientation"/>
 

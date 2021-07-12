@@ -8,15 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.alivc.rtc.AliRtcEngine;
 import com.aliyun.roompaas.app.R;
-import com.aliyun.roompaas.biz.RoomChannel;
-import com.aliyun.roompaas.rtc.RtcService;
-import com.aliyun.roompaas.rtc.event.RtcStreamEvent;
+import com.aliyun.roompaas.base.util.ViewUtil;
+import com.aliyun.roompaas.biz.exposable.RoomChannel;
+import com.aliyun.roompaas.rtc.exposable.RtcService;
+import com.aliyun.roompaas.rtc.exposable.event.RtcStreamEvent;
 
 import org.jetbrains.annotations.NotNull;
 import org.webrtc.sdk.SophonSurfaceView;
@@ -71,6 +73,28 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
         }
     }
 
+    public void updateLocalMic(String uid, boolean muteLocalMic) {
+        for (int i = 0; i < dataList.size(); i++) {
+            RtcStreamEvent rtcStreamEvent = dataList.get(i);
+            if (rtcStreamEvent.userId.equals(uid)) {
+                rtcStreamEvent.muteMic = muteLocalMic;
+                notifyItemChanged(i);
+                break;
+            }
+        }
+    }
+
+    public void updateLocalCamera(String uid, boolean muteLocalCamera) {
+        for (int i = 0; i < dataList.size(); i++) {
+            RtcStreamEvent rtcStreamEvent = dataList.get(i);
+            if (rtcStreamEvent.userId.equals(uid)) {
+                rtcStreamEvent.muteCamera = muteLocalCamera;
+                notifyItemChanged(i);
+                break;
+            }
+        }
+    }
+
     public void removeData(int position) {
         if (position < 0 || position >= dataList.size()) {
             return;
@@ -78,6 +102,7 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
         detachedPreview(dataList.get(position));
         dataList.remove(position);
         notifyItemRemoved(position);
+        notifyDataSetChanged();
     }
 
     public void removeData(RtcStreamEvent rtcStreamEvent) {
@@ -135,12 +160,14 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
         private final FrameLayout renderContainer;
         private final TextView nick;
         private final ImageView mute;
+        private final LinearLayout cameraLayout;
 
         private StudentListHolder(View view) {
             super(view);
             renderContainer = view.findViewById(R.id.item_render_container);
             nick = view.findViewById(R.id.item_nick);
             mute = view.findViewById(R.id.item_mute);
+            cameraLayout = view.findViewById(R.id.rtc_camera_close);
         }
 
         private void bindView(final int position, final List<Object> payloads) {
@@ -148,7 +175,7 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
             RtcStreamEvent streamInfo = dataList.get(position);
 
             // 设置小屏点击事件
-            itemView.setOnClickListener(v -> {
+            ViewUtil.bindClickActionWithClickCheck(itemView, ()->{
                 renderContainer.removeAllViews();
                 if (itemClickListener != null) {
                     itemClickListener.onItemClicked(position, streamInfo);
@@ -163,6 +190,7 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
                     mute.setImageResource(streamInfo.muteMic
                             ? R.drawable.alivc_biginteractiveclass_item_mute_mic
                             : R.drawable.alivc_biginteractiveclass_item_unmute_mic);
+                    cameraLayout.setVisibility(streamInfo.muteCamera ? View.VISIBLE : View.GONE);
                 }
                 return;
             }
@@ -171,6 +199,7 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
             mute.setImageResource(streamInfo.muteMic
                     ? R.drawable.alivc_biginteractiveclass_item_mute_mic
                     : R.drawable.alivc_biginteractiveclass_item_unmute_mic);
+            cameraLayout.setVisibility(streamInfo.muteCamera ? View.VISIBLE : View.GONE);
 
             final SophonSurfaceView sophonSurfaceView = (SophonSurfaceView) streamInfo.aliVideoCanvas.view;
 
@@ -195,6 +224,7 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
             } else {
                 nick.setText(TextUtils.isEmpty(streamInfo.userName) ? "" : streamInfo.userName);
                 mute.setImageResource(streamInfo.muteMic ? R.drawable.alivc_biginteractiveclass_item_mute_mic : R.drawable.alivc_biginteractiveclass_item_unmute_mic);
+                cameraLayout.setVisibility(streamInfo.muteCamera ? View.VISIBLE : View.GONE);
                 // 已经添加并开始预览就只切换展示的spoonsurfaceview
                 if (sophonSurfaceView.getParent() != null) {
                     ((ViewGroup) sophonSurfaceView.getParent()).removeView(sophonSurfaceView);
@@ -210,9 +240,9 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
                 }
                 // 点击关闭摄像头需要掉rtc sdk的停止预览展示黑背景
                 if (streamInfo.muteLocalCamera) {
-                    rtcService.getAliRtcManager().stopPreview();
+                    rtcService.stopPreview();
                 } else {
-                    rtcService.getAliRtcManager().startPreview();
+                    rtcService.startPreview();
                 }
             }
         }
@@ -229,7 +259,7 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
                             ? AliRtcEngine.AliRtcVideoTrack.AliRtcVideoTrackScreen
                             : alivcVideoStreamInfo.aliRtcVideoTrack;
             // 小屏渲染内容从远端读
-            rtcService.getAliRtcManager().setRemoteViewConfig(aliVideoCanvas, alivcVideoStreamInfo.userId, aliRtcVideoTrack);
+            rtcService.setRemoteViewConfig(aliVideoCanvas, alivcVideoStreamInfo.userId, aliRtcVideoTrack);
         }
     }
 
@@ -240,14 +270,14 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
         AliRtcEngine.AliRtcVideoCanvas aliVideoCanvas = alivcVideoStreamInfo.aliVideoCanvas;
         if (aliVideoCanvas != null) {
             // 小屏渲染内容从本地摄像头读
-            rtcService.getAliRtcManager().setLocalViewConfig(aliVideoCanvas, alivcVideoStreamInfo.aliRtcVideoTrack);
+            rtcService.setLocalViewConfig(aliVideoCanvas, alivcVideoStreamInfo.aliRtcVideoTrack);
         }
 
         // 控制自己的摄像头是否打开
         if (alivcVideoStreamInfo.muteLocalCamera) {
-            rtcService.getAliRtcManager().stopPreview();
+            rtcService.stopPreview();
         } else {
-            rtcService.getAliRtcManager().startPreview();
+            rtcService.startPreview();
         }
     }
 

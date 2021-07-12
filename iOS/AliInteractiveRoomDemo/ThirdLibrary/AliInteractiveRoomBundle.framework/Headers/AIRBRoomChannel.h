@@ -15,10 +15,13 @@
 @class RoomManager;
 NS_ASSUME_NONNULL_BEGIN
 
+extern NSString *const AIRBRoomChannelLeftNotification;
+
 @interface AIRBRoomChannel : NSObject<AIRBRoomChannelProtocol>
 
 @property (copy, nonatomic) NSString* roomOwnerID;
 @property (strong, nonatomic) RoomManager* roomManager;
+
 
 - (instancetype) initWithRoomID:(nonnull NSString*)roomID userID:(NSString*)userID;
 

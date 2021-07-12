@@ -2,7 +2,7 @@ package com.aliyun.roompaas.app.viewmodel.inter;
 
 import android.view.View;
 
-import com.aliyun.roompaas.base.callback.Callback;
+import com.aliyun.roompaas.base.exposable.Callback;
 
 
 /**
