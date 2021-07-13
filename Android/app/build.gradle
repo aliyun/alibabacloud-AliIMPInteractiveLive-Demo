@@ -1,19 +1,15 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
+//apply plugin: 'me.tatarka.retrolambda'
 
-apply from: 'http://gitlab.alibaba-inc.com/android-build-system/buildscript/raw/master/mtl-publish.gradle'
 buildscript {
     repositories {
         //本地库，local repository(${user.home}/.m2/repository)
         mavenLocal()
-        maven { url "http://mvnrepo.alibaba-inc.com/mvn/repository" }//内网仓库地址
-        maven { url "http://maven.aliyun.com/nexus/content/groups/public/" }//外网仓库地址
+        google()
         jcenter()
     }
     dependencies {
-        //classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.2'
-        classpath "com.android.tools.build:gradle:${ANDROID_PLUGIN_VERSION}"  //请勿修改,使用统一的版本,方便升级更新
-        classpath "com.taobao.android.gradle:mtl-plugin:${MTL_PLUGIN_VERSION}" //请勿修改,使用统一的版本,方便升级更新
+        classpath 'com.android.tools.build:gradle:4.2.2'
         //引入其他的插件
     }
 }
@@ -42,6 +38,10 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    lintOptions {
+        abortOnError false
     }
 
     dependencies {
