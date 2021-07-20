@@ -3,6 +3,7 @@ package com.aliyun.roompaas.app.sensitive;
 import android.content.Context;
 import android.widget.TextView;
 
+import com.aliyun.roompaas.app.Const;
 import com.aliyun.roompaas.biz.RoomEngine;
 
 /**
@@ -19,6 +20,6 @@ public class AllSensitive implements ISensitive {
     }
 
     public static String parseAppServer() {
-        return "";
+        return Const.APP_SERVER_URL;
     }
 }
