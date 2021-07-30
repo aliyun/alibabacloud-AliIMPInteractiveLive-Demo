@@ -13,6 +13,7 @@
 #import "AIRBRTCProtocol.h"
 #import "AIRBChatProtocol.h"
 #import "AIRBWhiteBoardProtocol.h"
+#import "AIRBVodPlayerProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -46,6 +47,11 @@ NS_ASSUME_NONNULL_BEGIN
  * 用来在房间内进行直播拉流的实例，具体接口见AIRBLivePlayerProtocol，进入房间成功后才可使用
  */
 @property (strong, nonatomic) id<AIRBLivePlayerProtocol> livePlayer;
+
+/**
+ * 用来在房间内进行点播的实例，具体接口见AIRBVodPlayerProtocol，进入房间成功后才可使用
+ */
+@property (strong, nonatomic) id<AIRBVodPlayerProtocol> vodPlayer;
 
 /**
  * 用来在房间实时音视频通信活动的实例，具体接口见AIRBRTCProtocol，进入房间成功后才可使用

@@ -40,9 +40,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIView* pusherView;
 
 /**
- * 推流时的相机画面预览view的拉伸模式，具体见AIRBLiveViewContentMode，默认为AIRBLiveViewContentModeAspectFill
+ * 推流时的相机画面预览view的拉伸模式，具体见AIRBVideoViewContentMode，默认为AIRBVideoViewContentModeAspectFill
  */
-@property (assign, nonatomic) AIRBLiveViewContentMode contentMode;
+@property (assign, nonatomic) AIRBVideoViewContentMode contentMode;
 
 /**
  * 根据配置，打开推流预览画面

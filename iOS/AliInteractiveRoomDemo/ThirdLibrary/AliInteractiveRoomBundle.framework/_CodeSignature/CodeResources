@@ -10,11 +10,11 @@
 		</data>
 		<key>Headers/AIRBCommonDefines.h</key>
 		<data>
-		FWeTHp8P2RQEuhY2V8J5Oxe7fzY=
+		OcW/uRKE/HGQQHtEoPVg439Y7G8=
 		</data>
 		<key>Headers/AIRBLivePlayerProtocol.h</key>
 		<data>
-		oPxQjjABL1QPfXRjp1lItBHHV8c=
+		CWy+5r2n4Q1t+gprU20TWDB+KWU=
 		</data>
 		<key>Headers/AIRBLivePusherOptions.h</key>
 		<data>
@@ -22,7 +22,7 @@
 		</data>
 		<key>Headers/AIRBLivePusherProtocol.h</key>
 		<data>
-		vudq5d4y2Cj2Rzt73PIxUvVodbg=
+		/Bxz8KSE/WVn2nBp5QmIopixNy4=
 		</data>
 		<key>Headers/AIRBRTCProtocol.h</key>
 		<data>
@@ -31,10 +31,6 @@
 		<key>Headers/AIRBRoomBasicInfo.h</key>
 		<data>
 		Qti+29q7LNs+po3awkFr1Pe0G+A=
-		</data>
-		<key>Headers/AIRBRoomChannel.h</key>
-		<data>
-		r7TsGIs5ibEC0QP5a4Dr68vlnJo=
 		</data>
 		<key>Headers/AIRBRoomChannelComment.h</key>
 		<data>
@@ -46,7 +42,7 @@
 		</data>
 		<key>Headers/AIRBRoomChannelProtocol.h</key>
 		<data>
-		As7mbfGYINA0CcmHHIX1mw07axc=
+		U5LpIQ2rYUFU70cUgtk9n9GOieM=
 		</data>
 		<key>Headers/AIRBRoomChannelUser.h</key>
 		<data>
@@ -58,7 +54,7 @@
 		</data>
 		<key>Headers/AIRBRoomEngine.h</key>
 		<data>
-		Dk0h5ugTYUATWvRUec6SXO8yjGY=
+		k4pI5ZJJzIRVxkRppVa+2ypb3KE=
 		</data>
 		<key>Headers/AIRBRoomEngineAuthToken.h</key>
 		<data>
@@ -66,11 +62,15 @@
 		</data>
 		<key>Headers/AIRBRoomEngineConfig.h</key>
 		<data>
-		VhyROu2t4mOWxG07C3XzdxvNe8Q=
+		F/M2IFgEprEVjtCl0XQiKWKHTas=
 		</data>
 		<key>Headers/AIRBRoomEngineRoomListResponse.h</key>
 		<data>
 		i9BFaoTN2eDiOi+3ZcCClUa3xnw=
+		</data>
+		<key>Headers/AIRBVodPlayerProtocol.h</key>
+		<data>
+		PscvMYBBLylXAqU8lULF8YuYNl4=
 		</data>
 		<key>Headers/AIRBWhiteBoardConfig.h</key>
 		<data>
@@ -104,6 +104,10 @@
 		<data>
 		yaboEQR9JDuO/l3hrvKClW2POZo=
 		</data>
+		<key>PrivateHeaders/AIRBRoomChannel.h</key>
+		<data>
+		r7TsGIs5ibEC0QP5a4Dr68vlnJo=
+		</data>
 		<key>opensslconf.h.in</key>
 		<data>
 		jQzDla7LWvq9SByN40JOJF8iMtE=
@@ -126,22 +130,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			FWeTHp8P2RQEuhY2V8J5Oxe7fzY=
+			OcW/uRKE/HGQQHtEoPVg439Y7G8=
 			</data>
 			<key>hash2</key>
 			<data>
-			Ftv2jVDR43uqWVuzEkpStgca86kswVqff+eDwa+yY7M=
+			WxtWcTTpfHJAYNV0B6jSJ1XBLcAyMbVS3rVe6MpJkDs=
 			</data>
 		</dict>
 		<key>Headers/AIRBLivePlayerProtocol.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			oPxQjjABL1QPfXRjp1lItBHHV8c=
+			CWy+5r2n4Q1t+gprU20TWDB+KWU=
 			</data>
 			<key>hash2</key>
 			<data>
-			jZ+7avcyasvrhiYSxITl0G3mquZ9EfMpbiACyDc02qU=
+			5mYNfjq9BQ+rJSG6VlpR+MlswhX+GL/7XAQyec3HFCc=
 			</data>
 		</dict>
 		<key>Headers/AIRBLivePusherOptions.h</key>
@@ -159,11 +163,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			vudq5d4y2Cj2Rzt73PIxUvVodbg=
+			/Bxz8KSE/WVn2nBp5QmIopixNy4=
 			</data>
 			<key>hash2</key>
 			<data>
-			AhuLbcEZrNg737fAVMQ0vAtABQ9W9KyBLbvgcEhBeek=
+			mepnQ0TNpz7AzYd7p7FGWED6e3iK0M3IfXs+ROSIv28=
 			</data>
 		</dict>
 		<key>Headers/AIRBRTCProtocol.h</key>
@@ -186,17 +190,6 @@
 			<key>hash2</key>
 			<data>
 			vZVfhvBNgy59KZFjBr4XoMNErDOBmQVywYq9MDvsaM0=
-			</data>
-		</dict>
-		<key>Headers/AIRBRoomChannel.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			r7TsGIs5ibEC0QP5a4Dr68vlnJo=
-			</data>
-			<key>hash2</key>
-			<data>
-			DOhP0KIT+kHyEh/rjV/k3Kms5XwXtLq5U3TqnL70FYo=
 			</data>
 		</dict>
 		<key>Headers/AIRBRoomChannelComment.h</key>
@@ -225,11 +218,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			As7mbfGYINA0CcmHHIX1mw07axc=
+			U5LpIQ2rYUFU70cUgtk9n9GOieM=
 			</data>
 			<key>hash2</key>
 			<data>
-			3Iel6xZyue1DzLvJUvdO713izXcBqraterO4HF+Ckho=
+			jv4irMBiXaPL7R5Us1xm9ieJq7UMfD5QIuYzNdRZvoI=
 			</data>
 		</dict>
 		<key>Headers/AIRBRoomChannelUser.h</key>
@@ -258,11 +251,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Dk0h5ugTYUATWvRUec6SXO8yjGY=
+			k4pI5ZJJzIRVxkRppVa+2ypb3KE=
 			</data>
 			<key>hash2</key>
 			<data>
-			qI2FyKFzqXlHyVRZ456GQUrQZ7lZIgE20tvhuNcRzjw=
+			TWer4U72Pcpr91Hrn1GfgLrPLuFNF+7cVEZq77YFX3U=
 			</data>
 		</dict>
 		<key>Headers/AIRBRoomEngineAuthToken.h</key>
@@ -280,11 +273,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			VhyROu2t4mOWxG07C3XzdxvNe8Q=
+			F/M2IFgEprEVjtCl0XQiKWKHTas=
 			</data>
 			<key>hash2</key>
 			<data>
-			TMCnoIrbV5k1npY9semKOjMlyrkWTIgU02n0lJgoyzU=
+			9vyYqEdEpRsuZXxV5qD/5+BTYsqSDYNZjPcj6bM1prc=
 			</data>
 		</dict>
 		<key>Headers/AIRBRoomEngineRoomListResponse.h</key>
@@ -296,6 +289,17 @@
 			<key>hash2</key>
 			<data>
 			3r9MI+JVSN2sodXc1fXKlDFpy2Naf0KknfQActO+Aug=
+			</data>
+		</dict>
+		<key>Headers/AIRBVodPlayerProtocol.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			PscvMYBBLylXAqU8lULF8YuYNl4=
+			</data>
+			<key>hash2</key>
+			<data>
+			80MyV+OD1faecltKMbx47ANOr+qIqKymgPDirsEU85E=
 			</data>
 		</dict>
 		<key>Headers/AIRBWhiteBoardConfig.h</key>
@@ -373,6 +377,17 @@
 			<key>hash2</key>
 			<data>
 			mMpmemkRcS+Pb74H9AxUG4H5W17TFAQWfhsmIlwTWxg=
+			</data>
+		</dict>
+		<key>PrivateHeaders/AIRBRoomChannel.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			r7TsGIs5ibEC0QP5a4Dr68vlnJo=
+			</data>
+			<key>hash2</key>
+			<data>
+			DOhP0KIT+kHyEh/rjV/k3Kms5XwXtLq5U3TqnL70FYo=
 			</data>
 		</dict>
 		<key>opensslconf.h.in</key>

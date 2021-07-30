@@ -31,6 +31,7 @@
 }
 
 - (NSString*) appServerHost {
+    @"xxx.com";
 }
 
 - (NSString*) signSecret {

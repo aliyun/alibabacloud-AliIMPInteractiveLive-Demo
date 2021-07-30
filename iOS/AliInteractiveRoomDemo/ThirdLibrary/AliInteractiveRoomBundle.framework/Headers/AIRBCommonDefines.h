@@ -64,6 +64,8 @@ typedef NS_ENUM(NSInteger, AIRBErrorCode)
     AIRBRTCFailedToPublishBypassLive,
     AIRBRTCFailedToGetBypassLiveDetail,
     AIRBRTCFailedToDestroyBypassLive,
+
+    AIRBVodPlayerFailedToPlayWithFatalError = 0x600,
 };
 
 typedef NS_ENUM(NSInteger, AIRBRoomEngineEvent)
@@ -169,7 +171,6 @@ typedef NS_ENUM(NSInteger, AIRBRoomChannelMessageType)
         "muteUserOpenId":"3789",
         "topicId":"dc8d3f0c-da78-4bb4-8d1c-89fb8a555513"
     }
-
     { //取消对某用户禁言
         "mute":false,
         "muteUserNick":"3789",
@@ -397,6 +398,49 @@ typedef NS_ENUM(NSInteger, AIRBLivePlayerEvent)
     AIRBLivePlayerEventNotification,
 };
 
+typedef NS_ENUM(NSInteger, AIRBVodPlayerEvent)
+{
+    /*
+     播放器准备完成，跟随当前事件的info信息如下，
+     {
+        @"width":xxxxx,      //视频的宽
+        @"height":xxxxx,     //视频的高
+        @"duration":xxxxx,   //视频的长度，单位为毫秒
+     }
+     */
+    AIRBVodPlayerEventPrepareDone = 0,
+    AIRBVodPlayerEventFirstRenderedStart,
+    AIRBVodPlayerEventCompletion,
+    AIRBVodPlayerEventStartLoading,
+    AIRBVodPlayerEventEndLoading,
+    AIRBVodPlayerEventImageCaptured,
+    
+    /*
+     播放器位置更新，跟随当前事件的info信息如下，
+     {
+        @"currentPosition":xxxxx        // 当前播放位置，单位为毫秒
+        @"bufferedPosition":xxxxx       // 缓存位置，单位为毫秒
+     }
+     */
+    AIRBVodPlayerEventPositionUpdated,
+    
+    /*
+     自定义额外信息，跟随当前事件的info信息如下，
+     {
+        @"currentUtcTime":@"xxxxx"    // 单位为毫秒
+     }
+     */
+    AIRBVodPlayerEventExtensionReceived,
+};
+
+typedef NS_ENUM(NSInteger, AIRBPlayerStatus)
+{
+    AIRBPlayerStatusPlaying = 0,
+    AIRBPlayerStatusPaused,
+    AIRBPlayerStatusStopped,
+    AIRBPlayerStatusStalled,
+};
+
 typedef NS_ENUM(NSInteger, AIRBWhiteBoardEvent)
 {
     AIRBWhiteBoardEventOpened = 0,
@@ -454,13 +498,13 @@ typedef NS_ENUM(NSInteger, AIRBLivePushBeautyMode){
     AIRBLivePushBeautyModeProfessional,
 };
 
-typedef NS_ENUM(NSInteger, AIRBLiveViewContentMode){
+typedef NS_ENUM(NSInteger, AIRBVideoViewContentMode){
     /**@brief 不保持比例平铺*/
-    AIRBLiveViewContentModeFill,
+    AIRBVideoViewContentModeFill,
     /**@brief 保持比例，黑边*/
-    AIRBLiveViewContentModeAspectFit,
+    AIRBVideoViewContentModeAspectFit,
     /**@brief 保持比例填充，需裁剪*/
-    AIRBLiveViewContentModeAspectFill,
+    AIRBVideoViewContentModeAspectFill,
 };
 
 typedef NS_ENUM(NSInteger, AIRBRTCPeerType){

@@ -381,12 +381,6 @@
             self.config.appKey = [AIRBDEnvironments shareInstance].interactiveLiveRoomAppKey;
         }
         
-        if (self.environmentButton.tag == 0) {
-            self.config.environmentType = 0;
-        } else {
-            self.config.environmentType = 1;
-        }
-        
         self.config.deviceID = [[UIDevice currentDevice] identifierForVendor].UUIDString;
         self.userID = self.userID;
         [AIRBRoomEngine sharedInstance].delegate = self;

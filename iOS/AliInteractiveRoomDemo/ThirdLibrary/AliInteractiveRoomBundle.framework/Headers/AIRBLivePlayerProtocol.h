@@ -31,9 +31,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (strong, nonatomic) UIView* playerView;
 
 /**
- * 播放器画面view的展开模式，默认AIRBLiveViewContentModeAspectFill
+ * 播放器画面view的展开模式，默认AIRBVideoViewContentModeAspectFit
  */
-@property (assign, nonatomic) AIRBLiveViewContentMode contentMode;
+@property (assign, nonatomic) AIRBVideoViewContentMode contentMode;
 
 /**
  * 播放的音量，范围0.0~2.0，当音量大于1.0时，可能出现噪音，不推荐使用

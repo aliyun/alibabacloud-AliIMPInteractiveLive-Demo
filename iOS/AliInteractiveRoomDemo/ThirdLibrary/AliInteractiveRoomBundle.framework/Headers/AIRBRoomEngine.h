@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @class AIRBRoomEngineAuthToken;
 @class AIRBRoomEngine;
 @class AIRBRoomEngineRoomListResponse;
+@class AIRBRoomBasicInfo;
 
 @protocol AIRBRoomEngineDelegate <NSObject>
 @required
@@ -68,6 +69,14 @@ NS_ASSUME_NONNULL_BEGIN
                        pageSize:(int32_t)pageSize
                       onSuccess:(void (^)(AIRBRoomEngineRoomListResponse * _Nonnull response))onSuccess
                       onFailure:(void (^)(NSString* errorMessage))onFailure;
+
+/**
+ * 获取房间详细信息
+ * @param roomID 房间ID
+ */
+- (void) getRoomDetailWithID:(NSString*) roomID
+                   onSuccess:(void (^)(AIRBRoomBasicInfo * _Nonnull info))onSuccess
+                   onFailure:(void (^)(NSString* errorMessage))onFailure;
 @end
 
 NS_ASSUME_NONNULL_END
