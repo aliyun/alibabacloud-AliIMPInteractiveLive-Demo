@@ -16,6 +16,10 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
+  favicon:
+    process.env.NODE_ENV === 'production'
+      ? `/room-paas/${json.name}/${json.version}/favicon.ico`
+      : '/favicon.ico',
   routes: [
     {
       path: '/',
@@ -29,18 +33,29 @@ export default defineConfig({
         },
         {
           exact: true,
+          path: '/doLogin',
+          component: '@/pages/doLogin',
+          title: '阿里云互动直播',
+        },
+        {
+          exact: true,
           path: '/room',
           component: '@/pages/room',
           title: '直播间',
+          wrappers: ['@/wrapper/loginWrapper'],
         },
         {
           exact: true,
           path: '/roomList',
           component: '@/pages/roomList',
           title: '房间列表',
+          wrappers: ['@/wrapper/loginWrapper'],
         },
       ],
     },
   ],
   fastRefresh: {},
+  devServer: {
+    contentBase: path.join(__dirname, 'public'),
+  },
 });

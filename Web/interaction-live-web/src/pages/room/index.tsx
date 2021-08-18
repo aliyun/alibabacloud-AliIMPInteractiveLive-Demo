@@ -41,19 +41,33 @@ const reducer = (state: IStore, action: IAction): IStore => {
   }
 };
 export default function IndexPage(props: IRouteComponentProps) {
+  let userId = '';
   const roomId = props.location.query.roomId;
-  const nickname = window.localStorage.getItem('nickname');
-  const animeContainerEl = useRef(null);
+  const nickname = window.localStorage.getItem('nickname') || '佚名';
+  const animeContainerEl = useRef<HTMLDivElement>(null);
   const [state, dispatch] = useReducer(reducer, initialState);
   const [likeCount, setLikeCount] = useState(0);
   const [showNotice, setShowNotice] = useState(false);
   const [roomDetail, setRoomDetail] = useState<any>({});
   const [isLiving, setIsLiving] = useState(false);
   const [messageValue, setMessageValue] = useState('');
+  /**
+   * 注：由于大部分浏览器都必须在用户主动触发事件之后才能播媒体
+   * 所以这里设置一个需要点击的地方
+   * 当正在直播&&刷新进入时（这个应用进入此页面只能push，所以replace说明刷新了）
+   * 显示一个按钮让用户点一下
+   **/
+  const [needUserClick, setNeedUserClick] = useState(
+    props.history.action === 'REPLACE',
+  );
+  // 在localstorage里获取userId
+  const savedUserList = window.localStorage.getItem('userList');
+  const userList = savedUserList ? JSON.parse(savedUserList) : {};
+  userId = userList[nickname || ''].toString();
   // 获取channel实例
   const roomChannel = useMemo(() => {
     if (!window.roomEngine) {
-      props.history.push('/');
+      props.history.replace('/');
       window.location.reload();
     }
     return window.roomEngine.getRoomChannel(roomId);
@@ -61,8 +75,8 @@ export default function IndexPage(props: IRouteComponentProps) {
   window.roomChannel = roomChannel;
   const liveService = roomChannel.getPluginService('live');
   const chatService = roomChannel.getPluginService('chat');
+  // 点击点赞回调，包括动画的js实现
   const likeClickHandler = () => {
-    if (!animeContainerEl || !animeContainerEl.current) return;
     const animeRdm = randomNum(maxAnameCount, 1);
     const bubble = createDom('div', {
       class: `bubble anime-${animeRdm}`,
@@ -70,11 +84,10 @@ export default function IndexPage(props: IRouteComponentProps) {
     });
     let nowCount = likeBubbleCount;
     likeBubbleCount++;
-    animeContainerEl.current.append(bubble);
+    (animeContainerEl.current as HTMLDivElement).append(bubble);
     setTimeout(() => {
-      if (!animeContainerEl.current) return;
-      animeContainerEl.current.removeChild(
-        document.querySelector(`#bubble-${nowCount}`),
+      (animeContainerEl.current as HTMLDivElement).removeChild(
+        document.querySelector(`#bubble-${nowCount}`) as HTMLDivElement,
       );
     }, 1500);
     setLikeCount(likeCount + 1);
@@ -87,8 +100,14 @@ export default function IndexPage(props: IRouteComponentProps) {
     if (e.keyCode !== 13) return;
     if (!messageValue) return;
     try {
-      await chatService.sendComment(messageValue);
+      let res = await chatService.sendComment(messageValue);
+      console.log(res);
       setMessageValue('');
+      const messageItem = {
+        nickname,
+        content: messageValue,
+      };
+      addMsgItem(messageItem);
     } catch (err) {
       message.error('发送失败');
     }
@@ -99,18 +118,14 @@ export default function IndexPage(props: IRouteComponentProps) {
   };
   const leaveRoom = () => {
     roomChannel.leaveRoom();
-    props.history.push('/roomList');
-  };
-  const createPlayer = () => {
-    // 创建播放器
-    // 设置player
-    liveService.setPlayerConfig({
-      container: '#player',
-    });
-    // 开启拉流播放
-    liveService.tryPlayLive();
+    console.log(isLiving);
+    if (isLiving) {
+      liveService.stopPlay();
+    }
+    props.history.replace('/roomList');
   };
   const addMsgItem = (messageItem: Message) => {
+    console.log(messageItem);
     dispatch({
       type: actionTypes.addMsg,
       payload: messageItem,
@@ -122,14 +137,23 @@ export default function IndexPage(props: IRouteComponentProps) {
       payload: msgs,
     });
   };
+  const userStartPlay = () => {
+    setNeedUserClick(false);
+    liveService.startPlay();
+  };
   const bindEvents = () => {
     roomChannel.on(EventNameEnum.PaaSRoomEnter, (eventData: any) => {
+      if (userId === eventData.userId) return;
       const messageItem = {
         nickname: '',
         content:
           eventData.data.nick +
-          `${eventData.data.enter ? '进入了房间。' : '离开了房间。'}`,
+          `${eventData.data.enter ? '进入了房间' : '离开了房间'}`,
       };
+      setRoomDetail({
+        ...roomDetail,
+        onlineCount: eventData.data.onlineCount,
+      });
       addMsgItem(messageItem);
     });
     chatService.on(EventNameEnum.PaaSChatReciveLike, (eventData: any) => {
@@ -137,6 +161,7 @@ export default function IndexPage(props: IRouteComponentProps) {
       setLikeCount(likeCount);
     });
     chatService.on(EventNameEnum.PaaSChatReciveComment, (eventData: any) => {
+      if (userId === eventData.data.creatorOpenId) return;
       const messageItem = {
         nickname: eventData.data.creatorNick,
         content: eventData.data.content,
@@ -150,7 +175,7 @@ export default function IndexPage(props: IRouteComponentProps) {
       };
       addMsgItem(messageItem);
       setIsLiving(true);
-      createPlayer();
+      liveService.tryPlayLive();
     });
     liveService.on(EventNameEnum.PaaSLiveStop, (eventData: any) => {
       const messageItem = {
@@ -171,8 +196,10 @@ export default function IndexPage(props: IRouteComponentProps) {
         return chatService.listComment(0, 1, 50);
       })
       .then((res: any) => {
-        // 3. 绑定事件
-        bindEvents();
+        const messageItem = {
+          nickname: '',
+          content: nickname + '进入了房间。',
+        };
         const messages: Message[] = [];
         res.commentModelList.forEach((item: any) => {
           messages.push({
@@ -181,26 +208,49 @@ export default function IndexPage(props: IRouteComponentProps) {
           });
         });
         setMessageArray(messages);
+        addMsgItem(messageItem);
       })
       .then(() => {
         return liveService.getLiveDetail();
       })
       .then((res: any) => {
+        // 设置player
+        liveService.setPlayerConfig({
+          container: '#player',
+          width: '100%',
+          height: '100%',
+          useArtc: true,
+        });
         if (res.status === 1) {
+          // 正在直播中
           setIsLiving(true);
-          createPlayer();
+          // 开启拉流播放
+          liveService.tryPlayLive();
         }
+        liveService.on(EventNameEnum.PaaSPlayerEvent, (data: any) => {
+          if (data.eventName === 'error') console.log(data);
+        });
         return chatService.getChatDetail();
       })
       .then((res: any) => {
         setLikeCount(res.likeCount || 0);
+        // 绑定事件
+        bindEvents();
       });
+    window.onbeforeunload = () => {
+      leaveRoom();
+    };
+    return () => {
+      leaveRoom();
+    };
   }, []);
   return (
     <div className={styles['room-page']}>
       <div className={styles['player-container']}>
         <div
-          className={`${styles.player} ${!isLiving ? 'hidden' : ''}`}
+          className={`${styles.player} ${
+            !isLiving || needUserClick ? 'hidden' : ''
+          }`}
           id="player"
         ></div>
       </div>
@@ -212,7 +262,7 @@ export default function IndexPage(props: IRouteComponentProps) {
               <div className={styles.info}>
                 <div className={styles.title}>{roomDetail.title}</div>
                 <div className={styles.data}>
-                  <span>{roomDetail.uv}观看</span>
+                  <span>{roomDetail.onlineCount}观看</span>
                   <span>{likeCount}点赞</span>
                 </div>
               </div>
@@ -271,6 +321,11 @@ export default function IndexPage(props: IRouteComponentProps) {
           <img src="https://img.alicdn.com/imgextra/i1/O1CN01pgziS925R7tXtb86t_!!6000000007522-55-tps-238-127.svg" />
           <span>主播正在路上，请稍等～</span>
         </div>
+      )}
+      {needUserClick && isLiving && (
+        <button className={styles['need-click-btn']} onClick={userStartPlay}>
+          开始观看
+        </button>
       )}
     </div>
   );

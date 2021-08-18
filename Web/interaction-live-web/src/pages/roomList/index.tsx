@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { message } from 'antd';
-import roomEngineConfig from '../../constants/config';
 import styles from './index.less';
 
 export default function IndexPage() {
   const history = useHistory();
   const [roomList, setRoomList] = useState([]);
-  const { appId } = roomEngineConfig;
   const enterRoom = (roomId: string) => {
     history.push(`/room?roomId=${roomId}`);
   };

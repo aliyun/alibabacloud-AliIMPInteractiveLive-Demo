@@ -1,5 +1,5 @@
 export default {
   appId: '******',
-  appKey: '***********************',
-  debug: false,
+  appKey: '468e***********aed8a',
+  signSecret: '******',
 };

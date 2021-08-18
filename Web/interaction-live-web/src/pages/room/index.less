@@ -16,16 +16,13 @@
   z-index: 1;
   position: relative;
 }
-.player {
-  height: 100% !important;
-  width: 100%;
-}
 .live-container {
   .full-content;
   z-index: 2;
   color: #fff;
 }
 .nolive {
+  z-index: 1;
   position: absolute;
   left: 50%;
   top: 40%;
@@ -37,7 +34,21 @@
     margin-top: 0.3rem;
     font-size: 0.4rem;
   }
-  z-index: 1;
+}
+.need-click-btn {
+  position: fixed;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  background-image: linear-gradient(113deg, #ff442c 7%, #ff9c15 100%);
+  color: #fff;
+  border: none;
+  font-size: 0.3rem;
+  outline: none;
+  padding: 0.1rem 0.2rem;
+  cursor: pointer;
+  z-index: 3;
 }
 .top {
   position: relative;
@@ -137,6 +148,7 @@
   padding: 0.17rem 0.2rem;
   border-radius: 7px;
   align-self: flex-start;
+  word-break: break-all;
   span {
     color: #52ede3;
   }
