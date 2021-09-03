@@ -747,7 +747,7 @@
 - (void) enterRoom{
     self.room = [[AIRBRoomEngine sharedInstance] getRoomChannelWithRoomID:self.roomModel.roomID];
     self.room.delegate = self;
-    [self.room enterRoom];
+    [self.room enterRoomWithUserNick:@"nick"];
     if(self.roomModel != nil){
         [self.room updateRoomTitle:self.roomModel.title onSuccess:^{
 
@@ -841,7 +841,7 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"管理该成员" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
             [alert addAction:[UIAlertAction actionWithTitle:@"禁言" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [self.room.chat muteUserWithUserID:itemID muteTimeInSeconds:300 onSuccess:^{
+                [self.room.chat banCommentWithUserID:itemID banTimeInSeconds:300 onSuccess:^{
                         
                 } onFailure:^(NSString * _Nonnull errorMessage) {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -850,7 +850,7 @@
                 }];
             }]];
             [alert addAction:[UIAlertAction actionWithTitle:@"取消禁言" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [self.room.chat unmuteUserWithUserID:itemID onSuccess:^{
+                [self.room.chat cancelBanCommentWithUserID:itemID onSuccess:^{
                     
                 } onFailure:^(NSString * _Nonnull errorMessage) {
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -978,7 +978,7 @@
                     comment = [NSString stringWithFormat:@"%@: %@",[dataDic valueForKey:@"creatorNick"],[dataDic valueForKey:@"content"]];
                     [_commentView insertNewComment:comment];
                     break;
-                case AIRBRoomChannelMessageTypeChatOneUserMutedOrUnmuted:
+                case AIRBRoomChannelMessageTypeChatOneUserCommentBannedOrNot:
                     messageType = @"OneUserWasMuted";
                     if([[dataDic valueForKey:@"mute"] boolValue] == YES){
                         comment = [NSString stringWithFormat:@" %@被管理员禁言%@秒",[dataDic valueForKey:@"muteUserNick"],[dataDic valueForKey:@"muteTime"]];
@@ -1009,7 +1009,7 @@
 
 - (void) onAIRBLivePuhserEvent:(AIRBLivePusherEvent)event info:(NSDictionary*)info{
     switch (event) {
-        case AIRBLivePusherEventCreated: {
+        case AIRBLivePusherEventPreviewStarted: {
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.roomModel.beautyOptions = self.room.livePusher.options.faceBeautyOptions;
                 self.beautySetsView.beautyOptions = self.roomModel.beautyOptions;
@@ -1017,7 +1017,7 @@
             
         }
             break;
-        case AIRBLivePusherEventStarted: {
+        case AIRBLivePusherEventStreamStarted: {
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.livePusherStarted = YES;
                 self.startLiveButton.hidden = YES;
@@ -1056,7 +1056,7 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];    //主要是[receiver resignFirstResponder]在哪调用就能把receiver对应的键盘往下收
     if (textField == _sendField && textField.text.length > 0) {
-        [self.room.chat sendMessage:textField.text onSuccess:^{
+        [self.room.chat sendComment:textField.text onSuccess:^{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[AIRBDToast shareInstance] makeToast:@"发送成功" duration:1.0];
             });;

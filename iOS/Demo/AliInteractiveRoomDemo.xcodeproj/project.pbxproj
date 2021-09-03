@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -25,8 +25,8 @@
 		276DE1CB266DB7100050A689 /* AIRBDItemsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 276DE1CA266DB7100050A689 /* AIRBDItemsView.m */; };
 		276DE1CE266DCD310050A689 /* AIRBDItemsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 276DE1CD266DCD310050A689 /* AIRBDItemsViewCell.m */; };
 		27A58A88268C1C0A0091DB44 /* AIRBDetailsButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A58A87268C1C0A0091DB44 /* AIRBDetailsButton.m */; };
-		27B99B7A266A2AD700D68363 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; };
-		27B99B7B266A2AD700D68363 /* BuildFile in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		27B99B7A266A2AD700D68363 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
+		27B99B7B266A2AD700D68363 /* (null) in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		27F76E4B2673053000743386 /* AIRBDStudentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F76E492673053000743386 /* AIRBDStudentViewController.m */; };
 		27F76E4C2673053000743386 /* AIRBDTeacherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F76E4A2673053000743386 /* AIRBDTeacherViewController.m */; };
 		27F76E4E2673055200743386 /* AliInteractiveRoomBundle.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27F76E4D2673055200743386 /* AliInteractiveRoomBundle.xcassets */; };
@@ -80,7 +80,7 @@
 				ED3BA1E9265E3F3A00011B53 /* alivcffmpeg.framework in Embed Frameworks */,
 				7D2AC779265E436800A04E53 /* AlivcLibFace.framework in Embed Frameworks */,
 				ED3BA1ED265E3F3D00011B53 /* AlivcLivePusher.framework in Embed Frameworks */,
-				27B99B7B266A2AD700D68363 /* BuildFile in Embed Frameworks */,
+				27B99B7B266A2AD700D68363 /* (null) in Embed Frameworks */,
 				EDD4F76D2697F4DA00988826 /* AliInteractiveRoomBundle.framework in Embed Frameworks */,
 				7D2AC777265E436700A04E53 /* AlivcLibBeauty.framework in Embed Frameworks */,
 				ED3BA1EF265E3F3E00011B53 /* AliyunPlayer.framework in Embed Frameworks */,
@@ -191,7 +191,7 @@
 				EDCFB0BD268C8BBE00205E2D /* libresolv.tbd in Frameworks */,
 				ED3BA1E8265E3F3A00011B53 /* alivcffmpeg.framework in Frameworks */,
 				ED9301112665D5A600434B7C /* AliRTCSdk.framework in Frameworks */,
-				27B99B7A266A2AD700D68363 /* BuildFile in Frameworks */,
+				27B99B7A266A2AD700D68363 /* (null) in Frameworks */,
 				ED3BA1EE265E3F3E00011B53 /* AliyunPlayer.framework in Frameworks */,
 				7D2AC778265E436800A04E53 /* AlivcLibFace.framework in Frameworks */,
 				7E887AC562361B861DBAC976 /* libPods-AliInteractiveRoomDemo.a in Frameworks */,
@@ -682,7 +682,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/AliInteractiveRoomDemo/Frameworks/BabaSSL/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoes;
+				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_WORKSPACE = YES;
@@ -713,7 +713,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/AliInteractiveRoomDemo/Frameworks/BabaSSL/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoes;
+				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_WORKSPACE = YES;

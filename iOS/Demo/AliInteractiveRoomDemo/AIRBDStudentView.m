@@ -103,7 +103,7 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 50;
     self.roomOwnerID = roomOwnerID;
     self.room = [[AIRBRoomEngine sharedInstance] getRoomChannelWithRoomID:roomID];
     self.room.delegate = self;
-    [self.room enterRoom];
+    [self.room enterRoomWithUserNick:self.userID];
     [self setupUI];
 }
 
@@ -754,7 +754,7 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 50;
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if([textField isEqual:self.messageInputField]){
         if (textField.text.length > 0) {
-            [self.room.chat sendMessage:self.messageInputField.text onSuccess:^{
+            [self.room.chat sendComment:self.messageInputField.text onSuccess:^{
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[AIRBDToast shareInstance] makeToast:@"发送成功" duration:1.0];
                     textField.text = nil;
@@ -917,7 +917,7 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 50;
 
 - (void)sendButtonAction:(UIButton*)sender{
     if (self.messageInputField.text.length > 0) {
-        [self.room.chat sendMessage:self.messageInputField.text onSuccess:^{
+        [self.room.chat sendComment:self.messageInputField.text onSuccess:^{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[AIRBDToast shareInstance] makeToast:@"发送成功" duration:1.0];
             });;

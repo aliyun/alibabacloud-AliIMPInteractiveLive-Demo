@@ -67,6 +67,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void) stop;
 
 /**
+ * 在当前房间重新加载本场直播，前提是已经调用过start；
+ */
+- (void) refresh;
+
+/**
  * 异步截取当前视频画面，通过delegate返回一个UIImage，具体见onAIRBLivePlayerImageSnapshot
  */
 - (void) snapshotAsync;

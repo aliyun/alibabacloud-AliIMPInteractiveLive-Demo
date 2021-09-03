@@ -246,8 +246,6 @@
             });
         }
             break;
-        case AIRBRoomEngineEventEngineLogouted:
-            break;
             
         default:
             break;

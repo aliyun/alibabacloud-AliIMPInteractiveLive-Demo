@@ -10,7 +10,8 @@
 
 typedef NS_ENUM(NSInteger, AIRBLoggerLevel)
 {
-    AIRBLoggerLevelDebug = 0,
+    AIRBLoggerLevelVerbose = 0,
+    AIRBLoggerLevelDebug,
     AIRBLoggerLevelInfo,
     AIRBLoggerLevelWarning,
     AIRBLoggerLevelError,
@@ -72,7 +73,6 @@ typedef NS_ENUM(NSInteger, AIRBRoomEngineEvent)
 {
     AIRBRoomEngineEventEngineStarted = 0,
     AIRBRoomEngineEventEngineLogined,
-    AIRBRoomEngineEventEngineLogouted,
 };
 
 typedef NS_ENUM(NSInteger, AIRBRoomChannelEvent)
@@ -393,10 +393,13 @@ typedef NS_ENUM(NSInteger, AIRBRoomChannelMessageType)
 
 typedef NS_ENUM(NSInteger, AIRBLivePusherEvent)
 {
-    AIRBLivePusherEventCreated = 0,
-    AIRBLivePusherEventStarted,
+    AIRBLivePusherEventPreviewStarted = 0,
+    AIRBLivePusherEventStreamStarted,
     AIRBLivePusherEventNetworkPoored,
     AIRBLivePusherEventNetworkRecoveried,
+    AIRBLivePusherEventNetworkConnectionLost,
+    AIRBLivePusherEventNetworkReconnectStart,
+    AIRBLivePusherEventNetworkReconnectSuccess,
     AIRBLivePusherEventStopped,
 };
 

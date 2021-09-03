@@ -918,7 +918,7 @@ const int32_t kStudentListRoomMemberPageSize = 10;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self setupUI];
     });
-    [self.room enterRoom];
+    [self.room enterRoomWithUserNick:@"nick"];
     [[AIRBDToast shareInstance] makeToast:@"初始化" duration:0.0];
 }
 
@@ -1281,36 +1281,6 @@ const int32_t kStudentListRoomMemberPageSize = 10;
                 self.recordPauseButton.enabled = YES;
             });
         }
-            break;
-            
-        case AIRBWhiteBoardEventRecordingStarted: {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.recordButton setTitle:@"⏹️" forState:UIControlStateNormal];
-            });
-        }
-            [_commentsListView insertNewComment:@"白板录制已开始"];
-            break;
-        case AIRBWhiteBoardEventRecordingPaused: {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.recordPauseButton setTitle:@"◀️" forState:UIControlStateNormal];
-            });
-            [_commentsListView insertNewComment:@"白板录制已暂停"];
-        }
-            break;
-        case AIRBWhiteBoardEventRecordingResumed: {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.recordPauseButton setTitle:@"⏸️" forState:UIControlStateNormal];
-            });
-            [_commentsListView insertNewComment:@"白板录制已恢复"];
-        }
-            break;
-        case AIRBWhiteBoardEventRecordingStopped: {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.recordButton setTitle:@"🚫" forState:UIControlStateNormal];
-                [self.recordPauseButton setTitle:@"🚫" forState:UIControlStateNormal];
-            });
-            [_commentsListView insertNewComment:@"白板录制已结束"];
-        }
             
             break;
         case AIRBWhiteBoardEventDestroied:
@@ -1426,7 +1396,7 @@ const int32_t kStudentListRoomMemberPageSize = 10;
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     if([textField isEqual:self.messageInputField]){
         if (textField.text.length > 0) {
-            [self.room.chat sendMessage:self.messageInputField.text onSuccess:^{
+            [self.room.chat sendComment:self.messageInputField.text onSuccess:^{
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[AIRBDToast shareInstance] makeToast:@"发送成功" duration:1.0];
                 });;
@@ -1576,20 +1546,9 @@ const int32_t kStudentListRoomMemberPageSize = 10;
 }
 
 - (void)recordButtonAction:(UIButton*)sender {
-    if ([sender.currentTitle isEqualToString:@"⏺️"]) {
-        [self.room.whiteboard startRecording];
-    } else if ([sender.currentTitle isEqualToString:@"⏹️"]) {
-        [self.room.whiteboard stopRecording];
-    }
 }
 
 - (void)recordPauseButtonAction:(UIButton*)sender {
-    if ([sender.currentTitle isEqualToString:@"⏸️"]) {
-        [self.room.whiteboard pauseRecording];
-    } else if ([sender.currentTitle isEqualToString:@"◀️"]) {
-        [self.room.whiteboard resumeRecording];
-    }
-    
 }
 
 - (void)replayButtonAction:(UIButton*)sender {
@@ -1598,7 +1557,7 @@ const int32_t kStudentListRoomMemberPageSize = 10;
 
 - (void)sendButtonAction:(UIButton*)sender {
     if (self.messageInputField.text.length > 0) {
-        [self.room.chat sendMessage:self.messageInputField.text onSuccess:^{
+        [self.room.chat sendComment:self.messageInputField.text onSuccess:^{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[AIRBDToast shareInstance] makeToast:@"发送成功" duration:1.0];
             });;

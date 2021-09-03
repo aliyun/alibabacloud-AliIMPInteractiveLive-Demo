@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @class AIRBLivePusherOptions;
 @class AIRBLivePusherFaceBeautyOptions;
+@class AIRBLivePusherLiveBusinessOptions;
 
 
 @protocol AIRBLivePusherDelegate <NSObject>
@@ -99,6 +100,13 @@ NS_ASSUME_NONNULL_BEGIN
  * 动态更新美颜参数，具体见AIRBLivePusherFaceBeautyOptions
  */
 - (void) updateFaceBeautyParameters:(AIRBLivePusherFaceBeautyOptions*) beautyOptions;
+
+/**
+ * 动态更新直播业务信息，具体见AIRBLivePusherLiveBusinessOptions
+ */
+- (void) updateLiveBusinessOptions:(AIRBLivePusherLiveBusinessOptions*) businessOptions
+                         onSuccess:(void (^)(void))onSuccess
+                         onFailure:(void (^)(NSString* errorMessage))onFailure;
 
 @end
 

@@ -403,7 +403,7 @@
 - (void) enterRoom{
     self.room = [[AIRBRoomEngine sharedInstance] getRoomChannelWithRoomID:self.roomModel.roomID];
     self.room.delegate = self;
-    [self.room enterRoom];
+    [self.room enterRoomWithUserNick:@"nick"];
 }
 
 - (void) leaveRoom{
@@ -519,7 +519,7 @@
                     comment = [NSString stringWithFormat:@"%@: %@",[dataDic valueForKey:@"creatorNick"],[dataDic valueForKey:@"content"]];
                     [_commentView insertNewComment:comment];
                     break;
-                case AIRBRoomChannelMessageTypeChatOneUserMutedOrUnmuted:
+                case AIRBRoomChannelMessageTypeChatOneUserCommentBannedOrNot:
                     messageType = @"OneUserWasMuted";
                     if([[dataDic valueForKey:@"mute"] boolValue] == YES){
                         comment = [NSString stringWithFormat:@" %@被管理员禁言%@秒",[dataDic valueForKey:@"muteUserNick"],[dataDic valueForKey:@"muteTime"]];
@@ -591,7 +591,7 @@
     [self.sendField resignFirstResponder];    //主要是[receiver resignFirstResponder]在哪调用就能把receiver对应的键盘往下收
     
     if (textField.text.length > 0) {
-        [self.room.chat sendMessage:textField.text onSuccess:^{
+        [self.room.chat sendComment:textField.text onSuccess:^{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[AIRBDToast shareInstance] makeToast:@"发送成功" duration:1.0];
             });

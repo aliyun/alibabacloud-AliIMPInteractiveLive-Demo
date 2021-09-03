@@ -38,21 +38,32 @@ NS_ASSUME_NONNULL_BEGIN
 + (AIRBRoomEngine*)sharedInstance;
 
 /**
- *全局初始化，只需要调用一次
+ * 全局初始化，只需要调用一次
  */
 - (void) globalInitOnceWithConfig:(nonnull AIRBRoomEngineConfig*)config;
 
 /**
- * 登陆
+ * 是否已全局初始化成功
+ */
+- (BOOL) isInited;
+
+/**
+ * 登录
  * @param userID  需要登陆的用户ID, 必须是阿拉伯数字或者英文字母或二者的混合
  * @param token  登陆鉴权需要的token，具体见AIRBRoomEngineAuthToken
  */
 - (void)loginWithUserID:(nonnull NSString*)userID token:(nonnull AIRBRoomEngineAuthToken*)token;
 
 /**
- * 登出
+ * 登出当前已登录的用户
  */
-- (void)logout;
+- (void)logoutOnSuccess:(void (^)(void))onSuccess
+              onFailure:(void (^)(NSString* errorMessage))onFailure;
+
+/**
+ * 用户是否已登录
+ */
+- (BOOL) isLogined:(NSString*)userID;
 
 /**
  * 登陆成功后 ，获取RoomChannel实例
