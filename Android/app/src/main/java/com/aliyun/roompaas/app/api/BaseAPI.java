@@ -1,12 +1,13 @@
 package com.aliyun.roompaas.app.api;
 
-import androidx.annotation.Nullable;
+
+import android.support.annotation.Nullable;
 
 import com.alibaba.fastjson.JSONException;
 import com.aliyun.roompaas.app.Const;
 import com.aliyun.roompaas.app.request.BaseReq;
-import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.callback.UICallback;
+import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.util.SignUtil;
 import com.aliyun.roompaas.base.util.ThreadUtil;
 

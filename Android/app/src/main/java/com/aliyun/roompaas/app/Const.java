@@ -1,6 +1,7 @@
 package com.aliyun.roompaas.app;
 
-import androidx.annotation.StringDef;
+
+import android.support.annotation.StringDef;
 
 import com.aliyun.roompaas.app.helper.RoomHelper;
 import com.aliyun.roompaas.app.sensitive.AllSensitive;

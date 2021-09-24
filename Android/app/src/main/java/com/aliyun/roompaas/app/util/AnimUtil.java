@@ -7,20 +7,19 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 
-import androidx.annotation.Nullable;
-
 import com.airbnb.lottie.LottieAnimationView;
 import com.aliyun.roompaas.app.R;
 import com.aliyun.roompaas.app.simple.SimpleAnimationListener;
 import com.aliyun.roompaas.app.simple.SimpleAnimatorListener;
-import com.aliyun.roompaas.base.util.Check;
 import com.aliyun.roompaas.base.util.CommonUtil;
+import com.aliyun.roompaas.base.util.Utils;
 import com.aliyun.roompaas.base.util.ViewUtil;
 
 import static android.animation.ValueAnimator.INFINITE;
@@ -41,7 +40,7 @@ public class AnimUtil {
     }
 
     public static void animIn(@Nullable final Runnable endAction, View... vs) {
-        if (Check.isEmpty(vs)) {
+        if (Utils.isEmpty(vs)) {
             return;
         }
 
@@ -81,7 +80,7 @@ public class AnimUtil {
     }
 
     public static void animOut(final @Nullable Runnable endAction, View... vs) {
-        if (Check.isEmpty(vs)) {
+        if (Utils.isEmpty(vs)) {
             return;
         }
 

@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "interaction-classroom-android"
+rootProject.name = "android-open-source"

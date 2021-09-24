@@ -1,6 +1,7 @@
 package com.aliyun.roompaas.app.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -22,8 +23,6 @@ import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.util.ViewUtil;
 import com.aliyun.roompaas.biz.RoomEngine;
 import com.aliyun.roompaas.biz.exposable.model.TokenInfo;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -72,7 +71,7 @@ public class CreateRoomActivity extends BaseActivity {
         });
     }
 
-    @NotNull
+    @NonNull
     private DialogUtil.Action getSwitchRoomTypeAction(boolean isChecked, String itemText, String rooType) {
         return new DialogUtil.Action(itemText, () -> updateTypeSelected(rooType), isChecked);
     }

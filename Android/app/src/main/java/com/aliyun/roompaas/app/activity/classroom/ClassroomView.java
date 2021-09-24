@@ -2,6 +2,11 @@ package com.aliyun.roompaas.app.activity.classroom;
 
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +17,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import com.aliyun.roompaas.app.R;
 import com.aliyun.roompaas.app.activity.classroom.panel.ChatView;
 import com.aliyun.roompaas.app.activity.classroom.panel.DocumentView;
 import com.aliyun.roompaas.app.activity.classroom.panel.StudentView;
 import com.aliyun.roompaas.app.helper.KeyboardHelper;
 import com.aliyun.roompaas.app.util.ScreenUtil;
+import com.aliyun.roompaas.base.util.ViewUtil;
 
 /**
  * @author puke
@@ -63,14 +63,13 @@ public class ClassroomView {
 
     public ClassroomView(final ClassroomActivity activity) {
         this.activity = activity;
-        activity.setContentView(R.layout.activity_classroom);
         findView(R.id.classroom_back).setOnClickListener(v -> activity.finish());
         title = findView(R.id.classroom_title);
         roadRenderContainer = findView(R.id.classroom_road_render_container);
-        rtcRenderContainer = findView(R.id.classroom_rtc_render_container);
+        rtcRenderContainer = roadRenderContainer;
         startClass = findView(R.id.classroom_start_class);
-        startClass.setOnClickListener(v -> activity.onStartClass());
-        studentList = findView(R.id.student_list_recycler_view);
+        ViewUtil.bindClickActionWithClickCheck(startClass, activity::onStartClass);
+        studentList = findView(R.id.studentRTCViewList);
         tabLayout = findView(R.id.classroom_tab);
         panel = findView(R.id.classroom_panel);
         bottomLayout = findView(R.id.classroom_bottom_layout);

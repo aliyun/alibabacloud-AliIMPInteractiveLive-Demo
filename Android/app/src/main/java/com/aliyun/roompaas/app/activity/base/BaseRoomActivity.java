@@ -4,19 +4,18 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.CallSuper;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
-
-import androidx.annotation.CallSuper;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.alibaba.dingpaas.room.RoomDetail;
 import com.aliyun.roompaas.app.helper.PermissionHelper;
 import com.aliyun.roompaas.app.util.DialogUtil;
-import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.callback.Callbacks;
-import com.aliyun.roompaas.biz.exposable.RoomChannel;
+import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.biz.RoomEngine;
+import com.aliyun.roompaas.biz.exposable.RoomChannel;
 import com.aliyun.roompaas.chat.exposable.ChatService;
 import com.aliyun.roompaas.live.exposable.LivePlayerService;
 import com.aliyun.roompaas.live.exposable.LivePusherService;

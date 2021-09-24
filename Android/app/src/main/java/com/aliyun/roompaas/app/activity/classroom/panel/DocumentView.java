@@ -1,6 +1,7 @@
 package com.aliyun.roompaas.app.activity.classroom.panel;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,14 +10,11 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import com.aliyun.roompaas.app.R;
 import com.aliyun.roompaas.app.viewmodel.inter.IWhiteBoardOperate;
 import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.util.ViewUtil;
 
-import org.jetbrains.annotations.NotNull;
 
 /**
  * @author puke
@@ -45,7 +43,7 @@ public class DocumentView extends BasePanelView {
         switchWhiteBoard.setOnClickListener(this::switchWhiteBoardClicked);
     }
 
-    @NotNull
+    @NonNull
     @Override
     protected String getText() {
         return "";

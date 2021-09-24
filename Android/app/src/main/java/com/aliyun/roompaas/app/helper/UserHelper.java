@@ -1,17 +1,27 @@
 package com.aliyun.roompaas.app.helper;
 
+import android.content.Context;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import androidx.annotation.IntRange;
-import androidx.annotation.NonNull;
-
+import com.aliyun.roompaas.app.BuildConfig;
 import com.aliyun.roompaas.app.sp.UserSp;
+import com.aliyun.roompaas.base.util.CommonUtil;
+import com.aliyun.roompaas.biz.exposable.RoomChannel;
 
 /**
  * Created by KyleCe on 2021/7/2
  */
 public class UserHelper {
     private static final int RANDOM_ID_LEN = 6;
+
+    public static boolean isOwner(Context context, RoomChannel roomChannel) {
+        if (roomChannel == null && BuildConfig.DEBUG) {
+            CommonUtil.showDebugToast(context, "roomChannel not prepared, invoke after enterRoomSuccess");
+        }
+        return roomChannel != null && roomChannel.isOwner();
+    }
 
     public static String parseUserId(@NonNull UserSp userSp) {
         String userId = userSp.getUserId();

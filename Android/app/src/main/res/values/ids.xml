@@ -2,4 +2,5 @@
 <resources>
     <integer name="viewTagIdForRoomId">2021052400</integer>
     <integer name="viewTagIdForOriginVisibility">2021052401</integer>
+    <integer name="viewTagMarkForRoadPlayerWrapper">2021091500</integer>
 </resources>

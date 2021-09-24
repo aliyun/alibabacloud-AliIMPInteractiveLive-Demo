@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +14,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.alibaba.dingpaas.chat.CommentModel;
@@ -37,8 +36,8 @@ import com.aliyun.roompaas.app.util.AppUtil;
 import com.aliyun.roompaas.app.util.ClipboardUtil;
 import com.aliyun.roompaas.app.util.DialogUtil;
 import com.aliyun.roompaas.app.view.LimitSizeRecyclerView;
-import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.callback.Callbacks;
+import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.model.PageModel;
 import com.aliyun.roompaas.base.util.CollectionUtil;
 import com.aliyun.roompaas.base.util.ViewUtil;
@@ -46,15 +45,15 @@ import com.aliyun.roompaas.biz.SampleRoomEventHandler;
 import com.aliyun.roompaas.biz.exposable.event.KickUserEvent;
 import com.aliyun.roompaas.biz.exposable.event.RoomInOutEvent;
 import com.aliyun.roompaas.biz.exposable.model.UserParam;
-import com.aliyun.roompaas.chat.exposable.CommentParam;
 import com.aliyun.roompaas.chat.CommentSortType;
 import com.aliyun.roompaas.chat.SampleChatEventHandler;
+import com.aliyun.roompaas.chat.exposable.CommentParam;
 import com.aliyun.roompaas.chat.exposable.event.CommentEvent;
 import com.aliyun.roompaas.chat.exposable.event.LikeEvent;
 import com.aliyun.roompaas.chat.exposable.event.MuteCommentEvent;
-import com.aliyun.roompaas.live.exposable.AliLiveBeautyOptions;
 import com.aliyun.roompaas.live.LiveEvent;
 import com.aliyun.roompaas.live.SampleLiveEventHandler;
+import com.aliyun.roompaas.live.exposable.AliLiveBeautyOptions;
 import com.aliyun.roompaas.live.exposable.event.LiveCommonEvent;
 import com.aliyun.roompaas.player.exposable.CanvasScale;
 
@@ -241,7 +240,7 @@ public class BusinessActivity extends BaseRoomActivity {
         DialogUtil.doAction(this, "用户管理",
                 new DialogUtil.Action("禁言", () -> {
                     int muteSeconds = 5 * 60;
-                    chatService.muteUser(model.id, muteSeconds,
+                    chatService.banComment(model.id, muteSeconds,
                             new Callbacks.Lambda<>((success, data, errorMsg) -> {
                                 if (success) {
                                     showToast(String.format("已对%s禁言", model.nick));
@@ -251,7 +250,7 @@ public class BusinessActivity extends BaseRoomActivity {
                             })
                     );
                 }),
-                new DialogUtil.Action("取消禁言", () -> chatService.cancelMuteUser(model.id,
+                new DialogUtil.Action("取消禁言", () -> chatService.cancelBanComment(model.id,
                         new Callbacks.Lambda<>((success, data, errorMsg) -> {
                             if (success) {
                                 showToast(String.format("已对%s取消禁言", model.nick));
@@ -529,7 +528,7 @@ public class BusinessActivity extends BaseRoomActivity {
         chatService.sendLike();
         initLottieIfNecessary();
         ViewUtil.setVisible(likeLottieView);
-        ViewUtil.setAlphaIfNecessary(likeLottieView, 1);
+        ViewUtil.applyAlpha(1, likeLottieView);
         likeLottieView.addAnimatorListener(new SimpleLottieListener() {
             @Override
             public void onAnimationStart(Animator animation) {

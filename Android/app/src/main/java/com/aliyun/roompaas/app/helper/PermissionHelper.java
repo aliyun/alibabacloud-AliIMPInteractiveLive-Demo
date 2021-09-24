@@ -2,10 +2,9 @@ package com.aliyun.roompaas.app.helper;
 
 import android.app.Activity;
 import android.content.pm.PackageManager;
-
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 
 import com.aliyun.roompaas.base.util.CollectionUtil;
 

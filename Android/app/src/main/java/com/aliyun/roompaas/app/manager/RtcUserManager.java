@@ -1,16 +1,18 @@
 package com.aliyun.roompaas.app.manager;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.alibaba.dingpaas.room.RoomUserModel;
 import com.alibaba.dingpaas.rtc.ConfUserModel;
 import com.alibaba.fastjson.JSON;
 import com.aliyun.roompaas.app.model.RtcUser;
-import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.callback.UICallback;
+import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.log.Logger;
 import com.aliyun.roompaas.base.model.PageModel;
 import com.aliyun.roompaas.base.util.CollectionUtil;
+import com.aliyun.roompaas.base.util.Utils;
 import com.aliyun.roompaas.biz.exposable.RoomChannel;
 import com.aliyun.roompaas.biz.exposable.model.UserParam;
 import com.aliyun.roompaas.rtc.RtcApplyUserParam;
@@ -18,10 +20,9 @@ import com.aliyun.roompaas.rtc.exposable.RtcService;
 import com.aliyun.roompaas.rtc.exposable.RtcUserParam;
 import com.aliyun.roompaas.rtc.exposable.RtcUserStatus;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -64,6 +65,16 @@ public class RtcUserManager {
     public RtcUserManager(RoomChannel roomChannel) {
         this.roomChannel = roomChannel;
         this.rtcService = roomChannel.getPluginService(RtcService.class);
+    }
+
+    public void updateUser(Collection<RtcUser> col) {
+        if (Utils.isEmpty(col)) {
+            return;
+        }
+
+        for (RtcUser rtcUser : col) {
+            updateUser(rtcUser);
+        }
     }
 
     /**
@@ -177,7 +188,7 @@ public class RtcUserManager {
         }
     }
 
-    @NotNull
+    @NonNull
     protected List<RtcUser> mergeRtcUserAndRoomUser(List<ConfUserModel> confUserModels,
                                                     List<ConfUserModel> applyUserList,
                                                     List<RoomUserModel> roomUserModels) {
@@ -268,6 +279,14 @@ public class RtcUserManager {
         }
 
         return result;
+    }
+
+    public static RtcUser asRtcUser(String uid, RtcUserStatus status) {
+        return new RtcUser.Builder().userId(uid).status(status).build();
+    }
+
+    public static RtcUser asRtcUser(String uid, String nick, RtcUserStatus status) {
+        return new RtcUser.Builder().userId(uid).nick(nick).status(status).build();
     }
 
     private RtcUser roomUser2RtcUser(RoomUserModel roomUserModel) {

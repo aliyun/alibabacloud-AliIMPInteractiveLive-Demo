@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:ignore="HardcodedText">
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/refresh_layout"
         android:layout_marginTop="7dp"
         android:layout_marginLeft="7dp"
@@ -15,12 +15,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <androidx.recyclerview.widget.RecyclerView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <com.aliyun.roompaas.base.view.RoundImageView
         android:id="@+id/startCreateRoom"

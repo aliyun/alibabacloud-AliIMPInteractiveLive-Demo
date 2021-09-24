@@ -1,10 +1,9 @@
 package com.aliyun.roompaas.app.viewmodel;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-
-import androidx.annotation.NonNull;
 
 import com.alibaba.dingpaas.base.DPSError;
 import com.alibaba.dingpaas.room.CreateWhiteboardCb;

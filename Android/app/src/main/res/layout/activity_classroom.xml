@@ -71,25 +71,41 @@
                 tools:visibility="visible" />
         </FrameLayout>
 
-        <!-- rtc渲染区域 -->
-        <FrameLayout
-            android:id="@+id/classroom_rtc_render_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
         <!-- 横向渲染区域 -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/student_list_recycler_view"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/studentRTCViewList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="4dp"
             android:layout_marginRight="4dp" />
 
+        <ImageView
+            android:id="@+id/pageUp"
+            android:layout_gravity="start"
+            android:layout_width="wrap_content"
+            android:layout_height="90dp"
+            android:tint="@color/light_red"
+            android:src="@drawable/icon_back"
+            android:rotation="0"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
+
+        <ImageView
+            android:id="@+id/pageDown"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="90dp"
+            android:tint="@color/light_red"
+            android:src="@drawable/icon_back"
+            android:rotation="180"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
+
         <!--操作工具栏-->
-        <androidx.recyclerview.widget.RecyclerView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/function_list_recycler_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,7 +123,6 @@
             android:layout_gravity="center"
             android:background="@drawable/bg_orange_button"
             android:gravity="center"
-            android:onClick="onStartLive"
             android:paddingStart="25dp"
             android:paddingTop="6dp"
             android:paddingEnd="25dp"
@@ -139,7 +154,7 @@
         android:background="#d4d4d4" />
 
     <!-- 面板区域 -->
-    <androidx.viewpager.widget.ViewPager
+    <android.support.v4.view.ViewPager
         android:id="@+id/classroom_panel"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

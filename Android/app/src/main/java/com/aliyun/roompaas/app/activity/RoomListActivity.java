@@ -1,17 +1,16 @@
 package com.aliyun.roompaas.app.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.alibaba.dingpaas.room.RoomBasicInfo;
 import com.aliyun.roompaas.app.Const;
@@ -23,8 +22,8 @@ import com.aliyun.roompaas.app.helper.Router;
 import com.aliyun.roompaas.app.request.DestroyRoomRequest;
 import com.aliyun.roompaas.app.util.ClipboardUtil;
 import com.aliyun.roompaas.app.util.DialogUtil;
-import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.callback.Callbacks;
+import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.util.CollectionUtil;
 import com.aliyun.roompaas.base.util.ViewUtil;
 import com.aliyun.roompaas.biz.RoomEngine;

@@ -7,6 +7,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.InsetDrawable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -17,12 +19,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.aliyun.roompaas.app.R;
-import com.aliyun.roompaas.base.util.Check;
 import com.aliyun.roompaas.base.util.CommonUtil;
+import com.aliyun.roompaas.base.util.Utils;
 import com.aliyun.roompaas.base.util.ViewUtil;
 
 /**
@@ -149,7 +148,7 @@ public class DialogUtil {
         }
 
         Pair<CharSequence, Runnable>[] inputPairArray = parseInputPairArray(confirmPair, context, view, dialog, inputHint, inputDefaultText, inputCallback);
-        if (inputPairArray != null && !Check.anyNull(inputPairArray)) {
+        if (inputPairArray != null && !Utils.anyNull(inputPairArray)) {
             confirmPair = inputPairArray[0];
             cancelPair = inputPairArray[1];
         }
@@ -213,7 +212,7 @@ public class DialogUtil {
 
     private static Pair<CharSequence, Runnable> parseConfirmPairForOptionsDialog(
             @Nullable Pair<CharSequence, Runnable> confirmPair, View view, @NonNull Action[] actions) {
-        if (Check.isNotEmpty(actions)) {
+        if (Utils.isNotEmpty(actions)) {
             RadioGroup optionGroup = view.findViewById(R.id.optionGroup);
             RadioButton[] options = new RadioButton[]{
                     view.findViewById(R.id.option0),

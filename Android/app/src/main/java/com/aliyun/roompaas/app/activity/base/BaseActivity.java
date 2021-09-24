@@ -2,9 +2,8 @@ package com.aliyun.roompaas.app.activity.base;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 
 import com.aliyun.roompaas.app.util.StatusBarUtil;
 import com.aliyun.roompaas.base.util.CommonUtil;

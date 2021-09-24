@@ -1,13 +1,12 @@
 package com.aliyun.roompaas.app.activity.classroom.panel;
 
+import android.support.annotation.NonNull;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.aliyun.roompaas.app.R;
 import com.aliyun.roompaas.app.activity.classroom.ClassroomActivity;

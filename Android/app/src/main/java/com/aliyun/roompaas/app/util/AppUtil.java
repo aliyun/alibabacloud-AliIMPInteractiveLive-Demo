@@ -51,4 +51,13 @@ public class AppUtil {
             return false;
         }
     }
+    public static void killProcess() {
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
+
+    public static void exitApplication() {
+        killProcess();
+        System.exit(0);
+    }
+
 }

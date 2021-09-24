@@ -1,63 +1,57 @@
 package com.aliyun.roompaas.app.activity.classroom;
 
 import android.content.res.Configuration;
-import android.graphics.PixelFormat;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
-
-import androidx.annotation.NonNull;
 
 import com.alibaba.dingpaas.chat.CommentModel;
 import com.alibaba.dingpaas.room.RoomDetail;
 import com.alibaba.dingpaas.rtc.ConfUserModel;
-import com.alibaba.fastjson.JSON;
 import com.alivc.rtc.AliRtcEngine;
 import com.aliyun.roompaas.app.Const;
+import com.aliyun.roompaas.app.R;
 import com.aliyun.roompaas.app.activity.base.BaseRoomActivity;
+import com.aliyun.roompaas.app.delegate.chat.ISystemMessage;
+import com.aliyun.roompaas.app.delegate.rtc.IRtcDelegateReceiver;
+import com.aliyun.roompaas.app.delegate.rtc.RtcDelegate;
 import com.aliyun.roompaas.app.manager.RtcUserManager;
 import com.aliyun.roompaas.app.model.MessageModel;
 import com.aliyun.roompaas.app.model.RtcUser;
 import com.aliyun.roompaas.app.util.DialogUtil;
 import com.aliyun.roompaas.app.viewmodel.WhiteBoardVM;
 import com.aliyun.roompaas.app.viewmodel.inter.IWhiteBoardOperate;
-import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.callback.Callbacks;
+import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.model.PageModel;
 import com.aliyun.roompaas.base.util.Check;
 import com.aliyun.roompaas.base.util.CollectionUtil;
 import com.aliyun.roompaas.base.util.ThreadUtil;
+import com.aliyun.roompaas.base.util.Utils;
 import com.aliyun.roompaas.base.util.ViewUtil;
 import com.aliyun.roompaas.biz.SampleRoomEventHandler;
 import com.aliyun.roompaas.biz.exposable.event.KickUserEvent;
 import com.aliyun.roompaas.biz.exposable.event.RoomInOutEvent;
-import com.aliyun.roompaas.chat.exposable.CommentParam;
 import com.aliyun.roompaas.chat.CommentSortType;
 import com.aliyun.roompaas.chat.SampleChatEventHandler;
+import com.aliyun.roompaas.chat.exposable.CommentParam;
 import com.aliyun.roompaas.chat.exposable.event.CommentEvent;
 import com.aliyun.roompaas.chat.exposable.event.MuteCommentEvent;
 import com.aliyun.roompaas.live.SampleLiveEventHandler;
 import com.aliyun.roompaas.live.exposable.event.LiveCommonEvent;
 import com.aliyun.roompaas.rtc.exposable.RtcService;
 import com.aliyun.roompaas.rtc.exposable.RtcUserStatus;
-import com.aliyun.roompaas.rtc.RtcLayoutModel;
-import com.aliyun.roompaas.rtc.SampleRtcEventHandler;
-import com.aliyun.roompaas.rtc.exposable.event.ConfApplyJoinChannelEvent;
-import com.aliyun.roompaas.rtc.exposable.event.ConfEvent;
-import com.aliyun.roompaas.rtc.exposable.event.ConfHandleApplyEvent;
-import com.aliyun.roompaas.rtc.exposable.event.ConfInviteEvent;
 import com.aliyun.roompaas.rtc.exposable.event.ConfUserEvent;
 import com.aliyun.roompaas.rtc.exposable.event.RtcStreamEvent;
 import com.aliyun.roompaas.whiteboard.exposable.WhiteboardService;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.webrtc.sdk.SophonSurfaceView;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.List;
 
 import java8.util.stream.StreamSupport;
@@ -71,7 +65,8 @@ import static com.aliyun.roompaas.app.activity.classroom.ClassFunctionsAdapter.F
  * @version 2021/5/24
  */
 public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOperate,
-        StudentListAdapter.ItemClickListener, ClassFunctionsAdapter.FunctionCheckedListener {
+        StudentListAdapter.ItemClickListener, ClassFunctionsAdapter.FunctionCheckedListener
+, ISystemMessage, IRtcDelegateReceiver {
 
     private static final String TAG = ClassroomActivity.class.getSimpleName();
 
@@ -87,7 +82,8 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
     private RtcStreamEvent displayVideoStreamInfo;
     private boolean isJoined;
     private boolean isApplyed;
-    private boolean hasShowNetwork;
+
+    private RtcDelegate rtcDelegate;
 
     @Override
     public String getRoomId() {
@@ -101,47 +97,10 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
         }
     }
 
-    private void playRtc(RtcStreamEvent rtcStreamEvent) {
-        initAdapterIfNeed();
-
-        if (rtcStreamEvent == null) {
-            return;
-        }
-        if (rtcStreamEvent.isTeacher) {
-            displayVideoStreamInfo = rtcStreamEvent;
-            AliRtcEngine.AliRtcVideoCanvas aliVideoCanvas = rtcStreamEvent.aliVideoCanvas;
-            if (aliVideoCanvas.view == null) {
-                SophonSurfaceView sophonSurfaceView = new SophonSurfaceView(this);
-                sophonSurfaceView.getHolder().setFormat(PixelFormat.TRANSLUCENT);
-                // true 在最顶层，会遮挡一切view
-                sophonSurfaceView.setZOrderOnTop(false);
-                // true 如已绘制SurfaceView则在surfaceView上一层绘制。
-                sophonSurfaceView.setZOrderMediaOverlay(false);
-                aliVideoCanvas.view = sophonSurfaceView;
-                // 设置渲染模式,一共有四种
-                aliVideoCanvas.renderMode = AliRtcEngine.AliRtcRenderMode.AliRtcRenderModeFill;
-            }
-            // 添加LocalView
-
-            view.setRenderVisible(false);
-            ViewUtil.setVisible(view.rtcRenderContainer);
-            view.rtcRenderContainer.addView(aliVideoCanvas.view);
-            final AliRtcEngine.AliRtcVideoTrack aliRtcVideoTrack;
-            if (rtcStreamEvent.aliRtcVideoTrack == AliRtcEngine.AliRtcVideoTrack.AliRtcVideoTrackBoth) {
-                aliRtcVideoTrack = AliRtcEngine.AliRtcVideoTrack.AliRtcVideoTrackScreen;
-            } else {
-                aliRtcVideoTrack = rtcStreamEvent.aliRtcVideoTrack;
-            }
-            rtcService.setRemoteViewConfig(
-                    aliVideoCanvas, rtcStreamEvent.userId, aliRtcVideoTrack);
-        } else {
-            adapter.addOrUpdateData(rtcStreamEvent);
-        }
-    }
-
     @Override
     protected void init() {
         super.init();
+        setContentView(R.layout.activity_classroom);
         view = new ClassroomView(this);
 
         // 获取服务
@@ -152,7 +111,7 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
         roomChannel.addEventHandler(new RoomEventHandlerImpl());
         chatService.addEventHandler(new ChatEventHandlerImpl());
         liveService.addEventHandler(new LiveEventHandlerImpl());
-        rtcService.addEventHandler(new RtcEventHandlerImpl());
+        ofRtcDelegate().addEventHandler();
 
         rtcUserManager = new RtcUserManager(roomChannel);
         whiteBoardVM = new WhiteBoardVM(roomChannel);
@@ -185,11 +144,7 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
     }
 
     private void previewAndJoin() {
-        // 预览
-        updateRoadRender(rtcService.startRtcPreview());
-
-        // 上麦
-        rtcService.joinRtc(nick);
+        updateRoadRender(ofRtcDelegate().startRtcPreview());
     }
 
     private void tryPlayLive() {
@@ -264,7 +219,8 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
         // do nothing
     }
 
-    private void addSystemMessage(String message) {
+    @Override
+    public void addSystemMessage(String message) {
         Runnable task = () -> view.chatView.addSystemMessage(message);
         if (Check.checkMainThread()) {
             task.run();
@@ -296,18 +252,9 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
     // 开始上课
     void onStartClass() {
         if (!isJoined) {
+            ofRtcDelegate().joinRtcWithConfig(1280, 720, nick);
             showToast("正在上麦, 请稍等...");
-            return;
         }
-
-        // 老师上麦后默认开启旁路推流
-        rtcService.startRoadPublish(new Callbacks.Lambda<>((success, data, errorMsg) -> {
-            if (success) {
-                view.startClass.setVisibility(View.GONE);
-            } else {
-                showToast("推流失败: " + errorMsg);
-            }
-        }));
     }
 
     // 学生上麦
@@ -335,25 +282,19 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
     }
 
     private void updateRoadRender(View toAdd) {
-        if (view == null || toAdd == null || view.roadRenderContainer == null) {
-            return;
+        ViewGroup vg = view != null ? view.roadRenderContainer : null;
+        ViewUtil.removeSelfSafely(ViewUtil.findFirstSurfaceViewAtLevel0(vg));
+        if (toAdd != null) {
+            toAdd.setTag(R.integer.viewTagMarkForRoadPlayerWrapper, toAdd.hashCode());
         }
-
-        view.setRenderVisible(true);
-        ViewUtil.removeSelfSafely(toAdd);
-        view.roadRenderContainer.addView(toAdd);
+        ViewUtil.addChildMatchParentSafely(true, vg, toAdd);
     }
 
     private void leaveRtcProcess() {
-        // 当前已上麦, 点击后下麦
-        if (rtcService != null) {
-            rtcService.leaveRtc(false);
-        }
+        ofRtcDelegate().leaveRtcProcess();
+
         isJoined = false;
         isApplyed = false;
-        // 下麦更新按钮状态
-        muteLocalMic = false;
-        muteLocalCamera = false;
         if (functionAdapter != null) {
             functionAdapter.initBtnStatus();
             functionAdapter.updateFunction(Join_RTC, "上麦");
@@ -363,80 +304,28 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
 
     // 处理学生申请连麦事件
     public void onHandleUserApply(RtcUser model, boolean agree) {
-        if (agree) {
-            // 同意, 则触发会议邀请
-            onInviteUser(model);
-        }
-        rtcService.handleApplyJoinRtc(model.userId, agree, new Callback<Void>() {
-            @Override
-            public void onSuccess(Void data) {
-                showToast(agree ? "已同意连麦" : "已拒绝连麦");
-            }
-
-            @Override
-            public void onError(String errorMsg) {
-                showToast("处理失败: " + errorMsg);
-            }
-        });
+        ofRtcDelegate().onHandleUserApply(model, agree);
     }
 
     // 老师挂断
-    public void onKickFromChannel(String kickedUserId) {
-        rtcService.kickUserFromRtc(Collections.singletonList(kickedUserId), new Callback<Void>() {
-            @Override
-            public void onSuccess(Void data) {
-            }
-
-            @Override
-            public void onError(String errorMsg) {
-                showToast("挂断失败: " + errorMsg);
-            }
-        });
+    public void onKickFromChannel(String userId) {
+        ofRtcDelegate().onKickFromChannel(userId);
     }
 
     // 邀请连麦
     public void onInviteUser(RtcUser invitedUser) {
-        ConfUserModel userModel = new ConfUserModel();
-        userModel.userId = invitedUser.userId;
-        userModel.nickname = invitedUser.nick;
-        List<ConfUserModel> userModels = Collections.singletonList(userModel);
-        rtcService.inviteJoinRtc(userModels, new Callback<Void>() {
-            @Override
-            public void onSuccess(Void data) {
-                showToast("邀请已发送");
-            }
-
-            @Override
-            public void onError(String errorMsg) {
-                showToast("邀请失败: " + errorMsg);
-            }
-        });
+        ofRtcDelegate().onInviteUser(invitedUser);
     }
 
     // 学生申请连麦
     private void onApplyJoinRtc(boolean isApply) {
-        rtcService.applyJoinRtc(isApply, new Callback<Void>() {
-            @Override
-            public void onSuccess(Void data) {
-                showToast(isApply ? "申请连麦已发送" : "取消申请连麦已发送");
-                isApplyed = isApply;
-            }
-
-            @Override
-            public void onError(String errorMsg) {
-                showToast((isApply ? "申请连麦失败: " : "取消申请连麦失败: ") + errorMsg);
-                isApplyed = !isApply;
-            }
+        ofRtcDelegate().onApplyJoinRtc(isApply, data -> {
+            showToast(isApply ? "申请连麦已发送" : "取消申请连麦已发送");
+            isApplyed = isApply;
+        }, (errorMsg) -> {
+            showToast((isApply ? "申请连麦失败: " : "取消申请连麦失败: ") + errorMsg);
+            isApplyed = !isApply;
         });
-    }
-
-    // 学生列表Adapter init
-    private void initAdapterIfNeed() {
-        if (adapter == null) {
-            adapter = new StudentListAdapter(roomChannel, this);
-            adapter.setItemClickListener(this);
-            view.studentList.setAdapter(adapter);
-        }
     }
 
     // 入会工具栏Adapter init
@@ -478,28 +367,6 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
         if (streamInfo == null) {
             return;
         }
-
-        parseRtcStreamInfoIfMyselfPreviewIsInRoadRender();
-
-        // 1. 小屏处理
-        if (displayVideoStreamInfo == null) {
-            // 1.1 大屏为空, 直接删除小屏
-            adapter.removeData(position);
-        } else {
-            // 1.2 大屏不为空, 大小屏交换
-            // 1.2.1 把大屏数据赋值给被点击的小屏
-            adapter.updateData(position, displayVideoStreamInfo);
-            // 1.2.2 小屏切换到小流
-            ThreadUtil.runOnSubThread(() ->
-                    rtcService.configRemoteCameraTrack(streamInfo.userId, false, true)
-            );
-        }
-
-        // 2. 大屏处理
-        // 2.1 把被点击的小屏数据赋值给大屏
-        displayVideoStreamInfo = streamInfo;
-        // 2.2 刷新大屏
-        refreshMainStream();
     }
 
     private void parseRtcStreamInfoIfMyselfPreviewIsInRoadRender() {
@@ -538,36 +405,101 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
                 .build();
     }
 
-    private void refreshMainStream() {
-        if (displayVideoStreamInfo == null) {
-            return;
+    private RtcDelegate ofRtcDelegate() {
+        if (rtcDelegate == null) {
+            rtcDelegate = new RtcDelegate(this, this, getUserId(), nick
+                    , roomChannel ,rtcService, view.rtcRenderContainer, this);
         }
 
-        // 主屏切换到大流
-        ThreadUtil.runOnSubThread(() ->
-                rtcService.configRemoteCameraTrack(displayVideoStreamInfo.userId, true, true)
-        );
+        return rtcDelegate;
+    }
 
-        AliRtcEngine.AliRtcVideoCanvas aliVideoCanvas = displayVideoStreamInfo.aliVideoCanvas;
-        if (aliVideoCanvas != null && aliVideoCanvas.view instanceof SophonSurfaceView) {
-            // true 在最顶层，会遮挡一切view
-            SophonSurfaceView surfaceView = (SophonSurfaceView) aliVideoCanvas.view;
-            surfaceView.setZOrderOnTop(false);
-            // true 如已绘制SurfaceView则在surfaceView上一层绘制。
-            surfaceView.setZOrderMediaOverlay(false);
-            view.rtcRenderContainer.removeAllViews();
+    @Override
+    public void onRtcStart() {
 
-            ViewParent parent = surfaceView.getParent();
-            if (parent instanceof ViewGroup) {
-                ((ViewGroup) parent).removeAllViews();
-            }
-            ViewUtil.setVisible(view.rtcRenderContainer);
-            view.rtcRenderContainer.addView(surfaceView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+    }
+
+    @Override
+    public void onRtcEnd() {
+        leaveRtcProcess();
+    }
+
+    @Override
+    public void onRtcGetKickedOffline() {
+        isJoined = false;
+        isApplyed = false;
+
+        loadUser(false);
+    }
+
+    @Override
+    public void onRtcLinkRequestRejected() {
+        isApplyed = false;
+    }
+
+    @Override
+    public void onRtcRemoteJoinSuccess(ConfUserEvent userEvent) {
+        isJoined = true;
+        loadUser(true);
+    }
+
+    @Override
+    public void onRtcJoinRtcSuccess() {
+
+    }
+
+    @Override
+    public void onRtcJoinRtcError(String msg) {
+        if (isOwner()) {
+            // 老师端上麦失败, 直接离开页面
+            DialogUtil.tips(context, "上麦失败: " + msg, this::finish);
+        } else {
+            // 学生上麦失败, 面板弹出错误信息
         }
     }
 
     @Override
-    public void onConfigurationChanged(@NonNull @NotNull Configuration newConfig) {
+    public void onUpdateSelfMicStatus(boolean mute) {
+
+    }
+
+    @Override
+    public void startRoadPublishSuccess() {
+        ViewUtil.setGone(view.startClass);
+    }
+
+    @Override
+    public void updateUser(Collection<RtcUser> users) {
+        if (rtcUserManager != null && Utils.isNotEmpty(users)) {
+            rtcUserManager.updateUser(users);
+            refreshStudentView();
+        }
+    }
+
+    @Override
+    public void usersLeave(ConfUserEvent confUserEvent) {
+        List<ConfUserModel> leaveUserList = confUserEvent.userList;
+        if (CollectionUtil.isEmpty(leaveUserList)) {
+            return;
+        }
+
+        boolean selfLeave = StreamSupport.stream(leaveUserList)
+                .anyMatch(userModel -> TextUtils.equals(userModel.userId, Const.currentUserId));
+        if (selfLeave) {
+            isJoined = false;
+            loadUser(false);
+        } else {
+            updateUser(RtcDelegate.convertIntoRtcUserListWithStatus(confUserEvent, RtcUserStatus.JOIN_FAILED));
+        }
+    }
+
+    @Override
+    public List<RtcUser> getUserList() {
+        return rtcUserManager != null ? rtcUserManager.getUserList() : null;
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         view.setOrientation(newConfig.orientation);
         super.onConfigurationChanged(newConfig);
     }
@@ -601,7 +533,7 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
             livePusherService.stopLive(new Callbacks.Log<>(TAG, "destroy live"));
         }
         // 下麦
-        rtcService.leaveRtc(destroyRtc);
+        ofRtcDelegate().leaveRtc(destroyRtc);
         super.finish();
     }
 
@@ -619,9 +551,6 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
         return isJoined;
     }
 
-    private boolean muteLocalMic;
-    private boolean muteLocalCamera;
-
     // 工具栏点击事件
     @Override
     public boolean onFunctionChecked(ClassFunctionsAdapter.FunctionName function) {
@@ -630,10 +559,7 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
             case Mute_Mic:
                 // 静音
                 if (isJoined) {
-                    muteLocalMic = !muteLocalMic;
-                    rtcService.muteLocalMic(muteLocalMic);
-                    //刷新UI
-                    adapter.updateLocalMic(roomChannel.getUserId(), muteLocalMic);
+                    ofRtcDelegate().muteLocalMic();
                 } else {
                     result = false;
                     showToast("上麦后可操作");
@@ -642,10 +568,7 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
             case Mute_Camera:
                 // 摄像头
                 if (isJoined) {
-                    muteLocalCamera = !muteLocalCamera;
-                    rtcService.muteLocalCamera(muteLocalCamera);
-                    //刷新UI
-                    adapter.updateLocalCamera(roomChannel.getUserId(), muteLocalCamera);
+                    ofRtcDelegate().muteLocalCamera();
                 } else {
                     result = false;
                     showToast("上麦后可操作");
@@ -658,7 +581,7 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
                 break;
             case Rotate_Camera:
                 // 翻转
-                rtcService.switchCamera();
+                ofRtcDelegate().switchCamera();
                 break;
             case Leave_Channel:
                 // 退出课程
@@ -693,34 +616,6 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
     private void refreshStudentView() {
         List<RtcUser> rtcUsers = rtcUserManager.getUserList();
         view.studentView.setData(rtcUsers);
-    }
-
-    private void leaveUser(ConfUserEvent confUserEvent) {
-        List<ConfUserModel> leaveUserList = confUserEvent.userList;
-        if (CollectionUtil.isEmpty(leaveUserList)) {
-            return;
-        }
-
-        boolean selfLeave = StreamSupport.stream(leaveUserList)
-                .anyMatch(userModel -> TextUtils.equals(userModel.userId, Const.currentUserId));
-        if (selfLeave) {
-            isJoined = false;
-            // 自己离会, 重新加载学生列表
-            loadUser(false);
-        } else {
-            // 别人离会, 刷新学生状态
-            updateConfUserData(confUserEvent, RtcUserStatus.LEAVE);
-        }
-
-        for (ConfUserModel model : leaveUserList) {
-            if (adapter != null) {
-                RtcStreamEvent rtcStreamEvent = new RtcStreamEvent.Builder()
-                        .setUserId(model.userId)
-                        .build();
-                adapter.removeData(rtcStreamEvent);
-            }
-            addSystemMessage(model.userId + ":已离开会议");
-        }
     }
 
     private class RoomEventHandlerImpl extends SampleRoomEventHandler {
@@ -786,305 +681,6 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
         public void onLiveStopped(LiveCommonEvent event) {
             if (!isOwner()) {
                 addSystemMessage("老师结束推流");
-            }
-        }
-    }
-
-    private class RtcEventHandlerImpl extends SampleRtcEventHandler {
-        @Override
-        public void onRtcStreamIn(RtcStreamEvent event) {
-            addSystemMessage("Rtc流进入: " + event.userId);
-            // 停止旁路拉流
-            rtcService.stopPlayRoad();
-            // 开始拉取rtc流
-            playRtc(event);
-        }
-
-        @Override
-        public void onRtcStreamUpdate(RtcStreamEvent event) {
-            addSystemMessage("Rtc流更新: " + event.userId);
-        }
-
-        @Override
-        public void onRtcStreamOut(String event) {
-            addSystemMessage("Rtc流退出: " + event);
-        }
-
-        @Override
-        public void onRtcUserInvited(ConfInviteEvent event) {
-            // 被邀请人Id
-            List<ConfUserModel> calleeList = event.calleeList;
-            if (CollectionUtil.isEmpty(calleeList)) {
-                return;
-            }
-
-            boolean needUpdateUserList = false;
-            String teacherNick = event.caller.nickname;
-            for (ConfUserModel userModel : calleeList) {
-                boolean isSelf = TextUtils.equals(userModel.userId, roomChannel.getUserId());
-                if (isSelf) {
-                    // 被邀请人是自己, 弹窗询问
-                    String message = teacherNick + "邀请你上麦，是否同意？";
-                    DialogUtil.confirm(context, message,
-                            () -> rtcService.joinRtc(nick),
-                            () -> rtcService.reportJoinStatus(RtcUserStatus.JOIN_FAILED, null)
-                    );
-                } else {
-                    // 被邀请人是其他人, 面板提示
-                    addSystemMessage(teacherNick + "正在邀请" + userModel.nickname + "上麦");
-
-                    // 用户列表更改为"呼叫中"
-                    RtcUser rtcUser = new RtcUser();
-                    rtcUser.userId = userModel.userId;
-                    rtcUser.status = RtcUserStatus.ON_JOINING;
-                    rtcUserManager.updateUser(rtcUser);
-                    needUpdateUserList = true;
-                }
-            }
-            if (needUpdateUserList) {
-                refreshStudentView();
-            }
-        }
-
-        @Override
-        public void onRtcKickUser(ConfUserEvent event) {
-            List<ConfUserModel> userList = event.userList;
-            if (CollectionUtil.isEmpty(userList)) {
-                return;
-            }
-
-            boolean needReloadUserList = false;
-            for (ConfUserModel userModel : userList) {
-                boolean isSelf = TextUtils.equals(userModel.userId, roomChannel.getUserId());
-                if (isSelf) {
-                    needReloadUserList = true;
-                    // 被踢的是自己, 离会
-                    showToast("老师已将你下麦");
-                    // 上下麦处理
-                    onStudentJoinChannel();
-                    functionAdapter.initAllBtnStatus();
-
-                } else {
-                    // 被踢的是其他人, 面板提示
-                    addSystemMessage(userModel.userId + "已下麦");
-                }
-            }
-            // 重新加载学生列表
-            if (needReloadUserList) {
-                loadUser(false);
-            }
-        }
-
-        @Override
-        public void onRtcLeaveUser(ConfUserEvent leaveUserEvent) {
-            // 用户离开课堂
-            leaveUser(leaveUserEvent);
-        }
-
-        @Override
-        public void onRtcStart(ConfEvent confStartEvent) {
-            // 老师开始上课
-            showToast("老师开始上课");
-            addSystemMessage("老师开始上课");
-        }
-
-        @Override
-        public void onRtcEnd(ConfEvent confEndEvent) {
-            // 会议结束
-            showToast("老师结束上课");
-            addSystemMessage("老师结束上课");
-            if (rtcService != null) {
-                rtcService.stopPreview();
-                rtcService.stopPlayRoad();
-                if (adapter != null) {
-                    adapter.removeAll();
-                }
-                leaveRtcProcess();
-                view.rtcRenderContainer.removeAllViews();
-                view.roadRenderContainer.removeAllViews();
-            }
-        }
-
-        @Override
-        public void onRtcApplyJoinChannel(ConfApplyJoinChannelEvent event) {
-            // 申请连麦
-            ConfUserModel applyUser = event.applyUser;
-            if (applyUser != null) {
-                addSystemMessage(applyUser.userId +
-                        (event.isApply ? "申请上麦" : "上麦申请已取消"));
-
-                ConfUserEvent appUserEvent = new ConfUserEvent();
-                appUserEvent.confId = event.confId;
-                appUserEvent.type = event.type;
-                appUserEvent.version = event.version;
-                List<ConfUserModel> confUserModel = new ArrayList<>();
-                confUserModel.add(applyUser);
-                appUserEvent.userList = confUserModel;
-                updateConfUserData(appUserEvent,
-                        event.isApply ? RtcUserStatus.APPLYING : RtcUserStatus.LEAVE);
-            }
-        }
-
-        @Override
-        public void onRtcHandleApplyChannel(ConfHandleApplyEvent event) {
-            // 申请连麦被拒绝
-            String message = "老师拒绝连麦申请";
-            addSystemMessage(message);
-            if (event.approve) {
-                // 老师统一申请, "申请中" 改为 "呼叫中"
-                rtcUserManager.updateUser(new RtcUser.Builder()
-                        .userId(event.uid)
-                        .status(RtcUserStatus.ON_JOINING)
-                        .build()
-                );
-                refreshStudentView();
-                return;
-            }
-
-            if (TextUtils.equals(event.uid, Const.currentUserId)) {
-                // 自己被拒绝, 申请上麦时弹窗提示, 并更改上麦按钮状态
-                DialogUtil.confirm(ClassroomActivity.this, message, null);
-                isApplyed = false;
-                functionAdapter.initAllBtnStatus();
-                functionAdapter.updateFunction(Join_RTC, "上麦");
-            } else {
-                // 别人被拒绝, 更改用户列表状态
-                if (isOwner()) {
-                    // 老师收到被拒绝的事件
-                    showToast(event.uid + "拒绝了您的邀请");
-                }
-                rtcUserManager.updateUser(new RtcUser.Builder()
-                        .userId(event.uid)
-                        .status(RtcUserStatus.LEAVE)
-                        .build()
-                );
-                refreshStudentView();
-            }
-        }
-
-        @Override
-        public void onRtcRemoteJoinSuccess(ConfUserEvent event) {
-            isJoined = true;
-            addSystemMessage("会议成员变更: " + JSON.toJSONString(event.userList));
-
-            // 重新加载学生列表
-            loadUser(true);
-        }
-
-        @Override
-        public void onRtcRemoteJoinFail(ConfUserEvent event) {
-            addSystemMessage("会议成员变更: " + JSON.toJSONString(event.userList));
-            updateConfUserData(event, RtcUserStatus.JOIN_FAILED);
-        }
-
-        @Override
-        public void onRtcConfUpdated(ConfEvent event) {
-            addSystemMessage("会议变更: " + JSON.toJSONString(event));
-        }
-
-        @Override
-        public void onRtcJoinRtcSuccess(View view) {
-            // 大班课的场景
-            if (isOwner()) {
-                // TODO: 2021/6/3 手动点击上课才触发
-                addSystemMessage("您已上麦成功");
-            } else {
-                // 学生
-                addSystemMessage("上麦成功");
-                functionAdapter.updateFunction(Join_RTC, "下麦");
-                // 更改按钮文案
-                // 预览自己
-                initAdapterIfNeed();
-                adapter.addOrUpdateData(assembleRtcStreamEventForSelf(true));
-            }
-        }
-
-        @Override
-        public void onRtcJoinRtcError(String event) {
-            if (isOwner()) {
-                // 老师端上麦失败, 直接离开页面
-                DialogUtil.tips(context, "上麦失败: " + event, ClassroomActivity.super::finish);
-            } else {
-                functionAdapter.initAllBtnStatus();
-                // 学生上麦失败, 面板弹出错误信息
-                addSystemMessage("上课失败, " + event);
-            }
-        }
-
-        @Override
-        public void onRtcNetworkQualityChanged(String uid) {
-            if (!hasShowNetwork) {
-                showToast(TextUtils.isEmpty(uid) ? "当前网络不佳" : "对方网络不佳");
-                hasShowNetwork = true;
-            }
-        }
-
-        @Override
-        public void onRtcUserAudioMuted(String uid) {
-            // 静音
-            if (adapter != null) {
-                adapter.updateLocalMic(uid, true);
-            }
-        }
-
-        @Override
-        public void onRtcUserAudioEnable(String uid) {
-            if (adapter != null) {
-                adapter.updateLocalMic(uid, false);
-            }
-        }
-
-        @Override
-        public void onRtcUserVideoMuted(String uid) {
-            if (adapter != null) {
-                adapter.updateLocalCamera(uid, true);
-            }
-        }
-
-        @Override
-        public void onRtcUserVideoEnable(String uid) {
-            if (adapter != null) {
-                adapter.updateLocalCamera(uid, false);
-            }
-        }
-    }
-
-    // 设置布局信息
-    public void setLayoutModel(RtcLayoutModel model) {
-        List userIds = new ArrayList();
-        switch (model) {
-            case ONE_GRID:
-                userIds.add(roomChannel.getRoomDetail().roomInfo.getOwnerId());
-                break;
-            case ONE_SUPPORT_FOUR:
-                getRtcUsers(userIds);
-                userIds.add(roomChannel.getRoomDetail().roomInfo.getOwnerId());
-                break;
-            case NINE_GRID:
-                getRtcUsers(userIds);
-                break;
-
-        }
-        rtcService.setLayout(userIds, model, new Callback<Void>() {
-            @Override
-            public void onSuccess(Void data) {
-                addSystemMessage("设置布局成功");
-            }
-
-            @Override
-            public void onError(String errorMsg) {
-                showToast(errorMsg);
-            }
-        });
-    }
-
-    private void getRtcUsers(List userIds) {
-        List<RtcUser> rtcUsers = view.studentView.getData();
-        if (rtcUsers != null) {
-            for (RtcUser rtcUser : rtcUsers) {
-                if (rtcUser.status == RtcUserStatus.ACTIVE) {
-                    userIds.add(rtcUser.userId);
-                }
             }
         }
     }
