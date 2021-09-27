@@ -1,10 +1,10 @@
 import { useRef, useState, useEffect, useMemo, useReducer } from 'react';
 import { IRouteComponentProps } from 'umi';
-import { createDom, randomNum } from '@/utils';
+import { createDom, randomNum, setPre, getUrlWithString } from '@/utils';
 import { message } from 'antd';
 import update from 'immutability-helper';
 import styles from './index.less';
-import './anime.less';
+import '../anime.less';
 
 const maxAnameCount = 6;
 const { EventNameEnum } = window.RoomPaasSdk;
@@ -67,7 +67,7 @@ export default function IndexPage(props: IRouteComponentProps) {
   // 获取channel实例
   const roomChannel = useMemo(() => {
     if (!window.roomEngine) {
-      props.history.replace('/');
+      props.history.replace('/m');
       window.location.reload();
     }
     return window.roomEngine.getRoomChannel(roomId);
@@ -125,7 +125,7 @@ export default function IndexPage(props: IRouteComponentProps) {
     props.history.replace('/roomList');
   };
   const addMsgItem = (messageItem: Message) => {
-    console.log(messageItem);
+    messageItem.content = getUrlWithString(messageItem.content);
     dispatch({
       type: actionTypes.addMsg,
       payload: messageItem,
@@ -204,7 +204,7 @@ export default function IndexPage(props: IRouteComponentProps) {
         res.commentModelList.forEach((item: any) => {
           messages.push({
             nickname: item.creatorNick,
-            content: item.content,
+            content: getUrlWithString(item.content),
           });
         });
         setMessageArray(messages);
@@ -219,7 +219,6 @@ export default function IndexPage(props: IRouteComponentProps) {
           container: '#player',
           width: '100%',
           height: '100%',
-          useArtc: true,
         });
         if (res.status === 1) {
           // 正在直播中
@@ -258,7 +257,7 @@ export default function IndexPage(props: IRouteComponentProps) {
         <div className={styles.top}>
           <div className={styles['room-info-container']}>
             <div className={styles['room-info']}>
-              <div className={styles.avatar}></div>
+              <div className={styles.avatar} onClick={setPre}></div>
               <div className={styles.info}>
                 <div className={styles.title}>{roomDetail.title}</div>
                 <div className={styles.data}>
@@ -284,8 +283,8 @@ export default function IndexPage(props: IRouteComponentProps) {
           <div className={styles['chat-window']}>
             {state.messageArray.map((data, index) => (
               <div className={styles['chat-item']} key={index}>
-                <span>{data.nickname ? data.nickname + '：' : ''}</span>
-                {data.content}
+                <span className={styles.emphasize}>{data.nickname ? data.nickname + '：' : ''}</span>
+                <span dangerouslySetInnerHTML={{ __html: data.content }}></span>
               </div>
             ))}
             <div

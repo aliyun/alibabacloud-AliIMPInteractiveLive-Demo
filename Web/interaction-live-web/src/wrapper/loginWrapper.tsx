@@ -12,8 +12,8 @@ export default (props: IRouteComponentProps) => {
         .map((item: string) => `${item}=${query[item]}`)
         .join('&');
   }
-  if (window.engineAuthed) {
-    return <div style={{ height: '100%' }}>{props.children}</div>;
+  if (window.roomEngine && window.roomEngine.isLogined) {
+    return props.children;
   } else if (isLogin) {
     return <Redirect to={`/doLogin?from=${props.match.path}${qs}`} />;
   } else {

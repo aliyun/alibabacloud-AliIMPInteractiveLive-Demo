@@ -2,20 +2,22 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { message } from 'antd';
 import styles from './index.less';
-import { doLogin } from '../biz/doLogin';
+import { doLogin } from '../../biz/doLogin';
 // 0. ts需要定义Window上的全局变量
 declare global {
   interface Window {
     RoomPaasSdk: any;
     roomEngine: any;
     roomChannel: any;
-    engineAuthed: boolean;
+    chatService: any;
+    liveService: any;
   }
 }
 
 export default function IndexPage() {
   const history = useHistory();
   const [nickname, setNickname] = useState('');
+
   const loginClickHandler = async () => {
     if (!nickname) {
       message.error('请输入昵称');

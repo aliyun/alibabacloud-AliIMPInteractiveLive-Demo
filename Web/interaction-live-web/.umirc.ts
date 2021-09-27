@@ -22,30 +22,46 @@ export default defineConfig({
       : '/favicon.ico',
   routes: [
     {
-      path: '/',
-      component: '@/layouts/index',
+      exact: true,
+      path: '/doLogin',
+      component: '@/pages/common/doLogin',
+      title: '互动直播DEMO',
+    },
+    {
+      exact: true,
+      path: '/lwpTest',
+      component: '@/pages/common/lwpTest',
+      title: 'lwp测试',
+    },
+    {
+      path: '/m',
+      component: '@/layouts/mobile/index',
       routes: [
         {
           exact: true,
-          path: '/',
-          component: '@/pages/index',
-          title: '阿里云互动直播',
-        },
-        {
-          exact: true,
-          path: '/doLogin',
-          component: '@/pages/doLogin',
-          title: '阿里云互动直播',
-        },
-        {
-          exact: true,
-          path: '/room',
-          component: '@/pages/room',
+          path: '/m/room',
+          component: '@/pages/room/mobile',
           title: '直播间',
-          wrappers: ['@/wrapper/loginWrapper'],
+          wrappers: ['@/wrapper/loginWrapper', '@/wrapper/uaWrapper'],
+        },
+      ],
+    },
+    {
+      path: '/',
+      component: '@/layouts/pc/index',
+      routes: [
+        {
+          path: '/',
+          component: '@/pages/login',
+          title: '互动直播DEMO',
         },
         {
-          exact: true,
+          path: '/room',
+          component: '@/pages/room/pc',
+          title: '直播间',
+          wrappers: ['@/wrapper/loginWrapper', '@/wrapper/uaWrapper'],
+        },
+        {
           path: '/roomList',
           component: '@/pages/roomList',
           title: '房间列表',

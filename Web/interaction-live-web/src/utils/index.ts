@@ -2,6 +2,7 @@ export interface BasicMap<U> {
   [index: string]: U;
 }
 
+// 创建一个dom元素
 export const createDom = (type = 'div', options: any, content = '') => {
   let dom = document.createElement(type);
   if (
@@ -17,11 +18,13 @@ export const createDom = (type = 'div', options: any, content = '') => {
   return dom;
 };
 
+// 获取一个max和min之间的随机数
 export const randomNum = (max: number, min: number) => {
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
 
-export const formatDate = (date: Date, fmt: string) => {
+// 格式化输出时间
+export const formatDate = (date: Date, fmt: string): string => {
   let o: BasicMap<number> = {
     'M+': date.getMonth() + 1,
     'd+': date.getDate(),
@@ -49,3 +52,54 @@ export const formatDate = (date: Date, fmt: string) => {
   }
   return fmt;
 };
+
+// 判断当前在哪个platform
+export const UA = (() => {
+  const ua = navigator.userAgent;
+  const isAndroid = /(?:Android)/.test(ua);
+  const isFireFox = /(?:Firefox)/.test(ua);
+  const isPad =
+    /(?:iPad|PlayBook)/.test(ua) ||
+    (isAndroid && !/(?:Mobile)/.test(ua)) ||
+    (isFireFox && /(?:Tablet)/.test(ua));
+  const isiPad =
+    /(?:iPad)/.test(ua) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  const isiPhone = /(?:iPhone)/.test(ua) && !isPad;
+  const isPC = !isiPhone && !isAndroid && !isPad && !isiPad;
+  return {
+    isPad,
+    isiPhone,
+    isAndroid,
+    isPC,
+    isiPad,
+  };
+})();
+
+// 把search分割成对象
+export const splitSearch = (search: string): BasicMap<any> => {
+  const result: BasicMap<string> = {};
+  try {
+    search
+      .split('?')[1]
+      .split('&')
+      .forEach((item: string) => {
+        const itemSplit = item.split('=');
+        result[itemSplit[0]] = itemSplit[1];
+      });
+    return result;
+  } catch (err) {
+    return {};
+  }
+};
+
+export const getUrlWithString = (str: string) => {
+  const reg = new RegExp('(https?|http|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]+[-A-Za-z0-9+&@#/%=~_|]');
+  if (reg.test(str)) {
+    const match = str.match(reg);
+    let newStr;
+    if (match && match[0]) newStr = match[0];
+    return str.replace(reg, `<a href="${newStr}" target="_blank">${newStr}</a>`);
+  }
+  return str;
+}

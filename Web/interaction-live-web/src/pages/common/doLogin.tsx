@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
 import { IRouteComponentProps } from 'umi';
-import styles from './index.less';
-import { doLogin } from '../biz/doLogin';
+import { doLogin } from '../../biz/doLogin';
 
-export default function IndexPage(props: IRouteComponentProps) {
+export default function DoLogin(props: IRouteComponentProps) {
+  // 从loginWrapper里跳过来
   const { from } = props.location.query;
   const query = props.location.query;
   let qs = '';
@@ -27,9 +27,13 @@ export default function IndexPage(props: IRouteComponentProps) {
           `${from ? from : '/roomList'}${qs ? `?${qs}` : ''}`,
         );
       })
-      .catch((err) => {
+      .catch(() => {
         props.history.replace('/');
       });
   }, []);
-  return <div className={styles['do-login']}>登录中</div>;
+  const loginStyle: any = {
+    textAlign: 'center',
+    paddingTop: '200px',
+  };
+  return <div style={loginStyle}>登录中</div>;
 }

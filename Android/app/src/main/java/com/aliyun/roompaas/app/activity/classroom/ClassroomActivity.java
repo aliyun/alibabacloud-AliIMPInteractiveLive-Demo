@@ -77,7 +77,6 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
     private WhiteboardService whiteboardService;
     private RtcService rtcService;
 
-    private StudentListAdapter adapter;
     private ClassFunctionsAdapter functionAdapter;
     private RtcStreamEvent displayVideoStreamInfo;
     private boolean isJoined;
@@ -261,9 +260,6 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
     void onStudentJoinChannel() {
         if (isJoined) {
             leaveRtcProcess();
-            if (adapter != null) {
-                adapter.removeAll();
-            }
             livePlayerService.tryPlay(new Callback<View>() {
                 @Override
                 public void onSuccess(View renderView) {
@@ -359,6 +355,7 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
         if (whiteboardService != null) {
             whiteboardService.onDestroyWhiteBoard();
         }
+        Utils.destroy(rtcDelegate);
     }
 
     @Override
