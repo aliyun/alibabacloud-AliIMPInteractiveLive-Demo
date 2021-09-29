@@ -16,6 +16,7 @@ import com.aliyun.roompaas.base.callback.Callbacks;
 import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.biz.RoomEngine;
 import com.aliyun.roompaas.biz.exposable.RoomChannel;
+import com.aliyun.roompaas.biz.exposable.model.Result;
 import com.aliyun.roompaas.chat.exposable.ChatService;
 import com.aliyun.roompaas.live.exposable.LivePlayerService;
 import com.aliyun.roompaas.live.exposable.LivePusherService;
@@ -95,17 +96,23 @@ public abstract class BaseRoomActivity extends BaseActivity {
     @CallSuper
     protected void init() {
         // 获取RoomChannel
-        roomChannel = RoomEngine.getInstance().getRoomChannel(roomId);
+        Result<RoomChannel> result = RoomEngine.getInstance().getRoomChannel(roomId);
+        if (!result.success) {
+            showToast(result.errorMsg);
+            return;
+        }
+
+        roomChannel = result.value;
         // 获取插件服务
-        chatService = roomChannel.getPluginService(ChatService.class);
-        liveService = roomChannel.getPluginService(LiveService.class);
+        chatService = this.roomChannel.getPluginService(ChatService.class);
+        liveService = this.roomChannel.getPluginService(LiveService.class);
         livePlayerService = liveService.getPlayerService();
         livePusherService = liveService.getPusherService();
         // 进房间
-        roomChannel.enterRoom(nick, new Callback<Void>() {
+        this.roomChannel.enterRoom(nick, new Callback<Void>() {
             @Override
             public void onSuccess(Void data) {
-                RoomDetail roomDetail = roomChannel.getRoomDetail();
+                RoomDetail roomDetail = BaseRoomActivity.this.roomChannel.getRoomDetail();
                 onEnterRoomSuccess(roomDetail);
             }
 

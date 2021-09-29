@@ -6,11 +6,9 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
-import com.alibaba.dingpaas.base.DPSAuthToken;
 import com.aliyun.roompaas.app.Const;
 import com.aliyun.roompaas.app.R;
 import com.aliyun.roompaas.app.activity.base.BaseActivity;
-import com.aliyun.roompaas.app.api.GetTokenApi;
 import com.aliyun.roompaas.app.helper.DoubleTripleClick;
 import com.aliyun.roompaas.app.helper.RoomHelper;
 import com.aliyun.roompaas.app.helper.Router;
@@ -22,7 +20,6 @@ import com.aliyun.roompaas.app.util.DialogUtil;
 import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.util.ViewUtil;
 import com.aliyun.roompaas.biz.RoomEngine;
-import com.aliyun.roompaas.biz.exposable.model.TokenInfo;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -106,36 +103,15 @@ public class CreateRoomActivity extends BaseActivity {
         disableInput();
 
         loginRequestFlowFinish.set(false);
-        GetTokenApi.getToken(userId, new Callback<DPSAuthToken>() {
+        roomEngine.auth(userId, new Callback<Void>() {
             @Override
-            public void onSuccess(DPSAuthToken token) {
+            public void onSuccess(Void data) {
                 if (loginRequestFlowFinish.get()) {
                     return;
                 }
-                TokenInfo tokenInfo = new TokenInfo();
-                tokenInfo.accessToken = token.accessToken;
-                tokenInfo.refreshToken = token.refreshToken;
-                roomEngine.auth(userId, tokenInfo, new Callback<Void>() {
-                    @Override
-                    public void onSuccess(Void data) {
-                        if (loginRequestFlowFinish.get()) {
-                            return;
-                        }
-                        loginSuccessProcess();
-                        enableInput();
-                        loginRequestFlowFinish.set(true);
-                    }
-
-                    @Override
-                    public void onError(String errorMsg) {
-                        if (loginRequestFlowFinish.get()) {
-                            return;
-                        }
-                        showToast("登录失败: " + errorMsg);
-                        enableInput();
-                        loginRequestFlowFinish.set(true);
-                    }
-                });
+                loginSuccessProcess();
+                enableInput();
+                loginRequestFlowFinish.set(true);
             }
 
             @Override
@@ -143,7 +119,7 @@ public class CreateRoomActivity extends BaseActivity {
                 if (loginRequestFlowFinish.get()) {
                     return;
                 }
-                showToast("获取Token失败: " + errorMsg);
+                showToast("登录失败: " + errorMsg);
                 enableInput();
                 loginRequestFlowFinish.set(true);
             }

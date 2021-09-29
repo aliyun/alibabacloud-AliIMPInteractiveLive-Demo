@@ -7,6 +7,7 @@ buildscript {
         mavenLocal()
         google()
         jcenter()
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/releases' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.0'
@@ -20,7 +21,7 @@ android {
 
     defaultConfig {
         applicationId "com.aliyun.roompaas.app"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
@@ -47,12 +48,59 @@ android {
 //        exclude 'META-INF/proguard/androidx-*'
 //    }
 
+    // 基础依赖
+    dependencies {
+        def USE_LIVE_PUSHER_VERSION_361 = true
+        if (USE_LIVE_PUSHER_VERSION_361) { // 使用 AlivcLivePusher:3.6.1
+            implementation "com.alivc.pusher:AlivcLivePusher:3.6.1@aar"
+            implementation "com.aliyun.roompaas.biz:AlivcReporter:1.2:release@aar"
+            implementation "com.aliyun.roompaas.biz:dps:3.0.0.17:release@aar"
+            implementation 'com.aliyun.rts.android:RtsSDK:1.8.0@aar'
+            implementation "com.alivc.conan:AlivcConan:1.0.5@aar"
+            implementation "com.aliyun.video.android:core:1.2.2"
+        } else { // 使用 AlivcLivePusher:4.2.1
+            implementation "com.alivc.pusher:AlivcLivePusher:4.2.1"
+            implementation "com.aliyun.roompaas.biz:dps:3.0.0.20:release@aar"
+        }
+
+        implementation 'com.aliyun.sdk.android:AlivcArtc:5.4.2.0@aar'
+
+        implementation "com.aliyun.roompaas.biz:openssl:1.1.1-ant:release@aar"
+        implementation "com.aliyun.roompaas.biz:xlite:1.0.2.9:release@aar"
+        implementation "com.aliyun.roompaas.biz:dmojo_support:1.0.1.12:release@aar"
+        implementation "com.aliyun.roompaas.biz:gaea:2.1.0.2-cloud:release@aar"
+
+        implementation 'com.aliyun.roompaas.biz:LiveFaceBeauty:3.6.1:release@aar'
+        implementation 'com.aliyun.roompaas.biz:AliyunPlayer:5.4.2.0-full:release@aar'
+
+        // rtc
+        implementation "com.aliyun.rtc:AliRTC-Full:2.4.1.2106161546375@aar"
+        // whiteboard
+        implementation "com.aliyun.roompaas.biz:WhiteBoardSDK:1.3.0:release@aar"
+    }
+
+    // 互动PaaS SDK依赖
+    dependencies {
+        def RELEASE_VER = '1.3.0'
+
+        implementation "com.aliyun.roompaas.biz:Base:${RELEASE_VER}:release@aar"
+        implementation "com.aliyun.roompaas.biz:Biz:${RELEASE_VER}:release@aar"
+        implementation "com.aliyun.roompaas.biz:Chat:${RELEASE_VER}:release@aar"
+        implementation "com.aliyun.roompaas.biz:Live:${RELEASE_VER}:release@aar"
+        implementation "com.aliyun.roompaas.biz:Player:${RELEASE_VER}:release@aar"
+        implementation "com.aliyun.roompaas.biz:CxxRelease:${RELEASE_VER}:release@aar"
+        // rtc
+        implementation "com.aliyun.roompaas.biz:Rtc:${RELEASE_VER}:release@aar"
+        // whiteboard
+        implementation "com.aliyun.roompaas.biz:Whiteboard:${RELEASE_VER}:release@aar"
+    }
+
     dependencies {
         implementation fileTree(dir: "libs", include: ["*.jar", "*.aar"])
         // noinspection GradleCompatible
         api 'com.android.support:appcompat-v7:28.0.0'
         // noinspection GradleCompatible
-        api ('com.android.support:recyclerview-v7:28.0.0')
+        api('com.android.support:recyclerview-v7:28.0.0')
         api 'com.android.support:support-annotations:28.0.0'
 
         // noinspection GradleDependency
@@ -65,6 +113,6 @@ android {
         api 'com.squareup.okhttp3:okhttp:3.11.0'
         api 'com.squareup.okio:okio:1.17.4'
 
-        implementation ("com.airbnb.android:lottie:${getProperty('version.lottie')}")
+        implementation("com.airbnb.android:lottie:${getProperty('version.lottie')}")
     }
 }

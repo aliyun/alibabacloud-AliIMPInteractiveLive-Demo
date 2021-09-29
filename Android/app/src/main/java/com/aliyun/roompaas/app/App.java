@@ -3,10 +3,14 @@ package com.aliyun.roompaas.app;
 import android.app.Application;
 import android.content.Context;
 
+import com.aliyun.roompaas.app.api.GetTokenApi;
 import com.aliyun.roompaas.app.sensitive.AllSensitive;
 import com.aliyun.roompaas.base.callback.Callbacks;
+import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.biz.EngineConfig;
 import com.aliyun.roompaas.biz.RoomEngine;
+import com.aliyun.roompaas.biz.exposable.TokenInfoGetter;
+import com.aliyun.roompaas.biz.exposable.model.TokenInfo;
 
 /**
  * @author puke
@@ -30,6 +34,12 @@ public class App extends Application {
                         .appId(Const.getAppId())
                         .appKey(Const.getAppKey())
                         .deviceId(Const.DEVICE_ID)
+                        .tokenInfoGetter(new TokenInfoGetter() {
+                            @Override
+                            public void getTokenInfo(String userId, Callback<TokenInfo> callback) {
+                                GetTokenApi.getToken(userId, callback);
+                            }
+                        })
                         .build(),
                 new Callbacks.Log<>(TAG, "init engine")
         );
