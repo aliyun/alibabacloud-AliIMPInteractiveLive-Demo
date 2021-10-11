@@ -127,11 +127,7 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
         whiteBoardVM.whiteBoardProcess();
 
         if (isOwner()) {
-            // 老师身份
-            // 展示开始上课
-            view.startClass.setVisibility(View.VISIBLE);
-            // 开始预览并上麦
-            previewAndJoin();
+            teacherSceneInit();
         } else {
             // 加载在线列表
             loadUser(false);
@@ -140,6 +136,12 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
             // 初始化工具栏
             initFunctionAdapterIfNeed();
         }
+    }
+
+    private void teacherSceneInit() {
+        ViewUtil.setVisible(view.startClass);
+        ViewUtil.setGone(view.endClass);
+        previewAndJoin();
     }
 
     private void previewAndJoin() {
@@ -253,6 +255,15 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
         if (!isJoined) {
             ofRtcDelegate().joinRtcWithConfig(1280, 720, nick);
             showToast("正在上麦, 请稍等...");
+        }
+    }
+
+    void onEndClass() {
+        if (isJoined) {
+            leaveRtcProcess();
+            if (isOwner()) {
+                teacherSceneInit();
+            }
         }
     }
 
@@ -463,6 +474,7 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
     @Override
     public void startRoadPublishSuccess() {
         ViewUtil.setGone(view.startClass);
+        ViewUtil.setVisible(view.endClass);
     }
 
     @Override

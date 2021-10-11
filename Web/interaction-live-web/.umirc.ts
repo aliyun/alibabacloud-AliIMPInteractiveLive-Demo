@@ -28,12 +28,6 @@ export default defineConfig({
       title: '互动直播DEMO',
     },
     {
-      exact: true,
-      path: '/lwpTest',
-      component: '@/pages/common/lwpTest',
-      title: 'lwp测试',
-    },
-    {
       path: '/m',
       component: '@/layouts/mobile/index',
       routes: [

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">room-paas-demo</string>
+    <string name="app_name">开源Demo</string>
 
     <string name="alivc_biginteractiveclass_string_resume">恢复</string>
     <string name="alivc_biginteractiveclass_string_open_camera">开启</string>

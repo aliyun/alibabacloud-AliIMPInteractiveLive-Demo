@@ -1,0 +1,115 @@
+.whiteboard {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  .whiteboard-tools {
+    z-index: 2;
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translate(0, -50%);
+    text-align: center;
+    font-size: 27px;
+    background: #ffffff;
+    box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    color: #555555;
+    .whiteboard-tools-item {
+      padding: 6px 12px;
+      cursor: pointer;
+    }
+    .active {
+      background-color: #f1f1f1;
+    }
+  }
+  .whiteboard-ctrl {
+    z-index: 2;
+    position: absolute;
+    left: 20px;
+    bottom: 45px;
+    font-size: 20px;
+    .whiteboard-option-ctrl {
+      display: inline-block;
+      text-align: center;
+      box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.12);
+      border-radius: 4px;
+      background-color: #ffffff;
+      margin-right: 20px;
+      padding: 4px;
+      .whiteboard-option-ctrl-item {
+        display: inline-block;
+        padding: 6px 12px;
+        border-right: 1px solid #f1f1f1;
+        cursor: pointer;
+        &:last-child {
+          border-right: none;
+        }
+      }
+    }
+    .whiteboard-size-ctrl {
+      display: inline-block;
+      text-align: center;
+      background: #ffffff;
+      box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.12);
+      border-radius: 4px;
+      margin-right: 20px;
+      .whiteboard-size-ctrl-allscreen {
+        display: inline-block;
+        padding: 0 18px;
+        border-right: 1px solid #f1f1f1;
+        cursor: pointer;
+      }
+      .whiteboard-size-ctrl-zoom {
+        display: inline-block;
+        padding: 10px 0;
+        .whiteboard-size-ctrl-zoom-item {
+          display: inline-block;
+          padding: 0 12px;
+          cursor: pointer;
+        }
+        .whiteboard-size-ctrl-zoom-text {
+          display: inline-block;
+          padding: 0 6px;
+          font-size: 16px;
+          cursor: pointer;
+          border: 1px solid #dadada;
+          background-color: #f7f7f7;
+        }
+      }
+      .whiteboard-size-ctrl-shot {
+        display: inline-block;
+        padding: 0 18px;
+        border-left: 1px solid #f1f1f1;
+      }
+    }
+    .whiteboard-page-ctrl {
+      display: inline-block;
+      text-align: center;
+      background: #ffffff;
+      box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.12);
+      border-radius: 4px;
+      padding: 10px 0;
+      .whiteboard-page-ctrl-flip {
+        display: inline-block;
+        .whiteboard-page-ctrl-flip-item {
+          display: inline-block;
+          padding: 0 10px;
+          cursor: pointer;
+        }
+        .whiteboard-page-ctrl-flip-text {
+          display: inline-block;
+          padding: 0 6px;
+          font-size: 16px;
+        }
+      }
+      .whiteboard-page-ctrl-addpage {
+        display: inline-block;
+        padding: 0 18px;
+        border-left: 1px solid #f1f1f1;
+        cursor: pointer;
+      }
+    }
+  }
+}

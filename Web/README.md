@@ -27,8 +27,8 @@ appId、appKey在钉钉群内联系对接人员获取。
 ```typescript
 export default {
   appId: 'xxxxxx', // 应用的appName
-  appKey: '468e317**********a64aed8a', // 应用的appKey
-  signSecret: 'h9***2' // 对称加密验签的secret，根据实际需求填写
+  appKey: 'xxxxxx', // 应用的appKey
+  signSecret: 'xxxxxx' // 对称加密验签的secret，根据实际需求填写
 }
 ```
 #### 4. 运行Demo

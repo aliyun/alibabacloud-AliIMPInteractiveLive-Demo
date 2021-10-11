@@ -1,0 +1,110 @@
+.student {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  background: #f2f9ff;
+  background-color: #f2f9ff;
+  flex: 1;
+  .student-main {
+    flex: 1;
+    position: relative;
+    .student-main-board {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 125px;
+      margin: 14px 0 9px 8px;
+      background-color: #000000;
+    }
+    .student-main-board-white {
+      background-color: #f8f8f8;
+    }
+  }
+  .student-chatarea {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    .student-chatarea-btn {
+      z-index: 99;
+      position: absolute;
+      top: 30px;
+      right: 20px;
+      padding: 1px 4px;
+      border-radius: 4px;
+      color: #ffffff;
+      cursor: pointer;
+      .window-change-icon {
+        color: #007aff;
+        font-size: 26px;
+      }
+    }
+    .student-chatarea-video {
+      margin: 14px 10px 0;
+      .student-chatarea-video-board {
+        background-color: #ffffff;
+        width: 320px;
+        height: 240px;
+      }
+    }
+  }
+  .student-change-area {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    .student-change-area-main {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 340px;
+      bottom: 134px;
+      margin: 14px 0 0 8px;
+      z-index: 2;
+    }
+    .student-change-area-second {
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 14px 9px 8px 8px;
+      z-index: 2;
+      width: 320px;
+      height: 240px;
+    }
+    .student-whiteboard-waitting {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('//img.alicdn.com/imgextra/i1/O1CN01b5XVVq1vHNJMioVnr_!!6000000006147-2-tps-699-651.png')
+        no-repeat;
+      background-size: 30%;
+      background-position: center;
+      background-color: #ffffff;
+    }
+    .student-video-waitting {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #c1c1c1;
+      border-radius: 4px;
+      color: #ffffff;
+      font-size: 25px;
+      .student-video-waitting-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        .student-video-waitting-icon-font-size {
+          font-size: 40px;
+        }
+      }
+    }
+  }
+}

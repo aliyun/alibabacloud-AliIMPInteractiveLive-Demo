@@ -48,6 +48,7 @@ public class ClassroomView {
     final ViewGroup roadRenderContainer;
     final ViewGroup rtcRenderContainer;
     final View startClass;
+    final View endClass;
     final RecyclerView studentList;
     final LinearLayout tabLayout;
     final ViewPager panel;
@@ -68,7 +69,9 @@ public class ClassroomView {
         roadRenderContainer = findView(R.id.classroom_road_render_container);
         rtcRenderContainer = roadRenderContainer;
         startClass = findView(R.id.classroom_start_class);
+        endClass = findView(R.id.endClass);
         ViewUtil.bindClickActionWithClickCheck(startClass, activity::onStartClass);
+        ViewUtil.bindClickActionWithClickCheck(endClass, activity::onEndClass);
         studentList = findView(R.id.studentRTCViewList);
         tabLayout = findView(R.id.classroom_tab);
         panel = findView(R.id.classroom_panel);
