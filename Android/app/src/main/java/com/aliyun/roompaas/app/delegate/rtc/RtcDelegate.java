@@ -9,7 +9,6 @@ import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import com.alibaba.dingpaas.rtc.ConfInfoModel;
 import com.alibaba.dingpaas.rtc.ConfUserModel;
 import com.alibaba.fastjson.JSON;
@@ -36,6 +35,7 @@ import com.aliyun.roompaas.base.util.ViewUtil;
 import com.aliyun.roompaas.biz.exposable.RoomChannel;
 import com.aliyun.roompaas.rtc.RtcLayoutModel;
 import com.aliyun.roompaas.rtc.SampleRtcEventHandler;
+import com.aliyun.roompaas.rtc.exposable.RTCBypassPeerVideoConfig;
 import com.aliyun.roompaas.rtc.exposable.RtcService;
 import com.aliyun.roompaas.rtc.exposable.RtcStreamConfig;
 import com.aliyun.roompaas.rtc.exposable.RtcUserStatus;
@@ -103,7 +103,9 @@ public class RtcDelegate extends SampleRtcEventHandler {
             return;
         }
 
-        rtcService.joinRtcWithConfig(new RtcStreamConfig(width, height), nick);
+        int resolutionType = width > height ? RtcStreamConfig.BypassLiveResolutionType.Type_1280x720 :
+                RtcStreamConfig.BypassLiveResolutionType.Type_720x1280;
+        rtcService.joinRtcWithConfig(new RtcStreamConfig(width, height, false, resolutionType), nick);
     }
 
     public View startRtcPreview() {
@@ -533,6 +535,19 @@ public class RtcDelegate extends SampleRtcEventHandler {
                 if (rtcDelegateReceiver != null) {
                     rtcDelegateReceiver.startRoadPublishSuccess();
                 }
+
+                RTCBypassPeerVideoConfig conf = new RTCBypassPeerVideoConfig(0f,0f,1,1,1,parseOwnerId());
+                rtcService.setCustomBypassLiveLayout(Collections.singletonList(conf), new Callback<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+
+                    }
+
+                    @Override
+                    public void onError(String s) {
+
+                    }
+                });
             } else {
                 toast("推流失败: " + errorMsg);
             }
