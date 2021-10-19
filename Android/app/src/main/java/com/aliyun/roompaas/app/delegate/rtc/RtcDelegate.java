@@ -103,9 +103,7 @@ public class RtcDelegate extends SampleRtcEventHandler {
             return;
         }
 
-        int resolutionType = width > height ? RtcStreamConfig.BypassLiveResolutionType.Type_1280x720 :
-                RtcStreamConfig.BypassLiveResolutionType.Type_720x1280;
-        rtcService.joinRtcWithConfig(new RtcStreamConfig(width, height, false, resolutionType), nick);
+        rtcService.joinRtcWithConfig(new RtcStreamConfig(width, height, false, RtcStreamConfig.BypassLiveResolutionType.Type_720x1280), nick);
     }
 
     public View startRtcPreview() {

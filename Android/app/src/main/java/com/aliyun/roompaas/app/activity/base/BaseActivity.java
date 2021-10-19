@@ -1,6 +1,7 @@
 package com.aliyun.roompaas.app.activity.base;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +28,13 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        StatusBarUtil.setStatusBarTransparentIfPossible(this);
+        if (shouldSetStatusBarToTransparent()) {
+            StatusBarUtil.immersive(this, Color.BLACK, 1f);
+        }
+    }
+
+    protected boolean shouldSetStatusBarToTransparent() {
+        return true;
     }
 
     protected void showToast(String toast) {
