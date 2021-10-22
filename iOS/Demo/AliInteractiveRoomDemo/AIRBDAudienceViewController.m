@@ -13,7 +13,6 @@
 #import "AIRBDToast.h"
 #import "AIRBDCommentView.h"
 #import "AIRBDItemsView.h"
-#import "AIRBDBeautySetsView.h"
 #import "AIRBDMorePanelView.h"
 #import "AIRBDItemsView.h"
 #import "UIColor+HexColor.h"
@@ -442,8 +441,8 @@
             self.roomModel.title = [info valueForKey:@"title"];
             self.roomModel.notice = [info valueForKey:@"notice"];
             self.roomModel.onlineCount = [[info valueForKey:@"onlineCount"] intValue];
-            [self.room.chat getCurrentChatInfoOnSuccess:^(int32_t totalComment, int32_t totalLike) {
-                self.roomModel.likeCount = totalLike;
+            [self.room.chat getCurrentChatInfoOnSuccess:^(NSDictionary * _Nonnull info) {
+                self.roomModel.likeCount = [[info valueForKey:@"total_like"] intValue];
                 [self updateRoomInfo];
             } onFailure:^(NSString * _Nonnull errMessage) {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -595,9 +594,9 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[AIRBDToast shareInstance] makeToast:@"发送成功" duration:1.0];
             });
-        } onFailure:^(NSString * _Nonnull errorMessage) {
+        } onFailure:^(AIRBErrorCode code, NSString * _Nonnull message)  {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [[AIRBDToast shareInstance] makeToast:[@"发送失败: " stringByAppendingString:errorMessage] duration:1.0];
+                [[AIRBDToast shareInstance] makeToast:[@"发送失败: " stringByAppendingString:message] duration:1.0];
             });;
         }];
     }

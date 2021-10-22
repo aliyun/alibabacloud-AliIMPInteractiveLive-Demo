@@ -13,13 +13,13 @@
 #import "AIRBDToast.h"
 #import "AIRBDCommentView.h"
 #import "AIRBDItemsView.h"
-#import "AIRBDBeautySetsView.h"
 #import "AIRBDMorePanelView.h"
 #import "AIRBDItemsView.h"
 #import "AIRBDetailsButton.h"
 #import "AIRBDEnvironments.h"
+#import "UITools/UIViewController+Extension.h"
 
-@interface AIRBDAnchorViewController ()<UITextFieldDelegate,AIRBRoomChannelDelegate,BeautySetsDelegate,UIGestureRecognizerDelegate, AIRBLivePusherDelegate,AIRBDMorePanelDelegate,AIRBDItemsViewDelegate>
+@interface AIRBDAnchorViewController ()<UITextFieldDelegate,AIRBRoomChannelDelegate,UIGestureRecognizerDelegate, AIRBLivePusherDelegate,AIRBDMorePanelDelegate,AIRBDItemsViewDelegate>
 
 @property (strong, nonatomic) UIImageView* backgroundView;
 
@@ -56,7 +56,6 @@
 
 @property (strong, nonatomic) AIRBDCommentView* commentView;
 @property (strong, nonatomic) AIRBDItemsView* membersView;
-@property (strong, nonatomic) AIRBDBeautySetsView* beautySetsView;
 
 @property (strong, nonatomic) AIRBRoomEngineConfig* config;
 @property (strong, nonatomic) id<AIRBRoomChannelProtocol> room;
@@ -454,27 +453,6 @@
     return _commentView;
 }
 
-- (AIRBDBeautySetsView *)beautySetsView{
-    if(!_beautySetsView){
-        AIRBDBeautySetsView* beautySetsView = [[AIRBDBeautySetsView alloc]initWithFrame:CGRectMake(0, 0, 260, 210)];
-        __weak typeof(self) weakSelf = self;
-        beautySetsView.backgroundColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:0.3];
-        beautySetsView.layer.masksToBounds = YES;
-        beautySetsView.layer.cornerRadius = 8;
-        [self.view addSubview:beautySetsView];
-        [beautySetsView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.equalTo(weakSelf.beautyButton.mas_top).with.offset(-260);
-            make.left.equalTo(weakSelf.view).with.offset(10);
-            make.height.mas_equalTo(220);
-            make.width.mas_equalTo(260);
-        }];
-        beautySetsView.beautySetsDelegate = self;
-        [beautySetsView loadSubviews];
-        _beautySetsView = beautySetsView;
-    }
-    return _beautySetsView;
-}
-
 - (AIRBDItemsView*) membersView{
     if(!_membersView){
         _membersView = [[AIRBDItemsView alloc]init];
@@ -506,7 +484,6 @@
         [self.view bringSubviewToFront:self.noticeButton];
         [self.view bringSubviewToFront:self.commentView];
         [self.view bringSubviewToFront:self.startLiveButton];
-        [self.beautySetsView setHidden:YES];
         [self.membersView setHidden:YES];
         [self moreButtonsPanel];
         
@@ -573,7 +550,9 @@
 }
 
 - (void)beautyButtonAction:(UIButton*)sender{
-    self.beautySetsView.hidden = !self.beautySetsView.hidden;
+    CGRect frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height - 200, self.view.frame.size.width, 200);
+    [self presentChildViewController:self.room.livePusher.beautyViewController animated:YES presentedFrame:frame direction:(AIRBDViewControllerPresentFromBottom)];
+    self.presentedChildViewController = self.room.livePusher.beautyViewController;
 }
 
 - (void)moreButtonAction:(UIButton*)sender{
@@ -723,6 +702,8 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     [self.view endEditing:YES];
+    [self dismissChildViewController:self.presentedChildViewController animated:YES];
+        
 //    self.commentView.hidden = !self.commentView.hidden;
     if(_morePanelShowed){
         [UIView animateWithDuration:0.2 animations:^{
@@ -876,12 +857,6 @@
     }
 }
 
-#pragma mark - AIRBDBeautySetsDelegate
-
--(void)beautySetsValueChanged:(AIRBLivePusherFaceBeautyOptions* _Nonnull) beautyOptions{
-    [self.room.livePusher updateFaceBeautyParameters:beautyOptions];
-}
-
 #pragma mark - AIRBRoomChannelProtocol
 
 - (void) onAIRBRoomChannelErrorWithCode:(AIRBErrorCode)code message:(NSString*)message{
@@ -897,7 +872,6 @@
             self.room.livePusher.delegate = self;
             self.roomEntered = YES;
             AIRBLivePusherOptions* options = [AIRBLivePusherOptions defaultOptions];
-            options.faceBeautyOptions.beautyMode = AIRBLivePushBeautyModeProfessional;
             [self.room.livePusher startLocalPreviewWithOptions:options];
             [self.room.livePusher setContentMode:AIRBVideoViewContentModeAspectFill];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -915,8 +889,8 @@
             self.roomModel.title = [info valueForKey:@"title"];
             self.roomModel.notice = [info valueForKey:@"notice"];
             self.roomModel.onlineCount = [[info valueForKey:@"onlineCount"] intValue];
-            [self.room.chat getCurrentChatInfoOnSuccess:^(int32_t totalComment, int32_t totalLike) {
-                self.roomModel.likeCount = totalLike;
+            [self.room.chat getCurrentChatInfoOnSuccess:^(NSDictionary * _Nonnull info) {
+                self.roomModel.likeCount = [[info valueForKey:@"total_like"] intValue];
                 [self updateRoomInfo];
             } onFailure:^(NSString * _Nonnull errMessage) {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -1011,8 +985,6 @@
     switch (event) {
         case AIRBLivePusherEventPreviewStarted: {
             dispatch_async(dispatch_get_main_queue(), ^{
-                self.roomModel.beautyOptions = self.room.livePusher.options.faceBeautyOptions;
-                self.beautySetsView.beautyOptions = self.roomModel.beautyOptions;
             });
             
         }
@@ -1060,9 +1032,9 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[AIRBDToast shareInstance] makeToast:@"发送成功" duration:1.0];
             });;
-        } onFailure:^(NSString * _Nonnull errorMessage) {
+        } onFailure:^(AIRBErrorCode code, NSString * _Nonnull message) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                [[AIRBDToast shareInstance] makeToast:[@"发送失败: " stringByAppendingString:errorMessage] duration:1.0];
+                [[AIRBDToast shareInstance] makeToast:[@"发送失败: " stringByAppendingString:message] duration:1.0];
             });;
         }];
         _sendField.text = nil;

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,7 +13,6 @@
 		274B310A2683632000E59317 /* AIRBDAudienceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274B30F82683631F00E59317 /* AIRBDAudienceViewController.m */; };
 		274B310B2683632000E59317 /* AIRBDSetRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274B30FA2683631F00E59317 /* AIRBDSetRoomViewController.m */; };
 		274B310C2683632000E59317 /* AIRBDRoomListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 274B30FD2683632000E59317 /* AIRBDRoomListCell.m */; };
-		274B310D2683632000E59317 /* AIRBDBeautySetsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 274B31002683632000E59317 /* AIRBDBeautySetsView.m */; };
 		274B310E2683632000E59317 /* AIRBDRoomInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 274B31012683632000E59317 /* AIRBDRoomInfoModel.m */; };
 		274B31152683633700E59317 /* AIRBDCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 274B31112683633700E59317 /* AIRBDCommentView.m */; };
 		274B31162683633700E59317 /* AIRBDCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 274B31122683633700E59317 /* AIRBDCommentCell.m */; };
@@ -25,40 +24,13 @@
 		276DE1CB266DB7100050A689 /* AIRBDItemsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 276DE1CA266DB7100050A689 /* AIRBDItemsView.m */; };
 		276DE1CE266DCD310050A689 /* AIRBDItemsViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 276DE1CD266DCD310050A689 /* AIRBDItemsViewCell.m */; };
 		27A58A88268C1C0A0091DB44 /* AIRBDetailsButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A58A87268C1C0A0091DB44 /* AIRBDetailsButton.m */; };
-		27B99B7A266A2AD700D68363 /* (null) in Frameworks */ = {isa = PBXBuildFile; };
-		27B99B7B266A2AD700D68363 /* (null) in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		27B99B7B266A2AD700D68363 /* BuildFile in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		27F76E4B2673053000743386 /* AIRBDStudentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F76E492673053000743386 /* AIRBDStudentViewController.m */; };
 		27F76E4C2673053000743386 /* AIRBDTeacherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F76E4A2673053000743386 /* AIRBDTeacherViewController.m */; };
-		27F76E4E2673055200743386 /* AliInteractiveRoomBundle.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 27F76E4D2673055200743386 /* AliInteractiveRoomBundle.xcassets */; };
 		27F76E69267359B700743386 /* AIRBDSystemInfoLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 27F76E68267359B700743386 /* AIRBDSystemInfoLabel.m */; };
-		7D2AC776265E436700A04E53 /* AlivcLibBeauty.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D2AC772265E434600A04E53 /* AlivcLibBeauty.framework */; };
-		7D2AC777265E436700A04E53 /* AlivcLibBeauty.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7D2AC772265E434600A04E53 /* AlivcLibBeauty.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		7D2AC778265E436800A04E53 /* AlivcLibFace.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D2AC773265E434600A04E53 /* AlivcLibFace.framework */; };
-		7D2AC779265E436800A04E53 /* AlivcLibFace.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7D2AC773265E434600A04E53 /* AlivcLibFace.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		7D77B49B26EB02C90060EE6C /* AliInteractiveRTCCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D77B49A26EB02C90060EE6C /* AliInteractiveRTCCore.framework */; };
-		7D77B49C26EB02D10060EE6C /* AliInteractiveRTCCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D77B49A26EB02C90060EE6C /* AliInteractiveRTCCore.framework */; };
-		7D77B49D26EB02D10060EE6C /* AliInteractiveRTCCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7D77B49A26EB02C90060EE6C /* AliInteractiveRTCCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		7D77B49E26EB02D90060EE6C /* AliInteractiveRTCCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D77B49A26EB02C90060EE6C /* AliInteractiveRTCCore.framework */; };
-		7D77B4A026EB02E60060EE6C /* AliInteractiveVideoPlayerCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D77B49F26EB02E60060EE6C /* AliInteractiveVideoPlayerCore.framework */; };
-		7D77B4A126EB02E90060EE6C /* AliInteractiveVideoPlayerCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D77B49F26EB02E60060EE6C /* AliInteractiveVideoPlayerCore.framework */; };
-		7D77B4A226EB02E90060EE6C /* AliInteractiveVideoPlayerCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7D77B49F26EB02E60060EE6C /* AliInteractiveVideoPlayerCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		7D77B4AD26EB0F710060EE6C /* AliInteractiveLiveCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D77B4AB26EB0F670060EE6C /* AliInteractiveLiveCore.framework */; };
-		7D77B4AE26EB0F710060EE6C /* AliInteractiveLiveCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7D77B4AB26EB0F670060EE6C /* AliInteractiveLiveCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		7D77B4B126EB1F780060EE6C /* AliInteractiveWhiteBoardCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D77B4AF26EB1F750060EE6C /* AliInteractiveWhiteBoardCore.framework */; };
-		7D77B4B226EB1F780060EE6C /* AliInteractiveWhiteBoardCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7D77B4AF26EB1F750060EE6C /* AliInteractiveWhiteBoardCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		7E887AC562361B861DBAC976 /* libPods-AliInteractiveRoomDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CB1FAC6C0BE31A2C0F997EB3 /* libPods-AliInteractiveRoomDemo.a */; };
-		ED3BA1E8265E3F3A00011B53 /* alivcffmpeg.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED3BA1E0265E3F3600011B53 /* alivcffmpeg.framework */; };
-		ED3BA1E9265E3F3A00011B53 /* alivcffmpeg.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED3BA1E0265E3F3600011B53 /* alivcffmpeg.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		ED3BA1EA265E3F3C00011B53 /* AlivcLibRtmp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED3BA1E3265E3F3600011B53 /* AlivcLibRtmp.framework */; };
-		ED3BA1EB265E3F3C00011B53 /* AlivcLibRtmp.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED3BA1E3265E3F3600011B53 /* AlivcLibRtmp.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		ED3BA1EC265E3F3D00011B53 /* AlivcLivePusher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED3BA1E1265E3F3600011B53 /* AlivcLivePusher.framework */; };
-		ED3BA1ED265E3F3D00011B53 /* AlivcLivePusher.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED3BA1E1265E3F3600011B53 /* AlivcLivePusher.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		ED3BA1EE265E3F3E00011B53 /* AliyunPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED3BA1E2265E3F3600011B53 /* AliyunPlayer.framework */; };
-		ED3BA1EF265E3F3E00011B53 /* AliyunPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED3BA1E2265E3F3600011B53 /* AliyunPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		ED80E9A6265E2B0E001179C9 /* AlivcLibFaceResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = ED80E9A4265E2B0E001179C9 /* AlivcLibFaceResource.bundle */; };
+		9652EF7D96641EB935AE3BF4 /* libPods-AliInteractiveRoomDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 131B8C73A5A984EFAFED6A15 /* libPods-AliInteractiveRoomDemo.a */; };
+		ED30BF86271FBB7600E3A2E6 /* UIViewController+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = ED30BF85271FBB7600E3A2E6 /* UIViewController+Extension.m */; };
 		ED9301092665148100434B7C /* AIRBDTeacherView.m in Sources */ = {isa = PBXBuildFile; fileRef = ED9301082665148100434B7C /* AIRBDTeacherView.m */; };
-		ED9301112665D5A600434B7C /* AliRTCSdk.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED93010F2665D59200434B7C /* AliRTCSdk.framework */; };
-		ED9301122665D5A600434B7C /* AliRTCSdk.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = ED93010F2665D59200434B7C /* AliRTCSdk.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EDB40282266E3A5800A581F4 /* AIRBDStudentListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = EDB40281266E3A5800A581F4 /* AIRBDStudentListCell.m */; };
 		EDB40286266E3CA100A581F4 /* AIRBDStudentListItemModel.m in Sources */ = {isa = PBXBuildFile; fileRef = EDB40285266E3CA100A581F4 /* AIRBDStudentListItemModel.m */; };
 		EDC9AB06265BC8E300D03163 /* AIRBDStudentView.m in Sources */ = {isa = PBXBuildFile; fileRef = EDC9AB05265BC8E300D03163 /* AIRBDStudentView.m */; };
@@ -74,8 +46,6 @@
 		EDD116CF2653B92100B69881 /* AIRBDToast.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD116CE2653B92100B69881 /* AIRBDToast.m */; };
 		EDD117942653BBB600B69881 /* HMACSHA1.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD1177D2653BBB500B69881 /* HMACSHA1.m */; };
 		EDD117952653BBB600B69881 /* Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = EDD1177E2653BBB500B69881 /* Utility.m */; };
-		EDD4F76C2697F4DA00988826 /* AliInteractiveRoomBundle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EDCFB06E268B557600205E2D /* AliInteractiveRoomBundle.framework */; };
-		EDD4F76D2697F4DA00988826 /* AliInteractiveRoomBundle.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EDCFB06E268B557600205E2D /* AliInteractiveRoomBundle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		EDFC283426574A40002B6DA3 /* AIRBDBigClassViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EDFC283326574A40002B6DA3 /* AIRBDBigClassViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -86,19 +56,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				7D77B4B226EB1F780060EE6C /* AliInteractiveWhiteBoardCore.framework in Embed Frameworks */,
-				ED9301122665D5A600434B7C /* AliRTCSdk.framework in Embed Frameworks */,
-				7D77B49D26EB02D10060EE6C /* AliInteractiveRTCCore.framework in Embed Frameworks */,
-				ED3BA1EB265E3F3C00011B53 /* AlivcLibRtmp.framework in Embed Frameworks */,
-				ED3BA1E9265E3F3A00011B53 /* alivcffmpeg.framework in Embed Frameworks */,
-				7D77B4A226EB02E90060EE6C /* AliInteractiveVideoPlayerCore.framework in Embed Frameworks */,
-				7D2AC779265E436800A04E53 /* AlivcLibFace.framework in Embed Frameworks */,
-				7D77B4AE26EB0F710060EE6C /* AliInteractiveLiveCore.framework in Embed Frameworks */,
-				ED3BA1ED265E3F3D00011B53 /* AlivcLivePusher.framework in Embed Frameworks */,
-				27B99B7B266A2AD700D68363 /* (null) in Embed Frameworks */,
-				EDD4F76D2697F4DA00988826 /* AliInteractiveRoomBundle.framework in Embed Frameworks */,
-				7D2AC777265E436700A04E53 /* AlivcLibBeauty.framework in Embed Frameworks */,
-				ED3BA1EF265E3F3E00011B53 /* AliyunPlayer.framework in Embed Frameworks */,
+				27B99B7B266A2AD700D68363 /* BuildFile in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -106,6 +64,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		131B8C73A5A984EFAFED6A15 /* libPods-AliInteractiveRoomDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AliInteractiveRoomDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		274B30F12683631E00E59317 /* AIRBDRoomListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDRoomListViewController.m; sourceTree = "<group>"; };
 		274B30F22683631F00E59317 /* AIRBDLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDLoginViewController.h; sourceTree = "<group>"; };
 		274B30F32683631F00E59317 /* AIRBDSetRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDSetRoomViewController.h; sourceTree = "<group>"; };
@@ -115,11 +74,9 @@
 		274B30F92683631F00E59317 /* AIRBDAudienceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDAudienceViewController.h; sourceTree = "<group>"; };
 		274B30FA2683631F00E59317 /* AIRBDSetRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDSetRoomViewController.m; sourceTree = "<group>"; };
 		274B30FB2683631F00E59317 /* AIRBDRoomInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDRoomInfoModel.h; sourceTree = "<group>"; };
-		274B30FC2683631F00E59317 /* AIRBDBeautySetsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDBeautySetsView.h; sourceTree = "<group>"; };
 		274B30FD2683632000E59317 /* AIRBDRoomListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDRoomListCell.m; sourceTree = "<group>"; };
 		274B30FE2683632000E59317 /* AIRBDRoomListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDRoomListCell.h; sourceTree = "<group>"; };
 		274B30FF2683632000E59317 /* AIRBDRoomListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDRoomListViewController.h; sourceTree = "<group>"; };
-		274B31002683632000E59317 /* AIRBDBeautySetsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDBeautySetsView.m; sourceTree = "<group>"; };
 		274B31012683632000E59317 /* AIRBDRoomInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDRoomInfoModel.m; sourceTree = "<group>"; };
 		274B31042683632000E59317 /* AIRBDAnchorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDAnchorViewController.h; sourceTree = "<group>"; };
 		274B310F2683633700E59317 /* AIRBDCommentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDCommentView.h; sourceTree = "<group>"; };
@@ -146,33 +103,20 @@
 		27A58A9F268C4DA20091DB44 /* AIRBDetailsButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDetailsButton.h; sourceTree = "<group>"; };
 		27F76E492673053000743386 /* AIRBDStudentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDStudentViewController.m; sourceTree = "<group>"; };
 		27F76E4A2673053000743386 /* AIRBDTeacherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDTeacherViewController.m; sourceTree = "<group>"; };
-		27F76E4D2673055200743386 /* AliInteractiveRoomBundle.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = AliInteractiveRoomBundle.xcassets; sourceTree = "<group>"; };
 		27F76E67267359B700743386 /* AIRBDSystemInfoLabel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AIRBDSystemInfoLabel.h; sourceTree = "<group>"; };
 		27F76E68267359B700743386 /* AIRBDSystemInfoLabel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AIRBDSystemInfoLabel.m; sourceTree = "<group>"; };
 		5F87BCE39EF8827BE3F38BF8 /* Pods-AliInteractiveRoomDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AliInteractiveRoomDemo.debug.xcconfig"; path = "Target Support Files/Pods-AliInteractiveRoomDemo/Pods-AliInteractiveRoomDemo.debug.xcconfig"; sourceTree = "<group>"; };
-		7D2AC772265E434600A04E53 /* AlivcLibBeauty.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlivcLibBeauty.framework; sourceTree = "<group>"; };
-		7D2AC773265E434600A04E53 /* AlivcLibFace.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlivcLibFace.framework; sourceTree = "<group>"; };
-		7D77B49A26EB02C90060EE6C /* AliInteractiveRTCCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AliInteractiveRTCCore.framework; sourceTree = "<group>"; };
-		7D77B49F26EB02E60060EE6C /* AliInteractiveVideoPlayerCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AliInteractiveVideoPlayerCore.framework; sourceTree = "<group>"; };
-		7D77B4AB26EB0F670060EE6C /* AliInteractiveLiveCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AliInteractiveLiveCore.framework; sourceTree = "<group>"; };
-		7D77B4AF26EB1F750060EE6C /* AliInteractiveWhiteBoardCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AliInteractiveWhiteBoardCore.framework; sourceTree = "<group>"; };
 		B81929F7DDFB649DAA828664 /* Pods-AliInteractiveRoomDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AliInteractiveRoomDemo.release.xcconfig"; path = "Target Support Files/Pods-AliInteractiveRoomDemo/Pods-AliInteractiveRoomDemo.release.xcconfig"; sourceTree = "<group>"; };
-		CB1FAC6C0BE31A2C0F997EB3 /* libPods-AliInteractiveRoomDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-AliInteractiveRoomDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		ED3BA1E0265E3F3600011B53 /* alivcffmpeg.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = alivcffmpeg.framework; sourceTree = "<group>"; };
-		ED3BA1E1265E3F3600011B53 /* AlivcLivePusher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlivcLivePusher.framework; sourceTree = "<group>"; };
-		ED3BA1E2265E3F3600011B53 /* AliyunPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AliyunPlayer.framework; sourceTree = "<group>"; };
-		ED3BA1E3265E3F3600011B53 /* AlivcLibRtmp.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AlivcLibRtmp.framework; sourceTree = "<group>"; };
-		ED80E9A4265E2B0E001179C9 /* AlivcLibFaceResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = AlivcLibFaceResource.bundle; sourceTree = "<group>"; };
+		ED30BF84271FBB7600E3A2E6 /* UIViewController+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Extension.h"; sourceTree = "<group>"; };
+		ED30BF85271FBB7600E3A2E6 /* UIViewController+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Extension.m"; sourceTree = "<group>"; };
 		ED9301072665148100434B7C /* AIRBDTeacherView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AIRBDTeacherView.h; sourceTree = "<group>"; };
 		ED9301082665148100434B7C /* AIRBDTeacherView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AIRBDTeacherView.m; path = AliInteractiveRoomDemo/AIRBDTeacherView.m; sourceTree = SOURCE_ROOT; };
-		ED93010F2665D59200434B7C /* AliRTCSdk.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AliRTCSdk.framework; sourceTree = "<group>"; };
 		EDB40280266E3A5800A581F4 /* AIRBDStudentListCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AIRBDStudentListCell.h; sourceTree = "<group>"; };
 		EDB40281266E3A5800A581F4 /* AIRBDStudentListCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AIRBDStudentListCell.m; sourceTree = "<group>"; };
 		EDB40284266E3CA100A581F4 /* AIRBDStudentListItemModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AIRBDStudentListItemModel.h; sourceTree = "<group>"; };
 		EDB40285266E3CA100A581F4 /* AIRBDStudentListItemModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AIRBDStudentListItemModel.m; sourceTree = "<group>"; };
 		EDC9AB04265BC8E300D03163 /* AIRBDStudentView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AIRBDStudentView.h; sourceTree = "<group>"; };
 		EDC9AB05265BC8E300D03163 /* AIRBDStudentView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AIRBDStudentView.m; sourceTree = "<group>"; };
-		EDCFB06E268B557600205E2D /* AliInteractiveRoomBundle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AliInteractiveRoomBundle.framework; sourceTree = "<group>"; };
 		EDCFB0BB268C8BAA00205E2D /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		EDCFB0C0268C97DE00205E2D /* AIRBDEnvironments.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AIRBDEnvironments.h; sourceTree = "<group>"; };
 		EDCFB0C3268C998600205E2D /* AIRBDEnvironments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDEnvironments.m; sourceTree = "<group>"; };
@@ -203,24 +147,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED3BA1EC265E3F3D00011B53 /* AlivcLivePusher.framework in Frameworks */,
-				7D77B49B26EB02C90060EE6C /* AliInteractiveRTCCore.framework in Frameworks */,
-				7D77B4B126EB1F780060EE6C /* AliInteractiveWhiteBoardCore.framework in Frameworks */,
-				ED3BA1EA265E3F3C00011B53 /* AlivcLibRtmp.framework in Frameworks */,
-				EDD4F76C2697F4DA00988826 /* AliInteractiveRoomBundle.framework in Frameworks */,
-				7D77B4A126EB02E90060EE6C /* AliInteractiveVideoPlayerCore.framework in Frameworks */,
-				7D77B49C26EB02D10060EE6C /* AliInteractiveRTCCore.framework in Frameworks */,
-				7D2AC776265E436700A04E53 /* AlivcLibBeauty.framework in Frameworks */,
 				EDCFB0BD268C8BBE00205E2D /* libresolv.tbd in Frameworks */,
-				7D77B4A026EB02E60060EE6C /* AliInteractiveVideoPlayerCore.framework in Frameworks */,
-				ED3BA1E8265E3F3A00011B53 /* alivcffmpeg.framework in Frameworks */,
-				ED9301112665D5A600434B7C /* AliRTCSdk.framework in Frameworks */,
-				27B99B7A266A2AD700D68363 /* (null) in Frameworks */,
-				ED3BA1EE265E3F3E00011B53 /* AliyunPlayer.framework in Frameworks */,
-				7D77B49E26EB02D90060EE6C /* AliInteractiveRTCCore.framework in Frameworks */,
-				7D77B4AD26EB0F710060EE6C /* AliInteractiveLiveCore.framework in Frameworks */,
-				7D2AC778265E436800A04E53 /* AlivcLibFace.framework in Frameworks */,
-				7E887AC562361B861DBAC976 /* libPods-AliInteractiveRoomDemo.a in Frameworks */,
+				9652EF7D96641EB935AE3BF4 /* libPods-AliInteractiveRoomDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +167,8 @@
 		272BD40126687AD00041DEAB /* UITools */ = {
 			isa = PBXGroup;
 			children = (
+				ED30BF84271FBB7600E3A2E6 /* UIViewController+Extension.h */,
+				ED30BF85271FBB7600E3A2E6 /* UIViewController+Extension.m */,
 				274B31132683633700E59317 /* AIRBDCommentCell.h */,
 				274B31122683633700E59317 /* AIRBDCommentCell.m */,
 				274B31102683633700E59317 /* AIRBDCommentModel.h */,
@@ -275,8 +205,6 @@
 		274B31222689640A00E59317 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				274B30FC2683631F00E59317 /* AIRBDBeautySetsView.h */,
-				274B31002683632000E59317 /* AIRBDBeautySetsView.m */,
 				274B30FE2683632000E59317 /* AIRBDRoomListCell.h */,
 				274B30FD2683632000E59317 /* AIRBDRoomListCell.m */,
 				274B313E26896A5800E59317 /* AIRBDMorePanelView.h */,
@@ -304,26 +232,6 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
-		ED80E9A3265E2B0E001179C9 /* ThirdLibrary */ = {
-			isa = PBXGroup;
-			children = (
-				EDCFB06E268B557600205E2D /* AliInteractiveRoomBundle.framework */,
-				ED93010F2665D59200434B7C /* AliRTCSdk.framework */,
-				7D77B4AB26EB0F670060EE6C /* AliInteractiveLiveCore.framework */,
-				7D2AC772265E434600A04E53 /* AlivcLibBeauty.framework */,
-				7D2AC773265E434600A04E53 /* AlivcLibFace.framework */,
-				ED3BA1E0265E3F3600011B53 /* alivcffmpeg.framework */,
-				ED3BA1E3265E3F3600011B53 /* AlivcLibRtmp.framework */,
-				7D77B4AF26EB1F750060EE6C /* AliInteractiveWhiteBoardCore.framework */,
-				7D77B49F26EB02E60060EE6C /* AliInteractiveVideoPlayerCore.framework */,
-				ED3BA1E1265E3F3600011B53 /* AlivcLivePusher.framework */,
-				7D77B49A26EB02C90060EE6C /* AliInteractiveRTCCore.framework */,
-				ED3BA1E2265E3F3600011B53 /* AliyunPlayer.framework */,
-				ED80E9A4265E2B0E001179C9 /* AlivcLibFaceResource.bundle */,
-			);
-			path = ThirdLibrary;
-			sourceTree = "<group>";
-		};
 		EDD116382653B66600B69881 = {
 			isa = PBXGroup;
 			children = (
@@ -346,7 +254,6 @@
 			isa = PBXGroup;
 			children = (
 				272BD40126687AD00041DEAB /* UITools */,
-				ED80E9A3265E2B0E001179C9 /* ThirdLibrary */,
 				EDFC28362657538F002B6DA3 /* BigClass */,
 				EDFC283526574C2D002B6DA3 /* Live */,
 				EDD1177C2653BBB500B69881 /* Utilities */,
@@ -359,7 +266,6 @@
 				EDD1164A2653B66600B69881 /* ViewController.h */,
 				EDD1164B2653B66600B69881 /* ViewController.m */,
 				EDD1164D2653B66600B69881 /* Main.storyboard */,
-				27F76E4D2673055200743386 /* AliInteractiveRoomBundle.xcassets */,
 				EDD116502653B66700B69881 /* Assets.xcassets */,
 				EDD116522653B66700B69881 /* LaunchScreen.storyboard */,
 				EDD116552653B66700B69881 /* Info.plist */,
@@ -374,7 +280,7 @@
 			isa = PBXGroup;
 			children = (
 				EDCFB0BB268C8BAA00205E2D /* libresolv.tbd */,
-				CB1FAC6C0BE31A2C0F997EB3 /* libPods-AliInteractiveRoomDemo.a */,
+				131B8C73A5A984EFAFED6A15 /* libPods-AliInteractiveRoomDemo.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -431,6 +337,8 @@
 				EDD1163E2653B66600B69881 /* Frameworks */,
 				EDD1163F2653B66600B69881 /* Resources */,
 				ED80E9AF265E2B75001179C9 /* Embed Frameworks */,
+				66675C4FA645A8B861E194DD /* [CP] Embed Pods Frameworks */,
+				C58DCBFF94BDDAFE8C945DCE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -477,9 +385,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED80E9A6265E2B0E001179C9 /* AlivcLibFaceResource.bundle in Resources */,
 				EDD116542653B66700B69881 /* LaunchScreen.storyboard in Resources */,
-				27F76E4E2673055200743386 /* AliInteractiveRoomBundle.xcassets in Resources */,
 				EDD116512653B66700B69881 /* Assets.xcassets in Resources */,
 				EDD1164F2653B66600B69881 /* Main.storyboard in Resources */,
 			);
@@ -508,6 +414,40 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		66675C4FA645A8B861E194DD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AliInteractiveRoomDemo/Pods-AliInteractiveRoomDemo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AliInteractiveRoomDemo/Pods-AliInteractiveRoomDemo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AliInteractiveRoomDemo/Pods-AliInteractiveRoomDemo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C58DCBFF94BDDAFE8C945DCE /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AliInteractiveRoomDemo/Pods-AliInteractiveRoomDemo-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-AliInteractiveRoomDemo/Pods-AliInteractiveRoomDemo-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AliInteractiveRoomDemo/Pods-AliInteractiveRoomDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -540,7 +480,6 @@
 				274B31062683632000E59317 /* AIRBDAnchorViewController.m in Sources */,
 				ED9301092665148100434B7C /* AIRBDTeacherView.m in Sources */,
 				EDD116572653B66700B69881 /* main.m in Sources */,
-				274B310D2683632000E59317 /* AIRBDBeautySetsView.m in Sources */,
 				275B777D267878CA00825192 /* AIRBDMultiRTCView.m in Sources */,
 				EDCFB0C4268C998600205E2D /* AIRBDEnvironments.m in Sources */,
 				EDD116CF2653B92100B69881 /* AIRBDToast.m in Sources */,
@@ -550,6 +489,7 @@
 				27F76E69267359B700743386 /* AIRBDSystemInfoLabel.m in Sources */,
 				EDD116492653B66600B69881 /* SceneDelegate.m in Sources */,
 				274B31152683633700E59317 /* AIRBDCommentView.m in Sources */,
+				ED30BF86271FBB7600E3A2E6 /* UIViewController+Extension.m in Sources */,
 				276DE1CB266DB7100050A689 /* AIRBDItemsView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -695,7 +635,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4JGNJS32Q8;
+				DEVELOPMENT_TEAM = 3QR448XZXA;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -712,7 +652,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/AliInteractiveRoomDemo/Frameworks/BabaSSL/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoed;
+				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoesd;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_WORKSPACE = YES;
@@ -726,7 +666,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4JGNJS32Q8;
+				DEVELOPMENT_TEAM = 3QR448XZXA;
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -743,7 +683,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/AliInteractiveRoomDemo/Frameworks/BabaSSL/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoed;
+				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_WORKSPACE = YES;

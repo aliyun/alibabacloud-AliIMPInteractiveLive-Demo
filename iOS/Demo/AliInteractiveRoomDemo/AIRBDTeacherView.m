@@ -1408,7 +1408,7 @@ const int32_t kStudentListRoomMemberPageSize = 10;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[AIRBDToast shareInstance] makeToast:@"发送成功" duration:1.0];
                 });;
-            } onFailure:^(NSString * _Nonnull errorMessage) {
+            } onFailure:^(AIRBErrorCode code, NSString * _Nonnull message) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[AIRBDToast shareInstance] makeToast:@"发送失败" duration:1.0];
                 });;
@@ -1570,7 +1570,7 @@ const int32_t kStudentListRoomMemberPageSize = 10;
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[AIRBDToast shareInstance] makeToast:@"发送成功" duration:1.0];
             });;
-        } onFailure:^(NSString * _Nonnull errorMessage) {
+        } onFailure:^(AIRBErrorCode code, NSString * _Nonnull message) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [[AIRBDToast shareInstance] makeToast:@"发送失败" duration:1.0];
             });;

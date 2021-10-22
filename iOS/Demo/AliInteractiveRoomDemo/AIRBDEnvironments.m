@@ -19,27 +19,21 @@
 }
 
 - (NSString*) interactiveLiveRoomAppID {
-    return @"";
 }
 
 - (NSString*) interactiveClassRoomAppID {
-    return @"";
 }
 
 - (NSString*) interactiveLiveRoomAppKey {
-    return @"";
 }
 
 - (NSString*) interactiveClassRoomAppKey {
-    return @"";
 }
 
 - (NSString*) appServerHost {
-    return @"";     // 例如：@"https://xxxxxxxx"  //
 }
 
 - (NSString*) signSecret {
-    return @"";
 }
 
 @end

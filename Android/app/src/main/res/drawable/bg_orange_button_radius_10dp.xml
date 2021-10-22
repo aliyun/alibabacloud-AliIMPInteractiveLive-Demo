@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:drawable="@drawable/bg_orange_button_press_radius_10dp" android:state_pressed="true" />
-
-    <item android:drawable="@drawable/bg_orange_button_normal_radius_10dp" />
-
-</selector>

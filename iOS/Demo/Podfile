@@ -6,10 +6,39 @@ platform :ios, '10.0'
 
 target 'AliInteractiveRoomDemo' do
   # Pods for AliInteractiveRoomDemo
+  
+  #阿里云低代码音视频工厂demo依赖的三方库
   pod 'Masonry'
-#  pod 'AliHAAdapter4Internal',   '10.0.5.51-only-crash-dt'
-#  pod 'AliHACore', '10.0.4.11-remove-uiwebview'
-#  pod 'AliHAPerformanceMonitor', '10.0.5.26'
-#  pod 'UserTrack', '6.3.6.98-noIdfa-nowv'
-#  pod 'tnet', '3.1.10.4'
+  
+  def common_version
+  '1.4.0-rc11'
+  end
+  
+  #阿里云低代码音视频工厂总入口库
+  pod 'AliInteractiveRoomBundle', common_version
+  
+  #阿里云低代码音视频工厂主播推流端相关库
+  pod 'AliInteractiveLiveCore', common_version
+  pod 'AlivcLivePusher', '4.2.1'
+  pod 'Queen', '1.4.1-official-lite'
+
+  #阿里云低代码音视频工厂观众拉流相关库
+  pod 'AliInteractiveVideoPlayerCore', common_version
+  pod 'AliPlayerSDK_iOS', '5.3.2'
+  pod 'AliPlayerSDK_iOS_ARTC', '5.3.2' #超低低延迟拉流相关
+  pod 'RtsSDK', '1.9.0'                #超低低延迟拉流相关
+
+  #阿里云低代码音视频工厂RTC相关库
+  pod 'AliInteractiveRTCCore', common_version
+  pod 'AliRTCSdk', '2.2'
+
+  #阿里云低代码音视频工厂白板能力相关库
+  pod 'AliInteractiveWhiteBoardCore', common_version
+
+  #阿里云低代码音视频工厂文档能力相关库
+  pod 'AliInteractiveDocumentCore', common_version
+
+  #阿里云低代码音视频工厂互动直播样板间相关库
+  pod 'AliStandardLiveRoomBundle', common_version
+  
 end
