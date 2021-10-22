@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    tools:layout_width="200dp"
+    android:layout_height="216dp"
+    android:layout_margin="3.5dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <ImageView
+        android:layout_margin="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/live_item_bg"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_gray_radius_10dp"
+        />
+
+    <RelativeLayout
+        android:paddingStart="7dp"
+        android:paddingEnd="7dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="9dp">
+
+        <com.aliyun.roompaas.base.view.RoundImageView
+            android:id="@+id/avatar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="bottom"
+            android:layout_marginRight="6dp"
+            android:src="@drawable/live_default_avatar"
+            app:cornerRadius="30dp"
+            app:type="round" />
+
+        <TextView
+            android:layout_toRightOf="@+id/avatar"
+            android:id="@+id/item_title"
+            android:lines="1"
+            android:maxLines="1"
+            android:maxWidth="100dp"
+            android:ellipsize="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#ffffff"
+            android:textSize="10sp"
+            android:paddingTop="1dp"
+            android:paddingBottom="1dp"
+            tools:text="房间标题房间标题房间标题房间标题房间标题" />
+
+        <TextView
+            android:id="@+id/item_is_owner"
+            android:layout_toRightOf="@+id/item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:background="@drawable/bg_orange_button"
+            android:paddingStart="3dp"
+            android:paddingTop="1dp"
+            android:paddingEnd="3dp"
+            android:paddingBottom="1dp"
+            android:text="房主"
+            android:lines="1"
+            android:maxLines="1"
+            android:textColor="#ffffff"
+            android:textSize="9sp"
+            android:visibility="gone"
+            tools:ignore="HardcodedText,SmallSp"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/item_id"
+            android:layout_alignStart="@+id/item_title"
+            android:layout_below="@+id/item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="1"
+            android:maxLines="1"
+            android:maxLength="6"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:layout_marginTop="1dp"
+            android:textColor="#f2f2f2"
+            android:textSize="12sp"
+            tools:text="sauyvbflkasojfpoasiofaisjkf" />
+
+        <TextView
+            android:id="@+id/item_copy"
+            android:layout_toRightOf="@+id/item_id"
+            android:layout_marginTop="1.5dp"
+            android:layout_alignTop="@+id/item_id"
+            android:lines="1"
+            android:maxLines="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/bg_orange_button"
+            android:paddingStart="6dp"
+            android:paddingTop="1dp"
+            android:paddingEnd="6dp"
+            android:paddingBottom="2dp"
+            android:text="复制ID"
+            android:textColor="#ffffff"
+            android:textSize="8sp"
+            tools:ignore="HardcodedText,SmallSp" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

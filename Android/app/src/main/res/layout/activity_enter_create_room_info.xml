@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/live_bg"
+    tools:ignore="HardcodedText">
+
+    <ImageView
+        android:id="@+id/icon_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|top"
+        android:padding="12dp"
+        android:contentDescription="@null"
+        android:src="@drawable/icon_back_round" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:layout_width="match_parent"
+            android:layout_height="88dp"
+            android:background="@drawable/bg_gray_radius_10dp">
+
+            <com.aliyun.roompaas.base.view.RoundImageView
+                android:id="@+id/avatar"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                app:cornerRadius="7dp"
+                app:type="round"
+                android:src="@drawable/live_default_avatar"
+                android:layout_marginRight="12dp"
+                />
+
+            <View
+                android:id="@+id/anchor"
+                android:layout_width="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_height="1px"/>
+
+            <EditText
+                android:id="@+id/form_room_name"
+                android:layout_above="@+id/anchor"
+                android:layout_marginBottom="5dp"
+                android:layout_toRightOf="@id/avatar"
+                android:layout_width="match_parent"
+                android:background="@android:color/transparent"
+                android:layout_height="wrap_content"
+                style="@style/SingleLineEditText"
+                android:textColor="@android:color/white"
+                android:hint="加个标题让更多人看见"
+                android:textColorHint="#c8c8c8"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_toRightOf="@+id/avatar"
+                android:layout_below="@+id/anchor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="昵称:"
+                    android:textColor="#f2f2f2"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/form_user_nick"
+                    android:layout_width="match_parent"
+                    android:background="@android:color/transparent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="5dp"
+                    android:paddingStart="5dp"
+                    android:paddingBottom="5dp"
+                    android:lines="1"
+                    android:maxLines="1"
+                    style="@style/SingleLineEditText"
+                    tools:text="名称"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp"
+                    android:hint="输入昵称"
+                    android:textColorHint="#c8c8c8"
+                    android:layout_weight="1" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/form_submit"
+            android:layout_marginTop="300dp"
+            android:layout_width="190dp"
+            android:layout_height="55dp"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:textSize="22sp"
+            android:background="@drawable/bg_orange_button_radius_10dp"
+            android:layout_gravity="center_horizontal|bottom"
+            android:text="开始直播"
+            />
+
+    </LinearLayout>
+
+</FrameLayout>

@@ -1,0 +1,56 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@drawable/bg_common_click"
+    android:clickable="true"
+    android:focusable="true">
+
+    <TextView
+        android:id="@+id/item_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/bg_orange_button_normal"
+        android:paddingStart="3dp"
+        android:paddingTop="1dp"
+        android:paddingEnd="3dp"
+        android:paddingBottom="2dp"
+        android:textColor="#ffffff"
+        android:textSize="9sp"
+        android:visibility="visible"
+        tools:ignore="SmallSp"
+        tools:text="会议中"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@id/item_status"
+        android:textColor="#333333"
+        android:textSize="15sp"
+        tools:text="用户昵称" />
+
+    <Button
+        android:id="@+id/item_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="12dp"
+        android:textSize="15sp"
+        android:visibility="gone"
+        tools:text="挂断"
+        tools:visibility="visible" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="#d4d4d4" />
+
+</RelativeLayout>

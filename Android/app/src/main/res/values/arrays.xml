@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="functions_portrait">
+        <item>静音</item>
+        <item>摄像头</item>
+        <item>连麦</item>
+        <item>翻转</item>
+    </string-array>
+    <string-array name="functions_landscape">
+        <item>静音</item>
+        <item>摄像头</item>
+        <item>连麦</item>
+        <item>翻转</item>
+        <item>退出课程</item>
+    </string-array>
+</resources>

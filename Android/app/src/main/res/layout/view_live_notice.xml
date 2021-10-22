@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@drawable/bg_live_notice"
+    tools:layout_gravity="center"
+    tools:layout_height="wrap_content"
+    tools:layout_width="wrap_content"
+    tools:minHeight="17.5dp"
+    tools:orientation="vertical"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <!-- 顶部 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="5.4dp"
+        android:paddingEnd="5.9dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:src="@drawable/icon_live_notice" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2.4dp"
+            android:text="公告"
+            android:textColor="#ffffff"
+            android:textSize="10sp"
+            tools:ignore="HardcodedText,SmallSp" />
+
+        <ImageView
+            android:id="@+id/view_expand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3.6dp"
+            android:contentDescription="@null"
+            android:src="@drawable/icon_arrow_down"
+            android:visibility="visible"
+            tools:visibility="visible" />
+
+    </LinearLayout>
+
+    <!-- 公告内容 -->
+    <TextView
+        android:id="@+id/view_notice"
+        android:layout_width="167dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:paddingTop="9dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="6.4dp"
+        android:drawableBottom="@drawable/icon_arrow_up"
+        android:drawablePadding="11.2dp"
+        android:lineSpacingExtra="4dp"
+        android:maxLines="4"
+        android:scrollbars="vertical"
+        android:textColor="#E7E7E7"
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:text="向观众介绍你的直播间吧～"
+        tools:visibility="visible" />
+</merge>

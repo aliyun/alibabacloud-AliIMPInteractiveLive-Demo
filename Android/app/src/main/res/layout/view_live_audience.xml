@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@drawable/bg_live_audience"
+    tools:gravity="center_vertical"
+    tools:layout_gravity="center"
+    tools:layout_height="17.5dp"
+    tools:layout_width="wrap_content"
+    tools:orientation="horizontal"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:contentDescription="@null"
+        android:src="@drawable/icon_live_audience" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="8dp"
+        android:text="观众"
+        android:textColor="#ffffff"
+        android:textSize="10sp"
+        tools:ignore="HardcodedText,SmallSp" />
+</merge>
