@@ -20,7 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.aliyun.roompaas.base.util.CommonUtil;
+import com.aliyun.roompaas.base.util.Utils;
 
 import java.lang.ref.WeakReference;
 
@@ -92,7 +92,7 @@ public class KeyboardUtil {
      * 唤起键盘触发布局调整等场景需要等待EditText处理
      */
     public static void showUpSoftKeyboard(final EditText input, final Activity activity, boolean withPostProcess) {
-        if (input == null || CommonUtil.isActivityInvalid(activity)) {
+        if (input == null || Utils.isActivityInvalid(activity)) {
             return;
         }
 
@@ -115,7 +115,7 @@ public class KeyboardUtil {
     public static void showKeyboardCoreProcess(WeakReference<EditText> inputRef, WeakReference<Activity> activityRef) {
         Activity activity = activityRef != null ? activityRef.get() : null;
         EditText input = inputRef != null ? inputRef.get() : null;
-        if (input == null || CommonUtil.isActivityInvalid(activity)) {
+        if (input == null || Utils.isActivityInvalid(activity)) {
             return;
         }
 
@@ -138,7 +138,7 @@ public class KeyboardUtil {
     }
 
     public static void hideKeyboard(EditText input, Activity activity) {
-        if (CommonUtil.isActivityInvalid(activity)) {
+        if (Utils.isActivityInvalid(activity)) {
             return;
         }
         View view = activity.getCurrentFocus();

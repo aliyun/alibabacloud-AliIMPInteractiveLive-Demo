@@ -31,7 +31,6 @@ import com.aliyun.roompaas.base.util.Check;
 import com.aliyun.roompaas.base.util.CollectionUtil;
 import com.aliyun.roompaas.base.util.ThreadUtil;
 import com.aliyun.roompaas.base.util.Utils;
-import com.aliyun.roompaas.base.util.ViewUtil;
 import com.aliyun.roompaas.biz.SampleRoomEventHandler;
 import com.aliyun.roompaas.biz.exposable.event.KickUserEvent;
 import com.aliyun.roompaas.biz.exposable.event.RoomInOutEvent;
@@ -46,6 +45,7 @@ import com.aliyun.roompaas.rtc.exposable.RtcService;
 import com.aliyun.roompaas.rtc.exposable.RtcUserStatus;
 import com.aliyun.roompaas.rtc.exposable.event.ConfUserEvent;
 import com.aliyun.roompaas.rtc.exposable.event.RtcStreamEvent;
+import com.aliyun.roompaas.uibase.util.ViewUtil;
 import com.aliyun.roompaas.whiteboard.exposable.WhiteboardService;
 
 import org.webrtc.sdk.SophonSurfaceView;

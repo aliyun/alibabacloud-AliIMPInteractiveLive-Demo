@@ -52,7 +52,7 @@
                 android:paddingRight="4dp">
 
                 <!-- 主播头像 -->
-                <com.aliyun.roompaas.base.view.RoundImageView
+                <com.aliyun.roompaas.uibase.view.RoundImageView
                     android:layout_width="36.5dp"
                     android:layout_height="36.5dp"
                     android:layout_gravity="center_vertical"

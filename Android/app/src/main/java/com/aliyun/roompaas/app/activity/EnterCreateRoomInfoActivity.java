@@ -18,8 +18,8 @@ import com.aliyun.roompaas.app.response.Response;
 import com.aliyun.roompaas.app.sp.SpHelper;
 import com.aliyun.roompaas.app.sp.UserSp;
 import com.aliyun.roompaas.base.exposable.Callback;
-import com.aliyun.roompaas.base.util.ViewUtil;
 import com.aliyun.roompaas.biz.RoomEngine;
+import com.aliyun.roompaas.uibase.util.ViewUtil;
 
 public class EnterCreateRoomInfoActivity extends BaseActivity {
 

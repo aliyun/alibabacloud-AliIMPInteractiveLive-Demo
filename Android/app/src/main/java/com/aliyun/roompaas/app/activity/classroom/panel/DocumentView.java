@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.aliyun.roompaas.app.R;
 import com.aliyun.roompaas.app.viewmodel.inter.IWhiteBoardOperate;
 import com.aliyun.roompaas.base.exposable.Callback;
-import com.aliyun.roompaas.base.util.ViewUtil;
+import com.aliyun.roompaas.uibase.util.ViewUtil;
 
 
 /**

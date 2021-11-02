@@ -40,7 +40,6 @@ import com.aliyun.roompaas.base.callback.Callbacks;
 import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.model.PageModel;
 import com.aliyun.roompaas.base.util.CollectionUtil;
-import com.aliyun.roompaas.base.util.ViewUtil;
 import com.aliyun.roompaas.biz.SampleRoomEventHandler;
 import com.aliyun.roompaas.biz.exposable.event.KickUserEvent;
 import com.aliyun.roompaas.biz.exposable.event.RoomInOutEvent;
@@ -56,6 +55,7 @@ import com.aliyun.roompaas.live.SampleLiveEventHandler;
 import com.aliyun.roompaas.live.exposable.AliLiveBeautyOptions;
 import com.aliyun.roompaas.live.exposable.event.LiveCommonEvent;
 import com.aliyun.roompaas.player.exposable.CanvasScale;
+import com.aliyun.roompaas.uibase.util.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -20,9 +20,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.aliyun.roompaas.app.R;
-import com.aliyun.roompaas.base.util.CommonUtil;
 import com.aliyun.roompaas.base.util.Utils;
-import com.aliyun.roompaas.base.util.ViewUtil;
+import com.aliyun.roompaas.uibase.util.ViewUtil;
 
 /**
  * @author puke
@@ -165,12 +164,12 @@ public class DialogUtil {
         ViewUtil.applyText(cancel, cancelPair != null ? cancelPair.first : null);
 
         ViewUtil.bindClickActionWithClickCheck(confirm, () -> {
-            CommonUtil.run(confirmPair != null ? confirmPair.second : null);
+            Utils.run(confirmPair != null ? confirmPair.second : null);
             dialog.dismiss();
         });
 
         ViewUtil.bindClickActionWithClickCheck(cancel, () -> {
-            CommonUtil.run(cancelPair != null ? cancelPair.second : null);
+            Utils.run(cancelPair != null ? cancelPair.second : null);
             dialog.dismiss();
         });
     }
@@ -196,7 +195,7 @@ public class DialogUtil {
 
         final Runnable existingConfirmTask = confirmPair != null ? confirmPair.second : null;
         result[0] = new Pair<>("确定", () -> {
-            CommonUtil.run(existingConfirmTask);
+            Utils.run(existingConfirmTask);
             String value = input.getText().toString().trim();
             inputCallback.onInput(value);
             KeyboardUtil.hideKeyboard(activity, input);
@@ -238,12 +237,12 @@ public class DialogUtil {
             });
             final Runnable existingConfirmTask = confirmPair != null ? confirmPair.second : null;
             confirmPair = new Pair<>("确定", () -> {
-                CommonUtil.run(existingConfirmTask);
+                Utils.run(existingConfirmTask);
                 if (selectedIndex == -1) {
                     return;
                 }
                 if (actions[selectedIndex] != null) {
-                    CommonUtil.run(actions[selectedIndex].runnable);
+                    Utils.run(actions[selectedIndex].runnable);
                 }
             });
         }

@@ -18,10 +18,10 @@ import com.aliyun.roompaas.app.delegate.rtc.StudentRtcDelegate;
 import com.aliyun.roompaas.app.helper.AliRtcHelper;
 import com.aliyun.roompaas.base.IDestroyable;
 import com.aliyun.roompaas.base.util.Utils;
-import com.aliyun.roompaas.base.util.ViewUtil;
 import com.aliyun.roompaas.biz.exposable.RoomChannel;
 import com.aliyun.roompaas.rtc.exposable.RtcService;
 import com.aliyun.roompaas.rtc.exposable.event.RtcStreamEvent;
+import com.aliyun.roompaas.uibase.util.ViewUtil;
 
 import java.util.Arrays;
 import java.util.List;

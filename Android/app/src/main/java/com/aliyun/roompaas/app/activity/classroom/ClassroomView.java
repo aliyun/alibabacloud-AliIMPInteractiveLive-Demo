@@ -23,7 +23,7 @@ import com.aliyun.roompaas.app.activity.classroom.panel.DocumentView;
 import com.aliyun.roompaas.app.activity.classroom.panel.StudentView;
 import com.aliyun.roompaas.app.helper.KeyboardHelper;
 import com.aliyun.roompaas.app.util.ScreenUtil;
-import com.aliyun.roompaas.base.util.ViewUtil;
+import com.aliyun.roompaas.uibase.util.ViewUtil;
 
 /**
  * @author puke

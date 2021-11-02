@@ -32,7 +32,7 @@
             android:layout_height="88dp"
             android:background="@drawable/bg_gray_radius_10dp">
 
-            <com.aliyun.roompaas.base.view.RoundImageView
+            <com.aliyun.roompaas.uibase.view.RoundImageView
                 android:id="@+id/avatar"
                 android:layout_width="70dp"
                 android:layout_height="70dp"

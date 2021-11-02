@@ -18,9 +18,8 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.aliyun.roompaas.app.R;
 import com.aliyun.roompaas.app.simple.SimpleAnimationListener;
 import com.aliyun.roompaas.app.simple.SimpleAnimatorListener;
-import com.aliyun.roompaas.base.util.CommonUtil;
 import com.aliyun.roompaas.base.util.Utils;
-import com.aliyun.roompaas.base.util.ViewUtil;
+import com.aliyun.roompaas.uibase.util.ViewUtil;
 
 import static android.animation.ValueAnimator.INFINITE;
 
@@ -64,7 +63,7 @@ public class AnimUtil {
             listenerAttached = true;
         }
         if (!listenerAttached) {
-            CommonUtil.run(endAction);
+            Utils.run(endAction);
         }
     }
 
@@ -100,7 +99,7 @@ public class AnimUtil {
             listenerAttached = true;
         }
         if (!listenerAttached) {
-            CommonUtil.run(endAction);
+            Utils.run(endAction);
         }
     }
 
@@ -136,7 +135,7 @@ public class AnimUtil {
             listenerAttached = true;
         }
         if (!listenerAttached) {
-            CommonUtil.run(endAction);
+            Utils.run(endAction);
         }
     }
 
@@ -174,7 +173,7 @@ public class AnimUtil {
             listenerAttached = true;
         }
         if (!listenerAttached) {
-            CommonUtil.run(endAction);
+            Utils.run(endAction);
         }
     }
 
@@ -201,7 +200,7 @@ public class AnimUtil {
             listenerAttached = true;
         }
         if (!listenerAttached) {
-            CommonUtil.run(endAction);
+            Utils.run(endAction);
         }
     }
 

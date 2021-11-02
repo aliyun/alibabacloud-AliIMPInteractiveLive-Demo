@@ -25,9 +25,9 @@ import com.aliyun.roompaas.app.util.DialogUtil;
 import com.aliyun.roompaas.base.callback.Callbacks;
 import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.util.CollectionUtil;
-import com.aliyun.roompaas.base.util.ViewUtil;
 import com.aliyun.roompaas.biz.RoomEngine;
 import com.aliyun.roompaas.biz.exposable.model.RoomParam;
+import com.aliyun.roompaas.uibase.util.ViewUtil;
 
 import java.util.ArrayList;
 import java.util.List;
