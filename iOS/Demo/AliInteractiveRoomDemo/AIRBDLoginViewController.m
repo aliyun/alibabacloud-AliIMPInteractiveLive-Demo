@@ -10,10 +10,12 @@
 #import "AIRBDBigClassViewController.h"
 #import "AIRBDRoomListViewController.h"
 #import <AliInteractiveRoomBundle/AliInteractiveRoomBundle.h>
+#import "基于样板间SDK/AIRBDLiveRoomViewController.h"
 #import "AIRBDToast.h"
 #import "Utility.h"
 #import "AIRBDEnvironments.h"
 #import <Masonry/Masonry.h>
+#
 
 @interface AIRBDLoginViewController ()<UITextFieldDelegate,AIRBRoomEngineDelegate>
 @property (strong, nonatomic) UIImageView* backgroundView;
@@ -154,15 +156,18 @@
 
 - (UIButton *)sceneButton{
     if(!_sceneButton){
-        UIButton* button = [[UIButton alloc]initWithFrame:CGRectMake(10, 40, 100, 40)];
+        UIButton* button = [[UIButton alloc]initWithFrame:CGRectMake(10, 40, 150, 40)];
         [button setBackgroundColor:[UIColor colorWithWhite:0.5 alpha:0.8]];
         int AIRBDSceneButtonTag = [[[NSUserDefaults standardUserDefaults] stringForKey:@"AIRBDSceneButtonTag"] intValue];
         if (AIRBDSceneButtonTag == 1){
             [button setTag:1];
-            [button setTitle:@"互动直播" forState:UIControlStateNormal];
-        } else {
+            [button setTitle:@"互动直播(SDK)" forState:UIControlStateNormal];
+        } else if (AIRBDSceneButtonTag == 0){
             [button setTag:0];
             [button setTitle:@"互动课堂" forState:UIControlStateNormal];
+        } else if (AIRBDSceneButtonTag == 2) {
+            [button setTag:2];
+            [button setTitle:@"互动直播(样板间)" forState:UIControlStateNormal];
         }
         
         [button addTarget:self action:@selector(sceneButtonAction) forControlEvents:UIControlEventTouchUpInside];
@@ -181,10 +186,12 @@
 }
 
 -(void)sceneButtonAction{
-    self.sceneButton.tag = 1 - self.sceneButton.tag;
-    if(self.sceneButton.tag == 1){
-        [self.sceneButton setTitle:@"互动直播" forState:UIControlStateNormal];
-    }else{
+    self.sceneButton.tag = (self.sceneButton.tag + 1) % 3;
+    if (self.sceneButton.tag == 2) {
+        [self.sceneButton setTitle:@"互动直播(样板间)" forState:UIControlStateNormal];
+    } else if(self.sceneButton.tag == 1){
+        [self.sceneButton setTitle:@"互动直播(SDK)" forState:UIControlStateNormal];
+    } else{
         [self.sceneButton setTitle:@"互动课堂" forState:UIControlStateNormal];
     }
     [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithLong:self.sceneButton.tag] forKey:@"AIRBDSceneButtonTag"];
@@ -230,7 +237,8 @@
 - (void) onAIRBRoomEngineEvent:(AIRBRoomEngineEvent)event info:(NSDictionary *)info {
     switch (event) {
         case AIRBRoomEngineEventEngineStarted:
-            [self requestTokenAndLogin];
+//            [self requestTokenAndLogin];
+            [[AIRBRoomEngine sharedInstance] loginWithUserID:self.userID];
             break;
         case AIRBRoomEngineEventEngineLogined: {
             static dispatch_once_t onceToken;
@@ -239,7 +247,7 @@
 //                    [self gotoSetRoomViewController];
                     if(self.sceneButton.tag == 1){
                         [self gotoRoomListViewController];//电商的房间列表
-                    }else{
+                    }else if (self.sceneButton.tag == 0) {
                         [self gotoBigClassViewController];
                     }
                 });
@@ -252,23 +260,8 @@
     }
 }
 
-- (void) onRoomEngineErrorWithCode:(AIRBErrorCode)code errorMessage:(NSString *)msg object:(AIRBRoomEngine *)object {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"登录出错(%ld, %@)", (long)code, msg] duration:3.0];
-        self.loginButton.enabled = YES;
-        for (id obj in [self.loginButton subviews]) {
-            if([obj isKindOfClass:[UILabel class]]){
-                [obj setText:@"重新登录"];
-                break;
-            }
-        }
-        self.userIDInputField.enabled = YES;
-    });
-    
-}
-
-- (void) requestTokenAndLogin {
-    NSString* path = [NSString stringWithFormat:@"%@/api/login/getToken", [AIRBDEnvironments shareInstance].appServerHost];
+- (void) onAIRBRoomEngineRequestToken:(void (^)(AIRBRoomEngineAuthToken * _Nonnull))onTokenGotten {
+    NSString* path = [NSString stringWithFormat:@"%@/api/login/getToken", [AIRBDEnvironments shareInstance].appServerUrl];
     NSString* s = [NSString stringWithFormat:@"%@?appId=%@&appKey=%@&userId=%@&deviceId=%@", path, self.config.appID, self.config.appKey, _userID, self.config.deviceID];
     
     NSString* dateString = [Utility currentDateString];
@@ -316,13 +309,28 @@
                     AIRBRoomEngineAuthToken* token = [[AIRBRoomEngineAuthToken alloc] init];
                     token.accessToken = [NSString stringWithString:[resultDic valueForKey:@"accessToken"]];
                     token.refreshToken = [NSString stringWithString:[resultDic valueForKey:@"refreshToken"]];
-                    [[AIRBRoomEngine sharedInstance] loginWithUserID:self.userID token:token];
+                    onTokenGotten(token);
                     return;
                 }
             }
         }
     }];
     [task resume];
+}
+
+- (void) onRoomEngineErrorWithCode:(AIRBErrorCode)code errorMessage:(NSString *)msg object:(AIRBRoomEngine *)object {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"登录出错(%ld, %@)", (long)code, msg] duration:3.0];
+        self.loginButton.enabled = YES;
+        for (id obj in [self.loginButton subviews]) {
+            if([obj isKindOfClass:[UILabel class]]){
+                [obj setText:@"重新登录"];
+                break;
+            }
+        }
+        self.userIDInputField.enabled = YES;
+    });
+    
 }
 
 - (void) gotoSetRoomViewController{
@@ -351,6 +359,14 @@
     
 }
 
+- (void) gotoInteracitveStandardLiveRoom {
+    
+    AIRBDLiveRoomViewController *vc = [[AIRBDLiveRoomViewController alloc] initWithUserID:self.userID liveId:nil role:AIRBDLiveRoomUserRoleAnchor title:@"测试直播"];
+    vc.edgesForExtendedLayout = UIRectEdgeNone;
+    vc.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void) loginButtonAction:(UIButton*)sender {
     
     [self.userIDInputField resignFirstResponder];
@@ -359,6 +375,12 @@
     }else{
         self.userID = [Utility randomNumString];
     }
+    
+    if (self.sceneButton.tag == 2) {
+        [self gotoInteracitveStandardLiveRoom];
+        return;
+    }
+    
     if (self.userID.length > 0) {
         for (id obj in [self.loginButton subviews]) {
             if([obj isKindOfClass:[UILabel class]]){

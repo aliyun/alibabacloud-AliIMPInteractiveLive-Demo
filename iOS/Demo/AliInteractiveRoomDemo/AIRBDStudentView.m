@@ -331,7 +331,7 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 50;
     return dataDic;
 }
 
-- (void) startTRCLink{
+- (void) startRTCLink{
     self.applyForRTCLinkButtonStatus = 2;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.room.livePlayer stop];
@@ -347,7 +347,7 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 50;
         
     }]; // 开启本地预览
     AIRBRTCConfig* config = [[AIRBRTCConfig alloc] init];
-    [self.room.rtc joinChannelWithConfig:config];
+    [self.room.rtc joinChannel];
     [self updateStudentListWhenJoinOrLeaveRTC:YES];
 }
 
@@ -361,7 +361,7 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 50;
 
 - (void) stopRTCLinkAndStartLivePlayer{
     self.applyForRTCLinkButtonStatus = 1;
-    [self.room.rtc leaveChannel];
+    [self.room.rtc leaveChannel:NO];
     [self updateStudentListWhenJoinOrLeaveRTC:NO];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.playerViewHolder.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
@@ -565,12 +565,12 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 50;
 
                     if ([self.userID isEqualToString:userIDCalled]){
 //                        if (self.applyForRTCLinkButtonStatus == 0){
-//                            [self startTRCLink];
+//                            [self startRTCLink];
 //                        } else if (self.applyForRTCLinkButtonStatus == 1) {    // 呼叫：接受/拒绝
                         dispatch_async(dispatch_get_main_queue(), ^{
                             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"您收到了老师的连麦邀请\n是否接受？" message:@"连麦成功后，即可与老师进行沟通" preferredStyle:UIAlertControllerStyleAlert];
                             [alertController addAction:[UIAlertAction actionWithTitle:@"接受" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                                [self startTRCLink];
+                                [self startRTCLink];
                             }]];
                             [alertController addAction:[UIAlertAction actionWithTitle:@"拒绝" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
                                 [self rejectRTCLinkInvitation];
@@ -780,7 +780,7 @@ const int32_t kStudentListRoomMemberPageSizeForStudentView = 50;
 }
 
 - (void) requestWhiteBoardAccessTokenWithDocKey:(NSString*)docKey completion:(void (^)(AIRBWhiteBoardToken* token))onGotToken {
-    NSString* path = [NSString stringWithFormat:@"%@/whiteboard/open", [AIRBDEnvironments shareInstance].appServerHost];
+    NSString* path = [NSString stringWithFormat:@"%@/whiteboard/open", [AIRBDEnvironments shareInstance].appServerUrl];
     NSString* s = [NSString stringWithFormat:@"%@?docKey=%@&userId=%@", path, docKey, self.userID];
     
     NSString* dateString = [Utility currentDateString];

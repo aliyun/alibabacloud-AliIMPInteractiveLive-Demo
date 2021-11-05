@@ -1,17 +1,19 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '10.0'
 
-#ali_source 'alibaba-specs'
-#ali_source 'alibaba-specs-mirror'
+source 'https://cdn.cocoapods.org/'
+source 'https://github.com/CocoaPods/Specs.git'
 
 target 'AliInteractiveRoomDemo' do
   # Pods for AliInteractiveRoomDemo
   
   #阿里云低代码音视频工厂demo依赖的三方库
   pod 'Masonry'
+  pod 'MJRefresh'
+  pod 'LEEAlert' 
   
   def common_version
-  '1.4.0-rc11'
+  '1.4.1.20211105001'
   end
   
   #阿里云低代码音视频工厂总入口库
@@ -40,5 +42,9 @@ target 'AliInteractiveRoomDemo' do
 
   #阿里云低代码音视频工厂互动直播样板间相关库
   pod 'AliStandardLiveRoomBundle', common_version
+
+  #阿里云低代码音视频工厂互动课堂样板间相关库
+#  pod 'AliStandardClassroomBundle', common_version
+  
   
 end

@@ -853,7 +853,7 @@ const int32_t kStudentListRoomMemberPageSize = 10;
     NSString* title = [NSString stringWithFormat:@"%@的课堂", self.userID];
     NSString* notice = [NSString stringWithFormat:@"%@的课堂公告", self.userID];
     
-    NSString* path = [NSString stringWithFormat:@"%@/api/login/createRoom", [AIRBDEnvironments shareInstance].appServerHost];
+    NSString* path = [NSString stringWithFormat:@"%@/api/login/createRoom", [AIRBDEnvironments shareInstance].appServerUrl];
     NSString* s = [NSString stringWithFormat:@"%@?appId=%@&templateId=%@&title=%@&notice=%@&roomOwnerId=%@", path, self.config.appID, templateId, title, notice, self.userID];
     
     NSString* dateString = [Utility currentDateString];
@@ -1243,7 +1243,7 @@ const int32_t kStudentListRoomMemberPageSize = 10;
             break;
             
         case AIRBRTCEventJoinSucceeded: {
-            [self.room.rtc startPublishingBypassLive];
+            [self.room.rtc startBypassLiveStreaming:AIRBRTCBypassLiveResolutionType_1280x720];
             break;
         }
         case AIRBRTCEventLeaveSucceeded: {
@@ -1310,7 +1310,7 @@ const int32_t kStudentListRoomMemberPageSize = 10;
 
 - (void) requestWhiteBoardAccessTokenWithDocKey:(NSString*)docKey completion:(void (^)(AIRBWhiteBoardToken* token))onGotToken {
     
-    NSString* path = [NSString stringWithFormat:@"%@/whiteboard/open", [AIRBDEnvironments shareInstance].appServerHost];
+    NSString* path = [NSString stringWithFormat:@"%@/whiteboard/open", [AIRBDEnvironments shareInstance].appServerUrl];
     NSString* s = [NSString stringWithFormat:@"%@?docKey=%@&userId=%@", path, docKey, self.userID];
     
     NSString* dateString = [Utility currentDateString];
@@ -1538,13 +1538,15 @@ const int32_t kStudentListRoomMemberPageSize = 10;
 
 - (void)startClassButtonAction:(UIButton*)sender {
     if ([sender.currentTitle isEqualToString:@"开始上课"]) {
-        AIRBRTCConfig* config = [[AIRBRTCConfig alloc] init];
-        [self.room.rtc joinChannelWithConfig:config];
+//        AIRBRTCConfig* config = [[AIRBRTCConfig alloc] init];
+//        self.room.rtc.config = config;    // rtc设置
+        [self.room.rtc joinChannel];
         sender.enabled = NO;
         sender.backgroundColor = [UIColor grayColor];
         [sender setTitle:@"正在启动" forState:UIControlStateNormal];
     } else if ([sender.currentTitle isEqualToString:@"结束上课"]) {
-        [self.room.rtc leaveChannel];
+        [self.room.rtc stopBypassLiveStreaming:YES];    // 停止旁路直播推流并结束直播
+        [self.room.rtc leaveChannel:YES];   // 离开rtc并结束rtc
         sender.backgroundColor = [UIColor grayColor];
         [sender setTitle:@"正在结束" forState:UIControlStateNormal];
     }

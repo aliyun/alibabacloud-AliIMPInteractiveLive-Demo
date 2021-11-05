@@ -755,7 +755,7 @@
     self.roomModel.notice = [NSString stringWithFormat:@"%@的直播间公告", self.roomModel.userID];
     
     NSString* templateId = @"default";
-    NSString* path = [NSString stringWithFormat:@"%@/api/login/createRoom", [AIRBDEnvironments shareInstance].appServerHost];
+    NSString* path = [NSString stringWithFormat:@"%@/api/login/createRoom", [AIRBDEnvironments shareInstance].appServerUrl];
     NSString* s = [NSString stringWithFormat:@"%@?appId=%@&templateId=%@&title=%@&notice=%@&roomOwnerId=%@", path, self.roomModel.config.appID, templateId, self.roomModel.title, self.roomModel.notice, self.roomModel.userID];
     
     NSString* dateString = [Utility currentDateString];
