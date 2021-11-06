@@ -10,12 +10,12 @@
 #import <Masonry/Masonry.h>
 
 #import "AIRBDToast.h"
-#import "../UITools/UIColor+HexColor.h"
-#import "../UITools/UIViewController+Extension.h"
+#import "../../UITools/UIColor+HexColor.h"
+#import "../../UITools/UIViewController+Extension.h"
 #import "AIRBDAbilityDemonstrationViewController.h"
 #import "AIRBDShopWindowViewController.h"
 #import "AIRBDShareViewController.h"
-#import "../AIRBDEnvironments.h"
+#import "../../AIRBDEnvironments.h"
 
 @interface AIRBDLiveRoomViewController () <ASLRBLiveRoomViewControllerDelegate>
 @property(nonatomic, copy) NSString* userID;

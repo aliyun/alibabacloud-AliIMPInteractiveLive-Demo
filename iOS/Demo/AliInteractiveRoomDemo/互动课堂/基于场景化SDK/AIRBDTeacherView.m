@@ -9,12 +9,12 @@
 
 #import <Masonry/Masonry.h>
 #import <AliInteractiveRoomBundle/AliInteractiveRoomBundle.h>
-#import "AIRBDCommentView.h"
-#import "AIRBDToast.h"
+#import "../../UITools/AIRBDCommentView.h"
+#import "../../UITools/AIRBDToast.h"
 #import "AIRBDStudentListCell.h"
 #import "AIRBDStudentListItemModel.h"
-#import "AIRBDMultiRTCView.h"
-#import "Utilities/Utility.h"
+#import "../../UITools/AIRBDMultiRTCView.h"
+#import "../../Utilities/Utility.h"
 #import "AIRBDEnvironments.h"
 
 const int32_t kStudentListRoomMemberPageSize = 10;

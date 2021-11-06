@@ -13,7 +13,7 @@
 #import "AIRBDStudentView.h"
 #import "AIRBDTeacherViewController.h"
 #import "AIRBDTeacherView.h"
-#import "Utilities/Utility.h"
+#import "../../Utilities/Utility.h"
 #import "AIRBDToast.h"
 
 static NSString * const DMClassTableCellIdentifier = @"DMClassTableCellIdentifier";

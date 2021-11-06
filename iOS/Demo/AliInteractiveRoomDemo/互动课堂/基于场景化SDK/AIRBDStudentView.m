@@ -12,7 +12,7 @@
 
 #import "AIRBDToast.h"
 #import "AIRBDCommentView.h"
-#import "Utilities/Utility.h"
+#import "../../Utilities/Utility.h"
 #import "AIRBDEnvironments.h"
 
 const int32_t kStudentListRoomMemberPageSizeForStudentView = 50;

@@ -9,7 +9,7 @@
 #import "AIRBDRoomInfoModel.h"
 #import <AliInteractiveRoomBundle/AliInteractiveRoomBundle.h>
 #import <Masonry/Masonry.h>
-#import "Utilities/Utility.h"
+#import "../../../Utilities/Utility.h"
 #import "AIRBDToast.h"
 #import "AIRBDCommentView.h"
 #import "AIRBDItemsView.h"

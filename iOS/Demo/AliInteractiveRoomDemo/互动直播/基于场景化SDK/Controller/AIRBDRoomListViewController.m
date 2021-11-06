@@ -13,7 +13,7 @@
 #import <AliInteractiveRoomBundle/AliInteractiveRoomBundle.h>
 #import "AIRBDToast.h"
 
-#import "AIRBDAudienceView.h"
+//#import "../View/AIRBDAudienceView.h"
 #import "AIRBDAudienceViewController.h"
 #import "AIRBDAnchorViewController.h"
 @interface AIRBDRoomListViewController ()<UICollectionViewDelegate,UICollectionViewDataSource>

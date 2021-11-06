@@ -10,7 +10,7 @@
 #import "AIRBDBigClassViewController.h"
 #import "AIRBDRoomListViewController.h"
 #import <AliInteractiveRoomBundle/AliInteractiveRoomBundle.h>
-#import "基于样板间SDK/AIRBDLiveRoomViewController.h"
+#import "互动直播/基于样板间SDK/AIRBDLiveRoomViewController.h"
 #import "AIRBDToast.h"
 #import "Utility.h"
 #import "AIRBDEnvironments.h"
