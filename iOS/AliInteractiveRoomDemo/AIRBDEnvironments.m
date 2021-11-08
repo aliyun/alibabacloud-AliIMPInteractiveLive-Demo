@@ -19,27 +19,27 @@
 }
 
 - (NSString*) interactiveLiveRoomAppID {
-    return [NSString stringWithFormat:@"%@", @"lq60cu"];
+    return [NSString stringWithFormat:@"%@", @""];
 }
 
 - (NSString*) interactiveClassRoomAppID {
-    return [NSString stringWithFormat:@"%@", @"9x8o9v"];
+    return [NSString stringWithFormat:@"%@", @""];
 }
 
 - (NSString*) interactiveLiveRoomAppKey {
-    return [NSString stringWithFormat:@"%@", @"633176a81841d2cd4f222e1afd5c423d"];
+    return [NSString stringWithFormat:@"%@", @""];
 }
 
 - (NSString*) interactiveClassRoomAppKey {
-    return [NSString stringWithFormat:@"%@", @"b9960baeb956e8c4fefa0bbf59a67527"];
+    return [NSString stringWithFormat:@"%@", @""];
 }
 
 - (NSString*) appServerUrl {
-    return [NSString stringWithFormat:@"%@", @"https://demo-appserver-livepaas.dingtalk.com"];
+    return [NSString stringWithFormat:@"%@", @""];
 }
 
 - (NSString*) signSecret {
-    return [NSString stringWithFormat:@"%@", @"h92kz2"];
+    return [NSString stringWithFormat:@"%@", @""];
 }
 
 @end

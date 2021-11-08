@@ -9,7 +9,7 @@
 #import <AliStandardLiveRoomBundle/AliStandardLiveRoomBundle.h>
 #import <Masonry/Masonry.h>
 
-#import "AIRBDToast.h"
+#import "../../UITools/AIRBDToast.h"
 #import "../../UITools/UIColor+HexColor.h"
 #import "../../UITools/UIViewController+Extension.h"
 #import "AIRBDAbilityDemonstrationViewController.h"
