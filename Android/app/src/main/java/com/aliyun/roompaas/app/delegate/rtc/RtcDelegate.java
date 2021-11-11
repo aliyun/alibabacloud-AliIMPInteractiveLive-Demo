@@ -27,9 +27,9 @@ import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.exposable.NegCallback;
 import com.aliyun.roompaas.base.exposable.PosCallback;
 import com.aliyun.roompaas.base.exposable.SimpleCallback;
+import com.aliyun.roompaas.base.log.Logger;
 import com.aliyun.roompaas.base.util.CollectionUtil;
 import com.aliyun.roompaas.base.util.CommonUtil;
-import com.aliyun.roompaas.base.util.LogUtils;
 import com.aliyun.roompaas.base.util.Utils;
 import com.aliyun.roompaas.biz.exposable.RoomChannel;
 import com.aliyun.roompaas.rtc.RtcLayoutModel;
@@ -215,7 +215,7 @@ public class RtcDelegate extends SampleRtcEventHandler {
         rtcService.getRtcDetail(new Callback<ConfInfoModel>() {
             @Override
             public void onSuccess(ConfInfoModel data) {
-                LogUtils.i(TAG, "queryRtcDetailInfo onSuccess: " + data);
+                Logger.i(TAG, "queryRtcDetailInfo onSuccess: " + data);
                 if (data != null && data.startTime != 0 && data.status == RoomHelper.ConferenceStatus.ON_GOING) {
                     Utils.run(ongoingAction);
                 } else {
@@ -225,7 +225,7 @@ public class RtcDelegate extends SampleRtcEventHandler {
 
             @Override
             public void onError(String errorMsg) {
-                LogUtils.i(TAG, "queryRtcDetailInfo onError: " + errorMsg);
+                Logger.i(TAG, "queryRtcDetailInfo onError: " + errorMsg);
                 Utils.run(notPresentingAction);
             }
         });
@@ -403,7 +403,7 @@ public class RtcDelegate extends SampleRtcEventHandler {
 
     @Override
     public void onRtcStart(ConfEvent confStartEvent) {
-        LogUtils.i(TAG, "onRtcStart" + confStartEvent);
+        Logger.i(TAG, "onRtcStart" + confStartEvent);
         // 老师开始上课
         toast("老师开始上课");
         addSystemMessage("老师开始上课");
@@ -414,7 +414,7 @@ public class RtcDelegate extends SampleRtcEventHandler {
 
     @Override
     public void onRtcEnd(ConfEvent confEndEvent) {
-        LogUtils.i(TAG, "onRtcEnd" + confEndEvent);
+        Logger.i(TAG, "onRtcEnd" + confEndEvent);
         toast("老师结束上课");
         addSystemMessage("老师结束上课");
 
@@ -743,7 +743,7 @@ public class RtcDelegate extends SampleRtcEventHandler {
 
     private void toast(CharSequence cs) {
         if (muteToastHint || TextUtils.isEmpty(cs) || isDestroyed()) {
-            LogUtils.i(TAG, "toast: end--invalid param: muteToastHint, cs= " + cs);
+            Logger.i(TAG, "toast: end--invalid param: muteToastHint, cs= " + cs);
             return;
         }
 

@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 import com.aliyun.roompaas.app.Const;
 import com.aliyun.roompaas.base.IDestroyable;
-import com.aliyun.roompaas.base.util.LogUtils;
+import com.aliyun.roompaas.base.log.Logger;
 import com.aliyun.roompaas.base.util.Utils;
 import com.aliyun.roompaas.rtc.exposable.RtcService;
 import com.aliyun.roompaas.rtc.exposable.event.RtcStreamEvent;
@@ -68,10 +68,10 @@ public class RtcSubscribeDelegate implements IDestroyable {
     }
 
     private void updateRtcStreamConfig(@Nullable RtcStreamEvent event, boolean enable) {
-        LogUtils.i(TAG, "updateRtcStreamConfig: " + event + ",enable=" + enable);
+        Logger.i(TAG, "updateRtcStreamConfig: " + event + ",enable=" + enable);
         RtcService rtcService = Utils.getRef(rtcServiceRef);
         if (rtcService == null || event == null || TextUtils.isEmpty(event.userId)) {
-            LogUtils.i(TAG, "updateRtcStreamConfig: end--invalid param: rtcService=" + rtcService + ",event=" + event);
+            Logger.i(TAG, "updateRtcStreamConfig: end--invalid param: rtcService=" + rtcService + ",event=" + event);
             return;
         }
 
