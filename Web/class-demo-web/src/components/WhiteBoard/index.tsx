@@ -1,448 +1,558 @@
-import { useState, useEffect } from 'react';
-import { message } from 'antd';
-import Emitter from '@/utils/emitter';
-import './whiteboard.less';
-declare global {
-  interface Window {
-    aliyunBoardSDK: any;
-  }
-}
-const { Canvas, OPReplayer } = window.aliyunBoardSDK;
-export default function WhiteBoard(props: any) {
-  const [toolSelect, setToolSelect] = useState(1);
-  const [scaleData, setScaleData] = useState(1);
-  const [nowPage, setNowPage] = useState(0);
-  const [allPage, setAllPage] = useState(1);
-  const [wbState, setWbState] = useState(!!window.aliyunBoard);
-  const emitter = Emitter.getInstance();
-  const toolsList = [
-    {
-      key: 1,
-      icon: '#icon-zhizhen',
-      tips: '指针',
-      attr: {
-        type: 'setToolType',
-        value: 'pointer',
-      },
-    },
-    {
-      key: 2,
-      icon: '#icon-kuangxuan',
-      tips: '框选',
-      attr: {
-        type: 'setToolType',
-        value: 'multiSelect',
-      },
-    },
-    {
-      key: 3,
-      icon: '#icon-huabi',
-      tips: '涂鸦',
-      attr: {
-        type: 'setToolType',
-        value: 'pen',
-      },
-    },
-    {
-      key: 4,
-      icon: '#icon-wenben1',
-      tips: '文本',
-      attr: {
-        type: 'setToolType',
-        value: 'text',
-      },
-    },
-    {
-      key: 5,
-      icon: '#icon-jiantou',
-      tips: '箭头',
-      attr: {
-        type: false,
-        value: undefined,
-      },
-    },
-    {
-      key: 6,
-      icon: '#icon-yanse',
-      tips: '颜料桶',
-      attr: {
-        type: false,
-        value: undefined,
-      },
-    },
-    {
-      key: 7,
-      icon: '#icon-tupian',
-      tips: '图片',
-      attr: {
-        type: 'addImage',
-        value: undefined,
-      },
-    },
-    {
-      key: 8,
-      icon: '#icon-tianjiawenjian',
-      tips: '背景图',
-      attr: {
-        type: 'addFile',
-        value: undefined,
-      },
-    },
-    {
-      key: 9,
-      icon: '#icon-xiangpi',
-      tips: '橡皮擦',
-      attr: {
-        type: 'setToolType',
-        value: 'eraser',
-      },
-    },
-    {
-      key: 10,
-      icon: '#icon-qingchu',
-      tips: '清屏',
-      attr: {
-        type: 'clearBoard',
-        value: undefined,
-      },
-    },
-  ];
-  const handleChangeTool = async (key: number) => {
-    setToolSelect(key);
-    const attr = toolsList.filter((data) => {
-      return data.key === key;
-    })[0].attr;
-    if (!attr.type) {
-      message.info('尚未开放，敬请期待');
-      return;
-    }
-    switch (attr.type) {
-      case 'setToolType':
-        window.aliyunBoard.setToolType(attr.value);
-        break;
-      case 'clearBoard':
-        window.aliyunBoard.clearBoard();
-        break;
-      case 'addImage':
-        message.info('尚未开放，敬请期待');
-        return;
-      // window.aliyunBoard.addImage();
-      // break;
-      case 'addFile':
-        /* Todo: 1. oss上传
-               2. LWP接口获得urlList，此处使用mock数据*/
+import { FC, useEffect, useState, useRef, useCallback } from 'react'
+import { RoomModelState, StatusModelState, connect, Dispatch } from 'umi'
+import { addZero, BasicMap } from '@/utils'
+import { message, Popover } from 'antd'
+import { usePersistFn, useMount } from 'ahooks'
+import Emitter from '@/utils/emitter'
+import styles from './index.less'
 
-        const urlLists = [
-          [
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/1.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/2.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/3.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/4.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/5.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/6.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/7.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/8.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/9.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/10.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/11.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/12.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/13.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/14.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/15.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/16.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/17.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/18.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/19.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/20.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/21.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/22.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/23.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/24.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/25.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/26.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/27.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/28.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/29.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/30.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/31.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/32.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/33.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/34.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/35.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/36.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/37.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/38.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/39.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/40.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/41.png',
-            'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/resources/sampleppt/42.png',
-          ],
-          [
-            'https://thumbs.dreamstime.com/b/event-curtain-3514076.jpg',
-            'https://thumbs.dreamstime.com/b/hand-open-stage-red-curtain-black-background-75322755.jpg',
-          ],
-          [
-            'https://thumbs.dreamstime.com/b/sunset-beach-tropical-palm-tree-over-beautiful-sky-palms-background-tourism-vacation-concept-backdrop-silhouettes-orange-110749931.jpg',
-            'https://thumbs.dreamstime.com/b/sunset-beach-sunrays-133301221.jpg',
-            'https://thumbs.dreamstime.com/b/couple-enjoy-luxury-sunset-beach-happy-summer-vacations-61373709.jpg',
-            'https://thumbs.dreamstime.com/b/yoga-sunset-beach-woman-doing-yoga-performing-asanas-enjoying-life-sea-53788457.jpg',
-            'https://thumbs.dreamstime.com/b/sunset-beach-thailand-43233574.jpg',
-          ],
-          [
-            'https://thumbs.dreamstime.com/b/sun-rays-mountain-landscape-5721010.jpg',
-            'https://thumbs.dreamstime.com/b/idyllic-summer-landscape-clear-mountain-lake-alps-panoramic-view-fresh-green-pastures-61422408.jpg',
-            'https://thumbs.dreamstime.com/b/panorama-mountain-landscape-sunset-slovakia-vrsatec-40370262.jpg',
-            'https://thumbs.dreamstime.com/b/mountains-flowers-blossom-sunrise-mountain-hills-beautiful-natural-landscape-summer-time-background-136448735.jpg',
-          ],
-        ];
-        const urlList = urlLists[Math.floor(Math.random() * 4)];
-        const index = window.aliyunBoard.getCurrentSceneIndex();
-        for (let i in urlList) {
-          await window.aliyunBoard.addScene();
-          await window.aliyunBoard.addBackgroundImage(urlList[i]);
-        }
-        window.aliyunBoard.gotoScene(index + 1);
-        setNowPage(index + 1);
-        setAllPage(allPage + urlList.length);
-        setToolSelect(-1);
-        break;
-      default:
-        break;
-    }
-  };
-  const handleReduce = () => {
-    if (scaleData <= 0.1) return;
-    const scale = Number(window.aliyunBoard.getScale().toFixed(2));
-    window.aliyunBoard.setScale(scale - 0.1);
-    setScaleData(scaleData - 0.1);
-  };
-  const handleIncrease = () => {
-    const scale = Number(window.aliyunBoard.getScale().toFixed(2));
-    window.aliyunBoard.setScale(scale + 0.1);
-    setScaleData(scaleData + 0.1);
-  };
-  const handlePageUp = () => {
-    if (nowPage === 0) return;
-    window.aliyunBoard.preScene();
-    setNowPage(nowPage - 1);
-  };
-  const handlePageDown = () => {
-    if (nowPage === allPage - 1) return;
-    window.aliyunBoard.nextScene();
-    setNowPage(nowPage + 1);
-  };
-  const init = () => {
-    if (!window.aliyunBoard) return;
-    window.aliyunBoard.setToolType('point');
-    if (props.role === 'student') {
-      window.aliyunBoard.setReadOnly(true);
-      return;
-    }
-    const nowAtPage = window.aliyunBoard.getCurrentSceneIndex();
-    const allOfPage = window.aliyunBoard.getScenesCount();
-    setNowPage(nowAtPage);
-    setAllPage(allOfPage);
-  };
-  const changeWhiteBoard = () => {
-    if (props.replayState) {
-      return (
-        <OPReplayer
-          model={window.replayAliyunBoard}
-          docKey={window.sessionStorage.getItem('docKey')}
-          accessToken={window.sessionStorage.getItem('accessToken')}
-          recordId={window.sessionStorage.getItem('recordId')}
-          // style={{ height: '100%', width: '100%' }}
-          containerStyle={{ height: '100%' }}
-        />
-      );
-    }
-    if (wbState) {
-      return (
-        <Canvas
-          model={window.aliyunBoard}
-          style={{ height: '100%', width: '100%' }}
-        />
-      );
-    }
-    return <></>;
-  };
-  const usePage = () => {
-    return (
-      <div className="whiteboard-page-ctrl">
-        <div className="whiteboard-page-ctrl-flip">
-          <div
-            className="whiteboard-page-ctrl-flip-item"
-            onClick={() => {
-              window.aliyunBoard.gotoScene(0);
-              setNowPage(0);
-            }}
-          >
-            <svg className="icon" aria-hidden="true">
-              <use xlinkHref="#icon-xiangzuofanye"></use>
-            </svg>
-          </div>
-          <div
-            className="whiteboard-page-ctrl-flip-item"
-            onClick={handlePageUp}
-          >
-            <svg className="icon" aria-hidden="true">
-              <use xlinkHref="#icon-fanye1"></use>
-            </svg>
-          </div>
-          <div className="whiteboard-page-ctrl-flip-text">
-            {nowPage + 1}/{allPage}
-          </div>
-          <div
-            className="whiteboard-page-ctrl-flip-item"
-            onClick={handlePageDown}
-          >
-            <svg className="icon" aria-hidden="true">
-              <use xlinkHref="#icon-fanye"></use>
-            </svg>
-          </div>
-          <div
-            className="whiteboard-page-ctrl-flip-item"
-            onClick={() => {
-              window.aliyunBoard.gotoScene(allPage - 1);
-              setNowPage(allPage - 1);
-            }}
-          >
-            <svg className="icon" aria-hidden="true">
-              <use xlinkHref="#icon-xiangyoufanye"></use>
-            </svg>
-          </div>
-        </div>
-        <div
-          className="whiteboard-page-ctrl-addpage"
-          onClick={() => {
-            window.aliyunBoard.addScene();
-            setNowPage(nowPage + 1);
-            setAllPage(allPage + 1);
-          }}
-        >
-          <svg className="icon" aria-hidden="true">
-            <use xlinkHref="#icon-tianjiawenjian"></use>
-          </svg>
-        </div>
-      </div>
-    );
-  };
-  const useZoom = () => {
-    return (
-      <div className="whiteboard-size-ctrl">
-        <div className="whiteboard-size-ctrl-allscreen">
-          <svg className="icon" aria-hidden="true">
-            <use xlinkHref="#icon-kuangxuan2"></use>
-          </svg>
-        </div>
-        <div className="whiteboard-size-ctrl-zoom">
-          <div
-            className="whiteboard-size-ctrl-zoom-item"
-            onClick={handleReduce}
-          >
-            <svg className="icon" aria-hidden="true">
-              <use xlinkHref="#icon-jian"></use>
-            </svg>
-          </div>
-          <div className="whiteboard-size-ctrl-zoom-text">
-            {(scaleData * 100).toFixed(0)}%
-          </div>
-          <div
-            className="whiteboard-size-ctrl-zoom-item"
-            onClick={handleIncrease}
-          >
-            <svg className="icon" aria-hidden="true">
-              <use xlinkHref="#icon-jia"></use>
-            </svg>
-          </div>
-        </div>
-        <div className="whiteboard-size-ctrl-shot">
-          <svg className="icon" aria-hidden="true">
-            <use xlinkHref="#icon-jiandao"></use>
-          </svg>
-        </div>
-      </div>
-    );
-  };
-  const useOpration = () => {
-    return (
-      <div className="whiteboard-option-ctrl">
-        <div
-          className="whiteboard-option-ctrl-item"
-          onClick={() => {
-            window.aliyunBoard.undo();
-          }}
-        >
-          <svg className="icon" aria-hidden="true">
-            <use xlinkHref="#icon-chehui"></use>
-          </svg>
-        </div>
-        <div
-          className="whiteboard-option-ctrl-item"
-          onClick={() => {
-            window.aliyunBoard.redo();
-          }}
-        >
-          <svg className="icon" aria-hidden="true">
-            <use xlinkHref="#icon-zhongzuo"></use>
-          </svg>
-        </div>
-      </div>
-    );
-  };
-  const useTool = () => {
-    return (
-      <div className="whiteboard-tools">
-        {toolsList.map((data) => {
-          return (
-            <div
-              key={data.key}
-              className={`whiteboard-tools-item ${
-                data.key === toolSelect ? 'active' : ''
-              }`}
-              onClick={() => {
-                handleChangeTool(data.key);
-              }}
-              title={data.tips}
-            >
-              <svg className="icon" aria-hidden="true">
-                <use xlinkHref={data.icon}></use>
-              </svg>
-            </div>
-          );
-        })}
-      </div>
-    );
-  };
-  const whiteboardTool = () => {
-    if (props.windowChangeData) {
-      window.aliyunBoard.setScale(scaleData);
-      return (
-        <>
-          {props.role === 'teacher' ? useTool() : ''}
-          <div className="whiteboard-ctrl">
-            {props.role === 'teacher' ? useOpration() : ''}
-            {useZoom()}
-            {props.role === 'teacher' ? usePage() : ''}
-          </div>
-        </>
-      );
-    }
-    window.aliyunBoard.setScale(scaleData * 0.3);
-    return <></>;
-  };
-  useEffect(() => {
-    emitter.on('initBoard', () => {
-      setWbState(!!window.aliyunBoard);
-    });
-    emitter.on('boardReady', () => {
-      init();
-    });
-  }, []);
-  return (
-    <div className="whiteboard">
-      {changeWhiteBoard()}
-      {wbState && !props.replayState ? whiteboardTool() : null}
-    </div>
-  );
+const emitter = Emitter.getInstance()
+
+interface PageProps {
+  room: RoomModelState
+  status: StatusModelState
+  dispatch: Dispatch
+  boardType: 'pure' | 'full'
 }
+
+interface whiteBoardTool {
+  label: string
+  type: string
+  icon?: string
+  callback: () => any
+  disable?: boolean
+}
+
+interface whiteBoardPageInfo {
+  whiteboardPage: number
+  groupPage: number
+  group: string
+}
+
+const { Canvas, AliyunBoard } = window.aliyunBoardSDK
+
+const WhiteBoard: FC<PageProps> = ({ room, status, dispatch, boardType }) => {
+  const [page, setPage] = useState(1)
+  const [inputPage, setInputPage] = useState(1)
+  const [maxPage, setMaxPage] = useState(1)
+  const [scale, setScale] = useState(1)
+  const [currentTool, setCurrentTool] = useState('画笔')
+  const [previewList, setPreviewList] = useState<string[]>([])
+  const [groupList, setGroupList] = useState<any[]>([])
+  const [showSidebar, setShowSidebar] = useState(boardType === 'full') // 是否显示sidebar，负责切换视图时直接隐藏
+  const [slidebarExpand, setSlidebarExpand] = useState(true) // 是否将sidebar展开，负责白板视图时收起与放开
+
+  const getDocumentData = async () => {
+    return (await window.wbService.getWbToken(room.docKey)).documentAccessInfo
+  }
+
+  const aliyunBoardConfig = {
+    getDocumentData,
+    docKey: room.docKey,
+    syncModel: 1,
+    maxSceneCount: 100000,
+    minScale: 0.1,
+    maxScale: 3,
+    fitMode: 1,
+    forceSync: true,
+    pointerMultiSelect: false,
+    enableGasture: true,
+    schema: {
+      size: {
+        width: 40,
+        height: 22.5,
+        dpi: 144,
+      },
+      slides: [
+        {
+          id: '1',
+          background: 'rgba(255, 255, 255, 1)',
+        },
+      ],
+    },
+  }
+
+  const aliyunBoardRef = useRef(new AliyunBoard(aliyunBoardConfig))
+
+  const paintTools: whiteBoardTool[] = [
+    {
+      label: '点选',
+      type: 'icon',
+      icon: '#icon-zhizhen',
+      callback: () => {
+        setCurrentTool('点选')
+        aliyunBoardRef.current.setToolType('pointer')
+      },
+    },
+    {
+      label: '框选',
+      type: 'icon',
+      icon: '#icon-kuangxuan',
+      callback: () => {
+        setCurrentTool('框选')
+        aliyunBoardRef.current.setToolType('multiSelect')
+      },
+    },
+    {
+      label: '画笔',
+      type: 'icon',
+      icon: '#icon-huabi',
+      callback: () => {
+        setCurrentTool('画笔')
+        aliyunBoardRef.current.setToolType('pen')
+      },
+    },
+    {
+      label: '文本',
+      type: 'icon',
+      icon: '#icon-wenben1',
+      callback: () => {
+        setCurrentTool('文本')
+        aliyunBoardRef.current.setToolType('text')
+      },
+    },
+    {
+      label: '激光笔',
+      type: 'icon',
+      icon: '#icon-jiguangbi',
+      callback: () => {
+        setCurrentTool('激光笔')
+        aliyunBoardRef.current.setToolType('laserPen')
+      },
+    },
+    {
+      label: '箭头',
+      type: 'icon',
+      icon: '#icon-jiantou',
+      callback: () => {
+        setCurrentTool('箭头')
+        aliyunBoardRef.current.setToolType('straight')
+      },
+    },
+    {
+      label: '颜料桶',
+      type: 'icon',
+      icon: '#icon-yanse',
+      callback: () => message.info('暂不支持'),
+    },
+  ]
+
+  const fileTools: whiteBoardTool[] = [
+    {
+      label: '插入图片',
+      type: 'icon',
+      icon: '#icon-tupian',
+      callback: () => message.info('暂不支持'),
+    },
+    {
+      label: '上传PPT/课件',
+      type: 'icon',
+      icon: '#icon-shangchuan1',
+      callback: () => {
+        dispatch({
+          type: 'status/setShowPPTUploader',
+          payload: !status.showPPTUploader,
+        })
+      },
+    },
+  ]
+
+  const clearTools: whiteBoardTool[] = [
+    {
+      label: '橡皮擦',
+      type: 'icon',
+      icon: '#icon-xiangpi',
+      callback: () => {
+        setCurrentTool('橡皮擦')
+        aliyunBoardRef.current.setToolType('eraser')
+      },
+    },
+    {
+      label: '清除画板',
+      type: 'icon',
+      icon: '#icon-qingchu',
+      callback: () => {
+        aliyunBoardRef.current.clearBoard()
+      },
+    },
+  ]
+
+  const zTools1: whiteBoardTool[] = [
+    {
+      label: '撤销',
+      type: 'icon',
+      icon: '#icon-chehui',
+      callback: () => aliyunBoardRef.current.undo(),
+    },
+  ]
+
+  const zTools2: whiteBoardTool[] = [
+    {
+      label: '重做',
+      type: 'icon',
+      icon: '#icon-zhongzuo',
+      callback: () => aliyunBoardRef.current.redo(),
+    },
+    {
+      label: '全屏',
+      type: 'icon',
+      icon: '#icon-kuangxuan2',
+      disable: true,
+      callback: () => message.info('暂不支持'),
+    },
+  ]
+
+  const scaleTools: whiteBoardTool[] = [
+    {
+      label: '放大',
+      type: 'icon',
+      icon: '#icon-fangda1',
+      disable: scale >= aliyunBoardConfig.maxScale - 0.1, // 白板的bug，实际上将要达到maxScale的时候就报错了
+      callback: () => {
+        if (scale >= aliyunBoardConfig.maxScale - 0.1) return
+        doSetScale(scale + 0.1)
+      },
+    },
+    {
+      label: '缩小',
+      type: 'icon',
+      icon: '#icon-suoxiao2',
+      disable: scale <= aliyunBoardConfig.minScale,
+      callback: () => {
+        if (scale <= aliyunBoardConfig.minScale) return
+        doSetScale(scale - 0.1)
+      },
+    },
+    {
+      label: '截屏',
+      type: 'icon',
+      icon: '#icon-jieping',
+      disable: true,
+      callback: () => message.info('暂不支持'),
+    },
+  ]
+
+  const pageTools: whiteBoardTool[] = [
+    {
+      label: '前一页',
+      type: 'icon',
+      icon: '#icon-xiangzuofanye',
+      disable: page <= 1,
+      callback: () => {
+        if (page <= 1) return
+        doGotoScene(page - 1)
+      },
+    },
+    {
+      label: '页码',
+      type: 'page',
+      callback: () => {},
+    },
+    {
+      label: '后一页',
+      type: 'icon',
+      icon: '#icon-xiangyoufanyesvg',
+      disable: page === maxPage,
+      callback: () => {
+        if (page === maxPage) return
+        doGotoScene(page + 1)
+      },
+    },
+  ]
+
+  const fileTools2: whiteBoardTool[] = [
+    {
+      label: '新增一页',
+      type: 'icon',
+      icon: '#icon-tianjiawenjian',
+      callback: () => {
+        aliyunBoardRef.current.addScene()
+        setTimeout(
+          ((prePage) => {
+            return () => {
+              Promise.all([
+                aliyunBoardRef.current.getPreviewData(prePage - 1),
+                aliyunBoardRef.current.getPreviewData(prePage),
+              ]).then((imgList: HTMLImageElement[]) => {
+                console.log(imgList)
+                const list = previewList.slice(0)
+                list.splice(prePage - 1, 0, imgList[0].src)
+                list[prePage] = imgList[1].src
+                setPreviewList(list)
+              })
+            }
+          })(page),
+          500,
+        )
+        // 上报页码映射
+        window.wbService.reportWhiteboardPageOperate('add', 'wb', page, 1).then((d: any) => {
+          setGroupList(generateGroupList(d.pageList))
+        })
+        setMaxPage(maxPage + 1)
+        setPage(page + 1)
+        setInputPage(Number(inputPage) + 1)
+      },
+    },
+  ]
+
+  const leftTools = [paintTools, fileTools, clearTools]
+  const bottomTools = [zTools1, zTools2, scaleTools, pageTools, fileTools2]
+
+  const pageInputHandler = (e: any) => {
+    if (e.target.value === '' || /^\d+$/.test(e.target.value)) setInputPage(e.target.value)
+  }
+
+  const changPageHandler = () => {
+    if (inputPage === page) return
+    if (inputPage <= 0 || !inputPage || inputPage > maxPage) {
+      message.error('页码输入有误')
+      setInputPage(page)
+      return
+    }
+    doGotoScene(inputPage)
+  }
+
+  const clickPreviewHandler = (num: number) => {
+    if (num === page) return
+    doGotoScene(num)
+  }
+
+  const aliyunBoardReadyHandler = usePersistFn(() => {
+    setMaxPage(aliyunBoardRef.current.getScenesCount())
+    setPage(aliyunBoardRef.current.getCurrentSceneIndex() + 1)
+    setInputPage(aliyunBoardRef.current.getCurrentSceneIndex() + 1)
+    aliyunBoardRef.current.getPreviewData().then((previewList: HTMLImageElement[]) => {
+      setPreviewList(previewList.map((item: HTMLImageElement) => item.src))
+    })
+    if (boardType === 'pure') {
+      aliyunBoardRef.current.setReadOnly(true)
+      aliyunBoardRef.current.setToolType('pointer')
+    }
+  })
+
+  const doGotoScene = async (to: number) => {
+    to = Number(to)
+    // 先切页面后获取
+    setPage(to)
+    setInputPage(to)
+    aliyunBoardRef.current.gotoScene(to - 1)
+    // 需要在切换页面之后重新获取图片
+    let item = await aliyunBoardRef.current.getPreviewData(page - 1)
+    setPreviewList(
+      previewList.map((preview, index) => {
+        return index === page - 1 ? item.src : preview
+      }),
+    )
+  }
+
+  const doSetScale = (num: number) => {
+    aliyunBoardRef.current.setScale(num)
+    setScale(num)
+  }
+
+  const aliyunBoardFitHandler = usePersistFn(() => {
+    doSetScale(1)
+  })
+
+  const insertPPTHandler = usePersistFn(async () => {
+    try {
+      await doGotoScene(maxPage)
+      const docInfo = await window.wbService.getDoc(status.currentDocId)
+      const { urlList, docName } = docInfo
+      const index = maxPage
+      let pptPreviewList = previewList.slice(0)
+      for (let i in urlList) {
+        await aliyunBoardRef.current.addScene()
+        await aliyunBoardRef.current.addBackgroundImage(urlList[i])
+        pptPreviewList.push(urlList[i])
+      }
+      aliyunBoardRef.current.gotoScene(index)
+      setPage(index + 1)
+      setMaxPage(maxPage + urlList.length)
+      setPreviewList(pptPreviewList)
+      // 上报页码映射
+      window.wbService.reportWhiteboardPageOperate('add', docName, index, urlList.length).then((d: any) => {
+        setGroupList(generateGroupList(d.pageList))
+      })
+    } catch (err) {
+      console.error(err)
+    }
+  })
+
+  const generateGroupList = (pageList: whiteBoardPageInfo[]) => {
+    const list = []
+    for (let i in pageList) {
+      if (list.length === 0 || list[list.length - 1].groupName !== pageList[i].group) {
+        list.push({
+          groupName: pageList[i].group,
+          startPage: pageList[i].whiteboardPage,
+          expand: true,
+          groupSize: 1,
+        })
+      } else {
+        list[list.length - 1].groupSize += 1
+      }
+    }
+    return list
+  }
+
+  const setGroupExpand = (index: number) => {
+    const newGroupList = groupList.slice(0)
+    newGroupList[index].expand = !newGroupList[index].expand
+    setGroupList(newGroupList)
+  }
+
+  const popoverContent = (content: string) => <span>{content}</span>
+
+  useMount(() => {
+    emitter.on('insertPPT', insertPPTHandler)
+    window.wbService.getWhiteboardPageInfo().then((d: any) => {
+      setGroupList(generateGroupList(d.pageList))
+    })
+  })
+
+  useEffect(() => {
+    if (status.viewMode === 'whiteBoard') {
+      doSetScale(1)
+    } else {
+      doSetScale(0.3)
+    }
+  }, [status.viewMode])
+
+  useEffect(() => {
+    if (boardType === 'pure') {
+      aliyunBoardRef.current.setReadOnly(true)
+      setShowSidebar(false)
+    } else {
+      aliyunBoardRef.current.setReadOnly(false)
+      setShowSidebar(true)
+    }
+  }, [boardType])
+
+  aliyunBoardRef.current.on('ALIYUNBOARD_READY', aliyunBoardReadyHandler)
+  aliyunBoardRef.current.on('ALIYUNBOARD_FIT', aliyunBoardFitHandler)
+
+  return (
+    <div className={styles['white-board-container']}>
+      <div className={styles['white-board']}>
+        <Canvas model={aliyunBoardRef.current} style={{ height: '100%', width: '100%' }} />
+      </div>
+      {showSidebar && (
+        <div className={`${styles['side-bar']} ${!slidebarExpand ? styles['hide-slide'] : ''}`}>
+          <div className={styles['expander']} onClick={() => setSlidebarExpand(!slidebarExpand)}>
+            {slidebarExpand ? (
+              <svg aria-hidden="true" className="icon">
+                <use xlinkHref="#icon-xiangyoufanyesvg"></use>
+              </svg>
+            ) : (
+              <svg aria-hidden="true" className="icon">
+                <use xlinkHref="#icon-xiangzuofanye"></use>
+              </svg>
+            )}
+          </div>
+          {groupList.map((group: any, gIndex) => (
+            <div className={styles['thumbnail-group']} key={gIndex}>
+              <div className={styles['thumbnail-group-title']} onClick={() => setGroupExpand(gIndex)}>
+                {group.groupName === 'wb' ? '白板' : group.groupName}
+                <svg className={`${group.expand ? styles['expand'] : ''} icon`} aria-hidden="true">
+                  <use xlinkHref="#icon-ic_toolbar_arrow_noc_copy"></use>
+                </svg>
+              </div>
+              {group.expand && (
+                <div className={styles['thumbnail-container']}>
+                  {new Array(group.groupSize).fill('1').map((item, index) => (
+                    <div
+                      className={`${styles['thumbnail']} ${
+                        page === group.startPage + index ? styles['thumbnail-active'] : ''
+                      }`}
+                      data-index={addZero(index + 1)}
+                      key={index}
+                      onClick={() => clickPreviewHandler(group.startPage + index)}
+                    >
+                      <img src={previewList[group.startPage + index - 1]} />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+      {boardType === 'full' && (
+        <div className={`${styles['left-toolbar']} ${styles['toolbar']}`}>
+          {leftTools.map((group, gIndex) => (
+            <div className={styles['tool-group']} key={gIndex}>
+              {group.map((item, index) => (
+                <Popover content={popoverContent(item.label)} placement="right" trigger="hover" key={index}>
+                  <div
+                    className={`${styles.tool} ${item.label === currentTool ? styles['tool-active'] : ''}`}
+                    onClick={() => item.callback()}
+                  >
+                    <svg className="icon" aria-hidden="true">
+                      <use xlinkHref={item.icon}></use>
+                    </svg>
+                  </div>
+                </Popover>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+      {boardType === 'full' && (
+        <div className={`${styles['bottom-toolbar']} ${styles['toolbar']}`}>
+          {bottomTools.map((group, groupIndex) => (
+            <div className={styles['tool-group']} key={groupIndex}>
+              {group.map((item, index) => {
+                let dom
+                switch (item.type) {
+                  case 'icon':
+                    dom = (
+                      <div
+                        className={`${styles.tool} ${item.disable ? styles['tool-disable'] : ''}`}
+                        key={index}
+                        title={item.label}
+                        onClick={() => item.callback()}
+                      >
+                        <svg className="icon" aria-hidden="true">
+                          <use xlinkHref={item.icon}></use>
+                        </svg>
+                      </div>
+                    )
+                    break
+                  case 'page':
+                    dom = (
+                      <div className={`${styles.tool} ${styles['page-tool']}`} key={index}>
+                        <input
+                          type="text"
+                          value={inputPage}
+                          onChange={pageInputHandler}
+                          onBlur={changPageHandler}
+                          onKeyUp={(e) => {
+                            e.key === 'Enter' && changPageHandler()
+                          }}
+                        />{' '}
+                        / {maxPage}
+                      </div>
+                    )
+                    break
+                  default:
+                    dom = <div key={index}></div>
+                }
+                return (
+                  <Popover content={popoverContent(item.label)} placement="top" trigger="hover" key={index}>
+                    {dom}
+                  </Popover>
+                )
+              })}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default connect(({ room, status }: { room: RoomModelState; status: StatusModelState }) => ({
+  room,
+  status,
+}))(WhiteBoard)

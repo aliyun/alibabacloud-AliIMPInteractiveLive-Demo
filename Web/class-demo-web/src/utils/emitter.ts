@@ -1,4 +1,4 @@
-import { BasicMap } from '../utils/utils';
+import { BasicMap } from './index';
 export default class Emitter {
   private handlerList: BasicMap<any[]> = {};
   private static instance: Emitter;
@@ -9,7 +9,7 @@ export default class Emitter {
     return this.instance;
   }
 
-  public emit(eventName: string, eventData: any) {
+  public emit(eventName: string, eventData?: any) {
     const eventHandlers = this.handlerList[eventName];
     if (!eventHandlers) return;
     for (let i = 0; i < eventHandlers.length; i++) {
@@ -24,7 +24,7 @@ export default class Emitter {
     this.handlerList[eventName].push(eventHandler);
   }
 
-  public remove(eventName: string, eventHandler: any) {
+  public remove(eventName: string, eventHandler?: any) {
     if (!eventHandler) {
       delete this.handlerList[eventName];
       return;

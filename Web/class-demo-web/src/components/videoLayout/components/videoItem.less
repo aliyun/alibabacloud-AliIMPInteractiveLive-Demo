@@ -1,0 +1,69 @@
+@import '../../../styles/size.d.less';
+@import '../../../styles/color.d.less';
+.sub-video-item {
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  flex-basis: 16%;
+  margin: 0 0.3%;
+  position: relative;
+  video {
+    width: 100%;
+    height: 100%;
+  }
+  .camera-unavailable {
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: 1;
+    background-color: @item-bg-color;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    svg {
+      width: 25%;
+      height: auto;
+      color: @item-icon-color;
+    }
+  }
+  .info-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2;
+    background-image: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(0, 0, 0, 0.15) 50%,
+      rgba(0, 0, 0, 0.4)
+    );
+    padding: 10px;
+    .operation-item {
+      cursor: pointer;
+      svg {
+        font-size: 20px;
+        color: #fff;
+      }
+    }
+    .nick {
+      font-size: 13px;
+      color: #000;
+      background-color: rgba(255, 255, 255, 0.35);
+      line-height: 1.8;
+      padding: 0 6px;
+      border-radius: 2px;
+    }
+  }
+}
+
+.grid {
+  min-width: 30%;
+  margin-bottom: 10px;
+}

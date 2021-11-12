@@ -1,0 +1,81 @@
+.icon {
+    width: 1em; height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}
+
+#root {
+    height: 100%;
+    background-color: #f8f8f8;
+}
+
+.ant-modal-mask {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+html, body {
+    background-color: #f8f8f8;
+}
+
+.standard-demo-login-form .ant-form-item-label > label {
+    font-size: 13px;
+    color: #8c98a9;
+}
+
+.standard-demo-login-form .ant-form-item-label > label {
+    font-size: 13px;
+    color: #8c98a9;
+}
+
+.standard-demo-login-form .ant-input {
+    border: 1px solid #CAE6FF;
+    background-color: #f8fcfe;
+    font-size: 13px;
+    line-height: 20px;
+    padding: 12px 10px;
+    border-radius: 3px;
+    height: unset;
+}
+
+.standard-demo-login-form .ant-input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.standard-demo-login-form .ant-select {
+    border: 1px solid #CAE6FF;
+    background-color: #f8fcfe;
+    font-size: 13px;
+    line-height: 20px;
+    border-radius: 3px;
+}
+.standard-demo-login-form .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border: none;
+    background-color: #f8fcfe;
+    font-size: 13px;
+    line-height: 20px;
+    padding: 8px 10px;
+    height: unset;
+}
+
+.standard-demo-login-form .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    outline: none;
+    box-shadow: none;
+}
+
+.standard-demo-login-form .ant-btn {
+    border: 1px solid #CAE6FF;
+    background-color: #4FACFF;
+    font-size: 13px;
+    line-height: 20px;
+    padding: 13px 0;
+    border-radius: 3px;
+    box-sizing: content-box;
+    height: unset;
+}
+
+.standard-demo-login-form .ant-btn-primary[disabled], .ant-btn-primary[disabled]:hover, .ant-btn-primary[disabled]:focus, .ant-btn-primary[disabled]:active {
+    color: #fff;
+    background-color: #96ceff;
+}

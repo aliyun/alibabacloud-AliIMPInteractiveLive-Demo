@@ -1,0 +1,84 @@
+@import '../../styles/size.d.less';
+@import '../../styles/color.d.less';
+
+.chat-container {
+  height: 100%;
+  overflow: auto;
+  padding: 15px 12px 200px 12px;
+  background-color: @common-bg-color;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
+  .chat-main {
+    .chat-item {
+      margin-bottom: 14px;
+      .name {
+        font-size: 12px;
+        color: @font-grey;
+        margin-bottom: 3px;
+        span {
+          font-size: 12px;
+          color: @primary-font-color;
+          background-color: @primary-light-color;
+          display: inline-block;
+          padding: 2px 3px;
+          margin-left: 5px;
+        }
+      }
+      .content {
+        font-size: 13px;
+        word-break: break-all;
+      }
+    }
+  }
+  .chat-textarea {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    box-shadow: 0 -1px 3px 0 rgba(0, 0, 0, 0.09);
+    background-color: #fff;
+    .operation-bar {
+      border-bottom: 1px solid @border-color;
+      padding: 7px 12px;
+      display: flex;
+      justify-content: flex-end;
+      .operation-item {
+        margin-left: 5px;
+        font-size: 13px;
+      }
+      .checkbox {
+        span {
+          padding: 0 2px;
+        }
+      }
+    }
+    .textarea {
+      outline: none;
+      border: none;
+      height: 100px !important;
+      width: 100%;
+      font-size: 15px;
+      border-radius: 6px;
+      padding: 10px 12px;
+      &:active,
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+    }
+    .send-btn {
+      background-color: @primary-color;
+      color: #fff;
+      border-radius: 3px;
+      font-size: 12px;
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      padding: 10px 20px;
+      line-height: 1;
+      cursor: pointer;
+      user-select: none;
+    }
+  }
+}

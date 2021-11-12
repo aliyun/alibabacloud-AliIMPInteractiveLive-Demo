@@ -1,129 +1,121 @@
-import roomEngineConfig from '@/constants/config';
-import { getWhiteBoard } from './getWhiteBoard';
-import { createRoom, getToken } from '@/api/apis';
+import qs from 'qs'
+import roomEngineConfig from '@/constants/config'
+
+interface AuthTokenModel {
+  accessToken: string
+  refreshToken: string
+  accessTokenExpiredTime: number
+}
 
 declare global {
   interface Window {
-    RoomPaasSdk: any;
-    roomChannel: any;
-    roomEngine: any;
-    rtcService: any;
-    chatService: any;
-    liveService: any;
-    wbService: any;
-    aliyunBoardSDK: any;
-    createRoom: any;
+    RoomPaasSdk: any
+    roomEngine: any
+    roomChannel: any
+    chatService: any
+    liveService: any
+    wbService: any
+    rtcService: any
+    aliyunBoardSDK: any
+    classInstance: any
+    createClass: any
   }
 }
-export const doCreateRoom = (userId: any, roomId: any) => {
-  const { appId } = roomEngineConfig;
+
+const { RoomEngine } = window.RoomPaasSdk
+
+export const setConfig = (
+  roomEngineInstance: any,
+  token: AuthTokenModel,
+  appKey: string,
+  appId: string,
+  deviceId: string,
+) => {
+  const config = {
+    // login需要的config
+    appKey,
+    appId,
+    deviceId,
+    wsUrl: window.localStorage.getItem('pre') ? 'wss://pre-wss.im.dingtalk.cn' : 'wss://wss.im.dingtalk.cn',
+    authTokenCallback: () => Promise.resolve(token),
+  }
+  roomEngineInstance.init(config)
+}
+
+export const doLogin = async (userAuthSession: string) => {
+  // 2. 获取engine实例
+  const roomEngineInstance = RoomEngine.getInstance()
+  window.roomEngine = roomEngineInstance
   try {
-    const params = {
-      appId,
-      templateId: 'default',
-      title: 'titleTest',
-      notice: 'noticeTest',
-      roomId,
-      roomOwnerId: userId,
-    };
-    return createRoom(params)
+    const deviceId = roomEngineInstance.getDeviceId()
+    const res = await fetch(
+      `/api/login/checkUserAuthSessionV2?${qs.stringify({
+        deviceId: encodeURIComponent(deviceId),
+        userAuthSession,
+      })}`,
+    )
+      .then((res) => res.json())
       .then((res) => {
-        return res.responseSuccess;
+        if (res) {
+          return res.result
+        }
+        throw new Error('没有获取到Token')
       })
       .catch((err) => {
-        console.error(err);
-        throw err;
-      });
-  } catch (err: any) {
-    console.log(err);
-    return Promise.reject(err);
-  }
-};
-export const getRoomEngine = async (userId: any) => {
-  const { appKey, appId } = roomEngineConfig;
-  const { RoomEngine } = window.RoomPaasSdk;
-  const roomEngineInstance = RoomEngine.getInstance();
-  const deviceId = encodeURIComponent(roomEngineInstance.getDeviceId()); // 获取deviceId
-  window.roomEngine = roomEngineInstance;
-  try {
-    const config = {
-      appKey,
-      appId,
-      deviceId,
-      authTokenCallback: async () => {
-        // 用来获取token的回调
-        /***
-         * 如果需要验证签名流程，可参考以下流程
-         * 验签流程也可以自己实现，具体与自己服务端同学商定
-         * 不需要则直接fetch/xhr 相应接口即可
-         */
-        const params = {
-          appId,
-          appKey,
-          deviceId,
-          userId,
-        };
-        // 返回一个promise
-        return getToken(params)
-          .then((res) => {
-            if (res) {
-              try {
-                const authToken = res.result;
-                return { ...authToken, uid: userId };
-              } catch (err: any) {
-                throw new Error(err);
-              }
-            }
-            throw new Error('token is null');
-          })
-          .catch((err) => {
-            console.error(err);
-          });
-      },
-    };
-    // 构造完config后调用init初始化
-    roomEngineInstance.init(config);
-    await roomEngineInstance.auth(userId);
+        console.error(err)
+      })
+    const { appId, appKey, authTokenModel, userId } = res
+    setConfig(roomEngineInstance, authTokenModel, appKey, appId, deviceId)
+    // 4. 登录
+    await roomEngineInstance.auth(userId)
+    return {
+      instance: roomEngineInstance,
+      userId,
+    }
   } catch (err) {
-    console.log(err);
-    throw err;
+    console.error(err)
+    return Promise.reject(new Error('登录失败，请检查设置'))
   }
-};
-export const doLogin = async (userId: any, roomId: any) => {
-  window.sessionStorage.setItem('roomId', roomId);
+}
+
+export const demoDoLogin = async (uid: string) => {
+  const { appKey, appId, origin } = roomEngineConfig
+  // 2. 获取engine实例
+  const roomEngineInstance = RoomEngine.getInstance()
+  window.roomEngine = roomEngineInstance
   try {
-    const roomChannel = await window.roomEngine.getRoomChannel(roomId);
-    window.roomChannel = roomChannel;
-    const roomDetail = await roomChannel.enterRoom(userId);
-    window.rtcService = window.roomChannel.getPluginService('rtc');
-    window.chatService = window.roomChannel.getPluginService('chat');
-    window.liveService = window.roomChannel.getPluginService('live');
-    window.wbService = window.roomChannel.getPluginService('wb');
-    const docKey = await window.wbService.getDockey();
-    window.sessionStorage.setItem('docKey', docKey);
-    const url = `https://***.***.com?userId=${userId}&docKey=${window.sessionStorage.getItem(
-      'docKey',
-    )}`;
-    fetch(url, {
+    const deviceId = roomEngineInstance.getDeviceId()
+    const userId = uid || 'test'
+    const queryString = qs.stringify({
+      // 如果验签，属性顺序需与服务端一致
+      appId,
+      appKey,
+      deviceId: encodeURIComponent(deviceId),
+      userId,
+    })
+    const authTokenModel = await fetch(`${origin}/api/login/getToken?${queryString}`, {
       method: 'POST',
     })
-      .then((res: any) => res.json())
-      .then((res: any) => {
-        window.sessionStorage.setItem(
-          'accessToken',
-          res.result.documentAccessInfo.accessToken,
-        );
+      .then((res) => res.json())
+      .then((res) => {
+        if (res) {
+          const token = { ...res.result }
+          return token
+        }
+        throw new Error('没有获取到Token')
       })
-      .catch((err: any) => {
-        console.log(err);
-      });
-    getWhiteBoard(userId);
-    window.roomEngine.getRoomDetail(roomId).then((res: any) => {
-      window.sessionStorage.setItem('ownerId', res.ownerId);
-    });
-    console.log('==enterRoom==>', roomDetail);
+      .catch((err) => {
+        console.error(err)
+      })
+    setConfig(roomEngineInstance, authTokenModel, appKey, appId, deviceId)
+    // 4. 登录
+    await roomEngineInstance.auth(userId)
+    return {
+      instance: roomEngineInstance,
+      userId,
+    }
   } catch (err) {
-    console.log(err);
-    throw err;
+    console.error(err)
+    return Promise.reject(new Error('登录失败，请检查设置'))
   }
-};
+}

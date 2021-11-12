@@ -1,98 +1,126 @@
-.teacher {
-  position: relative;
+@import '../../styles/size.d.less';
+@import '../../styles/color.d.less';
+.page-container {
   display: flex;
   justify-content: space-between;
-  background: #f2f9ff;
-  background-color: #f2f9ff;
-  flex: 1;
-  .teacher-main {
-    flex: 1;
-    position: relative;
-    .teacher-main-board {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 125px;
-      margin: 14px 0 9px 8px;
-      background-color: #000000;
-    }
-    .teacher-main-board-white {
-      background-color: #f8f8f8;
-    }
+  flex-grow: 1;
+  position: relative;
+  .page-main {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: @side-width;
+    bottom: @footer-height;
+    overflow: hidden;
   }
-  .teacher-chatarea {
-    position: relative;
+  .sidebar {
+    width: @side-width;
+    position: absolute;
+    right: 0;
+    top: @abbreviate-height;
+    bottom: @footer-height;
+    overflow: hidden;
+    border-left: 1px solid @border-color;
+  }
+  .abbreviate {
+    width: @side-width;
+    height: @abbreviate-height;
+    background-color: @bar-bg-color;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  .page-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: @footer-height;
+    background-color: @bar-bg-color;
     display: flex;
-    flex-direction: column;
-    .teacher-chatarea-btn {
-      z-index: 99;
-      position: absolute;
-      top: 30px;
-      right: 20px;
-      padding: 1px 4px;
-      border-radius: 4px;
-      color: #ffffff;
-      cursor: pointer;
-      .window-change-icon {
-        color: #007aff;
-        font-size: 26px;
-      }
+    justify-content: space-between;
+    box-shadow: 0 -1px 1px 1px #eee;
+    .footer-main {
+      flex-grow: 1;
+      display: flex;
     }
-    .teacher-chatarea-video {
-      margin: 14px 10px 0;
-      .teacher-chatarea-video-board {
-        background-color: #ffffff;
-        width: 320px;
-        height: 240px;
-      }
+    .holder {
+      width: @side-width;
     }
   }
-  .teacher-change-area {
+  .abbreviate-container {
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    .teacher-change-area-main {
+    z-index: 2;
+    .abbr-type {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 340px;
-      bottom: 134px;
-      margin: 14px 0 0 8px;
-      z-index: 2;
+      top: 10px;
+      left: 10px;
+      font-size: 13px;
+      color: @primary-color;
+      background-color: rgba(255, 255, 255, 0.35);
+      line-height: 1.8;
+      padding: 0 6px;
+      border-radius: 2px;
     }
-    .teacher-change-area-second {
+    .abbr-operation-bar {
       position: absolute;
-      top: 0;
-      right: 0;
-      margin: 14px 9px 8px 8px;
-      z-index: 2;
-      width: 320px;
-      height: 240px;
-    }
-    .teacher-video-waitting {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
       bottom: 0;
-      background: #c1c1c1;
-      border-radius: 4px;
-      color: #ffffff;
-      font-size: 25px;
-      .teacher-video-waitting-text {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translateX(-50%) translateY(-50%);
-        display: flex;
-        flex-direction: column;
-        .teacher-video-waitting-icon-font-size {
-          font-size: 40px;
+      left: 0;
+      width: 100%;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.15) 50%, rgba(0, 0, 0, 0.4));
+      padding: 10px;
+      .operation-item {
+        cursor: pointer;
+        svg {
+          font-size: 20px;
         }
       }
+    }
+  }
+  .recording {
+    background-color: #fff;
+    position: absolute;
+    left: 20px;
+    top: 15px;
+    box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.13);
+    border-radius: 4px;
+    padding: 6px 11px;
+    display: flex;
+    align-items: center;
+    span {
+      width: 10px;
+      height: 10px;
+      background-color: @danger-color;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 6px;
+    }
+  }
+}
+
+.tab-container {
+  display: flex;
+  background-color: @common-bg-color;
+  .tab-item {
+    height: @tab-height;
+    flex-grow: 1;
+    border-bottom: 1px solid @border-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    &.tab-item-active {
+      cursor: auto;
+      border-bottom: 1px solid @primary-color;
     }
   }
 }

@@ -1,0 +1,222 @@
+@import '../../styles/size.d.less';
+@import '../../styles/color.d.less';
+@whiteboard-sidebar-width: 240px;
+.white-board-container {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  position: relative;
+  .toolbar {
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 0.12);
+    border-radius: 3px;
+    user-select: none;
+  }
+  .left-toolbar {
+    padding: 0;
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    .tool-group {
+      margin-bottom: 10px;
+      position: relative;
+      &::after {
+        content: '';
+        width: 70%;
+        height: 1px;
+        background-color: @split-line-color;
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      &:last-child {
+        &::after {
+          display: none;
+        }
+        margin-bottom: 0;
+      }
+    }
+  }
+  .bottom-toolbar {
+    padding: 0 6px;
+    left: 24px;
+    bottom: 50px;
+    display: flex;
+    .tool-group {
+      display: flex;
+      margin-right: 10px;
+      position: relative;
+      &::after {
+        content: '';
+        height: 70%;
+        width: 1px;
+        background-color: @split-line-color;
+        position: absolute;
+        right: -5px;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      &:last-child {
+        &::after {
+          display: none;
+        }
+        margin-right: 0;
+      }
+      .tool {
+        padding: 7px 14px;
+      }
+    }
+  }
+  .tool {
+    padding: 8px 10px;
+    cursor: pointer;
+    font-size: 22px;
+    &:hover,
+    &.tool-active {
+      background-color: @bar-bg-color;
+    }
+    &.page-tool {
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      color: #888;
+      cursor: auto;
+      input {
+        width: 40px;
+        height: 22px;
+        border-radius: 3px;
+        text-align: center;
+        border: 1px solid #dadada;
+        font-size: 12px;
+        display: inline-block;
+        margin-right: 5px;
+        outline: none;
+      }
+    }
+  }
+  .tool-disable {
+    color: @font-disable;
+    cursor: not-allowed;
+  }
+  .white-board {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .side-bar {
+    position: absolute;
+    right: 0;
+    width: @whiteboard-sidebar-width;
+    bottom: 0;
+    top: 0;
+    overflow-y: auto;
+    user-select: none;
+    background-color: @bar-bg-color;
+    padding-left: 15px;
+    &::-webkit-scrollbar {
+      width: 0;
+    }
+    .expander {
+      position: absolute;
+      top: 50%;
+      left: -13px;
+      width: 0;
+      height: 70px;
+      border-width: 14px;
+      border-color: transparent #ebebeb transparent transparent;
+      border-style: solid;
+      color: #bdbdbd;
+      font-size: 13px;
+      cursor: pointer;
+      svg {
+        position: absolute;
+        left: 0;
+        top: calc(50% - 6.5px);
+      }
+    }
+    .thumbnail-group {
+      .thumbnail-group-title {
+        display: flex;
+        align-items: center;
+        font-size: 13px;
+        font-weight: 500;
+        height: 46px;
+        padding: 0 10px;
+        justify-content: space-between;
+        border-bottom: 1px solid @border-color;
+        cursor: pointer;
+        svg {
+          font-size: 27px;
+          transition: transform 0.2s linear;
+          &.expand {
+            transform: rotate(-180deg);
+          }
+        }
+      }
+      .thumbnail-container {
+        padding: 10px 10px;
+        .thumbnail {
+          width: 100%;
+          height: 130px;
+          border: 1px solid @border-color;
+          border-radius: 3px;
+          margin-bottom: 13px;
+          position: relative;
+          cursor: pointer;
+          &::after {
+            content: attr(data-index);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            color: #fff;
+            background-color: #000;
+            line-height: 1;
+            padding: 5px 5px;
+          }
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 3px;
+          }
+          &.thumbnail-active {
+            cursor: auto;
+            border: 1px solid @primary-color;
+            &::after {
+              background-color: @primary-color;
+            }
+          }
+        }
+      }
+    }
+  }
+  .hide-slide {
+    width: 0;
+  }
+}
+@media screen and (max-height: 900px) {
+  .white-board-container {
+    .tool {
+      padding: 6px 8px;
+      font-size: 16px;
+      &.page-tool {
+        input {
+          width: 30px;
+          height: 18px;
+        }
+      }
+    }
+    .bottom-toolbar {
+      bottom: 30px;
+      .tool-group {
+        .tool {
+          padding: 5px 14px;
+        }
+      }
+    }
+  }
+}
