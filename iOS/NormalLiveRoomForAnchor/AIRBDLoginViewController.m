@@ -7,13 +7,11 @@
 
 #import "AIRBDLoginViewController.h"
 #import "AIRBDSetRoomViewController.h"
-#import "AIRBDBigClassViewController.h"
-//#import "AIRBDRoomListViewController.h"
 #import <AliInteractiveRoomBundle/AliInteractiveRoomBundle.h>
 #import "AIRBDToast.h"
 #import "AIRBDEnvironments.h"
 #import <Masonry/Masonry.h>
-#import "AIRBDAnchorViewController.h"
+#import "AIRBDAudienceViewController.h"
 #import "AIRBDRoomInfoModel.h"
 
 
@@ -39,12 +37,14 @@
             break;
         case AIRBRoomEngineEventEngineLogined: {
             dispatch_async(dispatch_get_main_queue(), ^{
-                AIRBDBigClassViewController *bigClassViewController = [[AIRBDBigClassViewController alloc]init];
-                bigClassViewController.userID = self.userID;
-                bigClassViewController.config = self.config;
-                bigClassViewController.edgesForExtendedLayout = UIRectEdgeNone;
-                bigClassViewController.hidesBottomBarWhenPushed = YES;
-                [self.navigationController pushViewController:bigClassViewController animated:YES];
+                AIRBDAudienceViewController* audienceCiewController = [[AIRBDAudienceViewController alloc]init];
+                audienceCiewController.roomModel = [[AIRBDRoomInfoModel alloc] init];
+                audienceCiewController.roomModel.roomID = @"";
+                audienceCiewController.roomModel.userID = self.userID;
+                audienceCiewController.roomModel.userNickName = @"";
+                [self.navigationController pushViewController:audienceCiewController animated:YES];
+                [self.navigationController setNavigationBarHidden:YES];
+                [audienceCiewController enterRoom];
             });
         }
             break;
@@ -120,8 +120,8 @@
     
     self.userID = @"xxxx";
     self.config = [[AIRBRoomEngineConfig alloc] init];
-    self.config.appID = [AIRBDEnvironments shareInstance].interactiveClassRoomAppID;
-    self.config.appKey = [AIRBDEnvironments shareInstance].interactiveClassRoomAppKey;
+    self.config.appID = [AIRBDEnvironments shareInstance].interactiveLiveRoomAppID;
+    self.config.appKey = [AIRBDEnvironments shareInstance].interactiveLiveRoomAppKey;
     
     self.config.deviceID = [[UIDevice currentDevice] identifierForVendor].UUIDString;
     self.userID = self.userID;

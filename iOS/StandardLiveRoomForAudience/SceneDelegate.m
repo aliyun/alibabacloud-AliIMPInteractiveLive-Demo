@@ -6,6 +6,7 @@
 //
 
 #import "SceneDelegate.h"
+#import "AIRBDLiveRoomViewController.h"
 
 @interface SceneDelegate ()
 
@@ -18,6 +19,14 @@
     // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
     // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
     // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+    
+    AIRBDLiveRoomViewController* mainViewController = [[AIRBDLiveRoomViewController alloc] initWithUserID:@"xxxsd" liveId:@"a891fa96-ed1f-47a7-ad6c-103d29e0319b" role:AIRBDLiveRoomUserRoleAudience title:@"测试直播"];
+    UINavigationController *mainNavigationController = [[UINavigationController alloc] initWithRootViewController:mainViewController];
+    mainNavigationController.navigationBarHidden = YES;
+    mainNavigationController.navigationBar.translucent = NO;
+    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.rootViewController = mainNavigationController;
+    [self.window makeKeyAndVisible];
 }
 
 

@@ -7,8 +7,6 @@
 
 #import "AIRBDLoginViewController.h"
 #import "AIRBDSetRoomViewController.h"
-#import "AIRBDBigClassViewController.h"
-#import "AIRBDRoomListViewController.h"
 #import <AliInteractiveRoomBundle/AliInteractiveRoomBundle.h>
 #import "AIRBDToast.h"
 #import "AIRBDEnvironments.h"
@@ -41,10 +39,10 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 AIRBDAnchorViewController* anchorViewController = [[AIRBDAnchorViewController alloc]init];
                 anchorViewController.roomModel = [[AIRBDRoomInfoModel alloc] init];
+                anchorViewController.roomModel.title = @"";
+                anchorViewController.roomModel.notice = @"";
                 anchorViewController.roomModel.userID = self.userID;
                 anchorViewController.roomModel.config = self.config;
-                anchorViewController.roomModel.notice = @"";
-                anchorViewController.roomModel.title = @"";
                 [self.navigationController pushViewController:anchorViewController animated:YES];
                 [self.navigationController setNavigationBarHidden:YES];
                 [anchorViewController createRoomWithCompletion:^(NSString * _Nonnull roomID) {

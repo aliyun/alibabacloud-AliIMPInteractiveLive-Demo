@@ -21,14 +21,9 @@
     // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
     
     AIRBDLiveRoomViewController* mainViewController = [[AIRBDLiveRoomViewController alloc] initWithUserID:@"xxx" liveId:nil role:AIRBDLiveRoomUserRoleAnchor title:@"测试直播"];
-    mainViewController.hidesBottomBarWhenPushed = YES;
-    mainViewController.edgesForExtendedLayout = UIRectEdgeNone;
     UINavigationController *mainNavigationController = [[UINavigationController alloc] initWithRootViewController:mainViewController];
     mainNavigationController.navigationBarHidden = YES;
     mainNavigationController.navigationBar.translucent = NO;
-            
-    
-    self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     self.window.backgroundColor = [UIColor whiteColor];
     self.window.rootViewController = mainNavigationController;
     [self.window makeKeyAndVisible];

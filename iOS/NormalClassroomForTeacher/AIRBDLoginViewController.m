@@ -8,7 +8,7 @@
 #import "AIRBDLoginViewController.h"
 #import "AIRBDSetRoomViewController.h"
 #import "AIRBDBigClassViewController.h"
-#import "AIRBDRoomListViewController.h"
+//#import "AIRBDRoomListViewController.h"
 #import <AliInteractiveRoomBundle/AliInteractiveRoomBundle.h>
 #import "AIRBDToast.h"
 #import "AIRBDEnvironments.h"

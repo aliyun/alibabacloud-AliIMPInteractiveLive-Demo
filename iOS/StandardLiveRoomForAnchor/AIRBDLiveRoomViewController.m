@@ -49,56 +49,60 @@
 }
 
 - (void)setUp{
+    
+}
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    __weak typeof(self) weakSelf = self;
+    
+    
     [[ASLRBLiveRoomManager sharedInstance] globalInitOnceWithConfig:({
         ASLRBAppInitConfig *config = [[ASLRBAppInitConfig alloc]init];
         config.appID = [AIRBDEnvironments shareInstance].interactiveLiveRoomAppID;
         config.appKey = [AIRBDEnvironments shareInstance].interactiveLiveRoomAppKey;
         config.appServerUrl = [AIRBDEnvironments shareInstance].appServerUrl;
         config.appServerSignSecret = [AIRBDEnvironments shareInstance].signSecret;
-        config.userID = self.userID;
+        config.userID = weakSelf.userID;
         config.userNick = [NSString stringWithFormat:@"%@的昵称", self.userID];
         config;
     }) onSuccess:^{
-        
+        [[ASLRBLiveRoomManager sharedInstance] createLiveRoomVCWithConfig:({
+            ASLRBLiveInitConfig* config = [[ASLRBLiveInitConfig alloc] init];
+            config.liveID = weakSelf.liveID;
+            config.role = weakSelf.role;
+            config;
+        }) onCompletion:^(ASLRBLiveRoomViewController * _Nonnull liveRoomVC) {
+            [liveRoomVC setupOnSuccess:^(NSString * _Nonnull liveID) {
+                weakSelf.liveID = liveID;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    liveRoomVC.modalPresentationStyle = UIModalPresentationFullScreen;
+                    liveRoomVC.delegate = weakSelf;
+                    weakSelf.liveRoomVC = liveRoomVC;
+                    
+                    weakSelf.liveRoomVC.backgroundImage = [UIImage imageNamed:@"img-background"];
+                    
+    //                [weakSelf customizeAnchorLiveRoom];
+            
+                    [weakSelf presentViewController:liveRoomVC animated:NO completion:nil];
+                });
+                
+            } onFailure:^(NSString * _Nonnull errorMessage) {
+                NSLog(@"样板间setup失败：%@", errorMessage);
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [[AIRBDToast shareInstance] makeToast:errorMessage duration:3.0];
+                    
+                    [self dismissViewControllerAnimated:NO completion:nil];
+                    [self.navigationController popViewControllerAnimated:YES];
+                });
+            }];
+        }];
     } onFailure:^(NSString * _Nonnull errorMessage) {
         
     }];
-}
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    [[ASLRBLiveRoomManager sharedInstance] createLiveRoomVCWithConfig:({
-        ASLRBLiveInitConfig* config = [[ASLRBLiveInitConfig alloc] init];
-        config.liveID = self.liveID;
-        config.role = self.role;
-        config;
-    }) onCompletion:^(ASLRBLiveRoomViewController * _Nonnull liveRoomVC) {
-        __weak typeof(self) weakSelf = self;
-        [liveRoomVC setupOnSuccess:^(NSString * _Nonnull liveID) {
-            weakSelf.liveID = liveID;
-            dispatch_async(dispatch_get_main_queue(), ^{
-                liveRoomVC.modalPresentationStyle = UIModalPresentationFullScreen;
-                liveRoomVC.delegate = weakSelf;
-                weakSelf.liveRoomVC = liveRoomVC;
-                
-                weakSelf.liveRoomVC.backgroundImage = [UIImage imageNamed:@"img-background"];
-                
-                [weakSelf customizeAudienceLiveRoom];
-        
-                [weakSelf presentViewController:liveRoomVC animated:NO completion:nil];
-            });
-            
-        } onFailure:^(NSString * _Nonnull errorMessage) {
-            NSLog(@"样板间setup失败：%@", errorMessage);
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[AIRBDToast shareInstance] makeToast:errorMessage duration:3.0];
-                
-                [self dismissViewControllerAnimated:NO completion:nil];
-                [self.navigationController popViewControllerAnimated:YES];
-            });
-        }];
-    }];
+    
     
 }
 

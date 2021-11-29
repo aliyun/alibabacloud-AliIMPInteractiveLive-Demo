@@ -18,11 +18,11 @@
     return singleton;
 }
 
-- (NSString*) interactiveClassRoomAppID {
+- (NSString*) interactiveLiveRoomAppID {
     return [NSString stringWithFormat:@"%@", @""];
 }
 
-- (NSString*) interactiveClassRoomAppKey {
+- (NSString*) interactiveLiveRoomAppKey {
     return [NSString stringWithFormat:@"%@", @""];
 }
 

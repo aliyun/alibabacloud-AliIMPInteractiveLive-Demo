@@ -42,6 +42,8 @@ end
 
 #基于互动直播样板间的主播侧实现逻辑
  target 'StandardLiveRoomForAnchor' do
+   
+   pod 'Masonry'
 
    #阿里云低代码音视频工厂总入口库
    pod 'AliInteractiveRoomBundle', common_version
@@ -50,6 +52,7 @@ end
    pod 'AliInteractiveLiveCore', common_version
    pod 'AlivcLivePusher', '4.2.1'
    pod 'Queen', '1.4.1-official-lite'
+   pod 'RtsSDK', '1.9.0'
 
    #阿里云低代码音视频工厂互动直播样板间相关库
    pod 'AliStandardLiveRoomBundle', common_version
@@ -58,6 +61,8 @@ end
 
 #基于互动直播样板间的观众侧实现逻辑
  target 'StandardLiveRoomForAudience' do
+   
+   pod 'Masonry'
   
    #阿里云低代码音视频工厂总入口库
    pod 'AliInteractiveRoomBundle', common_version
