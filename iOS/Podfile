@@ -8,6 +8,12 @@ source 'https://github.com/CocoaPods/Specs.git'
   '1.4.1.20211105001'
   end
 
+  def pod_ailplayer
+    pod 'AliPlayerSDK_iOS', '5.4.3.0-15301379'
+    pod 'AliPlayerSDK_iOS_ARTC', '5.4.3.0-15301379'
+    pod 'RtsSDK', '1.9.0'
+  end
+
 #基于场景化SDK的互动直播的主播侧实现逻辑
 target 'NormalLiveRoomForAnchor' do
   
@@ -34,9 +40,7 @@ end
 
    #阿里云低代码音视频工厂观众拉流相关库
    pod 'AliInteractiveVideoPlayerCore', common_version
-   pod 'AliPlayerSDK_iOS', '5.3.2'
-   pod 'AliPlayerSDK_iOS_ARTC', '5.3.2' #超低低延迟拉流相关
-   pod 'RtsSDK', '1.9.0'                #超低低延迟拉流相关
+   pod_ailplayer
   
  end
 
@@ -69,9 +73,7 @@ end
 
    #阿里云低代码音视频工厂观众拉流相关库
    pod 'AliInteractiveVideoPlayerCore', common_version
-   pod 'AliPlayerSDK_iOS', '5.3.2'
-   pod 'AliPlayerSDK_iOS_ARTC', '5.3.2' #超低低延迟拉流相关
-   pod 'RtsSDK', '1.9.0'                #超低低延迟拉流相关
+   pod_ailplayer
 
    #阿里云低代码音视频工厂互动直播样板间相关库
    pod 'AliStandardLiveRoomBundle', common_version
@@ -123,9 +125,7 @@ target 'StandardClassroomForStudents' do
      
      #阿里云低代码音视频工厂观众拉流相关库，如果没有旁路直播（小班课），则不需要这些
      pod 'AliInteractiveVideoPlayerCore', common_version
-     pod 'AliPlayerSDK_iOS', '5.3.2'
-     pod 'AliPlayerSDK_iOS_ARTC', '5.3.2' #超低低延迟拉流相关
-     pod 'RtsSDK', '1.9.0'                #超低低延迟拉流相关
+     pod_ailplayer
   
   end
 
@@ -173,9 +173,7 @@ target 'NormalClassroomForStudents' do
   
   #阿里云低代码音视频工厂观众拉流相关库，如果没有旁路直播（小班课），则不需要这些
   pod 'AliInteractiveVideoPlayerCore', common_version
-  pod 'AliPlayerSDK_iOS', '5.3.2'
-  pod 'AliPlayerSDK_iOS_ARTC', '5.3.2' #超低低延迟拉流相关
-  pod 'RtsSDK', '1.9.0'                #超低低延迟拉流相关
+  pod_ailplayer
   end
 
 
