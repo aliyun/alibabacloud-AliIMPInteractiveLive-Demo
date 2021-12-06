@@ -7,13 +7,13 @@
 
 #import "AIRBDLoginViewController.h"
 #import "AIRBDSetRoomViewController.h"
-#import <AliInteractiveRoomBundle/AliInteractiveRoomBundle.h>
 #import "AIRBDToast.h"
 #import "AIRBDEnvironments.h"
 #import <Masonry/Masonry.h>
 #import "AIRBDAudienceViewController.h"
 #import "AIRBDRoomInfoModel.h"
 
+@import AliInteractiveRoomBundle;
 
 @interface AIRBDLoginViewController ()<AIRBRoomEngineDelegate>
 @property (copy, nonatomic) NSString* userID;

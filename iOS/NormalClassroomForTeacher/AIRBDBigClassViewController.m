@@ -6,8 +6,9 @@
 //
 
 #import "AIRBDBigClassViewController.h"
-#import <AliInteractiveRoomBundle/AliInteractiveRoomBundle.h>
 #import <Masonry/Masonry.h>
+
+@import AliInteractiveRoomBundle;
 
 //#import "AIRBDStudentViewController.h"
 //#import "AIRBDStudentView.h"

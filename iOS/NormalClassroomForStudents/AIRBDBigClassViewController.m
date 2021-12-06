@@ -6,13 +6,14 @@
 //
 
 #import "AIRBDBigClassViewController.h"
-#import <AliInteractiveRoomBundle/AliInteractiveRoomBundle.h>
 #import <Masonry/Masonry.h>
 
 #import "AIRBDStudentViewController.h"
 #import "AIRBDStudentView.h"
 //#import "AIRBDTeacherView.h"
 #import "AIRBDToast.h"
+
+@import AliInteractiveRoomBundle;
 
 static NSString * const DMClassTableCellIdentifier = @"DMClassTableCellIdentifier";
 

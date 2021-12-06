@@ -20,7 +20,7 @@
     // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
     // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
     
-    AIRBDLiveRoomViewController* mainViewController = [[AIRBDLiveRoomViewController alloc] initWithUserID:@"xxxsd" liveId:@"" role:AIRBDLiveRoomUserRoleAudience title:@"测试直播"];
+    AIRBDLiveRoomViewController* mainViewController = [[AIRBDLiveRoomViewController alloc] initWithUserID:@"xxsxsd" liveId:@"" role:AIRBDLiveRoomUserRoleAudience title:@"测试直播"];
     UINavigationController *mainNavigationController = [[UINavigationController alloc] initWithRootViewController:mainViewController];
     mainNavigationController.navigationBarHidden = YES;
     mainNavigationController.navigationBar.translucent = NO;

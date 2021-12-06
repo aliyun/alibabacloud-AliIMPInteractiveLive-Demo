@@ -8,11 +8,12 @@
 #import "AIRBDStudentView.h"
 #import "AIRBDStudentListCell.h"
 #import <Masonry/Masonry.h>
-#import <AliInteractiveRoomBundle/AliInteractiveRoomBundle.h>
 
 #import "AIRBDToast.h"
 #import "AIRBDCommentView.h"
 #import "AIRBDEnvironments.h"
+
+@import AliInteractiveRoomBundle;
 
 const int32_t kStudentListRoomMemberPageSizeForStudentView = 50;
 

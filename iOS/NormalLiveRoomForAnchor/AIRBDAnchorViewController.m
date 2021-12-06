@@ -7,7 +7,6 @@
 
 #import "AIRBDAnchorViewController.h"
 #import "AIRBDRoomInfoModel.h"
-#import <AliInteractiveRoomBundle/AliInteractiveRoomBundle.h>
 #import <Masonry/Masonry.h>
 #import "AIRBDToast.h"
 #import "AIRBDCommentView.h"
@@ -17,6 +16,8 @@
 #import "AIRBDetailsButton.h"
 #import "AIRBDEnvironments.h"
 #import "UITools/UIViewController+Extension.h"
+
+@import AliInteractiveRoomBundle;
 
 @interface AIRBDAnchorViewController ()<UITextFieldDelegate,AIRBRoomChannelDelegate,UIGestureRecognizerDelegate, AIRBLivePusherDelegate,AIRBDMorePanelDelegate,AIRBDItemsViewDelegate>
 

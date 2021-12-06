@@ -6,8 +6,9 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <AliInteractiveRoomBundle/AliInteractiveRoomBundle.h>
 NS_ASSUME_NONNULL_BEGIN
+
+@import AliInteractiveRoomBundle;
 
 @interface AIRBDRoomInfoModel : NSObject
 

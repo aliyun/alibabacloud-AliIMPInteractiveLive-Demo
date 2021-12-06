@@ -6,7 +6,7 @@
 //
 
 #import "AIRBDLiveRoomViewController.h"
-#import <AliStandardLiveRoomBundle/AliStandardLiveRoomBundle.h>
+//#import <AliStandardLiveRoomBundle/AliStandardLiveRoomBundle.h>
 #import <Masonry/Masonry.h>
 
 #import "AIRBDToast.h"
@@ -16,6 +16,8 @@
 //#import "AIRBDShopWindowViewController.h"
 //#import "AIRBDShareViewController.h"
 #import "AIRBDEnvironments.h"
+
+@import AliStandardLiveRoomBundle;
 
 @interface AIRBDLiveRoomViewController () <ASLRBLiveRoomViewControllerDelegate>
 @property(nonatomic, copy) NSString* userID;

@@ -7,7 +7,6 @@
 
 #import "AIRBDAudienceViewController.h"
 #import "AIRBDRoomInfoModel.h"
-#import <AliInteractiveRoomBundle/AliInteractiveRoomBundle.h>
 #import <Masonry/Masonry.h>
 #import "AIRBDToast.h"
 #import "AIRBDCommentView.h"
@@ -16,6 +15,9 @@
 #import "AIRBDItemsView.h"
 #import "UIColor+HexColor.h"
 #import "AIRBDetailsButton.h"
+
+@import AliInteractiveRoomBundle;
+
 @interface AIRBDAudienceViewController ()<UITextFieldDelegate,AIRBRoomChannelDelegate,UIGestureRecognizerDelegate, AIRBLivePlayerDelegate,AIRBDMorePanelDelegate,AIRBDItemsViewDelegate>
 
 @property (strong, nonatomic) UIImageView* backgroundView;

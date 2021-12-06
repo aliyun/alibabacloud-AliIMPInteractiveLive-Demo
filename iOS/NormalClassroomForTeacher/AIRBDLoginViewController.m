@@ -9,13 +9,13 @@
 #import "AIRBDSetRoomViewController.h"
 #import "AIRBDBigClassViewController.h"
 //#import "AIRBDRoomListViewController.h"
-#import <AliInteractiveRoomBundle/AliInteractiveRoomBundle.h>
 #import "AIRBDToast.h"
 #import "AIRBDEnvironments.h"
 #import <Masonry/Masonry.h>
 #import "AIRBDAnchorViewController.h"
 #import "AIRBDRoomInfoModel.h"
 
+@import AliInteractiveRoomBundle;
 
 @interface AIRBDLoginViewController ()<AIRBRoomEngineDelegate>
 @property (copy, nonatomic) NSString* userID;

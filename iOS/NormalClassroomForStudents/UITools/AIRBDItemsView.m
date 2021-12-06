@@ -7,8 +7,10 @@
 
 #import "AIRBDItemsView.h"
 #import "AIRBDItemsViewCell.h"
-#import <AliInteractiveRoomBundle/AliInteractiveRoomBundle.h>
 #import <Masonry/Masonry.h>
+
+@import AliInteractiveRoomBundle;
+
 @interface AIRBDItemsView ()<UITableViewDelegate,UITableViewDataSource>
 @property(nonatomic,strong)NSMutableArray* items;
 @end
