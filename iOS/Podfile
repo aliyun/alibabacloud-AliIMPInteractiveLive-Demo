@@ -5,7 +5,7 @@ source 'https://cdn.cocoapods.org/'
 source 'https://github.com/CocoaPods/Specs.git'
 
   def common_version
-  '1.4.1.20211206008'
+  '1.5.0-rc1'
   end
 
   def pod_ailplayer
@@ -94,7 +94,7 @@ target 'StandardClassroomForTeacher' do
      
      #阿里云低代码音视频工厂RTC相关库
      pod 'AliInteractiveRTCCore', common_version
-     pod 'AliRTCSdk', '2.2'
+     pod 'AliRTCSdk', '2.5.3'
 
      #阿里云低代码音视频工厂白板能力相关库，如果没有使用，则不需要
      pod 'AliInteractiveWhiteBoardCore', common_version
@@ -118,7 +118,7 @@ target 'StandardClassroomForStudents' do
      
      #阿里云低代码音视频工厂RTC相关库
      pod 'AliInteractiveRTCCore', common_version
-     pod 'AliRTCSdk', '2.2'
+     pod 'AliRTCSdk', '2.5.3'
 
      #阿里云低代码音视频工厂白板能力相关库，如果没有使用白板能力，则不需要
      pod 'AliInteractiveWhiteBoardCore', common_version
@@ -141,7 +141,7 @@ target 'NormalClassroomForTeacher' do
   
   #阿里云低代码音视频工厂RTC相关库
   pod 'AliInteractiveRTCCore', common_version
-  pod 'AliRTCSdk', '2.2'
+  pod 'AliRTCSdk', '2.5.3'
 
   #阿里云低代码音视频工厂白板能力相关库，如果没有使用，则不需要
   pod 'AliInteractiveWhiteBoardCore', common_version
@@ -163,7 +163,7 @@ target 'NormalClassroomForStudents' do
   
   #阿里云低代码音视频工厂RTC相关库
   pod 'AliInteractiveRTCCore', common_version
-  pod 'AliRTCSdk', '2.2'
+  pod 'AliRTCSdk', '2.5.3'
 
   #阿里云低代码音视频工厂白板能力相关库，如果没有使用白板能力，则不需要
   pod 'AliInteractiveWhiteBoardCore', common_version
