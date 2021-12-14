@@ -10,6 +10,11 @@
 		0A842C79F85951A6C4D72CBE /* libPods-StandardClassroomForStudents.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9029DB62DE74F6C04B3414FD /* libPods-StandardClassroomForStudents.a */; };
 		51316DC2E48727DBF3C6F285 /* libPods-StandardLiveRoomForAudience.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D85E46165A4DC5F40F336ABD /* libPods-StandardLiveRoomForAudience.a */; };
 		6061C1118A6CD9C9491D3614 /* libPods-StandardLiveRoomForAnchor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69367096B885C2CFDF20CD1F /* libPods-StandardLiveRoomForAnchor.a */; };
+		7D3AEBDD2767742800D1D9F0 /* AIRBDClassroomStudent4iPhoneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3AEBDC2767742800D1D9F0 /* AIRBDClassroomStudent4iPhoneViewController.m */; };
+		7D3AEBE02767785000D1D9F0 /* AIRBDEnvironments.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3AEBDE2767785000D1D9F0 /* AIRBDEnvironments.m */; };
+		7D3AEBE327683BDA00D1D9F0 /* AIRBDClassroomStudent4iPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3AEBE227683BD900D1D9F0 /* AIRBDClassroomStudent4iPadViewController.m */; };
+		7D3AEBEA27684B1E00D1D9F0 /* AIRBDClassroomTeacher4iPadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3AEBE927684B1E00D1D9F0 /* AIRBDClassroomTeacher4iPadViewController.m */; };
+		7D3AEBED27684C7200D1D9F0 /* AIRBDEnvironments.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D3AEBEC27684C7200D1D9F0 /* AIRBDEnvironments.m */; };
 		D50FB7B60F5B19F58033AA41 /* libPods-NormalLiveRoomForAudience.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B033D9ECBB1AEB466276E742 /* libPods-NormalLiveRoomForAudience.a */; };
 		D59CB51419D1C6674E6C9A11 /* libPods-NormalLiveRoomForAnchor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 074864E205E738A9136B5F45 /* libPods-NormalLiveRoomForAnchor.a */; };
 		E06614B35766B9ABAA605A6C /* libPods-StandardClassroomForTeacher.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9622E6390DBA582D05DC240A /* libPods-StandardClassroomForTeacher.a */; };
@@ -168,6 +173,16 @@
 		6953A65695B34566B7865B06 /* Pods-StandardLiveRoomForAudience.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StandardLiveRoomForAudience.debug.xcconfig"; path = "Target Support Files/Pods-StandardLiveRoomForAudience/Pods-StandardLiveRoomForAudience.debug.xcconfig"; sourceTree = "<group>"; };
 		6E1CC726C05F4DF4104D32A9 /* Pods-StandardLiveRoomForAnchor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StandardLiveRoomForAnchor.debug.xcconfig"; path = "Target Support Files/Pods-StandardLiveRoomForAnchor/Pods-StandardLiveRoomForAnchor.debug.xcconfig"; sourceTree = "<group>"; };
 		77A9829BFD9323AC7D9B2AE1 /* Pods-NormalLiveRoomForAnchor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NormalLiveRoomForAnchor.debug.xcconfig"; path = "Target Support Files/Pods-NormalLiveRoomForAnchor/Pods-NormalLiveRoomForAnchor.debug.xcconfig"; sourceTree = "<group>"; };
+		7D3AEBDB2767740B00D1D9F0 /* AIRBDClassroomStudent4iPhoneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AIRBDClassroomStudent4iPhoneViewController.h; sourceTree = "<group>"; };
+		7D3AEBDC2767742800D1D9F0 /* AIRBDClassroomStudent4iPhoneViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AIRBDClassroomStudent4iPhoneViewController.m; sourceTree = "<group>"; };
+		7D3AEBDE2767785000D1D9F0 /* AIRBDEnvironments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDEnvironments.m; sourceTree = "<group>"; };
+		7D3AEBDF2767785000D1D9F0 /* AIRBDEnvironments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDEnvironments.h; sourceTree = "<group>"; };
+		7D3AEBE127683BD900D1D9F0 /* AIRBDClassroomStudent4iPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDClassroomStudent4iPadViewController.h; sourceTree = "<group>"; };
+		7D3AEBE227683BD900D1D9F0 /* AIRBDClassroomStudent4iPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDClassroomStudent4iPadViewController.m; sourceTree = "<group>"; };
+		7D3AEBE827684B1E00D1D9F0 /* AIRBDClassroomTeacher4iPadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDClassroomTeacher4iPadViewController.h; sourceTree = "<group>"; };
+		7D3AEBE927684B1E00D1D9F0 /* AIRBDClassroomTeacher4iPadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDClassroomTeacher4iPadViewController.m; sourceTree = "<group>"; };
+		7D3AEBEB27684C7200D1D9F0 /* AIRBDEnvironments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDEnvironments.h; sourceTree = "<group>"; };
+		7D3AEBEC27684C7200D1D9F0 /* AIRBDEnvironments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDEnvironments.m; sourceTree = "<group>"; };
 		8059EDDCC6BA9EB136235A77 /* Pods-NormalClassroomForStudents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NormalClassroomForStudents.debug.xcconfig"; path = "Target Support Files/Pods-NormalClassroomForStudents/Pods-NormalClassroomForStudents.debug.xcconfig"; sourceTree = "<group>"; };
 		86641B5239C3C129A7A9D0D6 /* Pods-StandardClassroomForStudents.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StandardClassroomForStudents.debug.xcconfig"; path = "Target Support Files/Pods-StandardClassroomForStudents/Pods-StandardClassroomForStudents.debug.xcconfig"; sourceTree = "<group>"; };
 		9029DB62DE74F6C04B3414FD /* libPods-StandardClassroomForStudents.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StandardClassroomForStudents.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -713,6 +728,10 @@
 		ED9D7FA62750776F0007A22A /* StandardClassroomForTeacher */ = {
 			isa = PBXGroup;
 			children = (
+				7D3AEBE827684B1E00D1D9F0 /* AIRBDClassroomTeacher4iPadViewController.h */,
+				7D3AEBE927684B1E00D1D9F0 /* AIRBDClassroomTeacher4iPadViewController.m */,
+				7D3AEBEB27684C7200D1D9F0 /* AIRBDEnvironments.h */,
+				7D3AEBEC27684C7200D1D9F0 /* AIRBDEnvironments.m */,
 				ED9D7FA72750776F0007A22A /* AppDelegate.h */,
 				ED9D7FA82750776F0007A22A /* AppDelegate.m */,
 				ED9D7FAA2750776F0007A22A /* SceneDelegate.h */,
@@ -731,6 +750,12 @@
 		ED9D7FC3275077900007A22A /* StandardClassroomForStudents */ = {
 			isa = PBXGroup;
 			children = (
+				7D3AEBDB2767740B00D1D9F0 /* AIRBDClassroomStudent4iPhoneViewController.h */,
+				7D3AEBDC2767742800D1D9F0 /* AIRBDClassroomStudent4iPhoneViewController.m */,
+				7D3AEBE127683BD900D1D9F0 /* AIRBDClassroomStudent4iPadViewController.h */,
+				7D3AEBE227683BD900D1D9F0 /* AIRBDClassroomStudent4iPadViewController.m */,
+				7D3AEBDF2767785000D1D9F0 /* AIRBDEnvironments.h */,
+				7D3AEBDE2767785000D1D9F0 /* AIRBDEnvironments.m */,
 				ED9D7FC4275077900007A22A /* AppDelegate.h */,
 				ED9D7FC5275077900007A22A /* AppDelegate.m */,
 				ED9D7FC7275077900007A22A /* SceneDelegate.h */,
@@ -1755,7 +1780,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D3AEBED27684C7200D1D9F0 /* AIRBDEnvironments.m in Sources */,
 				ED9D7FAF2750776F0007A22A /* ViewController.m in Sources */,
+				7D3AEBEA27684B1E00D1D9F0 /* AIRBDClassroomTeacher4iPadViewController.m in Sources */,
 				ED9D7FA92750776F0007A22A /* AppDelegate.m in Sources */,
 				ED9D7FBA275077720007A22A /* main.m in Sources */,
 				ED9D7FAC2750776F0007A22A /* SceneDelegate.m in Sources */,
@@ -1766,8 +1793,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7D3AEBE02767785000D1D9F0 /* AIRBDEnvironments.m in Sources */,
+				7D3AEBE327683BDA00D1D9F0 /* AIRBDClassroomStudent4iPadViewController.m in Sources */,
 				ED9D7FCC275077900007A22A /* ViewController.m in Sources */,
 				ED9D7FC6275077900007A22A /* AppDelegate.m in Sources */,
+				7D3AEBDD2767742800D1D9F0 /* AIRBDClassroomStudent4iPhoneViewController.m in Sources */,
 				ED9D7FD7275077920007A22A /* main.m in Sources */,
 				ED9D7FC9275077900007A22A /* SceneDelegate.m in Sources */,
 			);
@@ -1980,7 +2010,7 @@
 				DEVELOPMENT_TEAM = 3QR448XZXA;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = StandardLiveRoomForAnchor/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2001,7 +2031,7 @@
 				DEVELOPMENT_TEAM = 3QR448XZXA;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = StandardLiveRoomForAnchor/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2022,7 +2052,7 @@
 				DEVELOPMENT_TEAM = 3QR448XZXA;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = StandardLiveRoomForAudience/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2043,7 +2073,7 @@
 				DEVELOPMENT_TEAM = 3QR448XZXA;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = StandardLiveRoomForAudience/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2064,7 +2094,7 @@
 				DEVELOPMENT_TEAM = 3QR448XZXA;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = NormalLiveRoomForAnchor/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2085,7 +2115,7 @@
 				DEVELOPMENT_TEAM = 3QR448XZXA;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = NormalLiveRoomForAnchor/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2106,7 +2136,7 @@
 				DEVELOPMENT_TEAM = 3QR448XZXA;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = NormalLiveRoomForAudience/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2127,7 +2157,7 @@
 				DEVELOPMENT_TEAM = 3QR448XZXA;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = NormalLiveRoomForAudience/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2145,15 +2175,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3QR448XZXA;
+				DEVELOPMENT_TEAM = 4JGNJS32Q8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = StandardClassroomForTeacher/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoess;
+				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoesy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2166,15 +2196,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3QR448XZXA;
+				DEVELOPMENT_TEAM = 4JGNJS32Q8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = StandardClassroomForTeacher/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoess;
+				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoesy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2187,15 +2217,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3QR448XZXA;
+				DEVELOPMENT_TEAM = 4JGNJS32Q8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = StandardClassroomForStudents/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoess;
+				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoesy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2208,15 +2238,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3QR448XZXA;
+				DEVELOPMENT_TEAM = 4JGNJS32Q8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = StandardClassroomForStudents/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoess;
+				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoesy;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2232,7 +2262,7 @@
 				DEVELOPMENT_TEAM = 3QR448XZXA;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = NormalClassroomForTeacher/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2253,7 +2283,7 @@
 				DEVELOPMENT_TEAM = 3QR448XZXA;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = NormalClassroomForTeacher/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2274,7 +2304,7 @@
 				DEVELOPMENT_TEAM = 3QR448XZXA;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = NormalClassroomForStudents/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2295,7 +2325,7 @@
 				DEVELOPMENT_TEAM = 3QR448XZXA;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = NormalClassroomForStudents/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

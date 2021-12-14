@@ -6,6 +6,8 @@
 //
 
 #import "SceneDelegate.h"
+#import "AIRBDClassroomStudent4iPhoneViewController.h"
+#import "AIRBDClassroomStudent4iPadViewController.h"
 
 @interface SceneDelegate ()
 
@@ -18,6 +20,17 @@
     // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
     // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
     // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+    
+    // iPhone样式样板间
+    AIRBDClassroomStudent4iPhoneViewController* mainViewController = [[AIRBDClassroomStudent4iPhoneViewController alloc] initWithUserID:@"xxxx" userNick:@"xxxx的昵称" classID:@""];
+//    // iPad样式样板间
+//    AIRBDClassroomStudent4iPadViewController* mainViewController = [[AIRBDClassroomStudent4iPadViewController alloc] initWithUserID:@"xxxxxxx" userNick:@"xxxx的昵称" classID:@"e4359547-4e31-478c-9fca-ec93cbe71b3c"];
+    UINavigationController *mainNavigationController = [[UINavigationController alloc] initWithRootViewController:mainViewController];
+    mainNavigationController.navigationBarHidden = YES;
+    mainNavigationController.navigationBar.translucent = NO;
+    self.window.backgroundColor = [UIColor whiteColor];
+    self.window.rootViewController = mainNavigationController;
+    [self.window makeKeyAndVisible];
 }
 
 
