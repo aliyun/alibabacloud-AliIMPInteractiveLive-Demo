@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    tools:ignore="UsingOnClickInXml">
+
+
+        <EditText
+            android:id="@+id/classId"
+            android:layout_marginTop="200dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:lines="1"
+            android:textSize="12sp"
+            android:hint="教室ID"
+            />
+
+        <EditText
+            android:id="@+id/userId"
+            android:layout_below="@+id/classId"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:lines="1"
+            android:textSize="12sp"
+            android:hint="用户ID"
+            />
+
+        <Button
+            android:id="@+id/enterClass"
+            android:layout_below="@+id/userId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="进入课堂"
+            tools:ignore="HardcodedText" />
+
+</RelativeLayout>
