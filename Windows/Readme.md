@@ -4,7 +4,7 @@
 
 ### 下载依赖
 
-由于github对大文件上传有限制，依赖库需要手动下载，并放到当前deps目录下,大致目录结构应如下：
+由于github对大文件上传有限制，依赖库需要手动下载，并放到当前deps目录下，大致目录结构应如下：
 
 ```
 +--classroom
@@ -46,9 +46,9 @@ https://github.com/Kitware/CMake/releases/download/v3.22.1/cmake-3.22.1-windows-
 
 build_win.bat
 
-### windows下需可能要注意的点
+### windows编译可能要注意的点
 
-1.需要先修改build_win的环境变量，其中vs2017, 如果使用的是专业版，那么路径应该为下方路径
+1.需要先修改build_win的环境变量，其中vs2017如果使用的是专业版，那么路径应该为下方路径
 set vs2017="C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\devenv.exe"
 如果使用的是社区版，那么需要修改devenv.exe的路径
 
