@@ -1,0 +1,113 @@
+QWidget#inputWidget {
+  background: #FFFFFF;
+}
+QLabel#titleLabel {
+  font-family: "微软雅黑";
+  font-size: 28px;
+  color: rgb(46, 56, 77);
+}
+QLabel#label_1 {
+  font-family: "微软雅黑";
+  font-size: 12px;
+  color: rgb(141,153,170);
+}
+QLabel#label_2 {
+  font-family: "微软雅黑";
+  font-size: 12px;
+  color: rgb(141,153,170);
+}
+QLabel#label_3 {
+  font-family: "微软雅黑";
+  font-size: 12px;
+  color: rgb(141,153,170);
+}
+QLabel#label_4 {
+  font-family: "微软雅黑";
+  font-size: 12px;
+  color: rgb(141,153,170);
+}
+
+QComboBox{
+  border: 1px solid #E0E7FF;
+  border-radius: 4.5px;
+  font-family: "微软雅黑";
+  font-size: 12px;
+  background: rgb(249, 250, 255);
+  padding-left: 6px;
+}
+
+QComboBox::drop-down {
+border-left-width: 0px;
+border-top-width: 0px;
+border-right-width: 0px;
+border-bottom-width: 0px;
+subcontrol-origin: padding;
+subcontrol-position: top right;
+}
+QComboBox::down-arrow {
+  border-image: url(:/res/images/icon_dropdown.png);
+  left: -14px;
+  height:5px;
+  width: 8px;
+}
+QComboBox QAbstractItemView::item {
+color: #666666;
+min-height: 56px;
+background-color: rgba(255,255,255,0.04);
+font-family:"微软雅黑";
+font-size: 12px;
+padding-left: 6px;
+}
+
+QComboBox QAbstractItemView::item:selected {
+background-color:rgba(255,255,255,0.12); 
+border:none;
+}
+QComboBox:disabled{
+color: rgba(255, 255, 255, 0.42); 
+}
+
+QListView{ border-radius: 6px; font-size: 12px; outline: 0px; }
+QScrollBar:vertical{border:none;background-color:#33363B;width: 4px;border-radius: 2px;}
+QScrollBar::handle:vertical{width: 8px;min-height: 32px;border-radius: 8px;background: rgba(255,255,255,0.12);}
+QScrollBar::sub-page:vertical{background: #33363B;}
+QScrollBar::add-page:vertical{background: #33363B;}
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical{border: none;background: none;color: none;}
+QScrollBar::add-line:vertical{width: 0px;height: 0px;}
+QScrollBar::sub-line:vertical{width: 0px;height: 0px;}
+
+QLineEdit#classRoomIdEdit{
+  border: 1px solid #E0E7FF;
+  border-radius: 4.5px;
+  font-family: "微软雅黑";
+  font-size: 13px;
+  color: #000000;
+  background: rgb(249, 250, 255);
+  text-align: left;
+}
+QLineEdit#userIdEdit{
+  border: 1px solid #E0E7FF;
+  border-radius: 4.5px;
+  font-family: "微软雅黑";
+  font-size: 13px;
+  color: #000000;
+  background: rgb(249, 250, 255);
+  text-align: left;
+}
+QLineEdit#classUserNickEdit{
+  border: 1px solid #E0E7FF;
+  border-radius: 4.5px;
+  font-family: "微软雅黑";
+  font-size: 13px;
+  color: #000000;
+  background: rgb(249, 250, 255);
+  text-align: left;
+}
+QPushButton#loginBtn{
+  background: #4FACFF;
+  border-radius: 5px;
+  background-color: #4FACFF;
+  font-family: "微软雅黑";
+  font-size: 12px;
+  color: #FFFFFF;
+}

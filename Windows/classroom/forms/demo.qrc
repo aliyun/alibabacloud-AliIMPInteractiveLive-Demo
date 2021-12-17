@@ -1,0 +1,46 @@
+<RCC>
+    <qresource prefix="/res">
+        <file>images/input_area_background.png</file>
+        <file>images/radio2_checked.png</file>
+        <file>images/radio2_normal.png</file>
+        <file>images/classroom_id.png</file>
+        <file>images/user_id.png</file>
+        <file>images/icon_dropdown.png</file>
+        <file>images/icon_packup.png</file>
+        <file>iconfont.ttf</file>
+        <file>images/bottom_bkg.png</file>
+        <file>images/main_bak.png</file>
+        <file>images/right_bottom_bkg.png</file>
+        <file>images/right_top_bak.png</file>
+        <file>images/start_class.png</file>
+        <file>images/stop_class.png</file>
+        <file>images/figicon.png</file>
+        <file>images/emoji.png</file>
+        <file>images/refresh_button.png</file>
+        <file>images/defalt_avatar.png</file>
+        <file>images/failed_icon.png</file>
+        <file>images/success_icon.png</file>
+        <file>images/waitting_icon.png</file>
+        <file>images/loading.gif</file>
+        <file>images/shareScreenIcon.png</file>
+        <file>images/recording.png</file>
+        <file>images/moreSettingBtn.png</file>
+        <file>images/left_button.png</file>
+        <file>images/right_button.png</file>
+        <file>images/icon_share_screen.png</file>
+        <file>images/fold.png</file>
+        <file>images/unfold.png</file>
+        <file>images/tip_bak.png</file>
+        <file>images/drage_bar.png</file>
+        <file>images/ic_toolbar_yinfu.png</file>
+        <file>images/recording_tips.png</file>
+        <file>images/recording_tips_red_point.png</file>
+        <file>images/checkbox_checked.png</file>
+        <file>images/checkbox_unchecked.png</file>
+        <file>images/close_hover.png</file>
+        <file>images/close_normal.png</file>
+    </qresource>
+    <qresource prefix="/skin">
+        <file>qss/LoginSkin.qss</file>
+    </qresource>
+</RCC>

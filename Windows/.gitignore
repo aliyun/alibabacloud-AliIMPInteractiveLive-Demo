@@ -1,0 +1,16 @@
+.vscode
+__MACOSX/
+.idea
+build/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.sdf
+*.suo
+xcode/
+out_static/
+*.swn
+*.sw*
+build_rel/
+deps/
+deps.zip

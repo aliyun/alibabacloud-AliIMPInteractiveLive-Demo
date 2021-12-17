@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainDisplayContainer</class>
+ <widget class="QWidget" name="MainDisplayContainer">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1149</width>
+    <height>703</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QStackedWidget" name="stackedWidget">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="currentIndex">
+      <number>0</number>
+     </property>
+     <widget class="QWidget" name="BigDisplay">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QStackedWidget" name="BigDisplayContain"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="SpeakerDisplayWidget" name="SpeakerDisplay">
+      <property name="styleSheet">
+       <string notr="true">SpeakerDisplayWidget#SpeakerDisplay{
+background:#F9F9F9;
+}</string>
+      </property>
+     </widget>
+     <widget class="GridDisplayWidget" name="GridDisplay">
+      <property name="styleSheet">
+       <string notr="true">GridDisplayWidget#GridDisplay{
+background:#F9F9F9;
+}</string>
+      </property>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QStackedWidget" name="stackedWidget_2">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="baseSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="currentIndex">
+      <number>3</number>
+     </property>
+     <widget class="QWidget" name="liveDisplay"/>
+     <widget class="QWidget" name="whiteboardDisplay"/>
+     <widget class="QWidget" name="rtcPreviewDisplay"/>
+     <widget class="QWidget" name="rtcSreenDisplay">
+      <property name="styleSheet">
+       <string notr="true"/>
+      </property>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+  <zorder>stackedWidget_2</zorder>
+  <zorder>stackedWidget</zorder>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GridDisplayWidget</class>
+   <extends>QWidget</extends>
+   <header>grid_display_widget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SpeakerDisplayWidget</class>
+   <extends>QWidget</extends>
+   <header>speaker_display_widget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="demo.qrc"/>
+ </resources>
+ <connections/>
+</ui>
