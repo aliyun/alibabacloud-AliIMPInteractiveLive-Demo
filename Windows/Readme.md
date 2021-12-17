@@ -8,7 +8,7 @@
 
 ```
 +--classroom
-+--camke
++--cmake
 +--deps
 |    +--gaea
 |    +--imageformats
