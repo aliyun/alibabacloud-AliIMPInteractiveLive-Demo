@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ThumbnailWidgetItem</class>
+ <widget class="QWidget" name="ThumbnailWidgetItem">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>191</width>
+    <height>122</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>191</width>
+    <height>122</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>191</width>
+    <height>122</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget#ThumbnailWidgetItem{
+background:#FFFFFF;
+border-radius: 2px;
+}</string>
+  </property>
+  <widget class="QLabel" name="numberLabel">
+   <property name="geometry">
+    <rect>
+     <x>1</x>
+     <y>97</y>
+     <width>22</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>22</width>
+     <height>22</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>22</width>
+     <height>22</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel#numberLabel{
+  opacity: 0.8;
+  background: rgba(0,0,0,0.8);
+  color: #ffffff;
+  font-family: &quot;PingFangSC-Medium&quot;;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  border-radius: 2px;
+}</string>
+   </property>
+   <property name="text">
+    <string>01</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="wbLabel">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>46</y>
+     <width>92</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel#wbLabel{
+font-family:&quot;lviconfont&quot;;
+color: #888888;
+font-size:30px;
+background:transparent;
+}</string>
+   </property>
+   <property name="text">
+    <string>wbLabel</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="imageLabel">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>189</width>
+     <height>120</height>
+    </rect>
+   </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="minimumSize">
+    <size>
+     <width>189</width>
+     <height>120</height>
+    </size>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>189</width>
+     <height>120</height>
+    </size>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel#imageLabel{
+border-radius: 2px;
+border:1px solid #FFFFFF;
+background:transparent;
+}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <zorder>imageLabel</zorder>
+  <zorder>numberLabel</zorder>
+  <zorder>wbLabel</zorder>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

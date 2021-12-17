@@ -1,0 +1,32 @@
+---
+# Document: http://clang.llvm.org/docs/ClangFormatStyleOptions.html
+# Tool, An interactive guide and builder: http://clangformat.com/
+# cmd: clang-format -i *.cpp *.h
+# We'll use defaults from the LLVM style, but with 4 columns indentation.
+BasedOnStyle: Google
+IndentWidth: 2
+---
+Language: Cpp
+# Force pointers to the type for C++.
+AccessModifierOffset: -1
+AlignEscapedNewlinesLeft: true
+AlignTrailingComments: true
+AllowAllParametersOfDeclarationOnNextLine: true
+AllowShortFunctionsOnASingleLine: true
+AllowShortIfStatementsOnASingleLine: true
+AllowShortLoopsOnASingleLine: true
+AlwaysBreakTemplateDeclarations: true
+BinPackParameters: false
+BreakConstructorInitializersBeforeComma: false
+ColumnLimit: 80
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+DerivePointerAlignment: false
+IndentCaseLabels: true
+MaxEmptyLinesToKeep: 2
+NamespaceIndentation: None
+PointerAlignment: Left
+SpaceBeforeAssignmentOperators: true
+SpacesBeforeTrailingComments: 1
+Standard: Cpp11
+TabWidth: 2
+UseTab: Never

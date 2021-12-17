@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StudentControls</class>
+ <widget class="QWidget" name="StudentControls">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>172</width>
+    <height>64</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QWidget#StudentControls {
+font-family:&quot;微软雅黑&quot;;
+background-color: transparent;
+}</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QWidget" name="widget" native="true">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QWidget#widget{
+  width: 132px;
+  height: 44px;
+  border-radius: 22px;
+  background: #FFFFFF;
+  box-shadow: 0px 2px 5px #d2d2d2;
+}</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="spacing">
+       <number>12</number>
+      </property>
+      <item>
+       <widget class="MultiIconButton" name="VideoControl">
+        <property name="minimumSize">
+         <size>
+          <width>28</width>
+          <height>28</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>28</width>
+          <height>28</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QToolButton#VideoControl{
+font-family:&quot;lviconfont&quot;;
+font-size:28px;
+color:#666666;
+background:transparent;
+border:none;
+}
+QLabel {
+font-family:&quot;lviconfont&quot;;
+font-size: 28px;
+color:#666666;
+border:none;
+background:transparent;
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="MultiIconButton" name="MicControl">
+        <property name="minimumSize">
+         <size>
+          <width>28</width>
+          <height>28</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>28</width>
+          <height>28</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QToolButton#MicControl{
+font-family:&quot;lviconfont&quot;;
+font-size:28px;
+color:#666666;
+background:transparent;
+border:none;
+}
+QLabel {
+font-family:&quot;lviconfont&quot;;
+font-size: 28px;
+color:#666666;
+border:none;
+background:transparent;
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="LinkmicControl">
+        <property name="minimumSize">
+         <size>
+          <width>28</width>
+          <height>28</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>28</width>
+          <height>28</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QPushButton#LinkmicControl{
+font-family:&quot;lviconfont&quot;;
+font-size:28px;
+color:#666666;
+background:transparent;
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MultiIconButton</class>
+   <extends>QToolButton</extends>
+   <header>ui/Button/multi_icon_button.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
