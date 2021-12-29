@@ -462,7 +462,7 @@
 - (void)startLiveButtonAction:(UIButton*)sender{
     [self.liveRoomVC startLiveAndUpdateConfig:({
         ASLRBLiveInitConfig* config = [[ASLRBLiveInitConfig alloc]init];
-        config.liveTitle = self.titleTextField.text;
+        config.liveBusinessInfo.liveTitle = self.titleTextField.text;
         config;
     })];
     [sender setTitle:@"加载中  " forState:UIControlStateNormal];
