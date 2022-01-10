@@ -350,6 +350,9 @@
     if (self) {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillShow:) name:UIKeyboardWillShowNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyBoardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(systemActiveStateChange:) name:UIApplicationWillResignActiveNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(systemActiveStateChange:) name:UIApplicationDidBecomeActiveNotification object:nil];
     }
     return self;
 }
@@ -580,6 +583,10 @@
 //            });
         }
             break;
+            
+        case AIRBLivePlayerEventImageCaptured: {
+            ;
+        }
         default:
             break;
     }
@@ -671,6 +678,16 @@
         [UIView animateWithDuration:animationTime animations:animation];
     } else {
         animation();
+    }
+}
+
+- (void)systemActiveStateChange:(NSNotification *) note {
+    if (note.name == UIApplicationDidBecomeActiveNotification) {
+//        if (self.livePlayerStarted) {
+//            [self.room.livePlayer refresh];
+//        }
+    } else if (note.name == UIApplicationWillResignActiveNotification) {
+        [self.room.livePlayer snapshotAsync];
     }
 }
 
