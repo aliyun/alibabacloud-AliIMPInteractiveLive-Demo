@@ -5,7 +5,7 @@ source 'https://cdn.cocoapods.org/'
 source 'https://github.com/CocoaPods/Specs.git'
 
   def common_version
-  '1.5.1.20211231003'
+  '1.5.1.20220114003'
   end
 
   def pod_ailplayer
@@ -74,6 +74,10 @@ end
    #阿里云低代码音视频工厂观众拉流相关库
    pod 'AliInteractiveVideoPlayerCore', common_version
    pod_ailplayer
+   
+   #阿里云低代码音视频工厂RTC相关库 (需要连麦才加)
+   pod 'AliInteractiveRTCCore', common_version
+   pod 'AliRTCSdk', '2.5.3'
 
    #阿里云低代码音视频工厂互动直播样板间相关库
    pod 'AliStandardLiveRoomBundle', common_version

@@ -32,6 +32,13 @@
 //@property (nonatomic, strong) AIRBDShopWindowViewController* shopWindowVC;
 //@property (nonatomic, strong) UIView* goodsCardView;
 @property (nonatomic, strong) AIRBDShareViewController* shareVC;
+
+@property (nonatomic, strong) UIButton* linMickButton;
+@property (nonatomic, strong) UIButton* cameraButton;
+@property (nonatomic, strong) UIButton* micButton;
+@property (nonatomic, strong) UIView* linMickView;
+@property (nonatomic, strong) UIAlertController* alertController;
+
 @end
 
 @implementation AIRBDLiveRoomViewController
@@ -71,6 +78,7 @@
             ASLRBLiveInitConfig* config = [[ASLRBLiveInitConfig alloc] init];
             config.liveID = weakSelf.liveID;
             config.role = weakSelf.role;
+//            config.enableLinkMic = YES;   // 连麦（目前iOS直播样板间仅支持观众端）
             config;
         }) onCompletion:^(ASLRBLiveRoomViewController * _Nonnull liveRoomVC) {
             
@@ -105,245 +113,8 @@
     }];
 }
 
-//- (void)customizeAnchorLiveRoomPrestartView {
-//    UIView* roomSettingHolder;
-////    UIImageView* userAvatar;
-//    UIButton *startLiveButton,*switchCameraButton,*beautyButtonAction,*editTitleButton;
-//    UIView* preView = self.liveRoomVC.livePrestartCustomizedViewHolder;
-////    [preView addSubview:({
-////        UIView* view = [[UIView alloc]initWithFrame:preView.bounds];
-////        [view setBackgroundColor:[UIColor colorWithWhite:0 alpha:0.2]];
-////        view;
-////    })];
-//
-//    if (!preView) {
-//        return;
-//    }
-//
-//    UIButton* backButton = [[UIButton alloc] init];
-//    [backButton setImage:[UIImage imageNamed:@"icon-exit"] forState:UIControlStateNormal];
-//    [backButton addTarget:self action:@selector(backButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-//    [preView addSubview:backButton];
-//    [backButton mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
-//        if (@available(iOS 11.0, *)) {
-//            make.top.equalTo(preView.mas_safeAreaLayoutGuideTop).with.offset(10);
-//        } else {
-//            make.top.equalTo(preView.mas_top).with.offset(10);
-//        }
-//        make.right.equalTo(preView.mas_right).with.offset(-10);
-//        make.height.mas_equalTo(30);
-//        make.width.mas_equalTo(30);
-//    }];
-//
-//    [preView addSubview:({
-//        UIView* view = [[UIView alloc] init];
-//        view.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:255.0/255.0 blue:255.0/255.0 alpha:0.8];
-//        view.layer.masksToBounds = YES;
-//        view.layer.cornerRadius = 8;
-////        [view addSubview:({
-////            UIImageView* imageView = [[UIImageView alloc] initWithFrame:CGRectMake(7, 7, 71, 71)];
-//////            [imageView setImage:self.roomConfig.anchorAvatar];
-////            imageView.layer.masksToBounds = YES;
-////            imageView.layer.cornerRadius = 8;
-////            userAvatar = imageView;
-////            imageView;
-////        })];
-//        [view addSubview:({
-//            UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(5, 5, 240, 40)];
-//            textField.textAlignment = NSTextAlignmentLeft;
-//            textField.font = [UIFont fontWithName:@"PingFangSC-Regular" size:20];
-//            textField.text = self.liveTitle ? : nil;
-//            textField.placeholder = @"加个直播标题让更多人看见";
-//            textField.textColor = [UIColor colorWithRed:0.0/255.0 green:0.0/255.0 blue:0.0/255.0 alpha:0.8/1.0];
-//            self.titleTextField = textField;
-//            textField;
-//        })];
-//        [view addSubview:({
-//            UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(250, 13, 18, 18)];
-//            button.layer.masksToBounds = YES;
-//            button.layer.cornerRadius = 3;
-//            [button setImage:[UIImage imageNamed:@"icon-edit"] forState:UIControlStateNormal];
-//            [button addTarget:self action:@selector(editTitleButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-//            editTitleButton = button;
-//            button;
-//        })];
-//        roomSettingHolder = view;
-//        view;
-//    })];
-//    [preView addSubview:({
-//        UIButton* button = [[UIButton alloc] init];
-//        [button addTarget:self action:@selector(startLiveButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-//        button.layer.masksToBounds = YES;
-//        button.layer.cornerRadius = 10;
-//        button.backgroundColor = [UIColor colorWithHexString:@"#FB622B" alpha:1.0];
-//        [button setTitle:@"开始直播" forState:UIControlStateNormal];
-//        button.titleLabel.textColor = [UIColor colorWithHexString:@"#FFFFFF" alpha:1.0];
-//        button.titleLabel.font = [UIFont fontWithName:@"PingFangSC-Semibold" size:16];
-//        startLiveButton = button;
-//        button;
-//    })];
-//    [preView addSubview:({
-//        UIButton* button = [[UIButton alloc] init];
-//        [button addTarget:self action:@selector(switchCameraButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-//        button.imageView.contentMode = UIViewContentModeScaleAspectFill;
-//        button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
-//        button.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
-//        [button setImage:[UIImage imageNamed:@"icon-camera_switch"] forState:UIControlStateNormal];
-//        switchCameraButton = button;
-//        [button addSubview:({
-//            UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(-10, 36, 60, 18)];
-//            label.textAlignment = NSTextAlignmentCenter;
-//            label.adjustsFontSizeToFitWidth = YES;
-//            label.font = [UIFont fontWithName:@"PingFangSC-Regular" size:14];
-//            label.textColor = [UIColor whiteColor];
-//            label.text = @"翻转";
-//            label;
-//        })];
-//        button;
-//    })];
-//    [preView addSubview:({
-//        UIButton* button = [[UIButton alloc] init];
-//        [button addTarget:self action:@selector(beautyButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-//        button.imageView.contentMode = UIViewContentModeScaleAspectFill;
-//        [button setImage:[UIImage imageNamed:@"icon-beauty_white"] forState:UIControlStateNormal];
-//        beautyButtonAction = button;
-//        [button addSubview:({
-//            UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(-10, 40, 60, 18)];
-//            label.textAlignment = NSTextAlignmentCenter;
-//            label.adjustsFontSizeToFitWidth = YES;
-//            label.font = [UIFont fontWithName:@"PingFangSC-Regular" size:14];
-//            label.textColor = [UIColor whiteColor];
-//            label.text = @"美颜";
-//            label;
-//        })];
-//        button;
-//    })];
-//
-//    //约束
-//    [roomSettingHolder mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerX.equalTo(preView);
-//        if (@available(iOS 11.0, *)) {
-//            make.top.equalTo(preView.mas_safeAreaLayoutGuideTop).with.offset(80);
-//        } else {
-//            make.top.equalTo(preView.mas_top).with.offset(80);
-//        }
-//        make.height.mas_equalTo(85);
-//        make.width.mas_equalTo(275);
-//    }];
-//    [startLiveButton mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
-//        make.centerX.equalTo(preView);
-//        if (@available(iOS 11.0, *)) {
-//            make.bottom.equalTo(preView.mas_safeAreaLayoutGuideBottom).with.offset(-95);
-//        } else {
-//            make.bottom.equalTo(preView.mas_bottom).with.offset(-95);
-//        }
-//        make.width.mas_equalTo(275);
-//        make.height.mas_equalTo(48);
-//    }];
-//    [switchCameraButton mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
-//        make.left.equalTo(startLiveButton.mas_left).with.offset(68);
-//        make.bottom.equalTo(startLiveButton.mas_top).with.offset(-35);
-//        make.width.mas_equalTo(36);
-//        make.height.mas_equalTo(32);
-//    }];
-//    [beautyButtonAction mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
-//        make.right.equalTo(startLiveButton.mas_right).with.offset(-68);
-//        make.bottom.equalTo(startLiveButton.mas_top).with.offset(-35);
-//        make.width.mas_equalTo(36);
-//        make.height.mas_equalTo(36);
-//    }];
-//}
-//
-//- (void) addAnchorCustomizedViews {
-//    // 网络状态变化
-//    UIView* networkStatusView = [[UIView alloc] init];
-//    [self.liveRoomVC.view addSubview:networkStatusView];
-//    [networkStatusView mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
-//        make.width.mas_equalTo(75);
-//        make.height.mas_equalTo(30);
-//        make.right.equalTo(self.liveRoomVC.view.mas_right);
-//        make.top.equalTo(self.liveRoomVC.view.mas_top).with.offset(85);
-//    }];
-//
-//    self.networkStatusButton = [[UIButton alloc] init];
-//    self.networkStatusButton.layer.cornerRadius = 3;
-//    self.networkStatusButton.clipsToBounds = YES;
-//    self.networkStatusButton.backgroundColor = [UIColor colorWithHexString:@"#51C359" alpha:1.0];
-//    [networkStatusView addSubview:self.networkStatusButton];
-//    [self.networkStatusButton mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
-//        make.width.mas_equalTo(6);
-//        make.height.mas_equalTo(6);
-//        make.left.equalTo(networkStatusView.mas_left);
-//        make.centerY.equalTo(networkStatusView.mas_centerY);
-//    }];
-//
-//    self.networkStatusLabel = [[UILabel alloc] init];
-//    self.networkStatusLabel.text = @"网络良好";
-//    self.networkStatusLabel.font = [UIFont fontWithName:@"PingFangSC-Regular" size:12];
-//    [networkStatusView addSubview:self.networkStatusLabel];
-//    [self.networkStatusLabel mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
-//        make.width.mas_equalTo(52);
-//        make.height.mas_equalTo(18);
-//        make.right.equalTo(networkStatusView.mas_right).with.offset(-12);
-//        make.centerY.equalTo(networkStatusView.mas_centerY);
-//    }];
-//
-//    //更多能力展示
-//    UIView* abilitiesDemonstrationEntranceView = [[UIView alloc] init];
-//    abilitiesDemonstrationEntranceView.backgroundColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2];
-//    abilitiesDemonstrationEntranceView.layer.cornerRadius = 10;
-//    [self.liveRoomVC.view addSubview:abilitiesDemonstrationEntranceView];
-//    [abilitiesDemonstrationEntranceView mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
-//        make.width.mas_equalTo(105);
-//        make.height.mas_equalTo(22);
-//        make.right.equalTo(self.liveRoomVC.view.mas_right);
-//        make.top.equalTo(networkStatusView.mas_bottom).with.offset(10);
-//    }];
-//
-//    UIImageView* abilitiesDemonstrationEntranceImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"img-moreabilities"]];
-//    [abilitiesDemonstrationEntranceView addSubview:abilitiesDemonstrationEntranceImageView];
-//    [abilitiesDemonstrationEntranceImageView mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
-//        make.width.mas_equalTo(14.4);
-//        make.height.mas_equalTo(14.4);
-//        make.left.equalTo(abilitiesDemonstrationEntranceView.mas_left).with.offset(11);
-//        make.centerY.equalTo(abilitiesDemonstrationEntranceView.mas_centerY);
-//    }];
-//
-//    UIButton* abilitiesDemonstrationEntranceTextButton = [[UIButton alloc] init];
-//    [abilitiesDemonstrationEntranceTextButton addTarget:self action:@selector(abilitiesDemonstrationEntranceButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-//    [abilitiesDemonstrationEntranceView addSubview:abilitiesDemonstrationEntranceTextButton];
-//    [abilitiesDemonstrationEntranceTextButton setAttributedTitle:[[NSAttributedString alloc] initWithString:@"更多能力"
-//                                                                   attributes:
-//                                    @{
-//                                        NSForegroundColorAttributeName:[UIColor colorWithHexString:@"#FFFFFF" alpha:1.0],
-//                                        NSFontAttributeName:[UIFont fontWithName:@"PingFangSC-Regular" size:12]
-//                                    }] forState:UIControlStateNormal];
-//    [abilitiesDemonstrationEntranceTextButton mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
-//        make.width.mas_equalTo(48);
-//        make.height.mas_equalTo(14);
-//        make.left.equalTo(abilitiesDemonstrationEntranceView.mas_left).with.offset(31);
-//        make.centerY.equalTo(abilitiesDemonstrationEntranceView.mas_centerY);
-//    }];
-//
-//    UIButton* abilitiesDemonstrationEntranceImgButton = [[UIButton alloc] init];
-//    [abilitiesDemonstrationEntranceImgButton addTarget:self action:@selector(abilitiesDemonstrationEntranceButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-//    [abilitiesDemonstrationEntranceImgButton setImage:[UIImage imageNamed:@"icon-back"] forState:UIControlStateNormal];
-//    [abilitiesDemonstrationEntranceView addSubview:abilitiesDemonstrationEntranceImgButton];
-//    abilitiesDemonstrationEntranceImgButton.transform = CGAffineTransformMakeRotation(M_PI);
-//    [abilitiesDemonstrationEntranceImgButton mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
-//        make.width.mas_equalTo(10);
-//        make.height.mas_equalTo(10);
-//        make.left.equalTo(abilitiesDemonstrationEntranceView.mas_left).with.offset(87);
-//        make.centerY.equalTo(abilitiesDemonstrationEntranceView.mas_centerY);
-//    }];
-//}
-
-- (void) customizeAnchorLiveRoom {
-//    [self customizeAnchorLiveRoomPrestartView];
-}
-
 - (void) customizeAudienceLiveRoom {
-    
+//    [self customizeLinkMicLiveRoom];
 }
 
 #pragma mark - ASLRBLiveRoomViewControllerDelegate
@@ -357,17 +128,7 @@
         case ASLRBCommonEventExitButtonDidClicked:{
             dispatch_async(dispatch_get_main_queue(), ^{
                 if (self.role == AIRBDLiveRoomUserRoleAnchor) {
-//                    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"提示" message:@"还有观众正在路上，确定要结束直播吗？" preferredStyle:UIAlertControllerStyleAlert];
-//                    UIAlertAction* conform = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//                        [self.liveRoomVC exitLiveRoom];
-//                        [self dismissViewControllerAnimated:NO completion:nil];
-//                        [self.navigationController popViewControllerAnimated:YES];
-//                    }];
-//                    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
-//
-//                    [alertVC addAction:cancel];
-//                    [alertVC addAction:conform];
-//                    [self.liveRoomVC presentViewController:alertVC animated:YES completion:nil];
+
                 } else {
                     [self.liveRoomVC exitLiveRoom];
                     [self dismissViewControllerAnimated:NO completion:nil];
@@ -391,59 +152,6 @@
             [self.liveRoomVC presentChildViewController:self.shareVC animated:YES presentedFrame:frame direction:AIRBDViewControllerPresentFromBottom];
             self.liveRoomVC.presentedChildViewController = self.shareVC;
         }
-            break;
-//        case ASLRBAnchorEventLivePusherStarted: {
-//            if (self.role == ASLRBUserRoleAnchor) {
-//                dispatch_async(dispatch_get_main_queue(), ^{
-//                    [self addAnchorCustomizedViews];
-//                });
-//            }
-//        }
-//            break;
-//
-//        case ASLRBAnchorEventLivePusherStreamingReconnectStart: {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                self.networkStatusLabel.text = @"网络中断";
-//                self.networkStatusButton.backgroundColor = [UIColor colorWithHexString:@"#FE3143" alpha:1.0];
-//
-//                [[AIRBDToast shareInstance] makeToast:@"网络中断，正在重连" duration:1.0];
-//            });
-//        }
-//            break;
-//        case ASLRBAnchorEventLivePusherStreamingReconnectSuccess: {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                self.networkStatusLabel.text = @"网络良好";
-//                self.networkStatusButton.backgroundColor = [UIColor colorWithHexString:@"#51C359" alpha:1.0];
-//
-//                [[AIRBDToast shareInstance] makeToast:@"网络重连成功" duration:1.0];
-//            });
-//
-//        }
-//            break;
-//        case ASLRBAnchorEventLivePusherStreamingPoorNetworkStart: {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                self.networkStatusLabel.text = @"网络不佳";
-//                self.networkStatusButton.backgroundColor = [UIColor colorWithHexString:@"#FFA623" alpha:1.0];
-//            });
-//
-//        }
-//            break;
-//        case ASLRBAnchorEventLivePusherStreamingPoorNetworkEnd: {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                self.networkStatusLabel.text = @"网络良好";
-//                self.networkStatusButton.backgroundColor = [UIColor colorWithHexString:@"#51C359" alpha:1.0];
-//            });
-//
-//        }
-//            break;
-//        case ASLRBAnchorEventLivePusherStreamingNetworkConnectionLost: {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//                self.networkStatusLabel.text = @"网络中断";
-//                self.networkStatusButton.backgroundColor = [UIColor colorWithHexString:@"#FE3143" alpha:1.0];
-//
-//                [[AIRBDToast shareInstance] makeToast:@"网络中断，请检查网络" duration:1.0];
-//            });
-//        }
             break;
             
         default:
@@ -487,52 +195,277 @@
     [self.titleTextField becomeFirstResponder];
 }
 
-//- (void) abilitiesDemonstrationEntranceButtonAction:(UIButton*)sender {
-//    CGRect frame = CGRectMake([UIScreen mainScreen].bounds.size.width - 250, 0, 250, [UIScreen mainScreen].bounds.size.height);
-//    if (!self.abilityDemonstrationVC) {
-//        self.abilityDemonstrationVC = [[AIRBDAbilityDemonstrationViewController alloc] init];
-//        self.abilityDemonstrationVC.delegate = self;
-//    }
-//    [self.liveRoomVC presentChildViewController:self.abilityDemonstrationVC animated:YES presentedFrame:frame direction:AIRBDViewControllerPresentFromRight];
-//    self.liveRoomVC.presentedChildViewController = self.abilityDemonstrationVC;
-//}
-//
-//#pragma mark - AIRBDAbilityDemonstrationVCProtocol
-//
-//- (void) onShopWindowItemClicked {
-//    [self.liveRoomVC dismissChildViewController:self.abilityDemonstrationVC animated:YES];
-//
-//    if (!self.shopWindowVC) {
-//        self.shopWindowVC = [[AIRBDShopWindowViewController alloc] init];
-//    }
-//
-//    CGRect frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height - [UIScreen mainScreen].bounds.size.width * 1.2, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.width * 1.2);
-//    [self.liveRoomVC presentChildViewController:self.shopWindowVC animated:YES presentedFrame:frame direction:AIRBDViewControllerPresentFromBottom];
-//    self.liveRoomVC.presentedChildViewController = self.shopWindowVC;
-//}
-//
-//- (void) onGoodsCardItemClicked {
-//    [self.liveRoomVC dismissChildViewController:self.abilityDemonstrationVC animated:YES];
-//
-//    [UIView animateWithDuration:0.2 animations:^{
-//        if (!self.goodsCardView) {
-//            self.goodsCardView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"直播-商品卡片"]];
-//            [self.liveRoomVC.view addSubview:self.goodsCardView];
-//            [self.goodsCardView mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
-//                make.bottom.equalTo(self.liveRoomVC.bottomCustomizedViewHolder.mas_top);
-//                make.left.equalTo(self.liveRoomVC.view).with.offset(14);
-//                make.height.mas_equalTo(80);
-//                make.width.mas_equalTo(260);
-//            }];
-//        }
-//
-//        [self.liveRoomVC.liveCommentView mas_remakeConstraints:^(MASConstraintMaker * _Nonnull make) {
-//            make.left.equalTo(self.liveRoomVC.view).with.offset(self.liveRoomVC.liveCommentView.frame.origin.x);
-//            make.bottom.equalTo(self.goodsCardView.mas_top);
-//            make.height.mas_equalTo(self.liveRoomVC.liveCommentView.bounds.size.height);
-//            make.width.mas_equalTo(self.liveRoomVC.liveCommentView.bounds.size.width);
-//        }];
-//    }];
-//}
+/* ****** 连麦相关 ******** */
+
+#pragma mark - linkMic
+- (void) customizeLinkMicLiveRoom {
+    UIView* view = [[UIView alloc] init];
+    view.backgroundColor = [UIColor blackColor];
+    self.linMickView = view;
+    
+    self.linMickButton = [[UIButton alloc] init];
+    self.linMickButton.frame = CGRectMake(0, 0, 40, 40);
+    self.linMickButton.tag = 0;
+    [self.linMickButton setTitle:@"申请\n连麦" forState:UIControlStateNormal];
+    self.linMickButton.titleLabel.lineBreakMode = 0;
+    self.linMickButton.layer.cornerRadius = 5.0;
+    self.linMickButton.backgroundColor = [UIColor blackColor];
+    [self.linMickButton addTarget:self action:@selector(linkMicButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.liveRoomVC.bottomViewsHolder addSubview:self.linMickButton];
+    [self.linMickButton mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
+        make.right.equalTo(self.liveRoomVC.bottomViewsHolder.shareButton.mas_left).offset(-10);
+        make.width.equalTo(self.liveRoomVC.bottomViewsHolder.shareButton);
+        make.bottom.equalTo(self.liveRoomVC.bottomViewsHolder.shareButton);
+        make.top.equalTo(self.liveRoomVC.bottomViewsHolder.shareButton);
+    }];
+    
+    self.cameraButton = [[UIButton alloc] init];
+    self.cameraButton.frame = CGRectMake(0, 0, 40, 40);
+    self.cameraButton.tag = 0;
+    [self.cameraButton setTitle:@"关摄\n像头" forState:UIControlStateNormal];
+    [self.cameraButton setTitle:@"开摄\n像头" forState:UIControlStateSelected];
+    self.cameraButton.titleLabel.lineBreakMode = 0;
+    self.cameraButton.layer.cornerRadius = 5.0;
+    self.cameraButton.backgroundColor = [UIColor blackColor];
+    [self.cameraButton addTarget:self action:@selector(cameraButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    self.cameraButton.hidden = YES;
+    [self.liveRoomVC.bottomViewsHolder addSubview:self.cameraButton];
+    [self.cameraButton mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
+        make.right.equalTo(self.linMickButton.mas_left).offset(-10);
+        make.bottom.equalTo(self.linMickButton);
+        make.width.equalTo(self.linMickButton);
+        make.height.equalTo(self.linMickButton);
+    }];
+    
+    self.micButton = [[UIButton alloc] init];
+    self.micButton.frame = CGRectMake(0, 0, 40, 40);
+    self.micButton.tag = 0;
+    [self.micButton setTitle:@"关麦\n克风" forState:UIControlStateNormal];
+    [self.micButton setTitle:@"开麦\n克风" forState:UIControlStateSelected];
+    self.micButton.titleLabel.lineBreakMode = 0;
+    self.micButton.layer.cornerRadius = 5.0;
+    self.micButton.backgroundColor = [UIColor blackColor];
+    [self.micButton addTarget:self action:@selector(micButtonAction) forControlEvents:UIControlEventTouchUpInside];
+    self.micButton.hidden = YES;
+    [self.liveRoomVC.bottomViewsHolder addSubview:self.micButton];
+    [self.micButton mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
+        make.right.equalTo(self.cameraButton.mas_left).offset(-10);
+        make.bottom.equalTo(self.cameraButton);
+        make.width.equalTo(self.cameraButton);
+        make.height.equalTo(self.cameraButton);
+    }];
+}
+
+- (void)linkMicButtonAction{
+    if (self.linMickButton.tag == 0){    // 申请连麦
+        [self.liveRoomVC linkMicApply];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.linMickButton setTitle:@"取消\n申请" forState:UIControlStateNormal];
+            self.linMickButton.tag = 1;
+        });
+    } else if (self.linMickButton.tag == 1){    // 取消申请
+        [self.liveRoomVC linkMicCancelApply];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.linMickButton setTitle:@"申请\n连麦" forState:UIControlStateNormal];
+            self.linMickButton.tag = 0;
+        });
+    } else if (self.linMickButton.tag == 2){    // 退出连麦
+        [self.liveRoomVC linkMicLeave];
+    }
+}
+
+- (void)cameraButtonAction{
+    if (self.cameraButton.selected){    // 开启摄像头
+        [self.liveRoomVC linkMicOpenCamera];
+        self.cameraButton.selected = NO;
+    } else{ // 关闭摄像头
+        [self.liveRoomVC linkMicCloseCamera];
+        self.cameraButton.selected = YES;
+    }
+}
+
+- (void)micButtonAction{
+    if (self.micButton.selected){    // 开启麦克风
+        [self.liveRoomVC linkMicOpenMic];
+        self.micButton.selected = NO;
+    } else{ // 关闭麦克风
+        [self.liveRoomVC linkMicCloseMic];
+        self.micButton.selected = YES;
+    }
+}
+
+- (void) onASLRBLinkMicEvent:(ASLRBLinkMicEvent)event info:(NSDictionary*)info{
+    switch (event) {
+        case ASLRBLinkMicEventLocalPreviewStarted:{
+            [self.linMickView addSubview:self.liveRoomVC.linkMicLocalPreview];
+            [self.liveRoomVC.linkMicLocalPreview mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
+                make.edges.equalTo(self.linMickView).multipliedBy(0.3);
+            }];
+        }
+            break;
+        case ASLRBLinkMicEventLocalJoinSucceeded:{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.linMickButton setTitle:@"退出\n连麦" forState:UIControlStateNormal];
+                self.linMickButton.tag = 2;
+                self.cameraButton.hidden = NO;
+                self.micButton.hidden = NO;
+                
+                [[AIRBDToast shareInstance] makeToast:@"加入连麦成功" duration:2.0];
+                
+                [self.liveRoomVC.view addSubview:self.linMickView];
+                [self.liveRoomVC.view sendSubviewToBack:self.linMickView];
+                [self.linMickView mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
+                    make.edges.equalTo(self.liveRoomVC.view);
+                }];
+            });
+        }
+            break;
+        case ASLRBLinkMicEventLocalLeaveSucceeded:{
+            [self.liveRoomVC linkMicCancelApply];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.linMickButton setTitle:@"申请\n连麦" forState:UIControlStateNormal];
+                self.linMickButton.tag = 0;
+                self.cameraButton.hidden = YES;
+                self.micButton.hidden = YES;
+                
+                [[AIRBDToast shareInstance] makeToast:@"退出连麦成功" duration:2.0];
+                [self.linMickView removeFromSuperview];
+            });
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void) onASLRBLinkMicError:(ASLRBLinkMicError)error message:(NSString*)msg{
+    switch (error) {
+        case ASLRBLinkMicErrorLinkMicNotEnabled:
+            [[AIRBDToast shareInstance] makeToast:@"连麦不可用(not enabled)" duration:2.0];
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void) onASLRBLinkMicJoined:(BOOL)isNewJoined userList:(NSArray<ASLRBLinkMicUserModel*>*)userList{
+    for (ASLRBLinkMicUserModel* user in userList){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@加入连麦(%d)", user.userID, isNewJoined] duration:2.0];
+        });
+    }
+}
+
+- (void) onASLRBLinkMicLeft:(NSArray<ASLRBLinkMicUserModel*>*)userList{
+    for (ASLRBLinkMicUserModel* user in userList){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@退出连麦", user.userID] duration:2.0];
+        });
+    }
+}
+
+- (void) onASLRBLinkMicCameraStreamAvailable:(ASLRBLinkMicUserModel*)user isAnchor:(BOOL)isAnchor view:(UIView*)view{
+    /* *********** 获取到其他成员的摄像头画面，根据需要进行添加处理 *********** */
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (isAnchor){
+            [self.linMickView addSubview:view];
+            [self.linMickView sendSubviewToBack:view];
+            [view mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
+                make.edges.equalTo(self.linMickView);
+            }];
+        } else{
+            [self.linMickView addSubview:view];
+            [view mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
+                make.right.equalTo(self.linMickView);
+                make.bottom.equalTo(self.linMickView);
+                make.size.equalTo(self.linMickView).multipliedBy(0.3);
+            }];
+        }
+    });
+}
+
+- (void) onASLRBLinkMicRemoteCameraStateChanged:(ASLRBLinkMicUserModel*)user open:(BOOL)open{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@开关摄像头(%d)", user.userID, open] duration:2.0];
+    });
+}
+
+- (void) onASLRBLinkMicRemoteMicStateChanged:(NSArray<ASLRBLinkMicUserModel*>*)userList open:(BOOL)open{
+    for (ASLRBLinkMicUserModel* user in userList){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@开关麦克风(%d)", user.userID, open] duration:2.0];
+        });
+    }
+}
+
+- (void) onASLRBLinkMicInvited:(ASLRBLinkMicUserModel*)inviter userInvitedList:(NSArray<ASLRBLinkMicUserModel*>*)userInvitedList{
+    for (ASLRBLinkMicUserModel* user in userInvitedList){
+        if ([user.userID isEqualToString:self.userID]){
+            dispatch_async(dispatch_get_main_queue(), ^{
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"您收到了主播的连麦邀请\n是否接受？" message:@"连麦成功后，即可与主播进行沟通" preferredStyle:UIAlertControllerStyleAlert];
+                [alertController addAction:[UIAlertAction actionWithTitle:@"接受" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [self.liveRoomVC linkMicHandleInvite:YES];
+                }]];
+                [alertController addAction:[UIAlertAction actionWithTitle:@"拒绝" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                    [self.liveRoomVC linkMicHandleInvite:NO];
+                }]];
+                
+                self.alertController = alertController;
+                [self.liveRoomVC presentViewController:self.alertController animated:YES completion:nil];
+            });
+        }
+    }
+}
+
+- (void) onASLRBLinkMicInviteCanceledForMe{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"主播撤销了连麦邀请"] duration:2.0];
+        [self.alertController dismissViewControllerAnimated:YES completion:nil];
+    });
+}
+
+- (void) onASLRBLinkMicInviteRejected:(NSArray<ASLRBLinkMicUserModel*>*)userList{
+    for (ASLRBLinkMicUserModel* user in userList){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@拒绝了连麦邀请", user.userID] duration:2.0];
+        });
+    }
+}
+
+- (void) onASLRBLinkMicApplied:(BOOL)isNewApplied userList:(NSArray<ASLRBLinkMicUserModel*>*)userList{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        for (ASLRBLinkMicUserModel* user in userList){
+        [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@申请连麦(%d)", user.userID, isNewApplied] duration:2.0];
+        }
+    });
+}
+
+- (void) onASLRBLinkMicApplyCanceled:(ASLRBLinkMicUserModel*)user{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@取消了连麦申请", user.userID] duration:2.0];
+    });
+}
+
+- (void) onASLRBLinkMicApplyResponse:(BOOL)approve user:(ASLRBLinkMicUserModel*)user{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@的连麦申请被处理了(%d)", user.userID, approve] duration:2.0];
+        
+        if ([user.userID isEqualToString:self.userID]){
+            [self.linMickButton setTitle:@"申请\n连麦" forState:UIControlStateNormal];
+            self.linMickButton.tag = 0;
+        }
+    });
+}
+
+- (void) onASLRBLinkMicKicked:(NSArray<ASLRBLinkMicUserModel*>*)userList{
+    for (ASLRBLinkMicUserModel* user in userList){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@被踢出连麦", user.userID] duration:2.0];
+        });
+    }
+}
+
 
 @end
