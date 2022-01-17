@@ -1,21 +1,24 @@
 package com.aliyun.liveroom.demo;
 
 import com.aliyun.liveroom.demo.custom.CustomLiveBeautyView;
+import com.aliyun.liveroom.demo.custom.CustomLiveEmptyView;
 import com.aliyun.liveroom.demo.custom.CustomLiveGoodsCardView;
 import com.aliyun.liveroom.demo.custom.CustomLiveInfoView;
 import com.aliyun.liveroom.demo.custom.CustomLiveInputView;
 import com.aliyun.liveroom.demo.custom.CustomLiveLikeView;
 import com.aliyun.liveroom.demo.custom.CustomLiveMessageView;
-import com.aliyun.liveroom.demo.custom.CustomLiveMiddleView;
 import com.aliyun.liveroom.demo.custom.CustomLiveMoreView;
 import com.aliyun.liveroom.demo.custom.CustomLiveRenderView;
 import com.aliyun.liveroom.demo.custom.CustomLiveRightUpperView;
 import com.aliyun.liveroom.demo.custom.CustomLiveShareView;
 import com.aliyun.liveroom.demo.custom.CustomLiveStartView;
 import com.aliyun.liveroom.demo.custom.CustomLiveStopView;
+import com.aliyun.liveroom.demo.linkmic.CustomLiveLinkMicView;
 import com.aliyun.standard.liveroom.lib.LiveHook;
 import com.aliyun.standard.liveroom.lib.LivePrototype;
 import com.aliyun.standard.liveroom.lib.component.view.LiveBeautyView;
+import com.aliyun.standard.liveroom.lib.component.view.LiveCurtainView;
+import com.aliyun.standard.liveroom.lib.component.view.LiveGestureView;
 import com.aliyun.standard.liveroom.lib.component.view.LiveInfoView;
 import com.aliyun.standard.liveroom.lib.component.view.LiveInputView;
 import com.aliyun.standard.liveroom.lib.component.view.LiveLikeView;
@@ -52,7 +55,7 @@ public class LiveHooker {
                         // 自定义商品卡片视图
                         .setGoodsSlot(context -> new CustomLiveGoodsCardView(context, null))
                         // 自定义腰部视图
-                        .setMiddleSlot(context -> new CustomLiveMiddleView(context, null))
+//                        .setMiddleSlot(context -> new CustomLiveMiddleView(context, null))
                         // 自定义左上角的直播信息视图
                         .replaceComponentView(LiveInfoView.class, CustomLiveInfoView.class)
                         // 自定义右上角的直播停止视图
@@ -74,6 +77,19 @@ public class LiveHooker {
                 // 如果还不能满足自定义的诉求, 参考如下方式来替换整个xml布局文件, 支持任意维度自定义
                 // 找到SDK中样板间默认的布局文件 ilr_activity_live.xml, 然后复制一份重命名为 activity_custom_live.xml, 在复制的文件里直接修改
                 // .setLiveLayoutRes(R.layout.activity_custom_live)
+        );
+    }
+
+    /**
+     * 设置样板间连麦样式, 目前仅支持观众端
+     */
+    public static void setLinkMicStyle() {
+        LivePrototype.getInstance().setLiveHook(new LiveHook()
+                .replaceComponentView(LiveMessageView.class, CustomLiveEmptyView.class)
+                .replaceComponentView(LiveCurtainView.class, CustomLiveEmptyView.class)
+                .replaceComponentView(LiveGestureView.class, CustomLiveEmptyView.class)
+                // 普通直播 => 连麦直播
+                .replaceComponentView(LiveRenderView.class, CustomLiveLinkMicView.class)
         );
     }
 }

@@ -12,13 +12,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <Switch
-            android:id="@+id/enable_custom_style"
+        <Spinner
+            android:id="@+id/mode_selector"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:switchPadding="9dp"
-            android:text="是否开启自定义样式" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal" />
 
         <Button
             android:layout_width="match_parent"

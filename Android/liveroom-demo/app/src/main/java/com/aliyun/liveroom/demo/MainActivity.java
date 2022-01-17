@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Switch;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.aliyun.roompaas.base.exposable.Callback;
@@ -13,21 +15,41 @@ import com.aliyun.roompaas.player.exposable.CanvasScale;
 import com.aliyun.roompaas.roombase.Const;
 import com.aliyun.standard.liveroom.lib.LivePrototype;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class MainActivity extends Activity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private boolean enableCustomStyle = false;
+    private Mode currentMode = Mode.DEFAULT;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Switch enableCustom = findViewById(R.id.enable_custom_style);
-        enableCustom.setChecked(enableCustomStyle);
-        enableCustom.setOnCheckedChangeListener(
-                (buttonView, isChecked) -> enableCustomStyle = isChecked);
+        Spinner selector = findViewById(R.id.mode_selector);
+        selector.setOnItemSelectedListener(null);
+        List<Mode> modes = new ArrayList<>(Arrays.asList(Mode.values()));
+        selector.setAdapter(new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_dropdown_item,
+                modes
+        ));
+        selector.setSelection(modes.indexOf(currentMode));
+        selector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                currentMode = modes.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     // 设置直播间样式
@@ -40,6 +62,7 @@ public class MainActivity extends Activity {
         param.role = LivePrototype.Role.ANCHOR;
         param.nick = "用户" + currentUserId;
         param.liveShowMode = CanvasScale.Mode.ASPECT_FILL;
+        param.supportLinkMic = currentMode == Mode.LINK_MIC;
         LivePrototype.getInstance().setup(this, param, new Callback<String>() {
             @Override
             public void onSuccess(String liveId) {
@@ -60,7 +83,7 @@ public class MainActivity extends Activity {
         setLiveStyle();
 
         // TODO: 此处替换主播开播时得到的liveId
-        String liveId = "";
+        String liveId = "c7d451d8-efe4-49a6-9573-880689115c4d";
         if (TextUtils.isEmpty(liveId)) {
             String message = "请在代码处先填写liveId参数, 再重新运行";
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
@@ -72,17 +95,31 @@ public class MainActivity extends Activity {
         param.role = LivePrototype.Role.AUDIENCE;
         param.nick = "用户" + currentUserId;
         param.liveId = liveId;
-        LivePrototype.getInstance().setup(this, param, null);
+        param.supportLinkMic = currentMode == Mode.LINK_MIC;
+        LivePrototype.getInstance().setup(this, param, new Callback<String>() {
+            @Override
+            public void onSuccess(String liveId) {
+
+            }
+
+            @Override
+            public void onError(String errorMsg) {
+                Toast.makeText(MainActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void setLiveStyle() {
-        // 设置直播间样式 (实际开发过程中, 样式确定后不需要每次设置; demo中涉及多种样式, 所以才会每次进入前都要设置)
-        if (enableCustomStyle) {
-            // 设置直播间自定义样式
-            LiveHooker.setCustomStyle();
-        } else {
-            // 设置直播间默认样式
-            LiveHooker.setDefaultStyle();
+        switch (currentMode) {
+            case DEFAULT:
+                LiveHooker.setDefaultStyle();
+                break;
+            case CUSTOM:
+                LiveHooker.setCustomStyle();
+                break;
+            case LINK_MIC:
+                LiveHooker.setLinkMicStyle();
+                break;
         }
     }
 }

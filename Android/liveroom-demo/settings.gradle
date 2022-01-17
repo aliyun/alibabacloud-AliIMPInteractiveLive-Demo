@@ -1,2 +1,37 @@
 rootProject.name = "liveroom-demo"
 include ':app'
+
+def ANDROID_WORKSPACE = "/Users/${System.getProperty("user.name")}/AndroidStudioProjects"
+def ANDROID_WORKSPACE_4_LIVE_ROOM_SDK = "$ANDROID_WORKSPACE/standard-liveroom-android"
+def ANDROID_WORKSPACE_4_BASE_SDK = "$ANDROID_WORKSPACE/room-paas-android"
+
+if (new File(ANDROID_WORKSPACE_4_LIVE_ROOM_SDK).exists()) {
+    include(':liveroom')
+    project(':liveroom').projectDir = new File("$ANDROID_WORKSPACE_4_LIVE_ROOM_SDK/liveroom")
+}
+
+if (new File(ANDROID_WORKSPACE_4_BASE_SDK).exists()) {
+    include(':roombase')
+    project(':roombase').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/roombase")
+
+    include(':biz')
+    project(':biz').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/biz")
+
+    include(':base')
+    project(':base').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/base")
+
+    include(':uibase')
+    project(':uibase').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/uibase")
+
+    include(':chat')
+    project(':chat').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/chat")
+
+    include(':live')
+    project(':live').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/live")
+
+    include(':player')
+    project(':player').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/player")
+
+    include(':rtc')
+    project(':rtc').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/rtc")
+}
