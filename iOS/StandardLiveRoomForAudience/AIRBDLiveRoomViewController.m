@@ -114,7 +114,7 @@
 }
 
 - (void) customizeAudienceLiveRoom {
-//    [self customizeLinkMicLiveRoom];
+//    [self customizeLinkMicLiveRoom];    // 需要体验连麦请取消该行代码注释以及取消代码行{config.enableLinkMic = YES;}的注释
 }
 
 #pragma mark - ASLRBLiveRoomViewControllerDelegate
@@ -350,7 +350,7 @@
     }
 }
 
-- (void) onASLRBLinkMicJoined:(BOOL)isNewJoined userList:(NSArray<ASLRBLinkMicUserModel*>*)userList{
+- (void) onASLRBLinkMicUserJoined:(BOOL)isNewJoined userList:(NSArray<ASLRBLinkMicUserModel*>*)userList{
     for (ASLRBLinkMicUserModel* user in userList){
         dispatch_async(dispatch_get_main_queue(), ^{
             [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@加入连麦(%d)", user.userID, isNewJoined] duration:2.0];
@@ -358,7 +358,7 @@
     }
 }
 
-- (void) onASLRBLinkMicLeft:(NSArray<ASLRBLinkMicUserModel*>*)userList{
+- (void) onASLRBLinkMicUserLeft:(NSArray<ASLRBLinkMicUserModel*>*)userList{
     for (ASLRBLinkMicUserModel* user in userList){
         dispatch_async(dispatch_get_main_queue(), ^{
             [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@退出连麦", user.userID] duration:2.0];
@@ -366,8 +366,7 @@
     }
 }
 
-- (void) onASLRBLinkMicCameraStreamAvailable:(ASLRBLinkMicUserModel*)user isAnchor:(BOOL)isAnchor view:(UIView*)view{
-    /* *********** 获取到其他成员的摄像头画面，根据需要进行添加处理 *********** */
+- (void) onASLRBLinkMicCameraStreamAvailable:(NSString*)userID isAnchor:(BOOL)isAnchor view:(UIView*)view{
     dispatch_async(dispatch_get_main_queue(), ^{
         if (isAnchor){
             [self.linMickView addSubview:view];
@@ -386,16 +385,16 @@
     });
 }
 
-- (void) onASLRBLinkMicRemoteCameraStateChanged:(ASLRBLinkMicUserModel*)user open:(BOOL)open{
+- (void) onASLRBLinkMicRemoteCameraStateChanged:(NSString*)userID open:(BOOL)open{
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@开关摄像头(%d)", user.userID, open] duration:2.0];
+        [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@开关摄像头(%d)", userID, open] duration:2.0];
     });
 }
 
-- (void) onASLRBLinkMicRemoteMicStateChanged:(NSArray<ASLRBLinkMicUserModel*>*)userList open:(BOOL)open{
-    for (ASLRBLinkMicUserModel* user in userList){
+- (void) onASLRBLinkMicRemoteMicStateChanged:(NSArray<NSString*>*)userIDList open:(BOOL)open{
+    for (NSString* userID in userIDList){
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@开关麦克风(%d)", user.userID, open] duration:2.0];
+            [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@开关麦克风(%d)", userID, open] duration:2.0];
         });
     }
 }
@@ -448,11 +447,11 @@
     });
 }
 
-- (void) onASLRBLinkMicApplyResponse:(BOOL)approve user:(ASLRBLinkMicUserModel*)user{
+- (void) onASLRBLinkMicApplyResponse:(BOOL)approve user:(NSString*)userID{
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@的连麦申请被处理了(%d)", user.userID, approve] duration:2.0];
+        [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@的连麦申请被处理了(%d)", userID, approve] duration:2.0];
         
-        if ([user.userID isEqualToString:self.userID]){
+        if ([userID isEqualToString:self.userID]){
             [self.linMickButton setTitle:@"申请\n连麦" forState:UIControlStateNormal];
             self.linMickButton.tag = 0;
         }
