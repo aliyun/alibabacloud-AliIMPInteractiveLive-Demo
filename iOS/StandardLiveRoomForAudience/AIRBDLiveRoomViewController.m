@@ -441,9 +441,11 @@
     });
 }
 
-- (void) onASLRBLinkMicApplyCanceled:(ASLRBLinkMicUserModel*)user{
+- (void) onASLRBLinkMicApplyCanceled:(NSArray<ASLRBLinkMicUserModel*>*)userList{
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@取消了连麦申请", user.userID] duration:2.0];
+        for (ASLRBLinkMicUserModel* user in userList){
+            [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@取消了连麦申请", user.userID] duration:2.0];
+        }
     });
 }
 
