@@ -34,4 +34,7 @@ if (new File(ANDROID_WORKSPACE_4_BASE_SDK).exists()) {
 
     include(':rtc')
     project(':rtc').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/rtc")
+
+    include(':base')
+    project(':base').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/base")
 }

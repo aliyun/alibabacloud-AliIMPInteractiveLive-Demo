@@ -34,7 +34,7 @@ dependencies {
         api project(':liveroom')
         api project(':rtc')
     } else {
-        def LATEST_VERSION = '1.5.1.20220117001'
+        def LATEST_VERSION = '1.5.1.20220120002'
         api "com.aliyun.roompaas.biz:liveroom:$LATEST_VERSION"
         api "com.aliyun.roompaas.biz:rtc:$LATEST_VERSION"
     }

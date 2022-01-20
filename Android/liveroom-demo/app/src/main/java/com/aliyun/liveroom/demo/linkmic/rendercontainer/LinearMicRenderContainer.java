@@ -1,4 +1,4 @@
-package com.aliyun.liveroom.demo.linkmic;
+package com.aliyun.liveroom.demo.linkmic.rendercontainer;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aliyun.liveroom.demo.R;
+import com.aliyun.liveroom.demo.linkmic.IMicRenderContainer;
 import com.aliyun.roompaas.uibase.util.ViewUtil;
 import com.aliyun.standard.liveroom.lib.linkmic.model.LinkMicUserModel;
 
@@ -20,30 +21,39 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * 线性布局的连麦视图容器
+ *
  * @author puke
  * @version 2022/1/14
  */
-public class MicRenderContainer extends LinearLayout {
+public class LinearMicRenderContainer extends LinearLayout implements IMicRenderContainer {
 
     private final Map<String, View> userId2ItemView = new HashMap<>();
     private Callback callback;
 
-    public MicRenderContainer(Context context, @Nullable AttributeSet attrs) {
+    public LinearMicRenderContainer(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
+    @Override
     public void add(List<LinkMicUserModel> users) {
         for (LinkMicUserModel user : users) {
             add(user);
         }
     }
 
+    @Override
     public LinkMicUserModel getUser(String userId) {
         ItemView itemView = (ItemView) userId2ItemView.get(userId);
         return itemView == null ? null : itemView.user;
     }
 
-    public void add(LinkMicUserModel user) {
+    @Override
+    public void setCallback(Callback callback) {
+        this.callback = callback;
+    }
+
+    private void add(LinkMicUserModel user) {
         ItemView itemView = (ItemView) userId2ItemView.get(user.userId);
         if (itemView == null) {
             View view = new ItemView(getContext(), user);
@@ -55,6 +65,7 @@ public class MicRenderContainer extends LinearLayout {
         }
     }
 
+    @Override
     public void remove(String userId) {
         int index = getIndex(userId);
         if (isInValidIndex(index)) {
@@ -65,11 +76,13 @@ public class MicRenderContainer extends LinearLayout {
         removeViewAt(index);
     }
 
+    @Override
     public void removeAll() {
         removeAllViews();
         userId2ItemView.clear();
     }
 
+    @Override
     public void update(String userId) {
         int index = getIndex(userId);
         update(index);
@@ -103,17 +116,9 @@ public class MicRenderContainer extends LinearLayout {
         return index < 0 || index >= getChildCount();
     }
 
-    public void setCallback(Callback callback) {
-        this.callback = callback;
-    }
-
     @Nullable
     private View getRenderView(String userId) {
         return callback == null ? null : callback.getView(userId);
-    }
-
-    public interface Callback {
-        View getView(String userId);
     }
 
     @SuppressLint("ViewConstructor")

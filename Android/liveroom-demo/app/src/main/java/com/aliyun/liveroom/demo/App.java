@@ -20,10 +20,11 @@ public class App extends Application {
 
         // 样板间初始化&认证
         LivePrototype.InitParam param = new LivePrototype.InitParam();
-        param.appId = "";
-        param.appKey = "";
-        param.serverHost = "";
-        param.serverSecret = "";
+        param.appId = BuildConfig.INNER_BUSINESS_APP_ID;
+        param.appKey = BuildConfig.INNER_BUSINESS_APP_KEY;
+        param.serverHost = BuildConfig.INNER_BUSINESS_APP_SERVER_HOST;
+        param.serverSecret = BuildConfig.INNER_BUSINESS_APP_SERVER_SECRET;
+
         // TODO: 此处userId取设备md5, 实际接入时要替换为业务userId
         param.userId = getMD5(CommonUtil.getDeviceId()).substring(0, 6);
         LivePrototype.getInstance().init(this, param);

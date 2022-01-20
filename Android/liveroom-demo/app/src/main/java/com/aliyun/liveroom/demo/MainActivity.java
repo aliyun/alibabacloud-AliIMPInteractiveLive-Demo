@@ -1,5 +1,6 @@
 package com.aliyun.liveroom.demo;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -24,11 +26,15 @@ public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private Mode currentMode = Mode.DEFAULT;
+    private EditText liveIdInput;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        liveIdInput = findViewById(R.id.live_id);
+        liveIdInput.setText("30259df0-8cf0-4e3e-9137-29e7c92c53b5");
 
         Spinner selector = findViewById(R.id.mode_selector);
         selector.setOnItemSelectedListener(null);
@@ -82,8 +88,7 @@ public class MainActivity extends Activity {
         // 设置直播间样式
         setLiveStyle();
 
-        // TODO: 此处替换主播开播时得到的liveId
-        String liveId = "c7d451d8-efe4-49a6-9573-880689115c4d";
+        String liveId = liveIdInput.getText().toString().trim();
         if (TextUtils.isEmpty(liveId)) {
             String message = "请在代码处先填写liveId参数, 再重新运行";
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();

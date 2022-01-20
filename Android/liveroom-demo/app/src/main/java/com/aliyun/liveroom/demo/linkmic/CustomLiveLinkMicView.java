@@ -40,7 +40,7 @@ public class CustomLiveLinkMicView extends RelativeLayout implements ComponentHo
     private final Component component = new Component();
 
     private final ViewGroup renderContainer;
-    private final MicRenderContainer micRenderContainer;
+    private final IMicRenderContainer micRenderContainer;
     private final Button mic;
     private final Button camera;
 
@@ -64,40 +64,53 @@ public class CustomLiveLinkMicView extends RelativeLayout implements ComponentHo
                 component.audienceService.switchCamera()
         );
         mic.setOnClickListener(v -> {
-            Object tag = v.getTag();
-            boolean currentOpen = tag == null || Boolean.TRUE.equals(tag);
-            if (currentOpen) {
-                component.audienceService.closeMic();
-                mic.setText("打开麦克风");
+            AudienceService audienceService = component.audienceService;
+            if (audienceService.isOpenMic()) {
+                audienceService.closeMic();
             } else {
-                component.audienceService.openMic();
-                mic.setText("关闭麦克风");
+                audienceService.openMic();
             }
+            refreshButtonUI();
             LinkMicUserModel user = micRenderContainer.getUser(myUserId);
             if (user != null) {
-                user.isMicOpen = !currentOpen;
+                user.isMicOpen = audienceService.isOpenMic();
             }
             micRenderContainer.update(myUserId);
-            v.setTag(!currentOpen);
         });
         camera.setOnClickListener(v -> {
-            Object tag = v.getTag();
-            boolean currentOpen = tag == null || Boolean.TRUE.equals(tag);
-            if (currentOpen) {
+            AudienceService audienceService = component.audienceService;
+            if (audienceService.isOpenCamera()) {
                 component.audienceService.closeCamera();
-                camera.setText("打开摄像头");
             } else {
                 component.audienceService.openCamera();
-                camera.setText("关闭摄像头");
             }
+            refreshButtonUI();
             LinkMicUserModel user = micRenderContainer.getUser(myUserId);
             if (user != null) {
-                user.isCameraOpen = !currentOpen;
+                user.isCameraOpen = audienceService.isOpenCamera();
             }
             micRenderContainer.update(myUserId);
-            v.setTag(!currentOpen);
         });
         findViewById(R.id.leave).setOnClickListener(v -> component.audienceService.leave());
+    }
+
+    private void refreshButtonUI() {
+        AudienceService audienceService = component.audienceService;
+        if (audienceService == null) {
+            return;
+        }
+
+        if (audienceService.isOpenCamera()) {
+            camera.setText("关闭摄像头");
+        } else {
+            camera.setText("打开摄像头");
+        }
+
+        if (audienceService.isOpenMic()) {
+            mic.setText("关闭麦克风");
+        } else {
+            mic.setText("打开麦克风");
+        }
     }
 
     @Override
@@ -138,6 +151,8 @@ public class CustomLiveLinkMicView extends RelativeLayout implements ComponentHo
             audienceService.addEventHandler(new SampleLinkMicEventHandler() {
                 @Override
                 public void onJoinedSuccess(View view) {
+                    audienceService.closeMic();
+                    refreshButtonUI();
                     // 加入连麦之后
                     playerService.stopPlay();
                     // 移除旁路流
@@ -154,7 +169,7 @@ public class CustomLiveLinkMicView extends RelativeLayout implements ComponentHo
 
                 @Override
                 public void onUserJoined(boolean newJoined, List<LinkMicUserModel> users) {
-                    if (CollectionUtil.isNotEmpty(users)) {
+                    if (audienceService.isJoined() && CollectionUtil.isNotEmpty(users)) {
                         micRenderContainer.add(users);
                     }
                 }
@@ -172,13 +187,13 @@ public class CustomLiveLinkMicView extends RelativeLayout implements ComponentHo
                 }
 
                 @Override
-                public void onKicked(List<String> userIds) {
-                    if (CollectionUtil.isEmpty(userIds)) {
+                public void onKicked(List<LinkMicUserModel> users) {
+                    if (CollectionUtil.isEmpty(users)) {
                         return;
                     }
 
-                    for (String userId : userIds) {
-                        micRenderContainer.remove(userId);
+                    for (LinkMicUserModel userId : users) {
+                        micRenderContainer.remove(userId.userId);
                     }
                 }
 
