@@ -222,8 +222,8 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
 
             View renderView = getRenderView(user.userId);
 
-//            if (renderView == null || !user.isCameraOpen) {
-            if (renderView == null) {
+            if (renderView == null || !user.isCameraOpen) {
+//            if (renderView == null) {
                 // 没画面或没开摄像头, 不展示 (没有直接remove, 为了降低的add和remove的性能消耗)
                 container.setVisibility(GONE);
                 return;
@@ -234,23 +234,6 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
 
             container.removeAllViews();
             ViewUtil.addChildMatchParentSafely(container, renderView);
-
-//            // 取出画面的父控件
-//            ViewGroup renderParent = (ViewGroup) renderView.getParent();
-//            if (renderParent != null) {
-//                if (renderParent == container) {
-//                    // 渲染画面已经添加到容器中, 不需要做额外处理 (画面没变化时, 刷新ItemView的情况)
-//                    return;
-//                } else {
-//                    // 渲染画面还在其他容器中时, 要先从其父控件中移除
-//                    renderParent.removeView(renderView);
-//                }
-//            }
-//
-//            // 清空容器当前画面
-//            container.removeAllViews();
-//            // 将画面添加到当前容器中
-//            container.addView(renderView);
         }
 
         @Override

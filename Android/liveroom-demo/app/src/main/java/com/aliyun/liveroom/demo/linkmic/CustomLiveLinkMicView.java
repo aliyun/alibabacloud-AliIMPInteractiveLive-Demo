@@ -41,11 +41,14 @@ public class CustomLiveLinkMicView extends RelativeLayout implements ComponentHo
 
     private final ViewGroup renderContainer;
     private final IMicRenderContainer micRenderContainer;
+    private final Button apply;
     private final Button mic;
     private final Button camera;
 
     private final Map<String, View> userId2View = new HashMap<>();
     private final String myUserId;
+
+    private boolean isApplying;
 
     public CustomLiveLinkMicView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -57,29 +60,42 @@ public class CustomLiveLinkMicView extends RelativeLayout implements ComponentHo
         camera = findViewById(R.id.camera);
         myUserId = Const.getCurrentUserId();
 
-        findViewById(R.id.apply).setOnClickListener(v ->
-                component.audienceService.apply(new ToastCallback<>("申请连麦"))
-        );
+        apply = findViewById(R.id.apply);
+        apply.setOnClickListener(v -> {
+            AudienceService audienceService = component.audienceService;
+            if (isApplying) {
+                audienceService.cancelApply(new ToastCallback<>("取消申请连麦"));
+            } else {
+                audienceService.apply(new ToastCallback<>("申请连麦"));
+            }
+            isApplying = !isApplying;
+            refreshButtonUI();
+        });
         findViewById(R.id.switch_camera).setOnClickListener(v ->
                 component.audienceService.switchCamera()
         );
         mic.setOnClickListener(v -> {
             AudienceService audienceService = component.audienceService;
-            if (audienceService.isOpenMic()) {
+            if (audienceService.isMicOpened()) {
                 audienceService.closeMic();
             } else {
-                audienceService.openMic();
+                if (audienceService.isSelfMicAllowed()) {
+                    audienceService.openMic();
+                } else {
+                    component.showToast("主播开启了全员禁音, 无法打开麦克风");
+                    return;
+                }
             }
             refreshButtonUI();
             LinkMicUserModel user = micRenderContainer.getUser(myUserId);
             if (user != null) {
-                user.isMicOpen = audienceService.isOpenMic();
+                user.isMicOpen = audienceService.isMicOpened();
             }
             micRenderContainer.update(myUserId);
         });
         camera.setOnClickListener(v -> {
             AudienceService audienceService = component.audienceService;
-            if (audienceService.isOpenCamera()) {
+            if (audienceService.isCameraOpened()) {
                 component.audienceService.closeCamera();
             } else {
                 component.audienceService.openCamera();
@@ -87,7 +103,7 @@ public class CustomLiveLinkMicView extends RelativeLayout implements ComponentHo
             refreshButtonUI();
             LinkMicUserModel user = micRenderContainer.getUser(myUserId);
             if (user != null) {
-                user.isCameraOpen = audienceService.isOpenCamera();
+                user.isCameraOpen = audienceService.isCameraOpened();
             }
             micRenderContainer.update(myUserId);
         });
@@ -100,13 +116,20 @@ public class CustomLiveLinkMicView extends RelativeLayout implements ComponentHo
             return;
         }
 
-        if (audienceService.isOpenCamera()) {
+        if (audienceService.isJoined()) {
+            apply.setVisibility(GONE);
+        } else {
+            apply.setVisibility(VISIBLE);
+            apply.setText(isApplying ? "取消申请连麦" : "申请连麦");
+        }
+
+        if (audienceService.isCameraOpened()) {
             camera.setText("关闭摄像头");
         } else {
             camera.setText("打开摄像头");
         }
 
-        if (audienceService.isOpenMic()) {
+        if (audienceService.isMicOpened()) {
             mic.setText("关闭麦克风");
         } else {
             mic.setText("打开麦克风");
@@ -151,6 +174,7 @@ public class CustomLiveLinkMicView extends RelativeLayout implements ComponentHo
             audienceService.addEventHandler(new SampleLinkMicEventHandler() {
                 @Override
                 public void onJoinedSuccess(View view) {
+                    isApplying = false;
                     audienceService.closeMic();
                     refreshButtonUI();
                     // 加入连麦之后
@@ -163,6 +187,9 @@ public class CustomLiveLinkMicView extends RelativeLayout implements ComponentHo
 
                 @Override
                 public void onLeftSuccess() {
+                    isApplying = false;
+                    refreshButtonUI();
+
                     micRenderContainer.removeAll();
                     playBypassLive();
                 }
@@ -274,6 +301,11 @@ public class CustomLiveLinkMicView extends RelativeLayout implements ComponentHo
                         user.isMicOpen = open;
                     }
                     micRenderContainer.update(userId);
+                }
+
+                @Override
+                public void onSelfMicAllowed(boolean allowed) {
+                    showToast(String.format("主播%s了全员禁音", allowed ? "取消" : "开启"));
                 }
             });
         }
