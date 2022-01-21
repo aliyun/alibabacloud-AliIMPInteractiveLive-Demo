@@ -1,40 +1,57 @@
 rootProject.name = "liveroom-demo"
 include ':app'
 
-def ANDROID_WORKSPACE = "/Users/${System.getProperty("user.name")}/AndroidStudioProjects"
-def ANDROID_WORKSPACE_4_LIVE_ROOM_SDK = "$ANDROID_WORKSPACE/standard-liveroom-android"
-def ANDROID_WORKSPACE_4_BASE_SDK = "$ANDROID_WORKSPACE/room-paas-android"
-
-if (new File(ANDROID_WORKSPACE_4_LIVE_ROOM_SDK).exists()) {
-    include(':liveroom')
-    project(':liveroom').projectDir = new File("$ANDROID_WORKSPACE_4_LIVE_ROOM_SDK/liveroom")
+def shouldLoadLocalDepFun() {
+    def localProperties = new Properties()
+    def localPropertiesFile = new File('local.properties') // 此local.properties文件应保持与本脚本同级目录
+    if (localPropertiesFile.exists()) {
+        println "本地配置文件path=${localPropertiesFile.absolutePath}"
+        localPropertiesFile.withInputStream {
+            localProperties.load(it)
+        }
+        return localProperties.getProperty('loadLocalDep') == 'true'
+    } else {
+        println "配置文件不存在"
+        return false
+    }
 }
 
-if (new File(ANDROID_WORKSPACE_4_BASE_SDK).exists()) {
-    include(':roombase')
-    project(':roombase').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/roombase")
+if (shouldLoadLocalDepFun()) {
+    def ANDROID_WORKSPACE = "/Users/${System.getProperty("user.name")}/AndroidStudioProjects"
+    def ANDROID_WORKSPACE_4_LIVE_ROOM_SDK = "$ANDROID_WORKSPACE/standard-liveroom-android"
+    def ANDROID_WORKSPACE_4_BASE_SDK = "$ANDROID_WORKSPACE/room-paas-android"
 
-    include(':biz')
-    project(':biz').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/biz")
+    if (new File(ANDROID_WORKSPACE_4_LIVE_ROOM_SDK).exists()) {
+        include(':liveroom')
+        project(':liveroom').projectDir = new File("$ANDROID_WORKSPACE_4_LIVE_ROOM_SDK/liveroom")
+    }
 
-    include(':base')
-    project(':base').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/base")
+    if (new File(ANDROID_WORKSPACE_4_BASE_SDK).exists()) {
+        include(':roombase')
+        project(':roombase').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/roombase")
 
-    include(':uibase')
-    project(':uibase').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/uibase")
+        include(':biz')
+        project(':biz').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/biz")
 
-    include(':chat')
-    project(':chat').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/chat")
+        include(':base')
+        project(':base').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/base")
 
-    include(':live')
-    project(':live').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/live")
+        include(':uibase')
+        project(':uibase').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/uibase")
 
-    include(':player')
-    project(':player').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/player")
+        include(':chat')
+        project(':chat').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/chat")
 
-    include(':rtc')
-    project(':rtc').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/rtc")
+        include(':live')
+        project(':live').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/live")
 
-    include(':base')
-    project(':base').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/base")
+        include(':player')
+        project(':player').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/player")
+
+        include(':rtc')
+        project(':rtc').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/rtc")
+
+        include(':base')
+        project(':base').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/base")
+    }
 }
