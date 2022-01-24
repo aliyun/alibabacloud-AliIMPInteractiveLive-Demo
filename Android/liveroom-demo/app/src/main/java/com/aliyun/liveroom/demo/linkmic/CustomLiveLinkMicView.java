@@ -226,7 +226,13 @@ public class CustomLiveLinkMicView extends RelativeLayout implements ComponentHo
 
                 @Override
                 public void onApplyResponse(boolean approve, String userId) {
-                    showToast(String.format("老师%s了你的连麦申请", approve ? "同意" : "拒绝"));
+                    showToast(String.format("老师%s了%s的连麦申请", approve ? "同意" : "拒绝", userId));
+
+                    // 主播同意我的申请时, 进行处理 (!!!注意比较, uid可能是别人)
+                    if (approve && TextUtils.equals(userId, Const.getCurrentUserId())) {
+                        // 这里需要手动调用该方法才会执行连麦操作
+                        audienceService.handleApplyResponse(true);
+                    }
                 }
 
                 @Override

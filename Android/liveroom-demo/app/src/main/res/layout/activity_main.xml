@@ -41,11 +41,6 @@
             android:onClick="onViewLive"
             android:text="观众观看"
             tools:ignore="HardcodedText" />
-
-        <com.aliyun.liveroom.demo.linkmic.rendercontainer.GridMicContainer
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
     </LinearLayout>
 
 </ScrollView>
