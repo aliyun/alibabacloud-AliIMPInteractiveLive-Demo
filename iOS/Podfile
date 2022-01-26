@@ -5,7 +5,7 @@ source 'https://cdn.cocoapods.org/'
 source 'https://github.com/CocoaPods/Specs.git'
 
   def common_version
-  '1.5.1.20220117001'
+  '1.6.0-rc1'
   end
 
   def pod_ailplayer

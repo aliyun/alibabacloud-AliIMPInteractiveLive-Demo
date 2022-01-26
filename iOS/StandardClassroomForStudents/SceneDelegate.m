@@ -22,7 +22,7 @@
     // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
     
     // iPhone样式样板间
-    AIRBDClassroomStudent4iPhoneViewController* mainViewController = [[AIRBDClassroomStudent4iPhoneViewController alloc] initWithUserID:@"xxxx" userNick:@"xxxx的昵称" classID:@""];
+    AIRBDClassroomStudent4iPhoneViewController* mainViewController = [[AIRBDClassroomStudent4iPhoneViewController alloc] initWithUserID:@"xxxxstudent" userNick:@"xxxxstudent的昵称" classID:@""];
 //    // iPad样式样板间
 //    AIRBDClassroomStudent4iPadViewController* mainViewController = [[AIRBDClassroomStudent4iPadViewController alloc] initWithUserID:@"xxxxxxx" userNick:@"xxxx的昵称" classID:@"e4359547-4e31-478c-9fca-ec93cbe71b3c"];
     UINavigationController *mainNavigationController = [[UINavigationController alloc] initWithRootViewController:mainViewController];
