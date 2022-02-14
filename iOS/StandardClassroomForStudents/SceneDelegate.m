@@ -21,9 +21,9 @@
     // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
     // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
     
-    // iPhone样式样板间
+    // iPhone互动课堂低代码学生端样式
     AIRBDClassroomStudent4iPhoneViewController* mainViewController = [[AIRBDClassroomStudent4iPhoneViewController alloc] initWithUserID:@"xxxxstudent" userNick:@"xxxxstudent的昵称" classID:@""];
-//    // iPad样式样板间
+//    // iPad互动课堂低代码学生端样式
 //    AIRBDClassroomStudent4iPadViewController* mainViewController = [[AIRBDClassroomStudent4iPadViewController alloc] initWithUserID:@"xxxxxxx" userNick:@"xxxx的昵称" classID:@"e4359547-4e31-478c-9fca-ec93cbe71b3c"];
     UINavigationController *mainNavigationController = [[UINavigationController alloc] initWithRootViewController:mainViewController];
     mainNavigationController.navigationBarHidden = YES;

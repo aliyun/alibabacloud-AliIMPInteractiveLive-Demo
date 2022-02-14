@@ -91,7 +91,7 @@
                 });
                 
             } onFailure:^(NSString * _Nonnull errorMessage) {
-                NSLog(@"样板间setup失败：%@", errorMessage);
+                NSLog(@"低代码互动直播主播端setup失败：%@", errorMessage);
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[AIRBDToast shareInstance] makeToast:errorMessage duration:3.0];

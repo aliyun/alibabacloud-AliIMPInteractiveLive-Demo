@@ -78,7 +78,7 @@
             ASLRBLiveInitConfig* config = [[ASLRBLiveInitConfig alloc] init];
             config.liveID = weakSelf.liveID;
             config.role = weakSelf.role;
-//            config.enableLinkMic = YES;   // 连麦（目前iOS直播样板间仅支持观众端）
+//            config.enableLinkMic = YES;   // 连麦（目前iOS互动直播低代码直播连麦仅支持观众端）
             config;
         }) onCompletion:^(ASLRBLiveRoomViewController * _Nonnull liveRoomVC) {
             
@@ -98,7 +98,7 @@
                 });
                 
             } onFailure:^(NSString * _Nonnull errorMessage) {
-                NSLog(@"样板间setup失败：%@", errorMessage);
+                NSLog(@"低代码互动直播setup失败：%@", errorMessage);
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[AIRBDToast shareInstance] makeToast:errorMessage duration:3.0];
