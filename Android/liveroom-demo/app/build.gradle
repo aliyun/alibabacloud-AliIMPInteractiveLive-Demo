@@ -29,12 +29,13 @@ android {
 }
 
 dependencies {
-    // 样板间SDK依赖
+    // 低代码SDK依赖
     if (shouldLoadLocalDepFun()) {
         api project(':liveroom')
         api project(':rtc')
     } else {
-        def LATEST_VERSION = '1.5.1.20220124001'
+//        def LATEST_VERSION = '1.5.1.20220124001'
+        def LATEST_VERSION = '1.6.0.20220126002'
         api "com.aliyun.roompaas.biz:liveroom:$LATEST_VERSION"
         api "com.aliyun.roompaas.biz:rtc:$LATEST_VERSION"
     }

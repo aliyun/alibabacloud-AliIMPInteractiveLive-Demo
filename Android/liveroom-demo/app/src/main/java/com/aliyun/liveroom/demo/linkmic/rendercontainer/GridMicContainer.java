@@ -169,7 +169,7 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
     }
 
     private boolean isValidIndex(int index) {
-        return index >= 0 && index < getChildCount();
+        return index >= 0 && index < users.size();
     }
 
     @Nullable

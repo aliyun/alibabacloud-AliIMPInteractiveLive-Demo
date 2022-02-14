@@ -29,7 +29,7 @@ import com.aliyun.standard.liveroom.lib.component.view.LiveShareView;
 import com.aliyun.standard.liveroom.lib.component.view.LiveStopView;
 
 /**
- * 设置直播样板间UI
+ * 设置直播间UI
  *
  * @author puke
  * @version 2021/12/13
@@ -37,14 +37,14 @@ import com.aliyun.standard.liveroom.lib.component.view.LiveStopView;
 public class LiveHooker {
 
     /**
-     * 设置样板间默认样式, 即不做任何额外UI定制
+     * 设置直播间默认样式, 即不做任何额外UI定制
      */
     public static void setDefaultStyle() {
         LivePrototype.getInstance().setLiveHook(null);
     }
 
     /**
-     * 设置样板间自定义样式, 根据业务诉求做额外定制
+     * 设置直播间自定义样式, 根据业务诉求做额外定制
      */
     public static void setCustomStyle() {
         LivePrototype.getInstance().setLiveHook(new LiveHook()
@@ -75,13 +75,13 @@ public class LiveHooker {
                         // 自定义页面渲染视图
                         .replaceComponentView(LiveRenderView.class, CustomLiveRenderView.class)
                 // 如果还不能满足自定义的诉求, 参考如下方式来替换整个xml布局文件, 支持任意维度自定义
-                // 找到SDK中样板间默认的布局文件 ilr_activity_live.xml, 然后复制一份重命名为 activity_custom_live.xml, 在复制的文件里直接修改
+                // 找到SDK中直播间默认的布局文件 ilr_activity_live.xml, 然后复制一份重命名为 activity_custom_live.xml, 在复制的文件里直接修改
                 // .setLiveLayoutRes(R.layout.activity_custom_live)
         );
     }
 
     /**
-     * 设置样板间连麦样式, 目前仅支持观众端
+     * 设置直播间连麦样式, 目前仅支持观众端
      */
     public static void setLinkMicStyle() {
         LivePrototype.getInstance().setLiveHook(new LiveHook()

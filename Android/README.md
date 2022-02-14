@@ -4,7 +4,7 @@
 
 ## [1. 场景化Demo](scene-demo)
 
-## [2. 直播样板间Demo](liveroom-demo)
+## [2. 直播低代码Demo](liveroom-demo)
 
-## [3. 课堂样板间Demo](classroom-demo)
+## [3. 课堂低代码Demo](classroom-demo)
 
