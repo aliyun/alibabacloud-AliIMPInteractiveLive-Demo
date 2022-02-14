@@ -18,7 +18,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // 样板间初始化&认证
+        // 初始化&认证
         LivePrototype.InitParam param = new LivePrototype.InitParam();
         param.appId = BuildConfig.INNER_BUSINESS_APP_ID;
         param.appKey = BuildConfig.INNER_BUSINESS_APP_KEY;

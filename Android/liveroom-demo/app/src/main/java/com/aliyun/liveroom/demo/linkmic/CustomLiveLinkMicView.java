@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 样板间连麦组件
+ * 直播间连麦组件
  *
  * @author puke
  * @version 2022/1/10
