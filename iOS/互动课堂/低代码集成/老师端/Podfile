@@ -1,0 +1,44 @@
+# Uncomment the next line to define a global platform for your project
+platform :ios, '10.0'
+
+source 'https://cdn.cocoapods.org/'
+source 'https://github.com/CocoaPods/Specs.git'
+
+  def common_version
+  '1.6.0-rc3'
+  end
+
+  def pod_ailplayer
+    pod 'AliPlayerSDK_iOS', '5.4.4.0'
+    pod 'AliPlayerSDK_iOS_ARTC', '5.4.4.0'
+    pod 'RtsSDK', '1.9.0'
+  end
+
+
+#基于互动课堂低代码接入的老师侧实现逻辑（以大班课为例）
+target 'StandardClassroomForTeacher' do
+     pod 'Masonry'
+     pod 'MJRefresh'
+     pod 'LEEAlert'
+     
+     #阿里云低代码音视频工厂互动课堂低代码入口库，必需
+     pod 'AliStandardClassroomBundle', common_version
+     
+     pod 'AliInteractiveRoomBundle', common_version
+     pod 'AliInteractiveRTCCore', common_version
+     pod 'AliRTCSdk', '2.5.3'
+     pod 'AliInteractiveWhiteBoardCore', common_version
+     pod 'AliInteractiveDocumentCore', common_version
+     
+  end
+
+
+
+
+
+
+
+
+
+
+
