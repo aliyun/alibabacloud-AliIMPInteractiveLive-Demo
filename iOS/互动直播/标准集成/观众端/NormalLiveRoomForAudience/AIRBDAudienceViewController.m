@@ -11,14 +11,14 @@
 #import "AIRBDToast.h"
 #import "AIRBDCommentView.h"
 #import "AIRBDItemsView.h"
-#import "AIRBDMorePanelView.h"
+//#import "AIRBDMorePanelView.h"
 #import "AIRBDItemsView.h"
 #import "UIColor+HexColor.h"
 #import "AIRBDetailsButton.h"
 
 @import AliInteractiveRoomBundle;
 
-@interface AIRBDAudienceViewController ()<UITextFieldDelegate,AIRBRoomChannelDelegate,UIGestureRecognizerDelegate, AIRBLivePlayerDelegate,AIRBDMorePanelDelegate,AIRBDItemsViewDelegate>
+@interface AIRBDAudienceViewController ()<UITextFieldDelegate,AIRBRoomChannelDelegate,UIGestureRecognizerDelegate, AIRBLivePlayerDelegate,AIRBDItemsViewDelegate>
 
 @property (strong, nonatomic) UIImageView* backgroundView;
 
@@ -36,7 +36,7 @@
 @property (strong, nonatomic) UIButton* likeButton;
 @property (strong, nonatomic) UIButton* beautyButton;
 @property (strong, nonatomic) UIButton* moreButton;
-@property (strong, nonatomic) AIRBDMorePanelView* moreButtonsPanel;
+//@property (strong, nonatomic) AIRBDMorePanelView* moreButtonsPanel;
 
 @property (assign, nonatomic) BOOL roomEntered;
 @property (assign, nonatomic) BOOL livePusherStarted;

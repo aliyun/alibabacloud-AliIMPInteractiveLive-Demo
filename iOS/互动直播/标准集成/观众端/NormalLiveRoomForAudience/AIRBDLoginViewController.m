@@ -6,12 +6,10 @@
 //
 
 #import "AIRBDLoginViewController.h"
-#import "AIRBDSetRoomViewController.h"
-
 #import "AIRBDToast.h"
 #import "AIRBDEnvironments.h"
 #import <Masonry/Masonry.h>
-#import "AIRBDAnchorViewController.h"
+#import "AIRBDAudienceViewController.h"
 #import "AIRBDRoomInfoModel.h"
 
 @import AliInteractiveRoomBundle;
@@ -38,26 +36,14 @@
             break;
         case AIRBRoomEngineEventEngineLogined: {
             dispatch_async(dispatch_get_main_queue(), ^{
-                AIRBDAnchorViewController* anchorViewController = [[AIRBDAnchorViewController alloc]init];
-                anchorViewController.roomModel = [[AIRBDRoomInfoModel alloc] init];
-                anchorViewController.roomModel.title = @"";
-                anchorViewController.roomModel.notice = @"";
-                anchorViewController.roomModel.userID = self.userID;
-                anchorViewController.roomModel.config = self.config;
-                [self.navigationController pushViewController:anchorViewController animated:YES];
+                AIRBDAudienceViewController* audienceCiewController = [[AIRBDAudienceViewController alloc]init];
+                audienceCiewController.roomModel = [[AIRBDRoomInfoModel alloc] init];
+                audienceCiewController.roomModel.roomID = @"";
+                audienceCiewController.roomModel.userID = self.userID;
+                audienceCiewController.roomModel.userNickName = @"";
+                [self.navigationController pushViewController:audienceCiewController animated:YES];
                 [self.navigationController setNavigationBarHidden:YES];
-                [anchorViewController createRoomWithCompletion:^(NSString * _Nonnull roomID) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        anchorViewController.roomModel.roomID = roomID;
-                        [anchorViewController enterRoom];
-                        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"房间ID" message:roomID preferredStyle:UIAlertControllerStyleAlert];
-                        [alert addAction:[UIAlertAction actionWithTitle:@"拷贝" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                            UIPasteboard *pboard = [UIPasteboard generalPasteboard];
-                            pboard.string = roomID;
-                        }]];
-                        [self presentViewController:alert animated:true completion:nil];
-                    });
-                }];
+                [audienceCiewController enterRoom];
             });
         }
             break;

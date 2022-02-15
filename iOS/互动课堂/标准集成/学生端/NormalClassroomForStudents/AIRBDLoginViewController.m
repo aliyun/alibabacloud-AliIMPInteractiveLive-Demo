@@ -6,14 +6,11 @@
 //
 
 #import "AIRBDLoginViewController.h"
-#import "AIRBDSetRoomViewController.h"
 #import "AIRBDBigClassViewController.h"
 //#import "AIRBDRoomListViewController.h"
 #import "AIRBDToast.h"
 #import "AIRBDEnvironments.h"
 #import <Masonry/Masonry.h>
-#import "AIRBDAnchorViewController.h"
-#import "AIRBDRoomInfoModel.h"
 
 @import AliInteractiveRoomBundle;
 
