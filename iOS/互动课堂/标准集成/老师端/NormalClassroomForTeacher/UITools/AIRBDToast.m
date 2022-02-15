@@ -25,9 +25,7 @@ static int changeCount;
     static AIRBDToast *singleton = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            singleton = [[AIRBDToast alloc] init];
-        });
+        singleton = [[AIRBDToast alloc] init];
     });
     return singleton;
 }
