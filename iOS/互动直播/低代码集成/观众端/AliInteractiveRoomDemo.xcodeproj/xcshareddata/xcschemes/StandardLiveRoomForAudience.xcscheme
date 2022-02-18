@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ED9D7E79274F84280007A22A"
+               BlueprintIdentifier = "ED6519E527BF7FCD003028CD"
                BuildableName = "StandardLiveRoomForAudience.app"
                BlueprintName = "StandardLiveRoomForAudience"
                ReferencedContainer = "container:AliInteractiveRoomDemo.xcodeproj">
@@ -44,7 +44,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "ED9D7E79274F84280007A22A"
+            BlueprintIdentifier = "ED6519E527BF7FCD003028CD"
             BuildableName = "StandardLiveRoomForAudience.app"
             BlueprintName = "StandardLiveRoomForAudience"
             ReferencedContainer = "container:AliInteractiveRoomDemo.xcodeproj">
@@ -61,7 +61,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "ED9D7E79274F84280007A22A"
+            BlueprintIdentifier = "ED6519E527BF7FCD003028CD"
             BuildableName = "StandardLiveRoomForAudience.app"
             BlueprintName = "StandardLiveRoomForAudience"
             ReferencedContainer = "container:AliInteractiveRoomDemo.xcodeproj">

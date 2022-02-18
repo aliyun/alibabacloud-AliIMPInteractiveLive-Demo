@@ -19,7 +19,7 @@
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
     // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
     // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-    // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+    // This delegate does not imply the connecti`ng scene or session are new (see `application:configurationForConnectingSceneSession` instead).
     
     // iPhone互动课堂低代码学生端样式
     AIRBDClassroomStudent4iPhoneViewController* mainViewController = [[AIRBDClassroomStudent4iPhoneViewController alloc] initWithUserID:@"xxxxstudent" userNick:@"xxxxstudent的昵称" classID:@""];

@@ -1,0 +1,52 @@
+Searching 417 files for "1.6.0-rc"
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动消息/标准集成/参与端/Podfile:
+   16     
+   17    # Pods for InteractiveMessageForCreator
+   18:   pod 'AliInteractiveRoomBundle', '1.6.0'
+   19  
+   20  end
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动消息/标准集成/房管端/Podfile:
+   14     
+   15    # Pods for InteractiveMessageForCreator
+   16:   pod 'AliInteractiveRoomBundle', '1.6.0'
+   17  
+   18  end
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动直播/低代码集成/主播端/Podfile:
+    6  
+    7    def common_version
+    8:   '1.6.0'
+    9    end
+   10  
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动直播/标准集成/主播端/Podfile:
+    6  
+    7    def common_version
+    8:   '1.6.0'
+    9    end
+   10  
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动直播/标准集成/观众端/Podfile:
+    6  
+    7    def common_version
+    8:   '1.6.0'
+    9    end
+   10  
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动课堂/标准集成/学生端/Podfile:
+    6  
+    7    def common_version
+    8:   '1.6.0'
+    9    end
+   10  
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动课堂/标准集成/老师端/Podfile:
+    6  
+    7    def common_version
+    8:   '1.6.0'
+    9    end
+   10  
+
+7 matches across 7 files

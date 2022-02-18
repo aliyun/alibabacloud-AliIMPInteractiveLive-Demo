@@ -7,7 +7,7 @@
 
 #import "AIRBDAbilityDemonstrationViewController.h"
 #import <Masonry/Masonry.h>
-#import "../../UITools/UIColor+HexColor.h"
+#import "UIColor+HexColor.h"
 
 @interface AIRBDAbilityDemonstrationViewController ()
 

@@ -5,7 +5,7 @@ source 'https://cdn.cocoapods.org/'
 source 'https://github.com/CocoaPods/Specs.git'
 
   def common_version
-  '1.6.0-rc3'
+  '1.6.0'
   end
 
   def pod_ailplayer
@@ -15,18 +15,15 @@ source 'https://github.com/CocoaPods/Specs.git'
   end
 
 #基于互动直播低代码主播侧实现逻辑
- target 'StandardLiveRoomForAnchor' do
+ target 'StandardLiveRoomForAudience' do
    
    pod 'Masonry'
    
    #阿里云低代码音视频工厂互动直播低代码入口库
    pod 'AliStandardLiveRoomBundle', common_version
-
    pod 'AliInteractiveRoomBundle', common_version
-   pod 'AliInteractiveLiveCore', common_version
-   pod 'AlivcLivePusher', '4.2.1'
-   pod 'Queen', '1.4.1-official-lite'
-   pod 'RtsSDK', '1.9.0'
+   pod 'AliInteractiveVideoPlayerCore', common_version
+   pod_ailplayer
  end
 
 

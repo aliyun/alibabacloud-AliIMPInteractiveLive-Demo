@@ -7,62 +7,68 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6061C1118A6CD9C9491D3614 /* libPods-StandardLiveRoomForAnchor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69367096B885C2CFDF20CD1F /* libPods-StandardLiveRoomForAnchor.a */; };
-		ED9D7E61274F84060007A22A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = ED9D7E60274F84060007A22A /* AppDelegate.m */; };
-		ED9D7E64274F84060007A22A /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = ED9D7E63274F84060007A22A /* SceneDelegate.m */; };
-		ED9D7E67274F84060007A22A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ED9D7E66274F84060007A22A /* ViewController.m */; };
-		ED9D7E6A274F84060007A22A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED9D7E68274F84060007A22A /* Main.storyboard */; };
-		ED9D7E6C274F84090007A22A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED9D7E6B274F84090007A22A /* Assets.xcassets */; };
-		ED9D7E6F274F84090007A22A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED9D7E6D274F84090007A22A /* LaunchScreen.storyboard */; };
-		ED9D7E72274F840A0007A22A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = ED9D7E71274F840A0007A22A /* main.m */; };
-		ED9D7F6E275073D70007A22A /* AIRBDLiveRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ED9D7F66275073D70007A22A /* AIRBDLiveRoomViewController.m */; };
-		ED9D7F6F275073D70007A22A /* AIRBDShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ED9D7F67275073D70007A22A /* AIRBDShareViewController.m */; };
-		ED9D7F70275073D70007A22A /* AIRBDAbilityDemonstrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ED9D7F68275073D70007A22A /* AIRBDAbilityDemonstrationViewController.m */; };
-		ED9D7F71275073D70007A22A /* AIRBDShopWindowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ED9D7F69275073D70007A22A /* AIRBDShopWindowViewController.m */; };
-		ED9D7F77275075700007A22A /* UIColor+HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = ED9D7F76275075700007A22A /* UIColor+HexColor.m */; };
-		ED9D7F7A2750757B0007A22A /* AIRBDToast.m in Sources */ = {isa = PBXBuildFile; fileRef = ED9D7F792750757B0007A22A /* AIRBDToast.m */; };
-		ED9D7F7D275075CB0007A22A /* AIRBDEnvironments.m in Sources */ = {isa = PBXBuildFile; fileRef = ED9D7F7C275075CA0007A22A /* AIRBDEnvironments.m */; };
+		4EBD510E08E6F7276B7E7C78 /* libPods-StandardLiveRoomForAudience.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D4E8EAF96F390BDEB39DF30 /* libPods-StandardLiveRoomForAudience.a */; };
+		ED651A1D27BF7FEF003028CD /* AIRBDEnvironments.m in Sources */ = {isa = PBXBuildFile; fileRef = ED651A0027BF7FEF003028CD /* AIRBDEnvironments.m */; };
+		ED651A1E27BF7FEF003028CD /* AIRBDShopWindowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ED651A0327BF7FEF003028CD /* AIRBDShopWindowViewController.m */; };
+		ED651A1F27BF7FEF003028CD /* UIColor+HexColor.m in Sources */ = {isa = PBXBuildFile; fileRef = ED651A0427BF7FEF003028CD /* UIColor+HexColor.m */; };
+		ED651A2027BF7FEF003028CD /* UIViewController+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = ED651A0627BF7FEF003028CD /* UIViewController+Extension.m */; };
+		ED651A2127BF7FEF003028CD /* AIRBDAbilityDemonstrationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ED651A0727BF7FEF003028CD /* AIRBDAbilityDemonstrationViewController.m */; };
+		ED651A2227BF7FEF003028CD /* AIRBDToast.m in Sources */ = {isa = PBXBuildFile; fileRef = ED651A0827BF7FEF003028CD /* AIRBDToast.m */; };
+		ED651A2327BF7FEF003028CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ED651A0927BF7FEF003028CD /* Assets.xcassets */; };
+		ED651A2427BF7FEF003028CD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ED651A0A27BF7FEF003028CD /* ViewController.m */; };
+		ED651A2527BF7FEF003028CD /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = ED651A0B27BF7FEF003028CD /* SceneDelegate.m */; };
+		ED651A2627BF7FEF003028CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED651A0C27BF7FEF003028CD /* LaunchScreen.storyboard */; };
+		ED651A2727BF7FEF003028CD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED651A0E27BF7FEF003028CD /* Main.storyboard */; };
+		ED651A2827BF7FEF003028CD /* AIRBDLiveRoomViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ED651A1027BF7FEF003028CD /* AIRBDLiveRoomViewController.m */; };
+		ED651A2927BF7FEF003028CD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = ED651A1227BF7FEF003028CD /* main.m */; };
+		ED651A2A27BF7FEF003028CD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = ED651A1427BF7FEF003028CD /* AppDelegate.m */; };
+		ED651A2B27BF7FEF003028CD /* AIRBDShareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ED651A1827BF7FEF003028CD /* AIRBDShareViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0D4E8EAF96F390BDEB39DF30 /* libPods-StandardLiveRoomForAudience.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StandardLiveRoomForAudience.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3831EDE44F400811FC5C3E8A /* Pods-StandardLiveRoomForAnchor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StandardLiveRoomForAnchor.release.xcconfig"; path = "Target Support Files/Pods-StandardLiveRoomForAnchor/Pods-StandardLiveRoomForAnchor.release.xcconfig"; sourceTree = "<group>"; };
+		65793AE3E7F65BAEFDC83890 /* Pods-StandardLiveRoomForAudience.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StandardLiveRoomForAudience.release.xcconfig"; path = "Target Support Files/Pods-StandardLiveRoomForAudience/Pods-StandardLiveRoomForAudience.release.xcconfig"; sourceTree = "<group>"; };
 		69367096B885C2CFDF20CD1F /* libPods-StandardLiveRoomForAnchor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StandardLiveRoomForAnchor.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E1CC726C05F4DF4104D32A9 /* Pods-StandardLiveRoomForAnchor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StandardLiveRoomForAnchor.debug.xcconfig"; path = "Target Support Files/Pods-StandardLiveRoomForAnchor/Pods-StandardLiveRoomForAnchor.debug.xcconfig"; sourceTree = "<group>"; };
-		ED9D7E5D274F84060007A22A /* StandardLiveRoomForAnchor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StandardLiveRoomForAnchor.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		ED9D7E5F274F84060007A22A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		ED9D7E60274F84060007A22A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		ED9D7E62274F84060007A22A /* SceneDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
-		ED9D7E63274F84060007A22A /* SceneDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
-		ED9D7E65274F84060007A22A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		ED9D7E66274F84060007A22A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		ED9D7E69274F84060007A22A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		ED9D7E6B274F84090007A22A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		ED9D7E6E274F84090007A22A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		ED9D7E70274F840A0007A22A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		ED9D7E71274F840A0007A22A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		ED9D7F66275073D70007A22A /* AIRBDLiveRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDLiveRoomViewController.m; sourceTree = "<group>"; };
-		ED9D7F67275073D70007A22A /* AIRBDShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDShareViewController.m; sourceTree = "<group>"; };
-		ED9D7F68275073D70007A22A /* AIRBDAbilityDemonstrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDAbilityDemonstrationViewController.m; sourceTree = "<group>"; };
-		ED9D7F69275073D70007A22A /* AIRBDShopWindowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDShopWindowViewController.m; sourceTree = "<group>"; };
-		ED9D7F6A275073D70007A22A /* AIRBDAbilityDemonstrationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDAbilityDemonstrationViewController.h; sourceTree = "<group>"; };
-		ED9D7F6B275073D70007A22A /* AIRBDShopWindowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDShopWindowViewController.h; sourceTree = "<group>"; };
-		ED9D7F6C275073D70007A22A /* AIRBDLiveRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDLiveRoomViewController.h; sourceTree = "<group>"; };
-		ED9D7F6D275073D70007A22A /* AIRBDShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDShareViewController.h; sourceTree = "<group>"; };
-		ED9D7F75275075700007A22A /* UIColor+HexColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HexColor.h"; sourceTree = "<group>"; };
-		ED9D7F76275075700007A22A /* UIColor+HexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HexColor.m"; sourceTree = "<group>"; };
-		ED9D7F782750757B0007A22A /* AIRBDToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDToast.h; sourceTree = "<group>"; };
-		ED9D7F792750757B0007A22A /* AIRBDToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDToast.m; sourceTree = "<group>"; };
-		ED9D7F7B275075CA0007A22A /* AIRBDEnvironments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDEnvironments.h; sourceTree = "<group>"; };
-		ED9D7F7C275075CA0007A22A /* AIRBDEnvironments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDEnvironments.m; sourceTree = "<group>"; };
+		BA3FADEDA8EE6FD3C879AD98 /* Pods-StandardLiveRoomForAudience.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StandardLiveRoomForAudience.debug.xcconfig"; path = "Target Support Files/Pods-StandardLiveRoomForAudience/Pods-StandardLiveRoomForAudience.debug.xcconfig"; sourceTree = "<group>"; };
+		ED6519E627BF7FCD003028CD /* StandardLiveRoomForAudience.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StandardLiveRoomForAudience.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		ED651A0027BF7FEF003028CD /* AIRBDEnvironments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDEnvironments.m; sourceTree = "<group>"; };
+		ED651A0127BF7FEF003028CD /* AIRBDLiveRoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDLiveRoomViewController.h; sourceTree = "<group>"; };
+		ED651A0227BF7FEF003028CD /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		ED651A0327BF7FEF003028CD /* AIRBDShopWindowViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDShopWindowViewController.m; sourceTree = "<group>"; };
+		ED651A0427BF7FEF003028CD /* UIColor+HexColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+HexColor.m"; sourceTree = "<group>"; };
+		ED651A0527BF7FEF003028CD /* AIRBDShareViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDShareViewController.h; sourceTree = "<group>"; };
+		ED651A0627BF7FEF003028CD /* UIViewController+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Extension.m"; sourceTree = "<group>"; };
+		ED651A0727BF7FEF003028CD /* AIRBDAbilityDemonstrationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDAbilityDemonstrationViewController.m; sourceTree = "<group>"; };
+		ED651A0827BF7FEF003028CD /* AIRBDToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDToast.m; sourceTree = "<group>"; };
+		ED651A0927BF7FEF003028CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		ED651A0A27BF7FEF003028CD /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		ED651A0B27BF7FEF003028CD /* SceneDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SceneDelegate.m; sourceTree = "<group>"; };
+		ED651A0D27BF7FEF003028CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		ED651A0F27BF7FEF003028CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		ED651A1027BF7FEF003028CD /* AIRBDLiveRoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDLiveRoomViewController.m; sourceTree = "<group>"; };
+		ED651A1127BF7FEF003028CD /* AIRBDEnvironments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDEnvironments.h; sourceTree = "<group>"; };
+		ED651A1227BF7FEF003028CD /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		ED651A1327BF7FEF003028CD /* AIRBDShopWindowViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDShopWindowViewController.h; sourceTree = "<group>"; };
+		ED651A1427BF7FEF003028CD /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		ED651A1527BF7FEF003028CD /* AIRBDToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDToast.h; sourceTree = "<group>"; };
+		ED651A1627BF7FEF003028CD /* AIRBDAbilityDemonstrationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDAbilityDemonstrationViewController.h; sourceTree = "<group>"; };
+		ED651A1727BF7FEF003028CD /* UIViewController+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+Extension.h"; sourceTree = "<group>"; };
+		ED651A1827BF7FEF003028CD /* AIRBDShareViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDShareViewController.m; sourceTree = "<group>"; };
+		ED651A1927BF7FEF003028CD /* UIColor+HexColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+HexColor.h"; sourceTree = "<group>"; };
+		ED651A1A27BF7FEF003028CD /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ED651A1B27BF7FEF003028CD /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		ED651A1C27BF7FEF003028CD /* SceneDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SceneDelegate.h; sourceTree = "<group>"; };
 		EDCFB0BB268C8BAA00205E2D /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		ED9D7E5A274F84060007A22A /* Frameworks */ = {
+		ED6519E327BF7FCD003028CD /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6061C1118A6CD9C9491D3614 /* libPods-StandardLiveRoomForAnchor.a in Frameworks */,
+				4EBD510E08E6F7276B7E7C78 /* libPods-StandardLiveRoomForAudience.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,46 +80,50 @@
 			children = (
 				6E1CC726C05F4DF4104D32A9 /* Pods-StandardLiveRoomForAnchor.debug.xcconfig */,
 				3831EDE44F400811FC5C3E8A /* Pods-StandardLiveRoomForAnchor.release.xcconfig */,
+				BA3FADEDA8EE6FD3C879AD98 /* Pods-StandardLiveRoomForAudience.debug.xcconfig */,
+				65793AE3E7F65BAEFDC83890 /* Pods-StandardLiveRoomForAudience.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		ED9D7E5E274F84060007A22A /* StandardLiveRoomForAnchor */ = {
+		ED6519FF27BF7FEF003028CD /* StandardLiveRoomForAudience */ = {
 			isa = PBXGroup;
 			children = (
-				ED9D7F782750757B0007A22A /* AIRBDToast.h */,
-				ED9D7F7B275075CA0007A22A /* AIRBDEnvironments.h */,
-				ED9D7F7C275075CA0007A22A /* AIRBDEnvironments.m */,
-				ED9D7F792750757B0007A22A /* AIRBDToast.m */,
-				ED9D7F75275075700007A22A /* UIColor+HexColor.h */,
-				ED9D7F76275075700007A22A /* UIColor+HexColor.m */,
-				ED9D7F6A275073D70007A22A /* AIRBDAbilityDemonstrationViewController.h */,
-				ED9D7F68275073D70007A22A /* AIRBDAbilityDemonstrationViewController.m */,
-				ED9D7F6C275073D70007A22A /* AIRBDLiveRoomViewController.h */,
-				ED9D7F66275073D70007A22A /* AIRBDLiveRoomViewController.m */,
-				ED9D7F6D275073D70007A22A /* AIRBDShareViewController.h */,
-				ED9D7F67275073D70007A22A /* AIRBDShareViewController.m */,
-				ED9D7F6B275073D70007A22A /* AIRBDShopWindowViewController.h */,
-				ED9D7F69275073D70007A22A /* AIRBDShopWindowViewController.m */,
-				ED9D7E5F274F84060007A22A /* AppDelegate.h */,
-				ED9D7E60274F84060007A22A /* AppDelegate.m */,
-				ED9D7E62274F84060007A22A /* SceneDelegate.h */,
-				ED9D7E63274F84060007A22A /* SceneDelegate.m */,
-				ED9D7E65274F84060007A22A /* ViewController.h */,
-				ED9D7E66274F84060007A22A /* ViewController.m */,
-				ED9D7E68274F84060007A22A /* Main.storyboard */,
-				ED9D7E6B274F84090007A22A /* Assets.xcassets */,
-				ED9D7E6D274F84090007A22A /* LaunchScreen.storyboard */,
-				ED9D7E70274F840A0007A22A /* Info.plist */,
-				ED9D7E71274F840A0007A22A /* main.m */,
+				ED651A0027BF7FEF003028CD /* AIRBDEnvironments.m */,
+				ED651A0127BF7FEF003028CD /* AIRBDLiveRoomViewController.h */,
+				ED651A0227BF7FEF003028CD /* AppDelegate.h */,
+				ED651A0327BF7FEF003028CD /* AIRBDShopWindowViewController.m */,
+				ED651A0427BF7FEF003028CD /* UIColor+HexColor.m */,
+				ED651A0527BF7FEF003028CD /* AIRBDShareViewController.h */,
+				ED651A0627BF7FEF003028CD /* UIViewController+Extension.m */,
+				ED651A0727BF7FEF003028CD /* AIRBDAbilityDemonstrationViewController.m */,
+				ED651A0827BF7FEF003028CD /* AIRBDToast.m */,
+				ED651A0927BF7FEF003028CD /* Assets.xcassets */,
+				ED651A0A27BF7FEF003028CD /* ViewController.m */,
+				ED651A0B27BF7FEF003028CD /* SceneDelegate.m */,
+				ED651A0C27BF7FEF003028CD /* LaunchScreen.storyboard */,
+				ED651A0E27BF7FEF003028CD /* Main.storyboard */,
+				ED651A1027BF7FEF003028CD /* AIRBDLiveRoomViewController.m */,
+				ED651A1127BF7FEF003028CD /* AIRBDEnvironments.h */,
+				ED651A1227BF7FEF003028CD /* main.m */,
+				ED651A1327BF7FEF003028CD /* AIRBDShopWindowViewController.h */,
+				ED651A1427BF7FEF003028CD /* AppDelegate.m */,
+				ED651A1527BF7FEF003028CD /* AIRBDToast.h */,
+				ED651A1627BF7FEF003028CD /* AIRBDAbilityDemonstrationViewController.h */,
+				ED651A1727BF7FEF003028CD /* UIViewController+Extension.h */,
+				ED651A1827BF7FEF003028CD /* AIRBDShareViewController.m */,
+				ED651A1927BF7FEF003028CD /* UIColor+HexColor.h */,
+				ED651A1A27BF7FEF003028CD /* Info.plist */,
+				ED651A1B27BF7FEF003028CD /* ViewController.h */,
+				ED651A1C27BF7FEF003028CD /* SceneDelegate.h */,
 			);
-			path = StandardLiveRoomForAnchor;
+			path = StandardLiveRoomForAudience;
 			sourceTree = "<group>";
 		};
 		EDD116382653B66600B69881 = {
 			isa = PBXGroup;
 			children = (
-				ED9D7E5E274F84060007A22A /* StandardLiveRoomForAnchor */,
+				ED6519FF27BF7FEF003028CD /* StandardLiveRoomForAudience */,
 				EDD116422653B66600B69881 /* Products */,
 				EDD116862653B70F00B69881 /* Frameworks */,
 				091FA4E63F179B015FFD799B /* Pods */,
@@ -123,7 +133,7 @@
 		EDD116422653B66600B69881 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				ED9D7E5D274F84060007A22A /* StandardLiveRoomForAnchor.app */,
+				ED6519E627BF7FCD003028CD /* StandardLiveRoomForAudience.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -133,6 +143,7 @@
 			children = (
 				EDCFB0BB268C8BAA00205E2D /* libresolv.tbd */,
 				69367096B885C2CFDF20CD1F /* libPods-StandardLiveRoomForAnchor.a */,
+				0D4E8EAF96F390BDEB39DF30 /* libPods-StandardLiveRoomForAudience.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -140,24 +151,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		ED9D7E5C274F84060007A22A /* StandardLiveRoomForAnchor */ = {
+		ED6519E527BF7FCD003028CD /* StandardLiveRoomForAudience */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = ED9D7E75274F840A0007A22A /* Build configuration list for PBXNativeTarget "StandardLiveRoomForAnchor" */;
+			buildConfigurationList = ED6519FC27BF7FCF003028CD /* Build configuration list for PBXNativeTarget "StandardLiveRoomForAudience" */;
 			buildPhases = (
-				C8F93DD8254EED82797596EE /* [CP] Check Pods Manifest.lock */,
-				ED9D7E59274F84060007A22A /* Sources */,
-				ED9D7E5A274F84060007A22A /* Frameworks */,
-				ED9D7E5B274F84060007A22A /* Resources */,
-				749C8272F106FA0A95FA4AAE /* [CP] Embed Pods Frameworks */,
-				7376348C3A03C20050FA0D0E /* [CP] Copy Pods Resources */,
+				D9FBD030555DDABE45C17F30 /* [CP] Check Pods Manifest.lock */,
+				ED6519E227BF7FCD003028CD /* Sources */,
+				ED6519E327BF7FCD003028CD /* Frameworks */,
+				ED6519E427BF7FCD003028CD /* Resources */,
+				F222C336EB3CD0AA1DA97A20 /* [CP] Embed Pods Frameworks */,
+				9DDEE16C33A202632388B94C /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = StandardLiveRoomForAnchor;
-			productName = StandardLiveRoomForAnchor;
-			productReference = ED9D7E5D274F84060007A22A /* StandardLiveRoomForAnchor.app */;
+			name = StandardLiveRoomForAudience;
+			productName = StandardLiveRoomForAudience;
+			productReference = ED6519E627BF7FCD003028CD /* StandardLiveRoomForAudience.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -168,8 +179,8 @@
 			attributes = {
 				LastUpgradeCheck = 1220;
 				TargetAttributes = {
-					ED9D7E5C274F84060007A22A = {
-						CreatedOnToolsVersion = 12.5.1;
+					ED6519E527BF7FCD003028CD = {
+						CreatedOnToolsVersion = 13.2.1;
 					};
 				};
 			};
@@ -186,60 +197,43 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				ED9D7E5C274F84060007A22A /* StandardLiveRoomForAnchor */,
+				ED6519E527BF7FCD003028CD /* StandardLiveRoomForAudience */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		ED9D7E5B274F84060007A22A /* Resources */ = {
+		ED6519E427BF7FCD003028CD /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED9D7E6F274F84090007A22A /* LaunchScreen.storyboard in Resources */,
-				ED9D7E6C274F84090007A22A /* Assets.xcassets in Resources */,
-				ED9D7E6A274F84060007A22A /* Main.storyboard in Resources */,
+				ED651A2727BF7FEF003028CD /* Main.storyboard in Resources */,
+				ED651A2327BF7FEF003028CD /* Assets.xcassets in Resources */,
+				ED651A2627BF7FEF003028CD /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		7376348C3A03C20050FA0D0E /* [CP] Copy Pods Resources */ = {
+		9DDEE16C33A202632388B94C /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-StandardLiveRoomForAnchor/Pods-StandardLiveRoomForAnchor-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-StandardLiveRoomForAudience/Pods-StandardLiveRoomForAudience-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-StandardLiveRoomForAnchor/Pods-StandardLiveRoomForAnchor-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-StandardLiveRoomForAudience/Pods-StandardLiveRoomForAudience-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StandardLiveRoomForAnchor/Pods-StandardLiveRoomForAnchor-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StandardLiveRoomForAudience/Pods-StandardLiveRoomForAudience-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		749C8272F106FA0A95FA4AAE /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-StandardLiveRoomForAnchor/Pods-StandardLiveRoomForAnchor-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-StandardLiveRoomForAnchor/Pods-StandardLiveRoomForAnchor-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StandardLiveRoomForAnchor/Pods-StandardLiveRoomForAnchor-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C8F93DD8254EED82797596EE /* [CP] Check Pods Manifest.lock */ = {
+		D9FBD030555DDABE45C17F30 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -254,94 +248,132 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-StandardLiveRoomForAnchor-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-StandardLiveRoomForAudience-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		F222C336EB3CD0AA1DA97A20 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-StandardLiveRoomForAudience/Pods-StandardLiveRoomForAudience-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-StandardLiveRoomForAudience/Pods-StandardLiveRoomForAudience-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-StandardLiveRoomForAudience/Pods-StandardLiveRoomForAudience-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		ED9D7E59274F84060007A22A /* Sources */ = {
+		ED6519E227BF7FCD003028CD /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED9D7E67274F84060007A22A /* ViewController.m in Sources */,
-				ED9D7F70275073D70007A22A /* AIRBDAbilityDemonstrationViewController.m in Sources */,
-				ED9D7F7A2750757B0007A22A /* AIRBDToast.m in Sources */,
-				ED9D7F6F275073D70007A22A /* AIRBDShareViewController.m in Sources */,
-				ED9D7F7D275075CB0007A22A /* AIRBDEnvironments.m in Sources */,
-				ED9D7E61274F84060007A22A /* AppDelegate.m in Sources */,
-				ED9D7E72274F840A0007A22A /* main.m in Sources */,
-				ED9D7F77275075700007A22A /* UIColor+HexColor.m in Sources */,
-				ED9D7F71275073D70007A22A /* AIRBDShopWindowViewController.m in Sources */,
-				ED9D7E64274F84060007A22A /* SceneDelegate.m in Sources */,
-				ED9D7F6E275073D70007A22A /* AIRBDLiveRoomViewController.m in Sources */,
+				ED651A2A27BF7FEF003028CD /* AppDelegate.m in Sources */,
+				ED651A2B27BF7FEF003028CD /* AIRBDShareViewController.m in Sources */,
+				ED651A2927BF7FEF003028CD /* main.m in Sources */,
+				ED651A2427BF7FEF003028CD /* ViewController.m in Sources */,
+				ED651A2227BF7FEF003028CD /* AIRBDToast.m in Sources */,
+				ED651A2027BF7FEF003028CD /* UIViewController+Extension.m in Sources */,
+				ED651A2527BF7FEF003028CD /* SceneDelegate.m in Sources */,
+				ED651A1D27BF7FEF003028CD /* AIRBDEnvironments.m in Sources */,
+				ED651A2827BF7FEF003028CD /* AIRBDLiveRoomViewController.m in Sources */,
+				ED651A1E27BF7FEF003028CD /* AIRBDShopWindowViewController.m in Sources */,
+				ED651A1F27BF7FEF003028CD /* UIColor+HexColor.m in Sources */,
+				ED651A2127BF7FEF003028CD /* AIRBDAbilityDemonstrationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		ED9D7E68274F84060007A22A /* Main.storyboard */ = {
+		ED651A0C27BF7FEF003028CD /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				ED9D7E69274F84060007A22A /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		ED9D7E6D274F84090007A22A /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				ED9D7E6E274F84090007A22A /* Base */,
+				ED651A0D27BF7FEF003028CD /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		ED651A0E27BF7FEF003028CD /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				ED651A0F27BF7FEF003028CD /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		ED9D7E73274F840A0007A22A /* Debug */ = {
+		ED6519FD27BF7FCF003028CD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6E1CC726C05F4DF4104D32A9 /* Pods-StandardLiveRoomForAnchor.debug.xcconfig */;
+			baseConfigurationReference = BA3FADEDA8EE6FD3C879AD98 /* Pods-StandardLiveRoomForAudience.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3QR448XZXA;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = StandardLiveRoomForAnchor/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StandardLiveRoomForAudience/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoess;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Aliyuncs.StandardLiveRoomForAudience;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		ED9D7E74274F840A0007A22A /* Release */ = {
+		ED6519FE27BF7FCF003028CD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3831EDE44F400811FC5C3E8A /* Pods-StandardLiveRoomForAnchor.release.xcconfig */;
+			baseConfigurationReference = 65793AE3E7F65BAEFDC83890 /* Pods-StandardLiveRoomForAudience.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 3QR448XZXA;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = StandardLiveRoomForAnchor/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = StandardLiveRoomForAudience/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoess;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Aliyuncs.StandardLiveRoomForAudience;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -461,11 +493,11 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		ED9D7E75274F840A0007A22A /* Build configuration list for PBXNativeTarget "StandardLiveRoomForAnchor" */ = {
+		ED6519FC27BF7FCF003028CD /* Build configuration list for PBXNativeTarget "StandardLiveRoomForAudience" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				ED9D7E73274F840A0007A22A /* Debug */,
-				ED9D7E74274F840A0007A22A /* Release */,
+				ED6519FD27BF7FCF003028CD /* Debug */,
+				ED6519FE27BF7FCF003028CD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
