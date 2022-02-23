@@ -33,10 +33,10 @@
 
 - (void) onAIRBRoomEngineEvent:(AIRBRoomEngineEvent)event info:(NSDictionary *)info {
     switch (event) {
-        case AIRBRoomEngineEventEngineStarted:
+        case AIRBRoomEngineEventEngineStarted: // 初始化成功，进行登录
             [[AIRBRoomEngine sharedInstance] loginWithUserID:self.userID];
             break;
-        case AIRBRoomEngineEventEngineLogined: {
+        case AIRBRoomEngineEventEngineLogined: { // 登录成功
             dispatch_async(dispatch_get_main_queue(), ^{
                 AIRBDAnchorViewController* anchorViewController = [[AIRBDAnchorViewController alloc]init];
                 anchorViewController.roomModel = [[AIRBDRoomInfoModel alloc] init];
@@ -67,8 +67,9 @@
     }
 }
 
+// 获取登录token
 - (void) onAIRBRoomEngineRequestToken:(void (^)(AIRBRoomEngineAuthToken * _Nonnull))onTokenGotten {
-    NSString* path = [NSString stringWithFormat:@"%@/api/login/getToken", [AIRBDEnvironments shareInstance].appServerUrl];
+    NSString* path = [NSString stringWithFormat:@"%@/api/login/getToken", [AIRBDEnvironments shareInstance].appServerUrl]; //获取token的服务地址
     NSString* s = [NSString stringWithFormat:@"%@?appId=%@&appKey=%@&userId=%@&deviceId=%@", path, self.config.appID, self.config.appKey, _userID, self.config.deviceID];
     
     NSString* dateString = [AIRBUtility currentDateString];
@@ -131,10 +132,10 @@
 
 - (void) login {
     
-    self.userID = @"xxxx";
+    self.userID = @"xxxx"; //必传，自定义用户id，必须是英文字母或者阿拉伯数字或者二者组合
     self.config = [[AIRBRoomEngineConfig alloc] init];
-    self.config.appID = [AIRBDEnvironments shareInstance].interactiveLiveRoomAppID;
-    self.config.appKey = [AIRBDEnvironments shareInstance].interactiveLiveRoomAppKey;
+    self.config.appID = [AIRBDEnvironments shareInstance].interactiveLiveRoomAppID; //在控制台开通标准接入互动直播后获取的应用ID；
+    self.config.appKey = [AIRBDEnvironments shareInstance].interactiveLiveRoomAppKey; //在控制台开通标准接入互动直播后获取的iOS端的App Key；
     
     self.config.deviceID = [[UIDevice currentDevice] identifierForVendor].UUIDString;
     self.userID = self.userID;

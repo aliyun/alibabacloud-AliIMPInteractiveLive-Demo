@@ -406,7 +406,7 @@
 - (void) enterRoom{
     self.room = [[AIRBRoomEngine sharedInstance] getRoomChannelWithRoomID:self.roomModel.roomID];
     self.room.delegate = self;
-    [self.room enterRoomWithUserNick:@"nick"];
+    [self.room enterRoomWithUserNick:@"nick"]; // 进入房间，传入自定义昵称（必传）
 }
 
 - (void) leaveRoom{
