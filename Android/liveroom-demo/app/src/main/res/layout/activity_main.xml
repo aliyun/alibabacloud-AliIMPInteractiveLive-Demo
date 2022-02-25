@@ -30,7 +30,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="输入观看直播Id"
-            android:text="sacad"
             android:textColor="#333333"
             android:textColorHint="#999999"
             tools:ignore="HardcodedText" />

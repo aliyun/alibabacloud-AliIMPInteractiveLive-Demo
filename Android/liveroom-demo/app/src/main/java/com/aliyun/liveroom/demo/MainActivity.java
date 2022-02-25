@@ -34,7 +34,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         liveIdInput = findViewById(R.id.live_id);
-        liveIdInput.setText("30259df0-8cf0-4e3e-9137-29e7c92c53b5");
 
         Spinner selector = findViewById(R.id.mode_selector);
         selector.setOnItemSelectedListener(null);
