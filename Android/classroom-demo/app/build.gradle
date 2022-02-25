@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
 }
 
+apply from: 'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/release/config/config.gradle'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
