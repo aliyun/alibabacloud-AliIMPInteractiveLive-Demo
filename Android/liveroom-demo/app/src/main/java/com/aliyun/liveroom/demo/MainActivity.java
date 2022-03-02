@@ -55,6 +55,15 @@ public class MainActivity extends Activity {
 
             }
         });
+
+        View config = findViewById(R.id.config);
+        // 点击设置
+        config.setOnClickListener(v -> AppConfig.updateConfig(this));
+        // 长按清空
+        config.setOnLongClickListener(v -> {
+            AppConfig.clearConfig(this);
+            return false;
+        });
     }
 
     // 设置直播间样式
