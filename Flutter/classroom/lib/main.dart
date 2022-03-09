@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'dart:async';
+
 import 'package:flutter/services.dart';
+
+import 'Utils.dart';
 
 import 'package:alicloud_impinteraction_classroom/alicloud_impinteraction_classroom.dart';
 
@@ -8,33 +12,20 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'AliCloud vPaaS Classroom',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'AliCloud vPaaS Classroom Demo Home Page'),
-    );
-  }
+  State<MyApp> createState() => _MyAppState();
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
+class _MyAppState extends State<MyApp> {
   String _initResult = 'Unknown';
   String _setUpResult = 'Unknown';
+  final sceneIdController = TextEditingController();
+
+  var appSettings;
+  var demoParam;
 
   @override
   void initState() {
@@ -43,15 +34,19 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> initPlugin() async {
-    String initResult = 'unknown';
+    String initResult;
     try {
-      final String settingJson = await rootBundle.loadString('assets/app_settings.json');
-      final String paramJson = await rootBundle.loadString('assets/demo_param.json');
-      final appSettings = await json.decode(settingJson);
-      final demoParam = await json.decode(paramJson);
+      final String settingJson =
+      await rootBundle.loadString('assets/app_settings.json');
+      appSettings = await json.decode(settingJson);
+      String userId = (appSettings['userId'] as String).isEmpty ? Utils.randomName() : appSettings['userId'];
+
+      final String paramJson =
+      await rootBundle.loadString('assets/demo_param.json');
+      demoParam = await json.decode(paramJson);
 
       var param = {
-        'userId': demoParam['userId'],
+        'userId':  userId,
         'appId': appSettings['appId'],
         'appKey4Android': appSettings['appKey4Android'],
         'appKey4iOS': appSettings['appKey4iOS'],
@@ -73,13 +68,18 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> setUp() async {
-    String value = 'unknown';
-    try {
-      final String paramJson = await rootBundle.loadString('assets/demo_param.json');
-      final demoParam = await json.decode(paramJson);
+    String value;
 
+    String inputId = sceneIdController.text;
+    String? sceneId = inputId.isEmpty ? demoParam['classId'] : inputId;
+    if (sceneId?.isEmpty ?? true) {
+      Utils.showToast('empty input');
+      return;
+    }
+
+    try {
       var param = {
-        'classId': demoParam['classId'],
+        'classId': sceneId ?? '',
       };
       value = await AlicloudImpinteractionClassroom.setUp(param) ??
           'Unknown setUp result';
@@ -102,12 +102,22 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              TextField(
+                onSubmitted: (value) {
+                  setUp();
+                },
+                controller: sceneIdController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Enter a valid classId',
+                ),
+              ),
               ElevatedButton(
-                child: const Text('plugin_usage'),
+                child: const Text('Enter Class'),
                 onPressed: setUp,
               ),
-              Text('init result: $_initResult\n'),
-              Text('setUp result: $_setUpResult\n'),
+              Text('Init result: $_initResult\n'),
+              Text('SetUp result: $_setUpResult\n'),
             ],
           ),
         ),
