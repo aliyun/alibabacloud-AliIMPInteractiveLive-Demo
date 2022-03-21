@@ -15,10 +15,10 @@ import java.security.MessageDigest;
  * Created by KyleCe on 2021/12/16
  */
 public class ClassConfig {
-    private static final String MOCK_APP_ID = "";// FIXME: by KyleCe on 2021/12/16 填写AppId
-    private static final String MOCK_APP_KEY = "";// FIXME: by KyleCe on 2021/12/16 填写AppKey
-    private static final String MOCK_APP_SERVER = "";// FIXME: by KyleCe on 2021/12/16 填写AppServer
-    private static final String MOCK_SERVER_SECRET = "";// FIXME: by KyleCe on 2021/12/16 填写ServerSecret
+    private static final String MOCK_APP_ID = BuildConfig.EXTERNAL_CLASSROOM_APP_ID;// FIXME: by KyleCe on 2021/12/16 填写AppId
+    private static final String MOCK_APP_KEY = BuildConfig.EXTERNAL_CLASSROOM_APP_KEY;// FIXME: by KyleCe on 2021/12/16 填写AppKey
+    private static final String MOCK_APP_SERVER = BuildConfig.EXTERNAL_CLASSROOM_APP_SERVER_HOST;// FIXME: by KyleCe on 2021/12/16 填写AppServer
+    private static final String MOCK_SERVER_SECRET = BuildConfig.EXTERNAL_CLASSROOM_APP_SERVER_SECRET;// FIXME: by KyleCe on 2021/12/16 填写ServerSecret
 
     public static ClassInitParam asClassInitParam(String userId) {
         ClassInitParam param = new ClassInitParam();

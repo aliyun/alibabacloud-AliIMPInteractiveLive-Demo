@@ -19,11 +19,15 @@ public class App extends Application {
         super.onCreate();
 
         // 初始化&认证
-        LivePrototype.InitParam param = new LivePrototype.InitParam();
-        param.appId = BuildConfig.INNER_BUSINESS_APP_ID;
-        param.appKey = BuildConfig.INNER_BUSINESS_APP_KEY;
-        param.serverHost = BuildConfig.INNER_BUSINESS_APP_SERVER_HOST;
-        param.serverSecret = BuildConfig.INNER_BUSINESS_APP_SERVER_SECRET;
+        LivePrototype.InitParam param = AppConfig.getConfig();
+        if (param == null) {
+            // 对于首次使用的用户, 直接更改以下配置参数
+            param = new LivePrototype.InitParam();
+            param.appId = BuildConfig.INNER_BUSINESS_APP_ID;
+            param.appKey = BuildConfig.INNER_BUSINESS_APP_KEY;
+            param.serverHost = BuildConfig.INNER_BUSINESS_APP_SERVER_HOST;
+            param.serverSecret = BuildConfig.INNER_BUSINESS_APP_SERVER_SECRET;
+        }
 
         // TODO: 此处userId取设备md5, 实际接入时要替换为业务userId
         param.userId = getMD5(CommonUtil.getDeviceId()).substring(0, 6);

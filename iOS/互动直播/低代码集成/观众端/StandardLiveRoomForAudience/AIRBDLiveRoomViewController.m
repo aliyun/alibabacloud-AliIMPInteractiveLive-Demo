@@ -417,26 +417,28 @@
 //- (void) onASLRBLinkMicInvited:(ASLRBLinkMicUserModel*)inviter userInvitedList:(NSArray<ASLRBLinkMicUserModel*>*)userInvitedList{
 //    for (ASLRBLinkMicUserModel* user in userInvitedList){
 //        if ([user.userID isEqualToString:self.userID]){
+//    __weak typeof(self) weakSelf = self;
 //            dispatch_async(dispatch_get_main_queue(), ^{
 //                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"您收到了主播的连麦邀请\n是否接受？" message:@"连麦成功后，即可与主播进行沟通" preferredStyle:UIAlertControllerStyleAlert];
 //                [alertController addAction:[UIAlertAction actionWithTitle:@"接受" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//                    [self.liveRoomVC linkMicHandleInvite:YES];
+//                    [weakSelf.liveRoomVC linkMicHandleInvite:YES];
 //                }]];
 //                [alertController addAction:[UIAlertAction actionWithTitle:@"拒绝" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-//                    [self.liveRoomVC linkMicHandleInvite:NO];
+//                    [weakSelf.liveRoomVC linkMicHandleInvite:NO];
 //                }]];
 //
-//                self.alertController = alertController;
-//                [self.liveRoomVC presentViewController:self.alertController animated:YES completion:nil];
+//                weakSelf.alertController = alertController;
+//                [weakSelf.liveRoomVC presentViewController:weakSelf.alertController animated:YES completion:nil];
 //            });
 //        }
 //    }
 //}
 //
 //- (void) onASLRBLinkMicInviteCanceledForMe{
+//    __weak typeof(self) weakSelf = self;
 //    dispatch_async(dispatch_get_main_queue(), ^{
 //        [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"主播撤销了连麦邀请"] duration:2.0];
-//        [self.alertController dismissViewControllerAnimated:YES completion:nil];
+//        [weakSelf.alertController dismissViewControllerAnimated:YES completion:nil];
 //    });
 //}
 //
@@ -473,17 +475,18 @@
 //            self.linMickButton.tag = 0;
 //
 //            if (approve){
+//                __weak typeof(self) weakSelf = self;
 //                dispatch_async(dispatch_get_main_queue(), ^{
 //                    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"主播同意了你的连麦申请\n是否连麦？" message:@"连麦成功后，即可与主播进行沟通" preferredStyle:UIAlertControllerStyleAlert];
 //                    [alertController addAction:[UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//                        [self.liveRoomVC linkMicHandleApplyResponse:YES];
+//                        [weakSelf.liveRoomVC linkMicHandleApplyResponse:YES];
 //                    }]];
 //                    [alertController addAction:[UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-//                        [self.liveRoomVC linkMicHandleApplyResponse:NO];
+//                        [weakSelf.liveRoomVC linkMicHandleApplyResponse:NO];
 //                    }]];
 //
-//                    self.alertController = alertController;
-//                    [self.liveRoomVC presentViewController:self.alertController animated:YES completion:nil];
+//                    weakSelf.alertController = alertController;
+//                    [weakSelf.liveRoomVC presentViewController:weakSelf.alertController animated:YES completion:nil];
 //                });
 //            }
 //        }

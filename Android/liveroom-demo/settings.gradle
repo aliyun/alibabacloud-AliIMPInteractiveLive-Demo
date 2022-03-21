@@ -1,25 +1,25 @@
 rootProject.name = "liveroom-demo"
 include ':app'
 
-def shouldLoadLocalDepFun() {
-    def localProperties = new Properties()
-    def localPropertiesFile = new File('local.properties') // 此local.properties文件应保持与本脚本同级目录
-    if (localPropertiesFile.exists()) {
-        println "本地配置文件path=${localPropertiesFile.absolutePath}"
-        localPropertiesFile.withInputStream {
-            localProperties.load(it)
-        }
-        return localProperties.getProperty('loadLocalDep') == 'true'
-    } else {
-        println "配置文件不存在"
-        return false
+def loadLocalDep = false;
+def workspace = '../';
+def localProperties = new Properties()
+def localPropertiesFile = new File('local.properties') // 此local.properties文件应保持与本脚本同级目录
+if (localPropertiesFile.exists()) {
+    println "本地配置文件path=${localPropertiesFile.absolutePath}"
+    localPropertiesFile.withInputStream {
+        localProperties.load(it)
     }
+    loadLocalDep =  localProperties.getProperty('loadLocalDep') == 'true'
+    workspace = localProperties.getProperty('workspace') ?: workspace
+} else {
+    println "配置文件不存在"
+    loadLocalDep =  false
 }
 
-if (shouldLoadLocalDepFun()) {
-    def ANDROID_WORKSPACE = "/Users/${System.getProperty("user.name")}/AndroidStudioProjects"
-    def ANDROID_WORKSPACE_4_LIVE_ROOM_SDK = "$ANDROID_WORKSPACE/standard-liveroom-android"
-    def ANDROID_WORKSPACE_4_BASE_SDK = "$ANDROID_WORKSPACE/room-paas-android"
+if (loadLocalDep) {
+    def ANDROID_WORKSPACE_4_LIVE_ROOM_SDK = "$workspace/standard-liveroom-android"
+    def ANDROID_WORKSPACE_4_BASE_SDK = "$workspace/room-paas-android"
 
     if (new File(ANDROID_WORKSPACE_4_LIVE_ROOM_SDK).exists()) {
         include(':liveroom')
