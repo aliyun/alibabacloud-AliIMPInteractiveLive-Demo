@@ -45,6 +45,6 @@ public class AllSensitive implements ISensitive {
     }
 
     public static String parseAppServer() {
-        return Const.APP_SERVER_URL;
+        return Const.SERVER_HOST_BUSINESS;
     }
 }

@@ -10,6 +10,7 @@ import com.aliyun.roompaas.base.callback.UICallback;
 import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.util.SignUtil;
 import com.aliyun.roompaas.base.util.ThreadUtil;
+import com.aliyun.roompaas.base.util.Utils;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -31,7 +32,7 @@ import java.util.Map;
 public class BaseAPI {
 
     public static void request(String api, @Nullable final BaseReq request, @Nullable Callback<String> callback) {
-        final String apiURL = Const.getAppServer() + api;
+        final String apiURL = Const.getServerHost() + api;
         final UICallback<String> uiCallback = new UICallback<>(callback);
         ThreadUtil.runOnSubThread(() -> {
             try {
@@ -54,7 +55,7 @@ public class BaseAPI {
                     request.appendParams(params);
                 }
 
-                String sing = SignUtil.verifySign(Const.SIGN_SECRET, "POST", apiURL, params, headers);
+                String sing = SignUtil.verifySign(Const.getServerSecret(), "POST", apiURL, params, headers);
 
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
@@ -113,5 +114,13 @@ public class BaseAPI {
         }
 
         return result.toString();
+    }
+
+    public static <T> void takeResultWithNullCheck(@Nullable Callback<T> callback, @Nullable T result) {
+        if (result == null) {
+            Utils.callError(callback, "null");
+        } else {
+            Utils.callSuccess(callback, result);
+        }
     }
 }

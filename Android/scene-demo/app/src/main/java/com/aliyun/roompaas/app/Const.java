@@ -4,7 +4,6 @@ package com.aliyun.roompaas.app;
 import android.support.annotation.StringDef;
 
 import com.aliyun.roompaas.app.helper.RoomHelper;
-import com.aliyun.roompaas.app.sensitive.AllSensitive;
 import com.aliyun.roompaas.app.sensitive.SensitiveDomain;
 import com.aliyun.roompaas.base.util.CommonUtil;
 
@@ -29,8 +28,12 @@ public abstract class Const extends SensitiveDomain {
         return RoomHelper.isTypeBusiness() ? APP_KEY_FOR_BUSINESS : APP_KEY_FOR_CLASSROOM;
     }
 
-    public static String getAppServer(){
-        return AllSensitive.parseAppServer();
+    public static String getServerHost(){
+        return  RoomHelper.isTypeBusiness() ? SERVER_HOST_BUSINESS : SERVER_HOST_CLASSROOM;
+    }
+
+    public static String getServerSecret(){
+        return  RoomHelper.isTypeBusiness() ? SERVER_SECRET_BUSINESS : SERVER_SECRET_CLASSROOM;
     }
 
     /**

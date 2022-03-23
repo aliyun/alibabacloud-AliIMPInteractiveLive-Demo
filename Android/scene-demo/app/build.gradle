@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 //apply plugin: 'me.tatarka.retrolambda'
+apply from: 'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/release/config/config.gradle'
 
 buildscript {
     repositories {
@@ -51,7 +52,7 @@ android {
     // 互动PaaS SDK依赖
     dependencies {
         // 互动PaaS-一体化SDK依赖
-        def LATEST_VERSION = '1.6.0.20220218004'
+        def LATEST_VERSION = '1.7.0.20220323001'
         api "com.aliyun.roompaas.biz:biz:${LATEST_VERSION}"
         api "com.aliyun.roompaas.biz:uibase:${LATEST_VERSION}"
         api "com.aliyun.roompaas.biz:chat:${LATEST_VERSION}"
