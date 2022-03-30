@@ -98,7 +98,7 @@ public class MainActivity extends Activity {
 
         String liveId = liveIdInput.getText().toString().trim();
         if (TextUtils.isEmpty(liveId)) {
-            String message = "请在代码处先填写liveId参数, 再重新运行";
+            String message = "请先填写liveId, 再重新运行";
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
             return;
         }

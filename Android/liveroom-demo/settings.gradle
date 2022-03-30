@@ -12,12 +12,15 @@ if (localPropertiesFile.exists()) {
     }
     loadLocalDep =  localProperties.getProperty('loadLocalDep') == 'true'
     workspace = localProperties.getProperty('workspace') ?: workspace
+    println "loadLocalDep=$loadLocalDep"
+    println "workspace=$workspace"
 } else {
     println "配置文件不存在"
     loadLocalDep =  false
 }
 
 if (loadLocalDep) {
+    println "加载本地配置"
     def ANDROID_WORKSPACE_4_LIVE_ROOM_SDK = "$workspace/standard-liveroom-android"
     def ANDROID_WORKSPACE_4_BASE_SDK = "$workspace/room-paas-android"
 
@@ -45,6 +48,9 @@ if (loadLocalDep) {
         include(':live')
         project(':live').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/live")
 
+        include(':beauty_base')
+        project(':beauty_base').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/beauty_base")
+
         include(':player')
         project(':player').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/player")
 
@@ -53,5 +59,8 @@ if (loadLocalDep) {
 
         include(':base')
         project(':base').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/base")
+
+        include(':app-release')
+        project(':app-release').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/app-release")
     }
 }
