@@ -26,7 +26,7 @@ public class CustomLiveMessageView extends LiveMessageView {
 
         // 自定义添加默认的消息
         List<MessageModel> messages = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 3; i++) {
             messages.add(new MessageModel(
                     "自定义组件", String.format("自定义组件的第%s条消息", i + 1)));
         }

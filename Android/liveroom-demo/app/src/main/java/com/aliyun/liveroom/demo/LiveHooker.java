@@ -7,6 +7,7 @@ import com.aliyun.liveroom.demo.custom.CustomLiveInfoView;
 import com.aliyun.liveroom.demo.custom.CustomLiveInputView;
 import com.aliyun.liveroom.demo.custom.CustomLiveLikeView;
 import com.aliyun.liveroom.demo.custom.CustomLiveMessageView;
+import com.aliyun.liveroom.demo.custom.CustomLiveMiddleView;
 import com.aliyun.liveroom.demo.custom.CustomLiveMoreView;
 import com.aliyun.liveroom.demo.custom.CustomLiveRenderView;
 import com.aliyun.liveroom.demo.custom.CustomLiveRightUpperView;
@@ -55,7 +56,7 @@ public class LiveHooker {
                         // 自定义商品卡片视图
                         .setGoodsSlot(context -> new CustomLiveGoodsCardView(context, null))
                         // 自定义腰部视图
-//                        .setMiddleSlot(context -> new CustomLiveMiddleView(context, null))
+                        .setMiddleSlot(context -> new CustomLiveMiddleView(context, null))
                         // 自定义左上角的直播信息视图
                         .replaceComponentView(LiveInfoView.class, CustomLiveInfoView.class)
                         // 自定义右上角的直播停止视图
