@@ -14,7 +14,7 @@
 #import "UIViewController+Extension.h"
 //#import "AIRBDAbilityDemonstrationViewController.h"
 //#import "AIRBDShopWindowViewController.h"
-//#import "AIRBDShareViewController.h"
+#import "AIRBDShareViewController.h"
 #import "AIRBDEnvironments.h"
 
 @import AliStandardLiveRoomBundle;
@@ -33,7 +33,7 @@
 //@property (nonatomic, strong) AIRBDAbilityDemonstrationViewController* abilityDemonstrationVC;
 //@property (nonatomic, strong) AIRBDShopWindowViewController* shopWindowVC;
 @property (nonatomic, strong) UIView* goodsCardView;
-//@property (nonatomic, strong) AIRBDShareViewController* shareVC;
+@property (nonatomic, strong) AIRBDShareViewController* shareVC;
 @end
 
 @implementation AIRBDLiveRoomViewController
@@ -96,8 +96,8 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[AIRBDToast shareInstance] makeToast:errorMessage duration:3.0];
                     
-                    [self dismissViewControllerAnimated:NO completion:nil];
-                    [self.navigationController popViewControllerAnimated:YES];
+                    [weakSelf dismissViewControllerAnimated:NO completion:nil];
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
                 });
             }];
         }];
@@ -386,13 +386,13 @@
 //                [alertVC addAction:[UIAlertAction actionWithTitle:@"已拷贝" style:UIAlertActionStyleDefault handler:nil]];
 //                [self.liveRoomVC presentViewController:alertVC animated:YES completion:nil];
             
-//            if (!self.shareVC) {
-//                self.shareVC = [[AIRBDShareViewController alloc] init];
-//            }
+            if (!self.shareVC) {
+                self.shareVC = [[AIRBDShareViewController alloc] init];
+            }
             
-//            CGRect frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height - ([UIScreen mainScreen].bounds.size.width / 2.67), [UIScreen mainScreen].bounds.size.width, ([UIScreen mainScreen].bounds.size.width / 2.67));
-//            [self.liveRoomVC presentChildViewController:self.shareVC animated:YES presentedFrame:frame direction:AIRBDViewControllerPresentFromBottom];
-//            self.liveRoomVC.presentedChildViewController = self.shareVC;
+            CGRect frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height - ([UIScreen mainScreen].bounds.size.width / 2.67), [UIScreen mainScreen].bounds.size.width, ([UIScreen mainScreen].bounds.size.width / 2.67));
+            [self.liveRoomVC presentChildViewController:self.shareVC animated:YES presentedFrame:frame direction:AIRBDViewControllerPresentFromBottom];
+            self.liveRoomVC.presentedChildViewController = self.shareVC;
         }
             break;
         case ASLRBAnchorEventLivePusherStarted: {

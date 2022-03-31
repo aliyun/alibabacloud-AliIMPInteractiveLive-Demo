@@ -5,7 +5,7 @@ source 'https://cdn.cocoapods.org/'
 source 'https://github.com/CocoaPods/Specs.git'
 
   def common_version
-  '1.7.0-rc3'
+  '1.7.0'
   end
 
 #低代码音视频工厂互动直播标准接入主播侧的实现逻辑
@@ -17,7 +17,7 @@ target 'NormalLiveRoomForAnchor' do
   pod 'AliInteractiveRoomBundle', common_version
   pod 'AliInteractiveLiveCore', common_version
   pod 'AliInteractiveFaceBeautyCore', common_version
-  pod 'AlivcLivePusher', '4.4.0'
+  pod 'AlivcLivePusher', '4.4.1'
   pod 'RtsSDK', '1.9.0'
   pod 'Queen', '1.9.1-official-pro'
 
