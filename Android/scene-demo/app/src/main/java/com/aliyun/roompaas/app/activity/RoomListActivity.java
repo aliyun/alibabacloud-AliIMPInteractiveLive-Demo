@@ -6,27 +6,25 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.alibaba.dingpaas.room.RoomBasicInfo;
 import com.aliyun.roompaas.app.Const;
 import com.aliyun.roompaas.app.R;
 import com.aliyun.roompaas.app.activity.base.BaseActivity;
 import com.aliyun.roompaas.app.api.DestroyRoomApi;
+import com.aliyun.roompaas.app.api.GetRoomListApi;
 import com.aliyun.roompaas.app.helper.RoomHelper;
 import com.aliyun.roompaas.app.helper.Router;
+import com.aliyun.roompaas.app.model.RoomModel;
 import com.aliyun.roompaas.app.request.DestroyRoomRequest;
-import com.aliyun.roompaas.app.util.ClipboardUtil;
+import com.aliyun.roompaas.app.request.RoomListRequest;
 import com.aliyun.roompaas.app.util.DialogUtil;
 import com.aliyun.roompaas.base.callback.Callbacks;
 import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.util.CollectionUtil;
-import com.aliyun.roompaas.biz.RoomEngine;
-import com.aliyun.roompaas.biz.exposable.model.RoomParam;
 import com.aliyun.roompaas.uibase.util.ViewUtil;
 
 import java.util.ArrayList;
@@ -115,11 +113,13 @@ public class RoomListActivity extends BaseActivity {
         int currentPage = tabInfo == null ? 0 : tabInfo.pageNum;
         final int targetPage = loadMore ? (currentPage + 1) : 1;
 
-        RoomParam param = new RoomParam();
-        param.pageNum = targetPage;
+        RoomListRequest param = new RoomListRequest();
+        param.appId = Const.getAppId();
+        param.pageNumber = targetPage;
         param.pageSize = PAGE_SIZE;
         isRequesting = true;
-        RoomEngine.getInstance().getRoomList(param, new Callbacks.Lambda<>(
+        GetRoomListApi.getRoomList(param, /*);
+        RoomEngine.getInstance().getRoomList(param,*/ new Callbacks.Lambda<>(
                 (success, data, errorMsg) -> {
                     isRequesting = false;
                     refreshLayout.setRefreshing(false);
@@ -128,7 +128,7 @@ public class RoomListActivity extends BaseActivity {
                         return;
                     }
 
-                    List<RoomBasicInfo> requestList = data == null ? null : data.list;
+                    List<RoomModel> requestList = data == null ? null : data.liveList;
                     boolean hasMore = data != null && data.hasMore;
                     if (tabInfo == null) {
                         TabInfo newTabInfo = new TabInfo();
@@ -159,7 +159,7 @@ public class RoomListActivity extends BaseActivity {
         ));
     }
 
-    private List<RoomBasicInfo> getDataList() {
+    private List<RoomModel> getDataList() {
         return roomType2TabInfo == null ? null : roomType2TabInfo.dataList;
     }
 
@@ -175,47 +175,47 @@ public class RoomListActivity extends BaseActivity {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            List<RoomBasicInfo> dataList = getDataList();
+            List<RoomModel> dataList = getDataList();
             if (dataList == null) {
                 return;
             }
 
             String currentUserId = Const.currentUserId;
-            final RoomBasicInfo model = dataList.get(position);
+            final RoomModel model = dataList.get(position);
             holder.title.setText(model.title);
-            boolean isOwner = TextUtils.equals(currentUserId, model.ownerId);
-            ViewUtil.setVisibilityIfNecessary(holder.isOwner, isOwner ? View.VISIBLE : View.GONE);
-            holder.id.setText(model.roomId);
+            //boolean isOwner = TextUtils.equals(currentUserId, model.ownerId);
+            //ViewUtil.setVisibilityIfNecessary(holder.isOwner, isOwner ? View.VISIBLE : View.GONE);
+            //holder.id.setText(model.roomId);
 
             holder.copy.setOnClickListener(v -> {
-                ClipboardUtil.copyText(model.roomId);
-                showToast("已复制: " + model.roomId);
+                //ClipboardUtil.copyText(model.roomId);
+                //showToast("已复制: " + model.roomId);
             });
 
             // avoid frequent click
             ViewUtil.bindClickActionWithClickCheck(holder.itemView, () ->
-                    Router.openRoomViaBizType(context, model.roomId, model.title, currentUserId));
+                    Router.openRoomViaBizType(context, model.id, model.title, currentUserId));
 
             holder.itemView.setOnLongClickListener(v -> {
-                if (!TextUtils.equals(model.ownerId, currentUserId)) {
-                    // 不是房主, 不能删除
-                    return true;
-                }
+                //if (!TextUtils.equals(model.ownerId, currentUserId)) {
+                //    // 不是房主, 不能删除
+                //    return true;
+                //}
 
                 DialogUtil.confirm(context, "删除当前房间？", () -> {
-                    String roomId = model.roomId;
+                    String id = model.id;
 
                     DestroyRoomRequest request = new DestroyRoomRequest();
                     request.appId = Const.getAppId();
-                    request.roomId = roomId;
+                    request.roomId = id;
                     request.userId = currentUserId;
                     DestroyRoomApi.destroyRoom(request, new Callback<Void>() {
                         @Override
                         public void onSuccess(Void data) {
                             int removeIndex = -1;
                             for (int i = 0; i < dataList.size(); i++) {
-                                RoomBasicInfo current = dataList.get(i);
-                                if (roomId.equals(current.roomId)) {
+                                RoomModel current = dataList.get(i);
+                                if (id.equals(current.id)) {
                                     removeIndex = i;
                                     break;
                                 }
@@ -260,7 +260,7 @@ public class RoomListActivity extends BaseActivity {
 
     private static class TabInfo {
         int pageNum;
-        List<RoomBasicInfo> dataList;
+        List<RoomModel> dataList;
         boolean hasMore;
     }
 }
