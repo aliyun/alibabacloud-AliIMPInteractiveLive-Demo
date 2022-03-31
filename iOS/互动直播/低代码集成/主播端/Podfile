@@ -8,12 +8,6 @@ source 'https://github.com/CocoaPods/Specs.git'
   '1.7.0'
   end
 
-  def pod_ailplayer
-    pod 'AliPlayerSDK_iOS', '5.4.4.0'
-    pod 'AliPlayerSDK_iOS_ARTC', '5.4.4.0'
-    pod 'RtsSDK', '1.9.0'
-  end
-
 #基于互动直播低代码主播侧实现逻辑
  target 'StandardLiveRoomForAnchor' do
    
@@ -27,7 +21,6 @@ source 'https://github.com/CocoaPods/Specs.git'
    pod 'AliInteractiveFaceBeautyCore', common_version
    pod 'AlivcLivePusher', '4.4.1'
    pod 'Queen', '1.9.1-official-pro'
-   pod 'RtsSDK', '1.9.0'
  end
 
 
