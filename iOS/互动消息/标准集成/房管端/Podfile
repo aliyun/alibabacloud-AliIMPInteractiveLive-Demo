@@ -13,6 +13,6 @@ target 'InteractiveMessageForCreator' do
   pod 'Masonry'
    
   # Pods for InteractiveMessageForCreator
-  pod 'AliInteractiveRoomBundle', '1.7.0-rc1'
+  pod 'AliInteractiveRoomBundle', '1.7.0'
 
 end

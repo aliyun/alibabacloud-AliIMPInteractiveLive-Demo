@@ -103,8 +103,8 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[AIRBDToast shareInstance] makeToast:errorMessage duration:3.0];
                     
-                    [self dismissViewControllerAnimated:NO completion:nil];
-                    [self.navigationController popViewControllerAnimated:YES];
+                    [weakSelf dismissViewControllerAnimated:NO completion:nil];
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
                 });
             }];
         }];

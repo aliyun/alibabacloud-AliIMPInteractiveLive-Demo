@@ -5,13 +5,7 @@ source 'https://cdn.cocoapods.org/'
 source 'https://github.com/CocoaPods/Specs.git'
 
   def common_version
-  '1.7.0-rc3'
-  end
-
-  def pod_ailplayer
-    pod 'AliPlayerSDK_iOS', '5.4.4.0'
-    pod 'AliPlayerSDK_iOS_ARTC', '5.4.4.0'
-    pod 'RtsSDK', '1.9.0'
+  '1.7.0'
   end
 
 #基于互动直播低代码主播侧实现逻辑
@@ -25,9 +19,8 @@ source 'https://github.com/CocoaPods/Specs.git'
    pod 'AliInteractiveRoomBundle', common_version
    pod 'AliInteractiveLiveCore', common_version
    pod 'AliInteractiveFaceBeautyCore', common_version
-   pod 'AlivcLivePusher', '4.4.0'
+   pod 'AlivcLivePusher', '4.4.1'
    pod 'Queen', '1.9.1-official-pro'
-   pod 'RtsSDK', '1.9.0'
  end
 
 

@@ -551,8 +551,8 @@
 
 - (void)beautyButtonAction:(UIButton*)sender{
     CGRect frame = CGRectMake(0, [UIScreen mainScreen].bounds.size.height - 200, self.view.frame.size.width, 200);
-    [self presentChildViewController:self.room.livePusher.beautyViewController animated:YES presentedFrame:frame direction:(AIRBDViewControllerPresentFromBottom)];
-    self.presentedChildViewController = self.room.livePusher.beautyViewController;
+    [self presentChildViewController:self.room.livePusher.faceBeautyConfigViewController animated:YES presentedFrame:frame direction:(AIRBDViewControllerPresentFromBottom)];
+    self.presentedChildViewController = self.room.livePusher.faceBeautyConfigViewController;
 }
 
 - (void)moreButtonAction:(UIButton*)sender{
