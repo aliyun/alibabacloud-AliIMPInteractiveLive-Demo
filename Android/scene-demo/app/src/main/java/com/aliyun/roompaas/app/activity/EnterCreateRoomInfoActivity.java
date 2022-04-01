@@ -6,19 +6,23 @@ import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.alibaba.dingpaas.sceneclass.CreateClassRsp;
+import com.alibaba.dingpaas.scenelive.SceneCreateLiveReq;
+import com.alibaba.dingpaas.scenelive.SceneCreateLiveRsp;
 import com.aliyun.roompaas.app.Const;
 import com.aliyun.roompaas.app.R;
 import com.aliyun.roompaas.app.activity.base.BaseActivity;
-import com.aliyun.roompaas.app.api.CreateRoomApi;
 import com.aliyun.roompaas.app.helper.RoomHelper;
 import com.aliyun.roompaas.app.helper.Router;
-import com.aliyun.roompaas.app.request.CreateRoomRequest;
-import com.aliyun.roompaas.app.response.CreateRoomResponse;
-import com.aliyun.roompaas.app.response.Response;
 import com.aliyun.roompaas.app.sp.SpHelper;
 import com.aliyun.roompaas.app.sp.UserSp;
 import com.aliyun.roompaas.base.exposable.Callback;
+import com.aliyun.roompaas.base.log.Logger;
+import com.aliyun.roompaas.base.util.CommonUtil;
 import com.aliyun.roompaas.biz.RoomEngine;
+import com.aliyun.roompaas.biz.exposable.RoomSceneClass;
+import com.aliyun.roompaas.biz.exposable.RoomSceneLive;
+import com.aliyun.roompaas.biz.exposable.model.Result;
 import com.aliyun.roompaas.uibase.util.ViewUtil;
 
 public class EnterCreateRoomInfoActivity extends BaseActivity {
@@ -32,6 +36,8 @@ public class EnterCreateRoomInfoActivity extends BaseActivity {
     private UserSp userSp;
     private String userId;
 
+    private boolean isBusiness;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         userSp = SpHelper.getInstance(UserSp.class);
@@ -43,7 +49,7 @@ public class EnterCreateRoomInfoActivity extends BaseActivity {
         roomNameInput = findViewById(R.id.form_room_name);
         userNickInput = findViewById(R.id.form_user_nick);
 
-        boolean isBusiness = RoomHelper.isTypeBusiness();
+        isBusiness = RoomHelper.isTypeBusiness();
         roomNameInput.setText(String.format("%s的" + (isBusiness ? "直播间" : "课堂"), userId));
         userNickInput.setText(userId);
 
@@ -75,29 +81,53 @@ public class EnterCreateRoomInfoActivity extends BaseActivity {
             return;
         }
 
-        final CreateRoomRequest request = new CreateRoomRequest();
-        request.appId = Const.getAppId();
-        request.roomOwnerId = userId;
-        request.title = roomName;
-        request.notice = "向观众介绍你的直播间吧～（长按修改）";
-        request.templateId = "default";
-        CreateRoomApi.createRoom(request, new Callback<Response<CreateRoomResponse>>() {
-            @Override
-            public void onSuccess(Response<CreateRoomResponse> response) {
-                CreateRoomResponse result = response.result;
-                if (!response.responseSuccess || result == null) {
-                    showToast(response.message);
-                    return;
+        String currentUserId = Const.currentUserId;
+        String roomTile = String.format("用户%s的房间", currentUserId);
+        if(isBusiness){
+            SceneCreateLiveReq req = new SceneCreateLiveReq();
+            req.anchorId = currentUserId;
+            req.notice = "向观众介绍你的直播间吧～（长按修改）";
+            req.anchorNick = userId;
+            req.title = roomTile;
+
+            Result<RoomSceneLive> result = roomEngine.getRoomSceneLive();
+            if (result.value == null) {
+                CommonUtil.showToast(this, "创建失败："+result.errorMsg);
+                return;
+            }
+            result.value.createLive(req, new Callback<SceneCreateLiveRsp>() {
+                @Override
+                public void onSuccess(SceneCreateLiveRsp response) {
+                    Router.openRoomViaBizType(context, response.roomId, roomName, userId);
+                    finish();
                 }
 
-                Router.openRoomViaBizType(context, result.roomId, roomName, userId);
-                finish();
+                @Override
+                public void onError(String errorMsg) {
+                    showToast("创建失败：" + errorMsg);
+                }
+            });
+        } else {
+            Result<RoomSceneClass> result = roomEngine.getRoomSceneClass();
+            if (result.value == null) {
+                CommonUtil.showToast(this, "创建失败："+result.errorMsg);
+                return;
             }
 
-            @Override
-            public void onError(String errorMsg) {
-                showToast("创建失败：" + errorMsg);
-            }
-        });
+            boolean inRoomNoFormat = !TextUtils.isEmpty(roomName) && TextUtils.isDigitsOnly(roomName);
+            String title = inRoomNoFormat ? roomTile : roomName;
+            result.value.createClass(title, userNick, new Callback<CreateClassRsp>() {
+                @Override
+                public void onSuccess(CreateClassRsp response) {
+                    Logger.i(TAG, "createClass onSuccess: " + response.classId);
+                    Router.openRoomViaBizType(context, response.roomId, roomName, userId);
+                }
+
+                @Override
+                public void onError(String errorMsg) {
+                    showToast("创建失败：" + errorMsg);
+                }
+            });
+        }
     }
 }

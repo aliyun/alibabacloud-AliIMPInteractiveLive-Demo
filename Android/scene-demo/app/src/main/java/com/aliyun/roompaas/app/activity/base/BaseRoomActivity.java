@@ -71,13 +71,13 @@ public abstract class BaseRoomActivity extends BaseActivity {
         // 解析参数
         parseParams();
 
+        super.onCreate(savedInstanceState);
         // 参数有效性校验
         if (TextUtils.isEmpty(roomId)) {
             showToast("房间Id为空");
+            finish();
             return;
         }
-
-        super.onCreate(savedInstanceState);
 
         // 权限校验
         checkPermission();

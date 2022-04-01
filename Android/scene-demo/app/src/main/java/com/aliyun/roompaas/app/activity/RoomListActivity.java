@@ -194,7 +194,7 @@ public class RoomListActivity extends BaseActivity {
 
             // avoid frequent click
             ViewUtil.bindClickActionWithClickCheck(holder.itemView, () ->
-                    Router.openRoomViaBizType(context, model.id, model.title, currentUserId));
+                    Router.openRoomViaBizType(context, model.roomId, model.title, currentUserId));
 
             holder.itemView.setOnLongClickListener(v -> {
                 //if (!TextUtils.equals(model.ownerId, currentUserId)) {
@@ -203,7 +203,7 @@ public class RoomListActivity extends BaseActivity {
                 //}
 
                 DialogUtil.confirm(context, "删除当前房间？", () -> {
-                    String id = model.id;
+                    String id = model.roomId;
 
                     DestroyRoomRequest request = new DestroyRoomRequest();
                     request.appId = Const.getAppId();
@@ -215,7 +215,7 @@ public class RoomListActivity extends BaseActivity {
                             int removeIndex = -1;
                             for (int i = 0; i < dataList.size(); i++) {
                                 RoomModel current = dataList.get(i);
-                                if (id.equals(current.id)) {
+                                if (id.equals(current.roomId)) {
                                     removeIndex = i;
                                     break;
                                 }

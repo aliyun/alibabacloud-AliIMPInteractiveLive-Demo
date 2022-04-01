@@ -7,6 +7,9 @@ import com.aliyun.roompaas.app.api.GetTokenApi;
 import com.aliyun.roompaas.app.sensitive.AllSensitive;
 import com.aliyun.roompaas.base.callback.Callbacks;
 import com.aliyun.roompaas.base.exposable.Callback;
+import com.aliyun.roompaas.base.log.ComposeLoggerHandler;
+import com.aliyun.roompaas.base.log.DefaultLoggerHandler;
+import com.aliyun.roompaas.base.log.FileLoggerHandler;
 import com.aliyun.roompaas.biz.EngineConfig;
 import com.aliyun.roompaas.biz.RoomEngine;
 import com.aliyun.roompaas.biz.exposable.TokenInfoGetter;
@@ -40,6 +43,10 @@ public class App extends Application {
                                 GetTokenApi.getToken(userId, callback);
                             }
                         })
+                        .loggerHandler(new ComposeLoggerHandler(
+                                new DefaultLoggerHandler(),
+                                new FileLoggerHandler(this)
+                        ))
                         .build(),
                 new Callbacks.Log<>(TAG, "init engine")
         );
