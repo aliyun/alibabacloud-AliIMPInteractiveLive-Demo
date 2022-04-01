@@ -29,6 +29,6 @@ android {
 }
 
 dependencies {
-    def LATEST_VERSION = '1.6.0.20220218004'
+    def LATEST_VERSION = '1.7.0.20220330001'
     api "com.aliyun.roompaas.biz:classroom:${LATEST_VERSION}"
 }
