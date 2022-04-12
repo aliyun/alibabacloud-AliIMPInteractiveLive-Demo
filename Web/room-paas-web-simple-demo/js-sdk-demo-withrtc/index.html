@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <title>demo with rtc</title>
+</head>
+<body>
+    <div class="global">
+        <div class="button-area">
+            <button id="login">执行登录操作</button>
+            <button id="addeventlistener">添加事件监听</button>
+            <button id="get-roomchannel">获取房间频道</button>
+            <button id="enter-room">进入房间</button>
+            <button id="join-channel">加入Channel</button>
+            <button id="start-preview">开启预览</button>
+            <button id="stop-preview">结束预览</button>
+            <button id="start-listen">监听连麦(自接受)</button>
+            <button id="invite-joinchannel">邀请连麦(owner)</button>
+            <button id="kick-user">断开连麦(owner)</button>
+            <button id="apply-joinchannel">申请连麦(访客)</button>
+            <button id="stop-channel">结束连麦(访客)</button>
+            <button id="open-camera">开启摄像头</button>
+            <button id="close-camera">关闭摄像头</button>
+            <button id="open-radio">开启音频</button>
+            <button id="close-radio">静音</button>
+            <button id="leave-rtc">退出RTC</button>
+            <button id="leave-room">离开房间</button>
+        </div>
+        <div class="show-area">
+            <div id="play">
+                <video id="preview"></video>
+            </div>
+        </div>
+        <div class="console-area">
+            <div>这里是输出区，你的操作将及结果全部展示在这里</div>
+        </div>
+    </div>
+    <script src="https://g.alicdn.com/code/npm/@ali/room-paas-web-engine/1.6.1/RoomPaasSdk.web.min.js"></script>
+    <script src="/index.bundle.js"></script>
+</body>
+</html>
