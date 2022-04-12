@@ -1,0 +1,98 @@
+<template>
+	<view class="pusher-page">
+		<ali-live-pusher ref="pusher" class="pusher"/>
+		<view v-if="pusher">
+			<button @click="startLive">开始推流</button>
+			<button @click="stopLive">结束推流</button>
+			<button @click="switchCamera">切换前后摄像头</button>
+			<button @click="setMirror">镜像</button>
+		</view>
+	</view>
+</template>
+
+<script>
+	import { ShowMode, Resolution, EventNameEnum } from './RoomPaasSdk.uni.min.js'
+	export default {
+		data:() => ({
+			roomChannel: null,
+			roomId: '',
+			pusher: null,
+			liveDetail: {},
+			mirror: false,
+			
+		}),
+		methods: {
+			enterRoom() {
+				this.roomChannel = getApp().globalData.roomEngine.getRoomChannel(this.roomId)
+				return this.roomChannel.enterRoom(getApp().globalData.userId)
+			},
+			startPreview() {
+				this.pusher.startPreview()
+			},
+			setPreviewMode() {
+				this.pusher.setPreviewMode()
+			},
+			setMirror() {
+				this.pusher.setPreviewMirror(!this.mirror)
+				this.pusher.setPushMirror(!this.mirror)
+				this.mirror = !this.mirror
+			},
+			switchCamera() {
+				this.pusher.switchCamera()
+			},
+			startLive() {
+				this.pusher.startLive().then(res => {
+					console.log(res)
+					uni.showToast({
+						title: '开始推流',
+						icon: 'none'
+					})
+				}).catch(err => {
+					console.error(err)
+				})
+			},
+			stopLive() {
+				this.pusher.stopLive().then(res => {
+					uni.showToast({
+						title: '结束推流',
+						icon: 'none'
+					})
+					console.log(res)
+				}).catch(err => {
+					console.error(err)
+				})
+			},
+		},
+		onLoad(e) {
+			console.log(e)
+			this.roomId = e.roomId
+			this.enterRoom().then((res) => {
+				this.pusher = this.roomChannel.getPusherService(this.$refs.pusher)
+				return this.pusher.getLiveDetail()
+			}).then(res => {
+				console.log(res)
+				this.liveDetail = res.data.liveInfo
+				this.startPreview()
+			}).catch(err => {
+				console.log(err)
+				uni.showToast({
+					title: err.nativeMsg,
+					icon: 'none'
+				})
+			})
+		},
+		onUnload() {
+			this.roomChannel.leaveRoom()
+		}
+	}
+</script>
+
+<style lang="less">
+.pusher-page {
+	flex: 1;
+	.pusher {
+		width: 750rpx;
+		height: 750rpx;
+	}
+}
+</style>

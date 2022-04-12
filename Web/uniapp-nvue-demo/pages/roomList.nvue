@@ -1,0 +1,96 @@
+<template>
+	<view class="room-list">
+		<view class="list-item" v-for="(item, index) in liveList" :key="index" @click="goToNext(item)">
+			<image class="bg-img" mode="widthFix" src="https://img.alicdn.com/imgextra/i3/O1CN01sE83c029Xm6lbhNru_!!6000000008078-2-tps-510-648.png"></image>
+			<text class="uv">热度{{ item.uv }}</text>
+			<text class="title">{{ item.title }}</text>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data:() => ({
+			liveList: [],
+		}),
+		methods: {
+			getRoomList() {
+				const url = getApp().globalData.origin
+				return new Promise((resolve, reject) => {
+					uni.request({
+						url: `${url}/api/login/getRoomList?pageSize=50&pageNumber=1&status=3&appId=${getApp().globalData.appId}`,
+						success(res) {
+							resolve(res.data.result)
+						},
+						fail(err) {
+							reject(err)
+						}
+					})
+				})
+			},
+			goToNext(item) {
+				console.log(item)
+				if (item.anchorId === `${getApp().globalData.userId}@${getApp().globalData.appId}`) {
+					uni.showToast({
+						title: '您是主播，进入直播页面',
+						icon: 'none'
+					})
+					uni.navigateTo({
+						url: `pusher?roomId=${item.roomId}`
+					})
+				} else {
+					uni.showToast({
+						title: '您是观众，进入观看页面',
+						icon: 'none'
+					})
+					uni.navigateTo({
+						url: `player?roomId=${item.roomId}`
+					})
+				}
+			}
+		},
+		onReady() {
+			uni.showLoading({
+				title: '加载中',
+			})
+			this.getRoomList().then(res => {
+				this.liveList = res.liveList
+			}).catch(err => {
+				console.log(err)
+			}).finally(() => {
+				uni.hideLoading()
+			})
+		}
+	}
+</script>
+
+<style lang="less">
+.room-list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	flex-direction: row;
+	background-color: #f1f1f1;
+	padding-top: 20rpx;
+	.list-item {
+		flex: 1;
+		width: 350rpx;
+		height: 480rpx;
+		margin-bottom: 20rpx;
+		position: relative;
+		overflow: hidden;
+		.uv {
+			position: absolute;
+			font-size: 30rpx;
+			top: 20rpx;
+			left: 20rpx;
+		}
+		.title {
+			position: absolute;
+			bottom: 20rpx;
+			left: 20rpx;
+			font-size: 30rpx;
+		}
+	}
+}
+</style>

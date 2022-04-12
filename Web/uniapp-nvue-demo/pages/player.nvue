@@ -1,0 +1,124 @@
+<template>
+	<scroll-view scroll-y="true" class="player-page">
+		<ali-live-player ref="player" class="player"/>
+		<view v-if="player">
+			<button @click="start">start</button>
+			<button @click="stop">stop</button>
+			<button @click="pause">pause</button>
+			<button @click="resume">resume</button>
+			<button @click="refresh">refresh</button>
+			<button @click="sendComment">测试发聊天</button>
+		</view>
+		<scroll-view class="chat" scroll-y="true">
+			<text>聊天列表：</text>
+		    <text v-for="item in commentList" class="chat-item" :key="item.commentId">{{item.creatorNick}}: {{item.content}}</text>
+		</scroll-view>
+	</scroll-view>
+</template>
+
+<script>
+	import { EventNameEnum } from './RoomPaasSdk.uni.min.js'
+
+	export default {
+		data:() => ({
+			roomChannel: null,
+			roomId: '',
+			player: null,
+			chatService: null,
+			liveDetail: {},
+			commentList: [],
+		}),
+		methods: {
+			enterRoom() {
+				this.roomChannel = getApp().globalData.roomEngine.getRoomChannel(this.roomId)
+				return this.roomChannel.enterRoom(getApp().globalData.userId)
+			},
+			start() {
+				this.player.start()
+			},
+			stop() {
+				this.player.stop()
+			},
+			refresh() {
+				this.player.refresh()
+			},
+			pause() {
+				this.player.pause()
+			},
+			resume() {
+				this.player.resume()
+			},
+			sendComment() {
+				console.log('发送')
+				this.chatService.sendComment(`测试发送Comment${+new Date()}`, {}).then(res => {
+					console.log('发送成功')
+				}).catch(err => {
+					console.log(err)
+					console.log('发送失败')
+				})
+			},
+			receiveCommentHandler(e) {
+				console.log(e)
+				this.commentList.push(e)
+			}
+		},
+
+		onLoad(e) {
+			this.roomId = e.roomId
+			this.enterRoom().then((res) => {
+				this.player = this.roomChannel.getPlayerService(this.$refs.player)
+				this.chatService = this.roomChannel.getChatService()
+				this.chatService.on(EventNameEnum.CommentReceived, this.receiveCommentHandler)
+				return this.player.getLiveDetail()
+			}).then(res => {
+				console.log(res)
+				console.log(this.player.getLiveId())
+				this.liveDetail = res.data.liveInfo
+				if (this.liveDetail.status === 1) {
+					this.player.start()
+				}
+				return this.chatService.listComment(1, 50)
+			}).then(res => {
+				console.log(res)
+				this.commentList = res.data.list.reverse()
+				return this.roomChannel.getRoomDetail()
+			}).then(res => {
+				console.log(res)
+				return this.chatService.getChatDetail()
+			}).then(res => {
+				console.log(res)
+			}).catch(err => {
+				console.log(err)
+				uni.showToast({
+					title: err.nativeMsg,
+					icon: 'none'
+				})
+			})
+		},
+		onUnload() {
+			this.chatService.remove(EventNameEnum.CommentReceived, this.reciveCommentHandler)
+			this.roomChannel.leaveRoom().then(res => {
+				console.log(res)
+			})
+			this.commentList = []
+			this.roomChannel = null
+			this.chatService = null
+			this.player = null
+		}
+	}
+</script>
+
+<style lang="less">
+.player-page {
+	flex: 1;
+	.player {
+		width: 750rpx;
+		height: 750rpx;
+	}
+	.chat {
+		.chat-item {
+			font-size: 30rpx;
+		}
+	}
+}
+</style>

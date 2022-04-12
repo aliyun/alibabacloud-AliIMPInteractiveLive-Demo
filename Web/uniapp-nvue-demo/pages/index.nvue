@@ -1,0 +1,140 @@
+<template>
+	<view class="login">
+		<image class="bg-img" src="https://img.alicdn.com/imgextra/i1/O1CN01nkmaYO1JUF28vpTwA_!!6000000001031-2-tps-1125-2385.png"></image>
+		<view class="form">
+			<input class="input" type="text" @input="onKeyInput" placeholder="请输入userId">
+			<button class="btn" @click="login">登录</button>
+		</view>
+	</view>
+</template>
+
+<script>
+	export default {
+		data:() => ({
+			userId: '',
+		}),
+		methods: {
+			onKeyInput(e) {
+				this.userId = e.detail.value
+			},
+			async login(e) {
+				const roomEngine = getApp().globalData.roomEngine
+				const regExp = /^\w{0,8}$/
+				if (!this.userId) {
+					uni.showToast({
+						title: '请输入userId',
+						icon: 'none',
+					})
+					return
+				}
+				if (!regExp.test(this.userId)) {
+					uni.showToast({
+						title: '请输入正确userId，支持8位以内的数字、字母、下划线',
+						icon: 'none',
+					})
+					return
+				}
+				getApp().globalData.userId = this.userId
+				const deviceId = getApp().globalData.deviceId
+				const appId = getApp().globalData.appId
+				const appKey = getApp().globalData.appKey
+				const url = getApp().globalData.origin
+				const config = {
+					userId: this.userId,
+					deviceId,
+					appId,
+					appKey,
+					authTokenCallback: () => {
+						return new Promise((resolve, reject) => {
+							console.log('authTokenCallback')
+							uni.request({
+								url: `${url}/api/login/getToken?userId=${this.userId}&deviceId=${deviceId}&appId=${appId}&appKey=${appKey}`,
+								success(res) {
+									// 根据您的服务端返回值决定写法
+									// 返回值示例
+									// {
+									//	  
+									// }
+									console.log(res.data.result)
+									resolve(res.data.result)
+								},
+								fail(err) {
+									console.log(err)
+									reject(err)
+								}
+							})
+						})
+					}
+				}
+				roomEngine.init(config)
+				uni.showLoading({
+					title: '登录中',
+				})
+				roomEngine.login().then(res => {
+					console.log(res)
+					uni.setStorageSync('isLogin', true);
+					uni.showToast({
+						title: '登录成功',
+						success() {
+							uni.navigateTo({
+								url: 'roomList'
+							})
+						}
+					})
+				}).catch(err => {
+					uni.showToast({
+						title: '登录失败'
+					})
+					console.log(err)
+				}).finally(() => {
+					uni.hideLoading()
+				})
+			}
+		},
+		onReady() {
+			const isLogin = uni.getStorageSync('isLogin');
+			if (isLogin) {
+				uni.setStorageSync('isLogin', false);
+				getApp().globalData.roomEngine.logout()
+			}
+		}
+	}
+</script>
+
+<style lang="less">
+	.login {
+		width: 750rpx;
+		flex: 1;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		.bg-img {
+			position: absolute;
+			left: 0;
+			top: 0;
+			right: 0;
+			bottom: 0;
+		}
+		.form {
+			width: 650rpx;
+			justify-content: center;
+			align-items: center;
+			.input {
+				width: 650rpx;
+				height: 100rpx;
+				text-align: center;
+				background-color: #fff;
+				margin-bottom: 150rpx;
+				border-radius: 10rpx;
+			}
+			.btn {
+				width: 650rpx;
+				border-radius: 10rpx;
+				background-color: #ff8826;
+				color: #fff;
+				border-style: solid;
+				border-color: #ff8826;
+			}
+		}
+	}
+</style>
