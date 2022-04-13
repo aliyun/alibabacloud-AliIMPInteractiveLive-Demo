@@ -1,0 +1,40 @@
+@import '../../../../styles/size.d.less';
+@import '../../../../styles/color.d.less';
+.sub-video-bar {
+  width: 100%;
+  height: @linkMic-bar-height;
+  padding: 10px 40px;
+  position: relative;
+  background-color: @bar-bg-color;
+  border-bottom: 1px solid #eee;
+  &.hide-sub-video-bar {
+    height: 0 !important;
+    padding: 0;
+    visibility: hidden;
+  }
+  .arrow {
+    position: absolute;
+    top: 50%;
+    background-color: rgba(0, 0, 0, 0.04);
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    svg {
+      font-size: 24px;
+    }
+  }
+  .prev {
+    left: 10px;
+    transform: translateY(-50%) rotate(90deg);
+  }
+  .next {
+    right: 10px;
+    transform: translateY(-50%) rotate(-90deg);
+  }
+  .sub-video-group {
+    width: 100%;
+    height: 100%;
+    display: flex;
+  }
+}

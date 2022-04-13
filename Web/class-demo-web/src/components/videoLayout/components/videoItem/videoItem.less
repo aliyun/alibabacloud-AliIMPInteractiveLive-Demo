@@ -1,20 +1,22 @@
-@import '../../../styles/size.d.less';
-@import '../../../styles/color.d.less';
+@import '../../../../styles/size.d.less';
+@import '../../../../styles/color.d.less';
 .sub-video-item {
-  border: 1px solid #bbb;
-  border-radius: 4px;
+  box-shadow: 0 0 1px 1px #aaa;
+  border-radius: 3px;
   flex-basis: 16%;
   margin: 0 0.3%;
   position: relative;
+  background-color: #000;
+  overflow: hidden;
   video {
     width: 100%;
     height: 100%;
   }
   .camera-unavailable {
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    top: -5px;
+    left: -5px;
+    bottom: -5px;
+    right: -5px;
     position: absolute;
     z-index: 1;
     background-color: @item-bg-color;
@@ -32,25 +34,37 @@
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 100%;
-    height: 10%;
+    right: 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
     z-index: 2;
-    background-image: linear-gradient(
-      to bottom,
-      transparent,
-      rgba(0, 0, 0, 0.15) 50%,
-      rgba(0, 0, 0, 0.4)
-    );
-    padding: 10px;
+    background-image: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.15) 50%, rgba(0, 0, 0, 0.5));
+    padding: 3px 7px;
+    .operation-item-container {
+      display: flex;
+      width: 48%;
+    }
+    .operation-item-container-left {
+      .operation-item-container;
+      justify-content: start;
+    }
+    .operation-item-container-right {
+      .operation-item-container;
+      justify-content: flex-end;
+      .operation-item {
+        margin-left: 5px;
+      }
+    }
     .operation-item {
       cursor: pointer;
       svg {
         font-size: 20px;
         color: #fff;
       }
+    }
+    .hover-item {
+      display: none;
     }
     .nick {
       font-size: 13px;
@@ -59,6 +73,11 @@
       line-height: 1.8;
       padding: 0 6px;
       border-radius: 2px;
+      max-width: 70%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      user-select: none;
     }
   }
 }

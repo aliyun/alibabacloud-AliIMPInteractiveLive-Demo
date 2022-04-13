@@ -1,0 +1,45 @@
+.showupload {
+  position: absolute;
+  top: 55px;
+  left: 20px;
+  .showupload-item {
+    display: flex;
+    height: 22px;
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.45);
+    line-height: 22px;
+    .showupload-icon {
+      margin: 0 4px;
+    }
+    .showupload-state {
+      position: relative;
+      width: 126px;
+      font-size: 14px;
+      text-align: left;
+      .showupload-state-title {
+        position: absolute;
+        left: 0;
+        right: 60px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .showupload-state-speed {
+        position: absolute;
+        left: 70px;
+      }
+      .showupload-state-reload {
+        position: absolute;
+        right: 0;
+        font-size: 16px;
+      }
+    }
+    .showupload-close {
+      margin-left: 5px;
+      cursor: pointer;
+    }
+    &.finish {
+      color: rgba(0, 0, 0, 0.65);
+    }
+  }
+}

@@ -1,19 +1,21 @@
-import { FC, useEffect, useState, useRef } from 'react'
-import { RoomModelState, StatusModelState, UserModelState, connect, Dispatch } from 'umi'
-import { useMount, usePersistFn } from 'ahooks'
+import { FC, useEffect, useRef } from 'react'
+import { StatusModelState, SettingsModelState, RoomModelState, connect, Dispatch } from 'umi'
+import { usePersistFn } from 'ahooks'
 import Emitter from '@/utils/emitter'
 import styles from './index.less'
 
+const { EventNameEnum } = window.RoomPaasSdk
 const emitter = Emitter.getInstance()
 
 interface PageProps {
-  room: RoomModelState
   status: StatusModelState
-  user: UserModelState
+  room: RoomModelState
+  settings: SettingsModelState
   dispatch: Dispatch
 }
 
-const Player: FC<PageProps> = ({ room, status, user, dispatch }) => {
+const Player: FC<PageProps> = ({ status, room, settings, dispatch }) => {
+  const errorTimer = useRef<any>(null)
   const startPlayHandler = usePersistFn(() => {
     setTimeout(() => {
       window.liveService.setPlayerConfig({
@@ -21,9 +23,10 @@ const Player: FC<PageProps> = ({ room, status, user, dispatch }) => {
         width: '100%',
         height: '100%',
         isLive: true,
-        autoplay: true,
-        useArtc: true,
+        autoplay: !window.sessionStorage.getItem('refresh'),
         controlBarVisibility: 'hover',
+        aliplayerSdkVer: '2.9.16',
+        useArtc: true,
       })
       window.liveService.tryPlayLive()
     }, 500)
@@ -31,27 +34,39 @@ const Player: FC<PageProps> = ({ room, status, user, dispatch }) => {
   const stopPlayHandler = usePersistFn(() => {
     window.liveService.stopPlay()
   })
-  useMount(() => {
+  const playerEventHandler = (e: any) => {
+    if (e.eventName === 'error') {
+      setTimeout(() => {
+        window.liveService.stopPlay()
+        window.liveService.tryPlayLive()
+      }, 3000)
+    }
+  }
+  useEffect(() => {
     if (!window.liveService) return
     emitter.on('livePublish', startPlayHandler)
-    console.log('event.on livePublish')
     emitter.on('liveStop', stopPlayHandler)
-  })
+    window.liveService.on(EventNameEnum.PaaSPlayerEvent, playerEventHandler)
+    return () => {
+      emitter.remove('livePublish', startPlayHandler)
+      emitter.remove('liveStop', stopPlayHandler)
+    }
+  }, [])
   return (
     <div className={styles['player-container']}>
       {status.isInClass ? (
         <div className="player" id="player"></div>
       ) : (
-        <div className={styles['no-class']}>课程未开始</div>
+        <div className={styles['no-class']}>{status.classStatus === 2 ? '课程已结束' : '课程未开始'}</div>
       )}
     </div>
   )
 }
 
 export default connect(
-  ({ room, status, user }: { room: RoomModelState; status: StatusModelState; user: UserModelState }) => ({
-    room,
+  ({ status, room, settings }: { status: StatusModelState; room: RoomModelState; settings: SettingsModelState }) => ({
     status,
-    user,
+    room,
+    settings,
   }),
 )(Player)

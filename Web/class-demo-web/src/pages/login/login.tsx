@@ -1,30 +1,35 @@
 import styles from './login.less'
 import { Form, Input, Button, Select, message } from 'antd'
 import { useEffect } from 'react'
-import { setPre } from '@/utils'
+import { setPre, changeFavicon } from '@/utils'
 
 const { Option } = Select
 
 interface LoginForm {
   classId?: string
-  userId?: string
-  nick?: string
+  userNick?: string
   role: 'teacher' | 'student'
 }
 
 const classIdReg = /^[A-Za-z0-9-]+$/
-const userReg = /^(\w)+$/
+const userReg = /^[\u4e00-\u9fa5a-zA-Z0-9]+$/
 
 export default function Login(props: any) {
+  window.setApp = (appId: string, appKey: string) => {
+    window.localStorage.setItem('testAppId', appId)
+    window.localStorage.setItem('testAppKey', appKey)
+    window.location.reload()
+  }
   const [form] = Form.useForm()
   const onFinish = async (val: LoginForm) => {
-    if (!val.userId) return
-    window.sessionStorage.setItem('userId', val.userId)
+    if (!val.userNick) return
+    window.sessionStorage.setItem('userNick', val.userNick)
     window.sessionStorage.setItem('classId', val.classId || '')
     window.sessionStorage.setItem('role', val.role)
     props.history.replace('/doLogin')
   }
   useEffect(() => {
+    changeFavicon()
     window.sessionStorage.removeItem('user')
     window.sessionStorage.removeItem('classId')
     window.sessionStorage.removeItem('role')
@@ -56,17 +61,18 @@ export default function Login(props: any) {
                 rules={[{ pattern: classIdReg, message: '请输入正确的课堂号' }]}
                 tooltip="输入课堂号进入已有课堂，不输入将创建一个新课堂"
               >
-                <Input />
+                <Input placeholder="不输入将创建一个新课堂" />
               </Form.Item>
               <Form.Item
-                label="请输入用户ID"
-                name="userId"
+                label="请输入昵称"
+                name="userNick"
                 rules={[
-                  { required: true, message: '请输入用户ID' },
-                  { pattern: userReg, message: '只能输入字母和数字' },
+                  { required: true, message: '请输入昵称' },
+                  { pattern: userReg, message: '只能输入中文字符、字母或数字' },
+                  { max: 15, type: 'string', message: '长度不超过15字符' },
                 ]}
               >
-                <Input />
+                <Input placeholder="请输入中文字符、字母或数字" />
               </Form.Item>
               <Form.Item label="请选择课堂类型" name="classType">
                 <Select disabled>

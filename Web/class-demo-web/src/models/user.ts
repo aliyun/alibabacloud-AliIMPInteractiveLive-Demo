@@ -1,85 +1,43 @@
-import { ImmerReducer } from 'umi';
-import { BasicMap } from '@/utils';
+import { ImmerReducer } from 'umi'
+import { BasicMap } from '@/utils'
 
 export interface User {
-  userId: string;
-  nick: string;
-  isOwner: boolean;
-  isMe: boolean;
-  isInSeat: boolean; // 是否已经连麦
-  isApplying: boolean; // 是否正在申请
-  isRtcMute: boolean; // 是否连麦静音
-  isRtcMuteCamera: boolean; // 是否关闭摄像头
-  isInviting: boolean; // 是否正在邀请中
-  streamType: number; // 订阅的流类型
-  subscribeResult: boolean; // 是否已订阅此人
-  [index: string]: any;
+  userId: string
+  nick: string
+  isMe: boolean
+  isInSeat: boolean // 是否已经连麦
+  isApplying: boolean // 是否正在申请
+  isRtcMute: boolean // 是否连麦静音
+  isRtcMuteCamera: boolean // 是否关闭摄像头
+  isInviting: boolean // 是否正在邀请中
+  streamType: number // 订阅的流类型
+  subscribeResult: boolean // 是否已订阅此人
+  enterSeatTime: number
+  enterRoomTime: number
+  isCurrent: boolean // 是否正在连麦显示中
+  [index: string]: any
 }
 
 export interface UserModelState {
-  userId: string;
-  nick: string;
-  isOwner: boolean;
-  userList: BasicMap<User>;
-  userUpdate: number;
+  userId: string
+  nick: string
+  isOwner: boolean
+  userList: BasicMap<User>
 }
 
 export interface UserModelType {
-  namespace: 'user';
-  state: UserModelState;
+  namespace: 'user'
+  state: UserModelState
   reducers: {
-    setUserId: ImmerReducer<UserModelState>;
-    setNick: ImmerReducer<UserModelState>;
-    setUserList: ImmerReducer<UserModelState>;
-    setIsOwner: ImmerReducer<UserModelState>;
-    addUser: ImmerReducer<UserModelState>;
-    updateUser: ImmerReducer<UserModelState>;
-    deleteUser: ImmerReducer<UserModelState>;
-  };
+    setUserId: ImmerReducer<UserModelState>
+    setNick: ImmerReducer<UserModelState>
+    setUserList: ImmerReducer<UserModelState>
+    addUser: ImmerReducer<UserModelState>
+    updateUser: ImmerReducer<UserModelState>
+    deleteUser: ImmerReducer<UserModelState>
+    mergeUser: ImmerReducer<UserModelState>
+  }
 }
-
-export const generateUserList = (
-  userList: any[],
-  ownerId: string,
-  myId: string,
-  applyList?: any[],
-  confList?: any[],
-): BasicMap<User> => {
-  console.log(userList, applyList, confList);
-  const list: BasicMap<User> = {};
-  console.log(ownerId, myId, '--------------');
-  userList.forEach((item: any) => {
-    if (list[item.userId]) return;
-    list[item.userId] = {
-      userId: item.userId,
-      nick: item.nick,
-      isOwner: item.userId === ownerId,
-      isMe: item.userId === myId,
-      isInSeat: false,
-      isApplying: false,
-      isRtcMute: false,
-      isRtcMuteCamera: false,
-      isInviting: false,
-      streamType: 1,
-      subscribeResult: false,
-    };
-    console.log(list[item.userId]);
-  });
-  if (confList) {
-    confList.forEach((item: any) => {
-      if (!list[item.userId]) return;
-      list[item.userId].isInSeat = item.status === 3 || item.status === 4;
-      list[item.userId].isRtcMuteCamera = item.cameraStatus === 0;
-      list[item.userId].isRtcMute = item.micphoneStatus === 0;
-    });
-  }
-  if (applyList) {
-    applyList.forEach((item: any) => {
-      list[item.userId].isApplying = item.status === 2;
-    });
-  }
-  return list;
-};
 
 const UserModel: UserModelType = {
   namespace: 'user',
@@ -89,37 +47,40 @@ const UserModel: UserModelType = {
     nick: '',
     isOwner: false,
     userList: {},
-    userUpdate: 0,
   },
 
   reducers: {
-    setUserId(state, action) {
-      state.userId = action.payload;
+    setUserId(state, { payload }) {
+      state.userId = payload
     },
-    setNick(state, action) {
-      state.nick = action.payload;
+    setNick(state, { payload }) {
+      state.nick = payload
     },
-    setUserList(state, action) {
-      state.userList = action.payload;
+    setUserList(state, { payload }) {
+      state.userList = payload
     },
-    addUser(state, action) {
-      state.userList[action.payload.userId] = action.payload;
+    addUser(state, { payload }) {
+      state.userList[payload.userId] = payload
     },
-    updateUser(state, action) {
-      Object.keys(action.payload).forEach((key: string) => {
-        if (state.userList[action.payload.userId]) {
-          state.userList[action.payload.userId][key] = action.payload[key];
+    updateUser(state, { payload }) {
+      Object.keys(payload).forEach((key: string) => {
+        if (state.userList[payload.userId]) {
+          state.userList[payload.userId][key] = payload[key]
         }
-      });
-      state.userUpdate += 1;
+      })
     },
-    deleteUser(state, action) {
-      delete state.userList[action.payload];
+    deleteUser(state, { payload }) {
+      delete state.userList[payload]
     },
-    setIsOwner(state, action) {
-      state.isOwner = action.payload;
+    mergeUser(state, { payload }) {
+      const final: BasicMap<User> = {}
+      Object.keys(payload).forEach((item) => {
+        if (state.userList[item]) final[item] = state.userList[item]
+        else final[item] = payload[item]
+      })
+      state.userList = final
     },
   },
-};
+}
 
-export default UserModel;
+export default UserModel

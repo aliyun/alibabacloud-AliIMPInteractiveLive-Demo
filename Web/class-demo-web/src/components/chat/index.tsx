@@ -1,8 +1,7 @@
-import { FC, useState } from 'react'
+import { FC, useState, useRef } from 'react'
 import { Input, Checkbox, message } from 'antd'
 import { RoomModelState, StatusModelState, ChatModelState, UserModelState, connect, Dispatch } from 'umi'
 import styles from './index.less'
-import teacher from '@/pages/teacher'
 
 const { TextArea } = Input
 
@@ -17,18 +16,20 @@ interface PageProps {
 
 const Chat: FC<PageProps> = ({ room, status, chat, user, dispatch, from }) => {
   const [messageValue, setMessageValue] = useState('')
+  const keyFlag = useRef(false)
+  const keyTimer = useRef<any>(null)
   const sendComment = async () => {
-    if (!messageValue) return
+    if (!messageValue || status.isMuteAll || status.isMuteSelf) return
     const msg = messageValue.trim()
     if (!msg) return
+    setMessageValue('')
     try {
       await window.chatService.sendComment(msg)
-      setMessageValue('')
       const messageItem = {
         name: user.nick,
         content: msg,
         isMe: true,
-        isOwner: room.ownerId === user.userId,
+        isOwner: room.isOwner,
       }
       dispatch({
         type: 'chat/addMsg',
@@ -38,9 +39,15 @@ const Chat: FC<PageProps> = ({ room, status, chat, user, dispatch, from }) => {
       message.error('发送失败')
     }
   }
-  const textAreaKeyupHandler = (e: any) => {
+  const textAreaKeydownHandler = (e: any) => {
     if (e.keyCode !== 13) return
     e.preventDefault()
+    if (keyFlag.current) return
+    keyFlag.current = true
+    clearTimeout(keyTimer.current)
+    keyTimer.current = setTimeout(() => {
+      keyFlag.current = false
+    }, 500)
     sendComment()
   }
   const muteHandler = (e: any) => {
@@ -94,10 +101,10 @@ const Chat: FC<PageProps> = ({ room, status, chat, user, dispatch, from }) => {
           placeholder={
             (!status.isMuteAll && !status.isMuteSelf) || from === 'teacher'
               ? '说点什么吧～'
-              : `${status.isMuteAll ? '老师已开启全员禁言' : '您已被禁言'}`
+              : `${status.isMuteAll ? '老师已开启禁言' : '您已被禁言'}`
           }
           disabled={(status.isMuteAll || status.isMuteSelf) && from === 'student'}
-          onKeyDown={textAreaKeyupHandler}
+          onKeyDown={textAreaKeydownHandler}
           value={messageValue}
           onChange={(e) => setMessageValue(e.target.value)}
         ></TextArea>
