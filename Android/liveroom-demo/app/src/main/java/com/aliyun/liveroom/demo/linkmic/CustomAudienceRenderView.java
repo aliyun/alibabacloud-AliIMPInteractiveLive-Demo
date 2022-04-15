@@ -35,7 +35,7 @@ import java.util.Map;
  * @author puke
  * @version 2022/1/10
  */
-public class CustomLiveLinkMicView extends RelativeLayout implements ComponentHolder {
+public class CustomAudienceRenderView extends RelativeLayout implements ComponentHolder {
 
     private final Component component = new Component();
 
@@ -50,9 +50,9 @@ public class CustomLiveLinkMicView extends RelativeLayout implements ComponentHo
 
     private boolean isApplying;
 
-    public CustomLiveLinkMicView(Context context, AttributeSet attrs) {
+    public CustomAudienceRenderView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.view_live_linkmic_view, this);
+        inflate(context, R.layout.view_live_linkmic_audience_view, this);
         renderContainer = findViewById(R.id.render_container);
         micRenderContainer = findViewById(R.id.mic_render_container);
         micRenderContainer.setCallback(userId2View::get);
@@ -226,7 +226,12 @@ public class CustomLiveLinkMicView extends RelativeLayout implements ComponentHo
 
                 @Override
                 public void onApplyResponse(boolean approve, String userId) {
-                    showToast(String.format("老师%s了%s的连麦申请", approve ? "同意" : "拒绝", userId));
+                    // 观众收到主播对观众申请连麦的处理结果 (同意或拒绝)
+                    boolean isSelf = TextUtils.equals(userId, Const.getCurrentUserId());
+                    showToast(String.format("主播%s了%s的连麦申请",
+                            approve ? "同意" : "拒绝",
+                            isSelf ? "您" : userId
+                    ));
 
                     // 主播同意我的申请时, 进行处理 (!!!注意比较, uid可能是别人)
                     if (approve && TextUtils.equals(userId, Const.getCurrentUserId())) {
@@ -339,6 +344,13 @@ public class CustomLiveLinkMicView extends RelativeLayout implements ComponentHo
         private void updateRoadRender(View toAdd) {
             ViewUtil.removeSelfSafely(ViewUtil.findFirstSurfaceViewAtLevel0(renderContainer));
             ViewUtil.addChildMatchParentSafely(true, renderContainer, 0, toAdd);
+        }
+
+        @Override
+        public void onActivityDestroy() {
+            if (audienceService.isJoined()) {
+                audienceService.leave();
+            }
         }
     }
 }

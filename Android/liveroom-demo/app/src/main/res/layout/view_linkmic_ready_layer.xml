@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#33ff0000"
+    android:clickable="true"
+    android:focusable="true"
+    tools:ignore="HardcodedText">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/view_ready_switch_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="切换摄像头"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/view_ready_start_live"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:gravity="center"
+            android:text="开始直播"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+    </LinearLayout>
+</FrameLayout>
