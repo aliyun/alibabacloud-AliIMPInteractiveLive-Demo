@@ -55,12 +55,6 @@ export default defineConfig({
               component: '@/pages/student',
               title: '阿里云互动课堂-学生端',
             },
-            {
-              exact: true,
-              path: '/class/recorder',
-              component: '@/pages/recorder',
-              title: '阿里云互动课堂',
-            },
           ],
         },
       ],
