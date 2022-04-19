@@ -259,37 +259,37 @@
 
 - (void) addAnchorCustomizedViews {
     // 网络状态变化
-    UIView* networkStatusView = [[UIView alloc] init];
-    [self.liveRoomVC.view addSubview:networkStatusView];
-    [networkStatusView mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
-        make.width.mas_equalTo(75);
-        make.height.mas_equalTo(30);
-        make.right.equalTo(self.liveRoomVC.view.mas_right);
-        make.top.equalTo(self.liveRoomVC.view.mas_top).with.offset(85);
-    }];
-    
-    self.networkStatusButton = [[UIButton alloc] init];
-    self.networkStatusButton.layer.cornerRadius = 3;
-    self.networkStatusButton.clipsToBounds = YES;
-    self.networkStatusButton.backgroundColor = [UIColor colorWithHexString:@"#51C359" alpha:1.0];
-    [networkStatusView addSubview:self.networkStatusButton];
-    [self.networkStatusButton mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
-        make.width.mas_equalTo(6);
-        make.height.mas_equalTo(6);
-        make.left.equalTo(networkStatusView.mas_left);
-        make.centerY.equalTo(networkStatusView.mas_centerY);
-    }];
-    
-    self.networkStatusLabel = [[UILabel alloc] init];
-    self.networkStatusLabel.text = @"网络良好";
-    self.networkStatusLabel.font = [UIFont fontWithName:@"PingFangSC-Regular" size:12];
-    [networkStatusView addSubview:self.networkStatusLabel];
-    [self.networkStatusLabel mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
-        make.width.mas_equalTo(52);
-        make.height.mas_equalTo(18);
-        make.right.equalTo(networkStatusView.mas_right).with.offset(-12);
-        make.centerY.equalTo(networkStatusView.mas_centerY);
-    }];
+//    UIView* networkStatusView = [[UIView alloc] init];
+//    [self.liveRoomVC.view addSubview:networkStatusView];
+//    [networkStatusView mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
+//        make.width.mas_equalTo(75);
+//        make.height.mas_equalTo(30);
+//        make.right.equalTo(self.liveRoomVC.view.mas_right);
+//        make.top.equalTo(self.liveRoomVC.view.mas_top).with.offset(85);
+//    }];
+//
+//    self.networkStatusButton = [[UIButton alloc] init];
+//    self.networkStatusButton.layer.cornerRadius = 3;
+//    self.networkStatusButton.clipsToBounds = YES;
+//    self.networkStatusButton.backgroundColor = [UIColor colorWithHexString:@"#51C359" alpha:1.0];
+//    [networkStatusView addSubview:self.networkStatusButton];
+//    [self.networkStatusButton mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
+//        make.width.mas_equalTo(6);
+//        make.height.mas_equalTo(6);
+//        make.left.equalTo(networkStatusView.mas_left);
+//        make.centerY.equalTo(networkStatusView.mas_centerY);
+//    }];
+//
+//    self.networkStatusLabel = [[UILabel alloc] init];
+//    self.networkStatusLabel.text = @"网络良好";
+//    self.networkStatusLabel.font = [UIFont fontWithName:@"PingFangSC-Regular" size:12];
+//    [networkStatusView addSubview:self.networkStatusLabel];
+//    [self.networkStatusLabel mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
+//        make.width.mas_equalTo(52);
+//        make.height.mas_equalTo(18);
+//        make.right.equalTo(networkStatusView.mas_right).with.offset(-12);
+//        make.centerY.equalTo(networkStatusView.mas_centerY);
+//    }];
     
     //更多能力展示
     UIView* abilitiesDemonstrationEntranceView = [[UIView alloc] init];
@@ -300,7 +300,7 @@
         make.width.mas_equalTo(105);
         make.height.mas_equalTo(22);
         make.right.equalTo(self.liveRoomVC.view.mas_right);
-        make.top.equalTo(networkStatusView.mas_bottom).with.offset(10);
+        make.top.equalTo(self.liveRoomVC.view.mas_top).with.offset(125);
     }];
     
     UIImageView* abilitiesDemonstrationEntranceImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"img-moreabilities"]];
@@ -405,47 +405,47 @@
             break;
             
         case ASLRBAnchorEventLivePusherStreamingReconnectStart: {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.networkStatusLabel.text = @"网络中断";
-                self.networkStatusButton.backgroundColor = [UIColor colorWithHexString:@"#FE3143" alpha:1.0];
-                
-//                [[AIRBDToast shareInstance] makeToast:@"网络中断，正在重连" duration:1.0];
-            });
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                self.networkStatusLabel.text = @"网络中断";
+//                self.networkStatusButton.backgroundColor = [UIColor colorWithHexString:@"#FE3143" alpha:1.0];
+//
+////                [[AIRBDToast shareInstance] makeToast:@"网络中断，正在重连" duration:1.0];
+//            });
         }
             break;
         case ASLRBAnchorEventLivePusherStreamingReconnectSuccess: {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.networkStatusLabel.text = @"网络良好";
-                self.networkStatusButton.backgroundColor = [UIColor colorWithHexString:@"#51C359" alpha:1.0];
-                
-//                [[AIRBDToast shareInstance] makeToast:@"网络重连成功" duration:1.0];
-            });
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                self.networkStatusLabel.text = @"网络良好";
+//                self.networkStatusButton.backgroundColor = [UIColor colorWithHexString:@"#51C359" alpha:1.0];
+//
+////                [[AIRBDToast shareInstance] makeToast:@"网络重连成功" duration:1.0];
+//            });
             
         }
             break;
         case ASLRBAnchorEventLivePusherStreamingPoorNetworkStart: {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.networkStatusLabel.text = @"网络不佳";
-                self.networkStatusButton.backgroundColor = [UIColor colorWithHexString:@"#FFA623" alpha:1.0];
-            });
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                self.networkStatusLabel.text = @"网络不佳";
+//                self.networkStatusButton.backgroundColor = [UIColor colorWithHexString:@"#FFA623" alpha:1.0];
+//            });
             
         }
             break;
         case ASLRBAnchorEventLivePusherStreamingPoorNetworkEnd: {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.networkStatusLabel.text = @"网络良好";
-                self.networkStatusButton.backgroundColor = [UIColor colorWithHexString:@"#51C359" alpha:1.0];
-            });
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                self.networkStatusLabel.text = @"网络良好";
+//                self.networkStatusButton.backgroundColor = [UIColor colorWithHexString:@"#51C359" alpha:1.0];
+//            });
             
         }
             break;
         case ASLRBAnchorEventLivePusherStreamingNetworkConnectionLost: {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.networkStatusLabel.text = @"网络中断";
-                self.networkStatusButton.backgroundColor = [UIColor colorWithHexString:@"#FE3143" alpha:1.0];
-                
-                [[AIRBDToast shareInstance] makeToast:@"网络中断，请检查网络" duration:1.0];
-            });
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                self.networkStatusLabel.text = @"网络中断";
+//                self.networkStatusButton.backgroundColor = [UIColor colorWithHexString:@"#FE3143" alpha:1.0];
+//
+//                [[AIRBDToast shareInstance] makeToast:@"网络中断，请检查网络" duration:1.0];
+//            });
         }
             break;
             
