@@ -83,7 +83,8 @@
 					})
 				}).catch(err => {
 					uni.showToast({
-						title: '登录失败'
+						title: '登录失败',
+						icon: 'none'
 					})
 					console.log(err)
 				}).finally(() => {

@@ -1,3 +1,4 @@
+// 在template里使用ali-live-player和ali-live-pusher的component
 <template>
 	<scroll-view scroll-y="true" class="player-page">
 		<ali-live-player ref="player" class="player"/>
@@ -8,9 +9,10 @@
 			<button @click="resume">resume</button>
 			<button @click="refresh">refresh</button>
 			<button @click="sendComment">测试发聊天</button>
+			<button @click="sendLike">点赞</button>
 		</view>
 		<scroll-view class="chat" scroll-y="true">
-			<text>聊天列表：</text>
+			<text>聊天列表：(点赞数{{likeCount}})</text>
 		    <text v-for="item in commentList" class="chat-item" :key="item.commentId">{{item.creatorNick}}: {{item.content}}</text>
 		</scroll-view>
 	</scroll-view>
@@ -27,6 +29,7 @@
 			chatService: null,
 			liveDetail: {},
 			commentList: [],
+			likeCount: 0
 		}),
 		methods: {
 			enterRoom() {
@@ -57,9 +60,15 @@
 					console.log('发送失败')
 				})
 			},
+			sendLike() {
+				this.chatService.sendLike()
+			},
 			receiveCommentHandler(e) {
 				console.log(e)
 				this.commentList.push(e)
+			},
+			reciveLikeHandler(e) {
+				this.likeCount = e.likeCount
 			}
 		},
 
@@ -69,15 +78,8 @@
 				this.player = this.roomChannel.getPlayerService(this.$refs.player)
 				this.chatService = this.roomChannel.getChatService()
 				this.chatService.on(EventNameEnum.CommentReceived, this.receiveCommentHandler)
-				return this.player.getLiveDetail()
-			}).then(res => {
-				console.log(res)
-				console.log(this.player.getLiveId())
-				this.liveDetail = res.data.liveInfo
-				if (this.liveDetail.status === 1) {
-					this.player.start()
-				}
-				return this.chatService.listComment(1, 50)
+				this.chatService.on(EventNameEnum.Liked, this.reciveLikeHandler)
+				return this.chatService.listComment(0, 1, 50)
 			}).then(res => {
 				console.log(res)
 				this.commentList = res.data.list.reverse()
@@ -87,6 +89,14 @@
 				return this.chatService.getChatDetail()
 			}).then(res => {
 				console.log(res)
+				this.likeCount = res.data.likeCount
+				return this.player.getLiveDetail()
+			}).then((res) => {
+				console.log(this.player.getLiveId())
+				this.liveDetail = res.data.liveInfo
+				if (this.liveDetail.status === 1) {
+					this.player.start()
+				}
 			}).catch(err => {
 				console.log(err)
 				uni.showToast({
@@ -97,6 +107,7 @@
 		},
 		onUnload() {
 			this.chatService.remove(EventNameEnum.CommentReceived, this.reciveCommentHandler)
+			this.chatService.remove(EventNameEnum.Liked, this.reciveLikeHandler)
 			this.roomChannel.leaveRoom().then(res => {
 				console.log(res)
 			})
