@@ -20,7 +20,7 @@
 
 <script>
 	import { EventNameEnum } from './RoomPaasSdk.uni.min.js'
-
+	const globalEvent = uni.requireNativePlugin("globalEvent");
 	export default {
 		data:() => ({
 			roomChannel: null,
@@ -69,16 +69,29 @@
 			},
 			reciveLikeHandler(e) {
 				this.likeCount = e.likeCount
+			},
+			enterRoomHandler(e) {
+				console.log('enterRoom', e)
+			},
+			leaveRoomHandler(e) {
+				console.log(e)
+			},
+			liveFirstFrameRendered(e) {
+				console.log('liveFirstFrameRendered', e)
 			}
 		},
 
 		onLoad(e) {
 			this.roomId = e.roomId
+			globalEvent.addEventListener(EventNameEnum.CommentReceived, this.receiveCommentHandler)
+			globalEvent.addEventListener(EventNameEnum.Liked, this.reciveLikeHandler)
+			globalEvent.addEventListener(EventNameEnum.EnterRoom, this.enterRoomHandler)
+			globalEvent.addEventListener(EventNameEnum.LeaveRoom, this.reciveLikeHandler)
+			globalEvent.addEventListener(EventNameEnum.LiveFirstFrameRendered, this.liveFirstFrameRendered)
 			this.enterRoom().then((res) => {
+				new u()
 				this.player = this.roomChannel.getPlayerService(this.$refs.player)
 				this.chatService = this.roomChannel.getChatService()
-				this.chatService.on(EventNameEnum.CommentReceived, this.receiveCommentHandler)
-				this.chatService.on(EventNameEnum.Liked, this.reciveLikeHandler)
 				return this.chatService.listComment(0, 1, 50)
 			}).then(res => {
 				console.log(res)
@@ -106,8 +119,8 @@
 			})
 		},
 		onUnload() {
-			this.chatService.remove(EventNameEnum.CommentReceived, this.reciveCommentHandler)
-			this.chatService.remove(EventNameEnum.Liked, this.reciveLikeHandler)
+			globalEvent.removeEventListener(EventNameEnum.CommentReceived, this.reciveCommentHandler)
+			globalEvent.removeEventListener(EventNameEnum.Liked, this.reciveLikeHandler)
 			this.roomChannel.leaveRoom().then(res => {
 				console.log(res)
 			})

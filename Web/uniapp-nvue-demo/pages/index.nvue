@@ -51,10 +51,13 @@
 								url: `${url}/api/login/getToken?userId=${this.userId}&deviceId=${deviceId}&appId=${appId}&appKey=${appKey}`,
 								success(res) {
 									// 根据您的服务端返回值决定写法
-									// 返回值示例
+									// 返回值示例:
 									// {
-									//	  
+									//	  accessToken: "oauth_cloud_key:vNxzz******"
+									//	  accessTokenExpiredTime: 86400000
+									//	  refreshToken: "oauth_cloud_key:********"
 									// }
+									// 注意字段名要完全一致，要小驼峰
 									console.log(res.data.result)
 									resolve(res.data.result)
 								},
