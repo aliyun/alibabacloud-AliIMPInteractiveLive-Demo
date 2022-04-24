@@ -5,7 +5,7 @@ source 'https://cdn.cocoapods.org/'
 source 'https://github.com/CocoaPods/Specs.git'
 
   def common_version
-  '1.7.0'
+  '1.8.0'
   end
 
   def pod_ailplayer
@@ -26,7 +26,7 @@ target 'StandardClassroomForTeacher' do
      
      pod 'AliInteractiveRoomBundle', common_version
      pod 'AliInteractiveRTCCore', common_version
-     pod 'AliRTCSdk', '2.5.3'
+     pod 'AliRTCSdk', '2.5.7'
      pod 'AliInteractiveWhiteBoardCore', common_version
      pod 'AliInteractiveDocumentCore', common_version
      
