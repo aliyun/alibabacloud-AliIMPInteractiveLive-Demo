@@ -34,6 +34,8 @@ import java.util.Random;
  */
 public class GridMicContainer extends RecyclerView implements IMicRenderContainer {
 
+    private static final String PAYLOAD_IGNORE_RENDER = "ignoreRender";
+
     // 最多展示的连麦画面数量
     private static final int MAX_COUNT = 10;
     // 主播占位符
@@ -152,10 +154,14 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
     }
 
     @Override
-    public void update(String userId) {
+    public void update(String userId, boolean refreshRenderView) {
         int index = getIndex(userId);
         if (isValidIndex(index)) {
-            adapter.notifyItemChanged(index);
+            if (refreshRenderView) {
+                adapter.notifyItemChanged(index);
+            } else {
+                adapter.notifyItemChanged(index, PAYLOAD_IGNORE_RENDER);
+            }
         }
     }
 
@@ -208,6 +214,30 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
                     AppUtil.getDeviceWidth() / 3
             ));
             return new ViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull GridMicContainer.ViewHolder holder, int position, @NonNull List<Object> payloads) {
+            if (CollectionUtil.isEmpty(payloads)) {
+                super.onBindViewHolder(holder, position, payloads);
+            } else {
+                LinkMicUserModel user = users.get(position);
+                if (payloads.contains(PAYLOAD_IGNORE_RENDER)) {
+                    boolean needShowLarge = needShowLarge();
+                    if (user == OCCUPY_ANCHOR) {
+                        holder.userLabel.setText(null);
+                        holder.mic.setText(null);
+                    } else if (needShowLarge) {
+                        // 显示大图时, 不展示边界信息
+                        holder.userLabel.setText(null);
+                        holder.mic.setText(null);
+                    } else {
+                        holder.userLabel.setText(user.userId);
+                        holder.mic.setText(String.format("麦克风: %s", user.isMicOpen ? "开" : "关"));
+                    }
+
+                }
+            }
         }
 
         @Override

@@ -100,7 +100,7 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
             if (user != null) {
                 user.isMicOpen = anchorService.isMicOpened();
             }
-            micRenderContainer.update(myUserId);
+            micRenderContainer.update(myUserId, false);
         });
         camera.setOnClickListener(v -> {
             AnchorService anchorService = component.anchorService;
@@ -114,7 +114,7 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
             if (user != null) {
                 user.isCameraOpen = anchorService.isCameraOpened();
             }
-            micRenderContainer.update(myUserId);
+            micRenderContainer.update(myUserId, true);
         });
         findViewById(R.id.leave).setOnClickListener(v -> component.anchorService.leave());
     }
@@ -210,7 +210,7 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
                     // 存下 userId=>渲染视图 的映射关系
                     userId2View.put(userId, view);
                     // 刷新该userId对应的ItemView
-                    micRenderContainer.update(userId);
+                    micRenderContainer.update(userId, true);
                 }
 
                 @Override
@@ -236,7 +236,7 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
                     if (user != null) {
                         user.isCameraOpen = open;
                     }
-                    micRenderContainer.update(userId);
+                    micRenderContainer.update(userId, true);
                 }
 
                 @Override
@@ -246,7 +246,7 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
                     if (user != null) {
                         user.isMicOpen = open;
                     }
-                    micRenderContainer.update(userId);
+                    micRenderContainer.update(userId, false);
                 }
 
                 @Override

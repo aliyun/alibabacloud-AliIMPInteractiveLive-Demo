@@ -83,7 +83,7 @@ public class LinearMicRenderContainer extends LinearLayout implements IMicRender
     }
 
     @Override
-    public void update(String userId) {
+    public void update(String userId, boolean refreshRenderView) {
         int index = getIndex(userId);
         update(index);
     }

@@ -91,7 +91,7 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
             if (user != null) {
                 user.isMicOpen = audienceService.isMicOpened();
             }
-            micRenderContainer.update(myUserId);
+            micRenderContainer.update(myUserId, false);
         });
         camera.setOnClickListener(v -> {
             AudienceService audienceService = component.audienceService;
@@ -105,7 +105,7 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
             if (user != null) {
                 user.isCameraOpen = audienceService.isCameraOpened();
             }
-            micRenderContainer.update(myUserId);
+            micRenderContainer.update(myUserId, true);
         });
         findViewById(R.id.leave).setOnClickListener(v -> component.audienceService.leave());
     }
@@ -291,7 +291,7 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
                     // 存下 userId=>渲染视图 的映射关系
                     userId2View.put(userId, view);
                     // 刷新该userId对应的ItemView
-                    micRenderContainer.update(userId);
+                    micRenderContainer.update(userId, true);
                 }
 
                 @Override
@@ -301,7 +301,7 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
                     if (user != null) {
                         user.isCameraOpen = open;
                     }
-                    micRenderContainer.update(userId);
+                    micRenderContainer.update(userId, true);
                 }
 
                 @Override
@@ -311,7 +311,7 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
                     if (user != null) {
                         user.isMicOpen = open;
                     }
-                    micRenderContainer.update(userId);
+                    micRenderContainer.update(userId, false);
                 }
 
                 @Override
