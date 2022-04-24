@@ -323,7 +323,6 @@
 //        }
 //            break;
 //        case ASLRBLinkMicEventLocalLeaveSucceeded:{
-//            [self.liveRoomVC linkMicCancelApply];
 //            dispatch_async(dispatch_get_main_queue(), ^{
 //                [self.linMickButton setTitle:@"申请\n连麦" forState:UIControlStateNormal];
 //                self.linMickButton.tag = 0;
