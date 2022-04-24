@@ -116,7 +116,6 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
             }
             micRenderContainer.update(myUserId, true);
         });
-        findViewById(R.id.leave).setOnClickListener(v -> component.anchorService.leave());
     }
 
     private void refreshButtonUI() {
