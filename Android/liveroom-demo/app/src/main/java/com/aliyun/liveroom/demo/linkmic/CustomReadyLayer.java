@@ -25,7 +25,7 @@ public class CustomReadyLayer extends FrameLayout implements ComponentHolder {
 
     public CustomReadyLayer(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        inflate(context, R.layout.view_linkmic_ready_layer, this);
+        inflate(context, R.layout.view_live_linkmic_ready_layer, this);
 
         findViewById(R.id.view_ready_switch_camera).setOnClickListener(v -> component.switchCamera());
         findViewById(R.id.view_ready_start_live).setOnClickListener(v -> component.startLive());
