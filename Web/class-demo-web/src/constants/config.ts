@@ -1,5 +1,7 @@
 export default {
   appId: '******',
-  appKey: '********',
-  origin: 'https://***.***.com',
-};
+  prodAppId: '******',
+  appKey: '******',
+  prodAppKey: '******',
+  origin: 'https://a.b.com',
+}

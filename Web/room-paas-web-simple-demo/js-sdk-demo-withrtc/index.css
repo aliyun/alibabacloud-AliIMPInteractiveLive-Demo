@@ -1,0 +1,50 @@
+.global{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+}
+.button-area{
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    height: 100%;
+    background-color: #888;
+}
+.button-area button{
+    margin: 20px auto 0;
+    width: 130px;
+    height: 30px;
+    line-height: 30px;
+}
+.show-area{
+    position: relative;
+    flex: 1;
+}
+.show-area #play{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #000;
+}
+.show-area #play video{
+    height: 100%;
+    width: 100%;
+}
+.console-area{
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 100%;
+    overflow-y: scroll;
+    background-color: #888;
+}
+.console-area div{
+    width: 100%;
+    margin: 10px auto 0;
+    background-color: #fff;
+}

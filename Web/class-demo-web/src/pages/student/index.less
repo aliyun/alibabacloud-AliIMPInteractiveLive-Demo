@@ -5,118 +5,15 @@
   justify-content: space-between;
   flex-grow: 1;
   position: relative;
-  .page-main {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: @side-width + 10px;
-    bottom: 0;
-    overflow: hidden;
-  }
-  .sidebar {
-    width: @side-width;
-    position: absolute;
-    right: 0;
-    top: @abbreviate-height;
-    bottom: 0;
-    overflow: hidden;
-  }
-  .abbreviate {
-    width: @side-width;
-    height: @abbreviate-height;
-    background-color: @bar-bg-color;
-    position: absolute;
-    right: 0;
-    top: 0;
-  }
-  .page-footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    height: 0;
-    background-color: @bar-bg-color;
-    display: flex;
-    justify-content: space-between;
-    box-shadow: 0 -1px 1px 1px #eee;
-    .footer-main {
-      flex-grow: 1;
-      display: flex;
-    }
-    .holder {
-      width: @side-width;
-    }
-  }
-  .abbreviate-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1001;
-    .abbr-type {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      font-size: 13px;
-      color: @primary-color;
-      background-color: rgba(255, 255, 255, 0.35);
-      line-height: 1.8;
-      padding: 0 6px;
-      border-radius: 2px;
-    }
-    .abbr-operation-bar {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 30px;
-      display: flex;
-      align-items: center;
-      background-image: linear-gradient(
-        to bottom,
-        transparent,
-        rgba(0, 0, 0, 0.15) 50%,
-        rgba(0, 0, 0, 0.4)
-      );
-      padding: 10px;
-      .operation-item {
-        cursor: pointer;
-        svg {
-          font-size: 20px;
-        }
-      }
-    }
-  }
-}
-
-.tab-container {
-  display: flex;
-  background-color: @common-bg-color;
-  .tab-item {
-    height: @tab-height;
-    flex-grow: 1;
-    border-bottom: 1px solid @border-color;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    user-select: none;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 500;
-    &.tab-item-active {
-      cursor: auto;
-      border-bottom: 1px solid @primary-color;
-    }
-  }
 }
 
 .link-control-bar {
   position: absolute;
-  bottom: 90px;
-  right: 70px;
+  bottom: 50px;
+  right: 70px + @side-width;
   box-shadow: 0 2px 5px 0 #d2d2d2;
   border-radius: 22px;
-  padding: 0 15px;
+  padding: 0 22px;
   display: flex;
   background-color: #fff;
   z-index: 3;
@@ -129,5 +26,11 @@
     &:hover {
       background-color: @bar-bg-color;
     }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .link-control-bar {
+    right: 70px + @side-width-thin;
   }
 }

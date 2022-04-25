@@ -1,0 +1,57 @@
+@startuml
+title 连麦时序图(主持人)
+actor "主持人" as owner
+participant "App" as app
+participant "Web SDK" as websdk
+participant "Server" as server
+participant "Media SDK" as mediasdk
+
+activate owner
+group 收到连麦申请处理逻辑
+owner -> app: 添加监听事件
+activate app
+app -> websdk: rtcService.on(\nEventNameEnum.PaaSRtcApply, handler)
+activate websdk
+websdk -> app: 返回连麦申请事件
+app -> owner: 收到连麦申请
+owner -> app: 同意连麦申请
+app -> websdk: rtcService.handleApplyJoinChannel\n(userId, true)
+websdk -> server: approveLinkMic
+activate server
+server --> websdk: callback
+deactivate server
+websdk --> app: callback,向该用户发起连麦邀请
+app -> websdk: rtcService.inviteJoinChannel\n用户自动同意
+websdk -> server: addMembers
+activate server
+server -> mediasdk: JoinChannel
+server --> websdk: callback
+deactivate server
+owner -> app: 拒绝连麦申请
+app -> websdk: rtcService.handleApplyJoinChannel\n(userId, false)
+websdk -> server: approveLinkMic
+activate server
+server --> websdk: callback
+deactivate server
+deactivate app
+deactivate websdk
+end
+
+group 邀请用户连麦处理逻辑
+owner -> app: 邀请用户连麦
+activate app
+app -> websdk: rtcService.inviteJoinChannel
+activate websdk
+websdk -> server: addMembers
+activate server
+server --> websdk: RTC_INVITE,等待用户响应
+websdk -> server: 用户接受邀请
+server -> mediasdk: JoinChannel
+deactivate server
+deactivate websdk
+deactivate app
+end
+deactivate owner
+
+
+@enduml

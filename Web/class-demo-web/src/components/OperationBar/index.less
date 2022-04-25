@@ -66,6 +66,7 @@
     box-shadow: 0 2px 2px 0 #ddd;
     background-color: #fff;
     border-radius: 4px 4px 0 0;
+    z-index: 3;
   }
   .selector-container {
     padding: 6px 0;
@@ -78,6 +79,37 @@
       user-select: none;
       &:hover {
         background-color: @primary-bg-color;
+      }
+      .check {
+        width: 23px;
+        text-align: right;
+        svg {
+          font-size: 18px;
+        }
+      }
+    }
+  }
+  .tools-container {
+    padding: 0;
+    display: flex;
+    .tool-item {
+      display: flex;
+      padding: 12px 13px;
+      align-items: center;
+      font-size: 13px;
+      white-space: nowrap;
+      user-select: none;
+      flex-direction: column;
+      width: 80px;
+      box-sizing: border-box;
+      svg {
+        font-size: 28px;
+        line-height: 1;
+        color: #666;
+        margin-bottom: 7px;
+      }
+      &:hover {
+        background-color: @bar-bg-color;
       }
       .check {
         width: 23px;

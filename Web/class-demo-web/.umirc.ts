@@ -12,7 +12,12 @@ export default defineConfig({
   history: {
     type: 'hash',
   },
-  publicPath: process.env.NODE_ENV === 'production' ? `/room-paas/${json.name}/${json.version}/` : '/',
+  publicPath:
+    process.env.NODE_ENV === 'production'
+      ? `https://g.alicdn.com/room-paas/${
+          json.name
+        }/${json.version}/`
+      : '/',
   externals: {
     react: 'window.React',
     'react-dom': 'window.ReactDOM',
@@ -23,32 +28,32 @@ export default defineConfig({
       routes: [
         {
           exact: true,
-          path: '/',
+          path: '/login',
           component: '@/pages/login/login',
-          title: '互动课堂',
+          title: '阿里云互动课堂',
         },
         {
           exact: true,
           path: '/doLogin',
           component: '@/pages/login/demoDoLogin',
-          title: '互动课堂',
+          title: '阿里云互动课堂',
         },
         {
           path: '/class',
           component: '@/layouts/index',
-          title: '互动课堂',
+          title: '阿里云互动课堂',
           routes: [
             {
               exact: true,
               path: '/class/teacher',
               component: '@/pages/teacher',
-              title: '互动课堂-老师端',
+              title: '阿里云互动课堂-老师端',
             },
             {
               exact: true,
               path: '/class/student',
               component: '@/pages/student',
-              title: '互动课堂-学生端',
+              title: '阿里云互动课堂-学生端',
             },
           ],
         },
@@ -61,11 +66,11 @@ export default defineConfig({
   },
   fastRefresh: {},
   devServer: {
-    port: 443, // 需要sudo权限才可以运行
+    port: 443,
     https: true,
     proxy: {
       '/api': {
-        target: 'https://***.***.com/',
+        target: 'https://a.b.com/',
         secure: false,
         changeOrigin: true,
       },

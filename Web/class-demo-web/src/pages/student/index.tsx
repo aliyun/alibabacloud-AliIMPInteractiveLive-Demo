@@ -1,12 +1,21 @@
-import { FC, useEffect, useState } from 'react'
-import { RoomModelState, StatusModelState, ChatModelState, UserModelState, ConnectProps, connect, Dispatch } from 'umi'
+import { FC, useEffect, useState, useRef } from 'react'
+import {
+  RoomModelState,
+  StatusModelState,
+  UserModelState,
+  SettingsModelState,
+  ConnectProps,
+  connect,
+  Dispatch,
+} from 'umi'
 import { useMount, useUnmount, usePersistFn } from 'ahooks'
 import Emitter from '@/utils/emitter'
-import Chat from '@/components/chat'
-import WhiteBoard from '@/components/whiteBoard'
-import { generateUserList } from '@/models/user'
-import VideoLayout from '@/components/videoLayout'
-import Player from '@/components/player'
+import { reSubUser } from '@/biz/link'
+import { listAllUsers } from '@/biz/user'
+import { debounce } from '@/utils'
+import { generateUserList } from '@/biz/user'
+import Full from '@/components/studentLayouts/full'
+import WithoutWb from '@/components/studentLayouts/withoutWb'
 import styles from './index.less'
 import { message, Modal } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
@@ -18,29 +27,19 @@ const emitter = Emitter.getInstance()
 interface PageProps extends ConnectProps {
   room: RoomModelState
   status: StatusModelState
-  chat: ChatModelState
   user: UserModelState
+  settings: SettingsModelState
   dispatch: Dispatch
 }
 
-const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history }) => {
-  const [tab, setTab] = useState('chat')
+const Student: FC<PageProps> = ({ room, status, user, dispatch, settings, history }) => {
   const [loadFinish, setLoadFinish] = useState(false)
-  const switchViewMode = () => {
-    if (!dispatch) return
-    if (status.viewMode === 'whiteBoard') {
-      dispatch({ type: 'status/setLayout', payload: '6' })
-    }
-    const mode = status.viewMode === 'whiteBoard' ? 'video' : 'whiteBoard'
-    dispatch({ type: 'status/setViewMode', payload: mode })
-    setTimeout(() => {
-      emitter.emit('needSetVideo')
-    }, 100)
-  }
+  const linkCount = useRef<number>(0)
+
   const doStartClass = (classDetail: any) => {
     if (classDetail.startTime) {
       dispatch({
-        type: 'room/updateClassStartTime',
+        type: 'timer/updateClassStartTime',
         payload: classDetail.startTime,
       })
     }
@@ -49,24 +48,38 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
       payload: true,
     })
   }
+
   const initUserList = () => {
     if (status.classStatus === 1) {
       Promise.all([
         window.rtcService.listConfUser(1, 100).then((res: any) => res.userList),
         window.rtcService.listApplyLinkMicUser(1, 50).then((res: any) => res.userList),
-        window.roomChannel.listUser(1, 50).then((res: any) => res.userList),
+        listAllUsers(),
       ]).then((res: any) => {
         const [confUserList, applyList, userList] = res
-        const list = generateUserList(userList, room.ownerId, user.userId, applyList, confUserList)
-        console.log(list)
+        const list = generateUserList(userList, room.ownerId, user.userId, applyList, confUserList, true)
+        if (list[room.ownerId]) {
+          if (list[room.ownerId].isRtcMuteCamera) {
+            dispatch({
+              type: 'status/setTeacherCameraAvailable',
+              payload: false,
+            })
+          }
+          if (list[room.ownerId].isRtcMute) {
+            dispatch({
+              type: 'status/setTeacherMicAvailable',
+              payload: false,
+            })
+          }
+        }
         dispatch({
           type: 'user/setUserList',
           payload: list,
         })
       })
     } else {
-      window.roomChannel.listUser(1, 100).then((res: any) => {
-        const list = generateUserList(res.userList, room.ownerId, user.userId)
+      listAllUsers().then((res: any) => {
+        const list = generateUserList(res, room.ownerId, user.userId)
         dispatch({
           type: 'user/setUserList',
           payload: list,
@@ -74,6 +87,7 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
       })
     }
   }
+
   const reciveCommentHandler = usePersistFn((e: any) => {
     if (user.userId.toString() === e.data.creatorOpenId.toString()) return
     const messageItem = {
@@ -88,6 +102,7 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
         payload: messageItem,
       })
   })
+
   const reciveCustomMessageHandler = usePersistFn((e: any) => {
     const msg = e.data.split('/')
     if (msg[0] === 'classCustom') {
@@ -100,12 +115,14 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
       }
     }
   })
+
   const muteAllHandeler = usePersistFn((d: any) => {
     dispatch({
       type: 'status/setIsMuteAll',
       payload: d.data.mute,
     })
   })
+
   const livePublishHandler = usePersistFn((d: any) => {
     dispatch({
       type: 'status/setIsLiving',
@@ -115,6 +132,7 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
       emitter.emit('livePublish')
     }, 1000)
   })
+
   const liveStopHandler = usePersistFn((d: any) => {
     dispatch({
       type: 'status/setIsLiving',
@@ -122,11 +140,13 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
     })
     emitter.emit('liveStop')
   })
+
   const classStartHandler = usePersistFn((d: any) => {
     window.classInstance.getClassDetail(room.classId).then((classDetail: any) => {
       doStartClass(classDetail)
     })
   })
+
   const classStopHandler = usePersistFn((d: any) => {
     dispatch({
       type: 'status/updateClass',
@@ -143,57 +163,62 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
         payload: 'whiteBoard',
       })
     }
+    message.info('已下课')
+    setTimeout(() => {
+      history.replace('/login')
+      window.location.reload()
+    }, 2000)
   })
+
+  const studentJoinChannel = () => {
+    window.rtcService.setVideoProfile(10, 160, 120)
+    window.rtcService.aliRtcInstance.configLocalCameraPublish = settings.settings.classDefaultOpenCamera
+    dispatch({
+      type: 'status/setCameraAvailable',
+      payload: settings.settings.classDefaultOpenCamera,
+    })
+    window.rtcService
+      .joinChannel(user.nick)
+      .then(() => {
+        window.liveService.stopPlay()
+        dispatch({
+          type: 'status/setIsInChannel',
+          payload: true,
+        })
+        dispatch({
+          type: 'status/setIsApplying',
+          payload: false,
+        })
+        dispatch({
+          type: 'status/setMicAvailable',
+          payload: true,
+        })
+        dispatch({
+          type: 'status/setLinkMicUserCount',
+          payload: window.rtcService.getUserList().length,
+        })
+        setTimeout(() => {
+          window.rtcService.reportCameraStatus(settings.settings.classDefaultOpenCamera)
+          window.rtcService.setMutePush(false)
+        }, 3000)
+      })
+      .catch((err: any) => {
+        message.error('连麦失败')
+      })
+  }
+
   const rtcInviteHandler = usePersistFn((d: any) => {
     if (!d.data.calleeList) return
     if (!d.data.calleeList.find((item: any) => item.userId === user.userId)) return
     if (status.isApplying) {
-      window.rtcService
-        .joinChannel(user.nick)
-        .then(() => {
-          window.liveService.stopPlay()
-          dispatch({
-            type: 'status/setIsInChannel',
-            payload: true,
-          })
-          dispatch({
-            type: 'status/setIsApplying',
-            payload: false,
-          })
-        })
-        .catch((err: any) => {
-          message.error('连麦失败')
-        })
+      studentJoinChannel()
     } else {
       confirm({
         title: `你收到了老师的连麦请求，是否接受？`,
         cancelText: '拒绝',
         okText: '接受',
         onOk() {
-          window.rtcService
-            .joinChannel(user.nick)
-            .then(() => {
-              window.liveService.stopPlay()
-              dispatch({
-                type: 'status/setIsInChannel',
-                payload: true,
-              })
-              dispatch({
-                type: 'status/setIsApplying',
-                payload: false,
-              })
-              dispatch({
-                type: 'status/setMicAvailable',
-                payload: true,
-              })
-              dispatch({
-                type: 'status/setCameraAvailable',
-                payload: true,
-              })
-            })
-            .catch((err: any) => {
-              message.error('连麦失败')
-            })
+          studentJoinChannel()
         },
         onCancel() {
           window.rtcService.refuseInvite(user.nick, user.userId)
@@ -201,6 +226,7 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
       })
     }
   })
+
   const rtcRefuseHandler = usePersistFn((d: any) => {
     if (!d.data.approve) {
       message.error('老师拒绝了你的连麦申请')
@@ -210,23 +236,39 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
       })
     }
   })
+
   const rtcKickHandler = usePersistFn((d: any) => {
-    const kickList = d.data.userList
-    if (!kickList.find((item: any) => item.userId === user.userId)) return
-    window.rtcService.leaveRtc()
-    message.info('已退出连麦')
-    dispatch({
-      type: 'status/setIsInChannel',
-      payload: false,
+    d.data.userList.forEach((item: any) => {
+      if (item.userId === user.userId) {
+        // 自己被踢出
+        window.rtcService.leaveRtc()
+        message.info('已退出连麦')
+        dispatch({
+          type: 'status/setIsInChannel',
+          payload: false,
+        })
+        dispatch({
+          type: 'status/setIsApplying',
+          payload: false,
+        })
+        setTimeout(() => {
+          emitter.emit('livePublish')
+        }, 1000)
+      } else {
+        // 别人被踢出
+        dispatch({
+          type: 'user/updateUser',
+          payload: {
+            userId: item.userId,
+            isApplying: false,
+            isInSeat: false,
+            isInviting: false,
+          },
+        })
+      }
     })
-    dispatch({
-      type: 'status/setIsApplying',
-      payload: false,
-    })
-    setTimeout(() => {
-      emitter.emit('livePublish')
-    }, 1000)
   })
+
   const rtcMuteHandler = usePersistFn((d: any) => {
     const muteList = d.data.userList
     const status = d.data.open
@@ -238,8 +280,14 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
             payload: status,
           })
         })
-        message.info('已被老师静音')
-        continue
+        message.info(status ? '已解除静音' : '已被老师静音')
+      }
+      if (muteList[i] === room.ownerId) {
+        dispatch({
+          type: 'status/setTeacherMicAvailable',
+          payload: status,
+        })
+        message.info(status ? '老师已解除静音' : '老师已静音')
       }
       dispatch({
         type: 'user/updateUser',
@@ -249,21 +297,16 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
         },
       })
     }
-    setTimeout(() => {
-      emitter.emit('needSetVideo')
-    }, 100)
   })
+
   const rtcMuteCameraHandler = usePersistFn((d: any) => {
     const status = d.data.open
-    if (d.data.userId === user.userId) {
-      // todo: 判断消息来源
-      // window.rtcService.setMuteCamera(!status).then(() => {
-      //   dispatch({
-      //     type: 'status/setMicAvailable',
-      //     payload: status,
-      //   });
-      // });
-      return
+    if (d.data.userId === room.ownerId) {
+      dispatch({
+        type: 'status/setTeacherCameraAvailable',
+        payload: status,
+      })
+      message.info(status ? '老师已开启摄像头' : '老师已关闭摄像头')
     }
     dispatch({
       // 有人关闭了
@@ -273,25 +316,6 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
         isRtcMuteCamera: !status,
       },
     })
-    setTimeout(() => {
-      emitter.emit('needSetVideo')
-    }, 100)
-  })
-
-  const rtcOnSubscribeHandler = usePersistFn((d: any) => {
-    console.log(d)
-    dispatch({
-      type: 'user/updateUser',
-      payload: {
-        userId: d.userId,
-        subscribeResult: true,
-        isInSeat: true,
-        streamType: d.streamType || 1,
-      },
-    })
-    setTimeout(() => {
-      emitter.emit('needSetVideo')
-    }, 100)
   })
 
   const rtcScreenHandler = usePersistFn((d: any) => {
@@ -303,58 +327,62 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
         streamType: d.data.open ? 2 : 1,
       },
     })
-    new Promise<void>((resolve) => {
-      if (d.data.open) {
-        window.rtcService
-          .unSubscribe(d.data.userId)
-          .then(() => {
-            return window.rtcService.subscribeScreen(d.data.userId)
-          })
-          .then(() => {
-            resolve()
-          })
-      } else {
-        window.rtcService
-          .unSubscribe(d.data.userId)
-          .then(() => {
-            return window.rtcService.subscribe(d.data.userId)
-          })
-          .then(() => {
-            resolve()
-          })
+  })
+
+  const debounceEnterRoom = debounce(() => {
+    Promise.all([
+      window.rtcService.listConfUser(1, 50).then((res: any) => res.userList),
+      window.rtcService.listApplyLinkMicUser(1, 50).then((res: any) => res.userList),
+      listAllUsers(),
+    ]).then((res: any) => {
+      const [confUserList, applyList, userList] = res
+      const list = generateUserList(userList, room.ownerId, user.userId, applyList, confUserList, true)
+      dispatch({
+        type: 'user/mergeUser',
+        payload: list,
+      })
+    })
+  }, 1500)
+
+  const enterRoomHandler = (e: any) => {
+    if (e.data.userId === user.userId) return
+    debounceEnterRoom()
+  }
+
+  const setCurrentVideoProfile = () => {
+    if (settings.studentResolutionSteps.length === 0) return
+    const list = window.rtcService.getUserList()
+    for (let i = 0; i < settings.studentResolutionSteps.length; i++) {
+      if (list.length <= settings.studentResolutionSteps[i]) {
+        if (
+          linkCount.current === 0 ||
+          (i === 0 && linkCount.current > settings.studentResolutionSteps[i]) ||
+          (i > 0 &&
+            (linkCount.current <= settings.studentResolutionSteps[i - 1] ||
+              linkCount.current > settings.studentResolutionSteps[i]))
+        ) {
+          window.rtcService.setVideoProfile(...settings.studentResolutions[i])
+        }
+        break
       }
-    }).then(() => {
-      setTimeout(() => {
-        emitter.emit('needSetVideo')
-      }, 100)
+    }
+    linkCount.current = list.length
+  }
+
+  const rtcJoinHandler = usePersistFn((d: any) => {
+    setCurrentVideoProfile()
+    dispatch({
+      type: 'status/setLinkMicUserCount',
+      payload: status.linkMicUserCount + 1,
     })
   })
 
-  const enterRoomHandler = usePersistFn((e: any) => {
-    if (e.data.userId === user.userId) return
-    if (e.data.enter) {
-      dispatch({
-        type: 'user/addUser',
-        payload: {
-          userId: e.data.userId,
-          nick: e.data.nick,
-          isOwner: false,
-          isMe: false,
-          isInSeat: false,
-          isApplying: false,
-          isRtcMute: false,
-          isRtcMuteCamera: false,
-        },
-      })
-    } else {
-      dispatch({
-        type: 'user/deleteUser',
-        payload: e.data.userId,
-      })
-    }
-  })
-
   const rtcLeaveHandler = usePersistFn((d: any) => {
+    setCurrentVideoProfile()
+    dispatch({
+      type: 'status/setLinkMicUserCount',
+      payload: status.linkMicUserCount - 1,
+    })
     if (d.userId === room.ownerId) return
     dispatch({
       type: 'user/updateUser',
@@ -365,14 +393,23 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
         isInviting: false,
       },
     })
-    setTimeout(() => {
-      emitter.emit('needSetVideo')
-    }, 100)
+  })
+
+  const changeNoticeHandler = usePersistFn((d: any) => {
+    if (d.data) {
+      dispatch({
+        type: 'room/setRoomDetail',
+        payload: {
+          notice: d.data.notice,
+        },
+      })
+    }
   })
 
   const bindEvents = () => {
     window.chatService.on(EventNameEnum.PaaSChatReciveComment, reciveCommentHandler)
     window.chatService.on(EventNameEnum.PaaSChatCustomMessage, reciveCustomMessageHandler)
+    window.roomChannel.on(EventNameEnum.PaaSRoomUpdateNotice, changeNoticeHandler)
     window.roomChannel.on(EventNameEnum.PaaSRoomEnter, enterRoomHandler)
     window.chatService.on(EventNameEnum.PaaSChatMuteAll, muteAllHandeler)
     window.liveService.on(EventNameEnum.PaaSLivePublish, livePublishHandler)
@@ -384,30 +421,33 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
     window.rtcService.on(EventNameEnum.PaaSRtcKickUser, rtcKickHandler)
     window.rtcService.on(EventNameEnum.PaaSRtcMute, rtcMuteHandler)
     window.rtcService.on(EventNameEnum.PaaSRtcCamera, rtcMuteCameraHandler)
-    window.rtcService.on(EventNameEnum.onSubscribeResult, rtcOnSubscribeHandler)
     window.rtcService.on(EventNameEnum.PaaSRtcScreen, rtcScreenHandler)
+    window.rtcService.on(EventNameEnum.onJoin, rtcJoinHandler)
     window.rtcService.on(EventNameEnum.onLeave, rtcLeaveHandler)
-    initUserList()
+    window.rtcService.on(EventNameEnum.onMedia, rtcMediaHandler)
+    window.rtcService.on(EventNameEnum.onError, rtcErrorHandler)
   }
-  const startPlay = () => {
-    // 解决不点击就没法自动播放的问题
-    if (status.isLiving) {
-      window.liveService.startPlay()
-    }
-  }
+
   useEffect(() => {
     if (status.viewMode === 'whiteBoard') {
       dispatch({ type: 'status/setLayout', payload: '6' })
     }
   }, [status.viewMode])
+
   useMount(() => {
     if (!window.roomEngine) {
-      window.sessionStorage.getItem('userId') ? history.replace('/doLogin') : history.replace('/')
+      if (window.sessionStorage.getItem('userNick')) {
+        window.sessionStorage.setItem('refresh', '1')
+        history.replace('/doLogin')
+      } else {
+        history.replace('/login')
+      }
       return
     }
     bindEvents()
+    initUserList()
     setLoadFinish(true)
-    window.chatService.listComment(0, 1, 30).then((res: any) => {
+    window.chatService.listComment(0, 1, 50).then((res: any) => {
       dispatch({
         type: 'chat/addMsg',
         payload: res.commentModelList.reverse().map((item: any) => ({
@@ -430,6 +470,16 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
         }, 1000)
       }
     })
+    window.chatService.getChatDetail().then((res: any) => {
+      dispatch({
+        type: 'status/setIsMuteAll',
+        payload: res.muteAll,
+      })
+      dispatch({
+        type: 'status/setIsMuteSelf',
+        payload: res.mute && !res.muteAll,
+      })
+    })
     window.addEventListener(
       'beforeunload',
       () => {
@@ -442,6 +492,7 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
       true,
     )
   })
+
   useUnmount(() => {
     if (window.roomChannel) {
       window.rtcService.leaveRtc()
@@ -449,14 +500,27 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
       window.roomEngine.logout()
     }
   })
-  const rtcMuteCamera = () => {
-    window.rtcService.setMuteCamera(status.cameraAvailable).then(() => {
+
+  const rtcMuteCamera = async () => {
+    try {
+      if (status.cameraAvailable) {
+        window.rtcService._rtcManager.getAliRtcEngine().configLocalCameraPublish = false
+        await window.rtcService.startPublish()
+        await window.rtcService.reportCameraStatus(false)
+      } else {
+        await window.rtcService.startPublishCamera()
+        await window.rtcService.reportCameraStatus(true)
+      }
       dispatch({
         type: 'status/setCameraAvailable',
         payload: !status.cameraAvailable,
       })
-    })
+    } catch (err) {
+      console.error(err)
+      message.error('切换摄像头推流失败，请检查配置或尝试刷新页面')
+    }
   }
+
   const rtcMutePush = () => {
     window.rtcService.setMutePush(status.micAvailable).then(() => {
       dispatch({
@@ -465,6 +529,7 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
       })
     })
   }
+
   const cancelLinkMic = () => {
     if (status.isApplying) {
       window.rtcService
@@ -492,7 +557,40 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
       message.success('已下麦')
     }
   }
+
+  const rtcMediaHandler = usePersistFn((d: any) => {
+    if (d.userId === '0') return
+    else {
+      dispatch({
+        type: 'user/updateUser',
+        payload: {
+          userId: d.userId,
+          streamInfo: d.data,
+        },
+      })
+    }
+  })
+
+  const rtcErrorHandler = (d: any) => {
+    if (d.errorCode === 10302) {
+      reSubUser(d.userId, room.ownerId === d.userId)
+    }
+    if (d.errorCode === 10008) {
+      message.info({
+        content: '检测到您的外界设备麦克风拔出，可能会导致推流失败，可刷新页面解决',
+      })
+    }
+  }
+
   const applyLinkMic = () => {
+    const supportInfo = window.rtcService._rtcManager && window.rtcService._rtcManager.supportInfo
+    if (!supportInfo || !supportInfo.isSupported || !supportInfo.audioDevice || !supportInfo.videoDevice) {
+      Modal.error({
+        title: '兼容性错误',
+        content: '互动课堂的连麦功能需要使用摄像头和麦克风，请检查您的硬件是否可用，或是否通过了浏览器或系统的授权',
+      })
+      return
+    }
     if (status.isApplying) {
       window.rtcService
         .applyJoinChannel(false)
@@ -535,134 +633,47 @@ const Student: FC<PageProps> = ({ room, status, chat, user, dispatch, history })
       })
     }
   }
+
   return (
     <div className={styles['page-container']}>
-      <div className={`${status.viewMode === 'whiteBoard' ? styles['page-main'] : styles.abbreviate}`}>
-        <div
-          className={styles['abbreviate-container']}
-          style={{
-            display: status.viewMode === 'whiteBoard' ? 'none' : 'block',
-          }}
-        >
-          <div className={styles['abbr-type']}>讲解画面</div>
-          <div className={styles['abbr-operation-bar']}>
-            {status.isInChannel && (
-              <div className={styles['operation-item']} onClick={switchViewMode}>
-                <svg className="icon" aria-hidden="true">
-                  <use xlinkHref="#icon-ic_qiehuanshitu"></use>
-                </svg>
-              </div>
-            )}
-          </div>
-        </div>
-        {room.docKey && <WhiteBoard boardType="pure" />}
-        {status.isInClass &&
-          status.viewMode === 'whiteBoard' &&
-          (status.isInChannel ? (
-            <div className={styles['link-control-bar']}>
-              <div className={styles['bar-item']} onClick={rtcMutePush} title="是否静音">
-                <svg className="icon" aria-hidden="true">
-                  <use
-                    xlinkHref={status.micAvailable ? '#icon-ic_toolbar_jingyin' : '#icon-ic_toolbar_quxiaojingyin'}
-                  ></use>
-                </svg>
-              </div>
-              <div className={styles['bar-item']} onClick={rtcMuteCamera}>
-                <svg className="icon" aria-hidden="true">
-                  <use
-                    xlinkHref={
-                      status.cameraAvailable ? '#icon-ic_toolbar_shexiangtou' : '#icon-ic_toolbar_guanshexiangtou'
-                    }
-                  ></use>
-                </svg>
-              </div>
-              <div className={styles['bar-item']} onClick={cancelLinkMic}>
-                <svg className="icon" aria-hidden="true">
-                  <use xlinkHref="#icon-ic_toolbar_quxiaolianmai"></use>
-                </svg>
-              </div>
+      {loadFinish &&
+        (settings.settings.classScene && settings.settings.classScene.enableWhiteBoard ? <Full /> : <WithoutWb />)}
+      {status.isInClass &&
+        (status.isInChannel ? (
+          <div className={styles['link-control-bar']}>
+            <div className={styles['bar-item']} onClick={rtcMutePush} title="是否静音">
+              <svg className="icon" aria-hidden="true">
+                <use
+                  xlinkHref={status.micAvailable ? '#icon-ic_toolbar_jingyin' : '#icon-ic_toolbar_quxiaojingyin'}
+                ></use>
+              </svg>
             </div>
-          ) : (
-            <div className={styles['link-control-bar']}>
-              <div className={styles['bar-item']}>
-                <svg className="icon" aria-hidden="true" onClick={applyLinkMic}>
-                  <use
-                    xlinkHref={status.isApplying ? '#icon-ic_toolbar_quxiaolianmai' : '#icon-ic_toolbar_lianmai'}
-                  ></use>
-                </svg>
-              </div>
+            <div className={styles['bar-item']} onClick={rtcMuteCamera} title="是否关闭摄像头">
+              <svg className="icon" aria-hidden="true">
+                <use
+                  xlinkHref={
+                    status.cameraAvailable ? '#icon-ic_toolbar_shexiangtou' : '#icon-ic_toolbar_guanshexiangtou'
+                  }
+                ></use>
+              </svg>
             </div>
-          ))}
-      </div>
-      <div className={`${status.viewMode === 'video' ? styles['page-main'] : styles.abbreviate}`} onClick={startPlay}>
-        <div
-          className={styles['abbreviate-container']}
-          style={{ display: status.viewMode === 'video' ? 'none' : 'block' }}
-        >
-          <div className={styles['abbr-type']}>教师画面</div>
-          <div className={styles['abbr-operation-bar']}>
-            {status.isInChannel && (
-              <div className={styles['operation-item']} onClick={switchViewMode}>
-                <svg className="icon" aria-hidden="true">
-                  <use xlinkHref="#icon-ic_qiehuanshitu"></use>
-                </svg>
-              </div>
-            )}
-          </div>
-        </div>
-        {loadFinish && (status.isInChannel ? <VideoLayout /> : <Player />)}
-        {status.isInClass &&
-          status.viewMode === 'video' &&
-          (status.isInChannel ? (
-            <div className={styles['link-control-bar']}>
-              <div className={styles['bar-item']} onClick={rtcMutePush} title="是否静音">
-                <svg className="icon" aria-hidden="true">
-                  <use
-                    xlinkHref={status.micAvailable ? '#icon-ic_toolbar_jingyin' : '#icon-ic_toolbar_quxiaojingyin'}
-                  ></use>
-                </svg>
-              </div>
-              <div className={styles['bar-item']} onClick={rtcMuteCamera} title="是否关闭摄像头">
-                <svg className="icon" aria-hidden="true">
-                  <use
-                    xlinkHref={
-                      status.cameraAvailable ? '#icon-ic_toolbar_shexiangtou' : '#icon-ic_toolbar_guanshexiangtou'
-                    }
-                  ></use>
-                </svg>
-              </div>
-              <div className={styles['bar-item']} onClick={cancelLinkMic} title="取消连麦">
-                <svg className="icon" aria-hidden="true">
-                  <use xlinkHref="#icon-ic_toolbar_quxiaolianmai"></use>
-                </svg>
-              </div>
+            <div className={styles['bar-item']} onClick={cancelLinkMic} title="取消连麦">
+              <svg className="icon" aria-hidden="true">
+                <use xlinkHref="#icon-ic_toolbar_quxiaolianmai"></use>
+              </svg>
             </div>
-          ) : (
-            <div className={styles['link-control-bar']}>
-              <div className={styles['bar-item']}>
-                <svg className="icon" aria-hidden="true" onClick={applyLinkMic}>
-                  <use
-                    xlinkHref={status.isApplying ? '#icon-ic_toolbar_quxiaolianmai' : '#icon-ic_toolbar_lianmai'}
-                  ></use>
-                </svg>
-              </div>
+          </div>
+        ) : (
+          <div className={styles['link-control-bar']}>
+            <div className={styles['bar-item']}>
+              <svg className="icon" aria-hidden="true" onClick={applyLinkMic}>
+                <use
+                  xlinkHref={status.isApplying ? '#icon-ic_toolbar_quxiaolianmai' : '#icon-ic_toolbar_lianmai'}
+                ></use>
+              </svg>
             </div>
-          ))}
-      </div>
-      <aside className={styles.sidebar}>
-        <div className={styles['tab-container']}>
-          <div
-            className={`${styles['tab-item']} ${tab === 'chat' ? styles['tab-item-active'] : ''}`}
-            onClick={() => setTab('chat')}
-          >
-            <span>聊天</span>
           </div>
-          <div className={`${styles['tab-item']} ${tab === 'user' ? styles['tab-item-active'] : ''}`}>
-            <span>课件</span>
-          </div>
-        </div>
-        {tab === 'chat' ? <Chat from="student" /> : <div></div>}
-      </aside>
+        ))}
     </div>
   )
 }
@@ -671,17 +682,17 @@ export default connect(
   ({
     room,
     status,
-    chat,
     user,
+    settings,
   }: {
     room: RoomModelState
     status: StatusModelState
-    chat: ChatModelState
     user: UserModelState
+    settings: SettingsModelState
   }) => ({
     room,
     status,
-    chat,
     user,
+    settings,
   }),
 )(Student)

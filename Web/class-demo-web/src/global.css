@@ -18,6 +18,8 @@ html, body {
     background-color: #f8f8f8;
 }
 
+/**************  login form   ***************/
+
 .standard-demo-login-form .ant-form-item-label > label {
     font-size: 13px;
     color: #8c98a9;
@@ -75,7 +77,25 @@ html, body {
     height: unset;
 }
 
+.standard-demo-login-form .ant-btn.ant-btn-loading:not(.ant-btn-circle):not(.ant-btn-circle-outline):not(.ant-btn-icon-only) {
+    padding-left: 0;
+}
+
 .standard-demo-login-form .ant-btn-primary[disabled], .ant-btn-primary[disabled]:hover, .ant-btn-primary[disabled]:focus, .ant-btn-primary[disabled]:active {
     color: #fff;
     background-color: #96ceff;
+}
+
+/**************  progress   ***************/
+
+.progress-container .ant-modal-content {
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 6px;
+    color: #fff;
+}
+
+/**************  whiteboard   ***************/
+
+.aliyunboard-canvas-inner {
+    transform-origin: left top;
 }

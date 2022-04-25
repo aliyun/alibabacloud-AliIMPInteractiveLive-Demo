@@ -1,0 +1,43 @@
+{
+	"pages": [
+		{
+			"path": "pages/index",
+			"style": {
+				"navigationBarTitleText": "阿里云互动直播uni-app demo"
+			}
+		}
+	    ,{
+            "path" : "pages/pusher",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "推流页",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/player",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "直播间",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/roomList",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "直播列表",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "阿里云互动直播uni-app demo",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	}
+}

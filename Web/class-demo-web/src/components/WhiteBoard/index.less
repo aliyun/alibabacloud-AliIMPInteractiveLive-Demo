@@ -1,17 +1,144 @@
 @import '../../styles/size.d.less';
 @import '../../styles/color.d.less';
 @whiteboard-sidebar-width: 240px;
+@whiteboard-sidebar-width-thin: 200px;
 .white-board-container {
-  width: 100%;
-  height: 100%;
   overflow: auto;
-  position: relative;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  &.linking {
+    top: @linkMic-bar-height + 1px;
+  }
+  .white-board-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.12);
+    z-index: 99;
+    .white-board-loading-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
   .toolbar {
     position: absolute;
     background-color: #fff;
     box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 0.12);
     border-radius: 3px;
     user-select: none;
+  }
+  .setting-conponent {
+    position: absolute;
+    left: 47px;
+    top: 0px;
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px;
+    box-shadow: 0 1px 6px 1px rgba(0, 0, 0, 0.12);
+    border-radius: 3px;
+    background-color: #fff;
+    .slider {
+      display: flex;
+      width: 110px;
+      margin: 8px 10px 0;
+      padding-bottom: 12px;
+      border-bottom: 1px #ddd solid;
+      text-align: center;
+      .slider-number {
+        background-color: #eee;
+        font-size: 15px;
+        border-radius: 3px;
+        width: 30px;
+        text-align: center;
+      }
+      .slider-body {
+        position: relative;
+        width: 75px;
+        padding-left: 15px;
+        .scrollwheel {
+          position: absolute;
+          left: 30px;
+          font-size: 15px;
+          z-index: 2;
+          cursor: pointer;
+        }
+        .scrollaxis {
+          position: absolute;
+          left: 15px;
+          top: -37px;
+          font-size: 60px;
+        }
+      }
+    }
+    .mainset-bar {
+      display: flex;
+      flex: 1;
+      margin: 9px;
+      color: #666;
+      font-size: 18px;
+      text-align: center;
+      max-width: 150px;
+      .main-item {
+        width: 30px;
+        height: 30px;
+        margin: 3px;
+        text-align: center;
+        line-height: 30px;
+        border-radius: 3px;
+        cursor: pointer;
+        &.mainitem-active {
+          color: #000;
+          background-color: #eee;
+        }
+      }
+    }
+    .append-bar {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 9px;
+      padding: 10px 0;
+      color: #666;
+      border-top: 1px #ddd solid;
+      text-align: center;
+      font-size: 18px;
+      .append-item {
+        width: 30px;
+        height: 30px;
+        margin: 3px;
+        text-align: center;
+        line-height: 30px;
+        border-radius: 3px;
+        cursor: pointer;
+        &.appenditem-active {
+          color: #000;
+          background-color: #eee;
+        }
+      }
+    }
+    .color-bar {
+      display: flex;
+      flex-wrap: wrap;
+      width: 130px;
+      padding: 3px 0;
+      .color-item {
+        width: 20px;
+        height: 20px;
+        border-radius: 10px;
+        margin: 6px;
+        border: 1px solid #f4f4f4;
+        cursor: pointer;
+      }
+      .color-active {
+        border: 2px solid #e5e5e5;
+      }
+    }
   }
   .left-toolbar {
     padding: 0;
@@ -71,11 +198,11 @@
   }
   .tool {
     padding: 8px 10px;
-    cursor: pointer;
     font-size: 22px;
+    position: relative;
     &:hover,
     &.tool-active {
-      background-color: @bar-bg-color;
+      background-color: #ebebeb;
     }
     &.page-tool {
       font-size: 13px;
@@ -83,7 +210,7 @@
       align-items: center;
       color: #888;
       cursor: auto;
-      input {
+      input[type='text'] {
         width: 40px;
         height: 22px;
         border-radius: 3px;
@@ -94,6 +221,34 @@
         margin-right: 5px;
         outline: none;
       }
+    }
+    .subscript {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      width: 0;
+      height: 0;
+      border: 2px solid transparent;
+      border-bottom: 2px solid #000;
+      border-right: 2px solid #000;
+    }
+    .connect {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50px;
+      height: 50px;
+      z-index: -1;
+    }
+    input[type='file'] {
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      left: 0;
     }
   }
   .tool-disable {
@@ -106,20 +261,19 @@
     left: 0;
     right: 0;
     bottom: 0;
+    // background-color: #fcfcfc;
   }
-  .side-bar {
+  .sidebar {
     position: absolute;
     right: 0;
     width: @whiteboard-sidebar-width;
     bottom: 0;
     top: 0;
-    overflow-y: auto;
     user-select: none;
     background-color: @bar-bg-color;
     padding-left: 15px;
-    &::-webkit-scrollbar {
-      width: 0;
-    }
+    overflow: hidden;
+    box-shadow: 1px 0px 3px 0px #999;
     .expander {
       position: absolute;
       top: 50%;
@@ -138,23 +292,47 @@
         top: calc(50% - 6.5px);
       }
     }
+    .group-container {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      &::-webkit-scrollbar {
+        width: 0;
+      }
+    }
     .thumbnail-group {
       .thumbnail-group-title {
+        position: relative;
         display: flex;
         align-items: center;
         font-size: 13px;
         font-weight: 500;
         height: 46px;
         padding: 0 10px;
-        justify-content: space-between;
         border-bottom: 1px solid @border-color;
         cursor: pointer;
         svg {
           font-size: 27px;
           transition: transform 0.2s linear;
           &.expand {
+            position: absolute;
+            right: 10px;
             transform: rotate(-180deg);
           }
+          &.fold {
+            position: absolute;
+            right: 10px;
+          }
+        }
+        .thumbnail-title-del {
+          font-size: 13px;
+          margin-right: 5px;
+        }
+        .thumbnail-group-title-text {
+          width: 80%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
       .thumbnail-container {
@@ -167,28 +345,35 @@
           margin-bottom: 13px;
           position: relative;
           cursor: pointer;
-          &::after {
-            content: attr(data-index);
+          .thumbnail-bar {
             position: absolute;
             bottom: 0;
             left: 0;
-            color: #fff;
+            display: flex;
+            border-radius: 0 0 0 2px;
             background-color: #000;
-            line-height: 1;
-            padding: 5px 5px;
+            color: #fff;
+            .thumbnail-del {
+              margin: 2px 0;
+              padding: 0 6px;
+              border-left: 1px solid #fff;
+              cursor: pointer;
+            }
+            .thumbnail-num {
+              line-height: 1;
+              margin: 6px;
+            }
+            &.thumbnail-bar-active {
+              cursor: auto;
+              border: 1px solid @primary-color;
+              background-color: @primary-color;
+            }
           }
           img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             border-radius: 3px;
-          }
-          &.thumbnail-active {
-            cursor: auto;
-            border: 1px solid @primary-color;
-            &::after {
-              background-color: @primary-color;
-            }
           }
         }
       }
@@ -197,6 +382,23 @@
   .hide-slide {
     width: 0;
   }
+}
+.progress-title {
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 23px;
+}
+.upload-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-bottom: 5px;
+}
+.file-name {
+  max-width: 360px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 @media screen and (max-height: 900px) {
   .white-board-container {
@@ -209,6 +411,10 @@
           height: 18px;
         }
       }
+      .connect {
+        width: 40px;
+        height: 35px;
+      }
     }
     .bottom-toolbar {
       bottom: 30px;
@@ -217,6 +423,32 @@
           padding: 5px 14px;
         }
       }
+    }
+  }
+}
+
+@media screen and (max-height: 680px) {
+  .white-board-container {
+    .tool {
+      font-size: 13px;
+      .connect {
+        width: 35px;
+        height: 30px;
+      }
+    }
+    .bottom-toolbar {
+      bottom: 10px;
+    }
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  .white-board-container {
+    .sidebar {
+      width: @whiteboard-sidebar-width-thin;
+    }
+    .hide-slide {
+      width: 0;
     }
   }
 }

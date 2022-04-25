@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <title>demo with chat & live</title>
+</head>
+<body>
+    <div class="global">
+        <div class="button-area">
+            <button id="login">执行登录操作</button>
+            <button id="enter-room">进入房间</button>
+            <button id="create-player">创建并配置播放器</button>
+            <button id="pull-comments">拉取评论</button>
+            <button id="submit-comment">发布评论</button>
+            <button id="send-like">点个赞吧</button>
+            <button id="leave-room">离开房间</button>
+        </div>
+        <div class="show-area">
+            <div id="play">
+                <div id="J_player"></div>
+            </div>
+            <div id="chat">
+                <div class="chat-area">
+                    <div>这里是评论区，所有的讨论信息将出现在这里</div>
+                </div>
+                <div class="input">
+                    <input id="input" type="text">
+                    <button id="submit">发送</button>
+                </div>
+            </div>
+        </div>
+        <div class="console-area">
+            <div>这里是输出区，你的操作将及结果全部展示在这里</div>
+        </div>
+    </div>
+    <script src="https://g.alicdn.com/code/npm/@ali/room-paas-web-engine/1.6.1/RoomPaasSdk.web.min.js"></script>
+    <script src="/index.bundle.js"></script>
+</body>
+</html>

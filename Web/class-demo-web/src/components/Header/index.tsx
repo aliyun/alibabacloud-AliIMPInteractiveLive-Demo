@@ -1,15 +1,16 @@
 import { FC, useEffect, useState, useRef, useCallback } from 'react'
 import { useHistory } from 'react-router'
-import { RoomModelState, StatusModelState, connect, Dispatch } from 'umi'
+import { RoomModelState, StatusModelState, TimerModelState, connect, Dispatch } from 'umi'
 import { useInterval, useClickAway } from 'ahooks'
-import { message } from 'antd'
-import { addZero } from '@/utils'
+import { message, Modal, Button } from 'antd'
+import { addZero, BasicMap } from '@/utils'
 import Clipboard from 'clipboard'
 import styles from './index.less'
 
 interface PageProps {
   room: RoomModelState
   status: StatusModelState
+  timer: TimerModelState
   from: 'student' | 'teacher'
   dispatch: Dispatch
 }
@@ -29,11 +30,31 @@ const layoutList = [
   },
 ]
 
-const Header: FC<PageProps> = ({ room, status, dispatch, from }) => {
+const supportKeyTranslate: BasicMap<any> = {
+  isSupported: '支持RTC',
+  system: '系统',
+  browser: '浏览器',
+  browser_version: '浏览器版本',
+  audioDevice: '支持麦克风',
+  supportScreenShare: '支持屏幕共享',
+  supportMixBackgroundAudio: '支持混合背景音',
+  isElectron: '是否为Electron',
+  supportH264: '是否支持H264',
+  videoDevice: '支持摄像头',
+}
+
+const supportValueTranslate: BasicMap<any> = {
+  true: '是',
+  false: '否',
+}
+
+const Header: FC<PageProps> = ({ room, status, timer, dispatch, from }) => {
   const [interval, setInterval] = useState<number | null>(null)
   const [showRoomDetail, setShowRoomDetail] = useState(false)
   const [showSetLayout, setShowSetLayout] = useState(false)
   const [showSetting, setShowSetting] = useState(false)
+  const [showSupportModal, setShowSupportModal] = useState(false)
+  const [supportInfo, setSupportInfo] = useState<BasicMap<any>>({})
 
   const roomDetailRef = useRef<HTMLDivElement>(null)
   const roomDetailBtnRef = useRef<HTMLDivElement>(null)
@@ -47,7 +68,16 @@ const Header: FC<PageProps> = ({ room, status, dispatch, from }) => {
   const history = useHistory()
 
   const setLayout = (layout: string) => {
-    if (status.viewMode === 'whiteBoard') return
+    if (!status.isInChannel) {
+      message.error('当前未连麦')
+      return
+    }
+    if (layout === '9') {
+      dispatch({
+        type: 'status/setViewMode',
+        payload: 'video',
+      })
+    }
     dispatch({
       type: 'status/setLayout',
       payload: layout,
@@ -64,17 +94,20 @@ const Header: FC<PageProps> = ({ room, status, dispatch, from }) => {
     message.success('已复制到剪贴板')
   }, [])
   const leaveRoom = () => {
-    history.replace('/')
-    message.success('已离开教室')
+    message.success('即将退出教室')
+    setTimeout(() => {
+      history.replace('/login')
+      window.location.reload()
+    }, 2000)
   }
   const startInterval = () => {
     const now = +new Date()
     let startDuration = 0
-    if (room.classStartTime > 0) {
-      startDuration = (now - room.classStartTime) / 1000
+    if (timer.classStartTime > 0) {
+      startDuration = (now - timer.classStartTime) / 1000
     }
     dispatch({
-      type: 'room/updateClassTime',
+      type: 'timer/updateClassTime',
       payload: startDuration,
     })
     setInterval(1000)
@@ -88,10 +121,24 @@ const Header: FC<PageProps> = ({ room, status, dispatch, from }) => {
     const h = Math.floor(time / 3600)
     return `${addZero(h)}:${addZero(m)}:${addZero(s)}`
   }
+  const testSupport = () => {
+    window.rtcService
+      .isSupport()
+      .then((res: any) => {
+        setSupportInfo(res)
+        window.localStorage.setItem('testedSupport', '1')
+      })
+      .catch((res: any) => {
+        setSupportInfo(res)
+      })
+      .finally(() => {
+        setShowSupportModal(true)
+      })
+  }
   useInterval(() => {
     dispatch({
-      type: 'room/updateClassTime',
-      payload: room.classDuration + 1,
+      type: 'timer/updateClassTime',
+      payload: timer.classDuration + 1,
     })
   }, interval)
   useClickAway(() => {
@@ -155,17 +202,20 @@ const Header: FC<PageProps> = ({ room, status, dispatch, from }) => {
               </svg>
             )}
           </div>
-          <span className={styles.description}>{status.isInClass ? formatTime(room.classDuration) : '课程未开始'}</span>
+          <span className={styles.description}>
+            {status.isInClass
+              ? formatTime(timer.classDuration)
+              : status.classStatus === 2
+              ? '课程已结束'
+              : '课程未开始'}
+          </span>
         </div>
       </div>
       <div className={styles['topbar-right']}>
         {from === 'teacher' ? (
           <div className={styles['operation-container']}>
             <div className={`${styles.item} ${showSetLayout ? styles.active : ''}`} ref={setLayoutBtnRef}>
-              <div
-                className={styles['inner-icon']}
-                onClick={() => status.viewMode === 'video' && setShowSetLayout(!showSetLayout)}
-              >
+              <div className={styles['inner-icon']} onClick={() => setShowSetLayout(!showSetLayout)}>
                 <svg className="icon" aria-hidden="true">
                   <use
                     xlinkHref={`#icon-ic_header_shitu${
@@ -223,11 +273,19 @@ const Header: FC<PageProps> = ({ room, status, dispatch, from }) => {
                         )}
                       </div>
                     </div>
+                    <div
+                      className={`${styles['selector-item']} ${
+                        status.isAutoRecord ? styles['selector-item-selected'] : ''
+                      }`}
+                      onClick={testSupport}
+                    >
+                      运行兼容性检测
+                    </div>
                   </div>
                 </div>
               )}
             </div>
-            <div className={styles.item} ref={settingBtnRef}>
+            <div className={styles.item}>
               <div className={styles['inner-icon']} onClick={leaveRoom}>
                 <svg className="icon" aria-hidden="true">
                   <use xlinkHref="#icon-xueshengduan-laoshilikaifangjian"></use>
@@ -238,10 +296,7 @@ const Header: FC<PageProps> = ({ room, status, dispatch, from }) => {
         ) : (
           <div className={styles['operation-container']}>
             <div className={`${styles.item} ${showSetLayout ? styles.active : ''}`} ref={setLayoutBtnRef}>
-              <div
-                className={styles['inner-icon']}
-                onClick={() => status.viewMode === 'video' && setShowSetLayout(!showSetLayout)}
-              >
+              <div className={styles['inner-icon']} onClick={() => setShowSetLayout(!showSetLayout)}>
                 <svg className="icon" aria-hidden="true">
                   <use
                     xlinkHref={`#icon-ic_header_shitu${
@@ -278,18 +333,47 @@ const Header: FC<PageProps> = ({ room, status, dispatch, from }) => {
             <div className={styles.item} ref={settingBtnRef}>
               <div className={styles['inner-icon']} onClick={leaveRoom}>
                 <svg className="icon" aria-hidden="true">
-                  <use xlinkHref="#icon-likaijiaoshi"></use>
+                  <use xlinkHref="#icon-xueshengduan-laoshilikaifangjian"></use>
                 </svg>
               </div>
             </div>
           </div>
         )}
       </div>
+      <Modal
+        title="兼容性检测结果"
+        centered
+        visible={showSupportModal}
+        width={450}
+        onCancel={() => setShowSupportModal(false)}
+        mask={false}
+        footer={[
+          <Button key="cancel" onClick={() => setShowSupportModal(false)}>
+            OK
+          </Button>,
+        ]}
+      >
+        <div className="support">
+          {supportInfo.system ? (
+            Object.keys(supportInfo).map((item: string) => (
+              <div className="support-item" key={item}>
+                <span>{supportKeyTranslate[item] || item}: </span>
+                <span>{supportValueTranslate[supportInfo[item].toString()] || supportInfo[item].toString()}</span>
+              </div>
+            ))
+          ) : (
+            <div className="no-support">未获取到兼容性信息</div>
+          )}
+        </div>
+      </Modal>
     </header>
   )
 }
 
-export default connect(({ room, status }: { room: RoomModelState; status: StatusModelState }) => ({
-  room,
-  status,
-}))(Header)
+export default connect(
+  ({ room, status, timer }: { room: RoomModelState; status: StatusModelState; timer: TimerModelState }) => ({
+    room,
+    status,
+    timer,
+  }),
+)(Header)

@@ -1,0 +1,7 @@
+const config = {
+    appId: '***',
+    appKey: '***',
+    origin: '***', // eg: "http://aaa.bbb.com"
+}
+
+module.exports = config

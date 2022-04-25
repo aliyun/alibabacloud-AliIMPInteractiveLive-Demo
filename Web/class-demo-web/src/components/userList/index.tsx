@@ -1,75 +1,84 @@
-import { FC, useEffect, useState } from 'react'
-import { RoomModelState, StatusModelState, UserModelState, connect, Dispatch } from 'umi'
+import { FC, useRef, memo } from 'react'
+import { StatusModelState, UserModelState, connect, Dispatch } from 'umi'
 import { Checkbox, message } from 'antd'
 import styles from './index.less'
 
 interface PageProps {
-  room: RoomModelState
   status: StatusModelState
   user: UserModelState
   dispatch: Dispatch
-  from: 'teacher' | 'student'
 }
 
-const UserList: FC<PageProps> = ({ room, status, user, dispatch, from }) => {
+const UserList: FC<PageProps> = ({ status, user, dispatch }) => {
+  const isRtcMuting = useRef(false)
+
+  const isSomeoneInSeat = () => {
+    return Object.values(user.userList).filter((item) => item.isInSeat && !item.isMe).length > 0
+  }
+
   const muteAllMicHandler = () => {
     if (!status.isInClass) {
-      message.error('课程未开始')
+      message.error('课程未在进行中')
       return
     }
-    if (!status.isRtcMuteAll) {
-      Object.values(user.userList)
-        .filter((item) => item.isInSeat && item.isRtcMute)
-        .forEach((item) => {
-          window.rtcService.muteRemoteMic(item.userId, false)
-          dispatch({
-            type: 'user/updateUser',
-            payload: {
-              userId: item.userId,
-              isRtcMute: false,
-            },
-          })
-        })
-      dispatch({
-        type: 'status/setIsRtcMuteAll',
-        payload: false,
-      })
-    } else {
-      Object.values(user.userList)
-        .filter((item) => item.isInSeat && !item.isRtcMute)
-        .forEach((item) => {
-          window.rtcService.muteRemoteMic(item.userId, true)
-          dispatch({
-            type: 'user/updateUser',
-            payload: {
-              userId: item.userId,
-              isRtcMute: true,
-            },
-          })
-        })
-      dispatch({
-        type: 'status/setIsRtcMuteAll',
-        payload: true,
-      })
+    if (isRtcMuting.current) {
+      message.error('请勿操作过于频繁')
+      return
     }
+    if (!isSomeoneInSeat()) {
+      message.error('当前无人连麦')
+      return
+    }
+    isRtcMuting.current = true
+    window.rtcService
+      .muteAllRemoteMic(!status.isRtcMuteAll)
+      .then(() => {
+        message.success(`您已${status.isRtcMuteAll ? '关闭' : '开启'}全员静音`)
+        dispatch({
+          type: 'status/setIsRtcMuteAll',
+          payload: !status.isRtcMuteAll,
+        })
+      })
+      .finally(() => {
+        setTimeout(() => {
+          isRtcMuting.current = false
+        }, 1000)
+      })
   }
   const muteMicHandler = (userId: string) => {
-    window.rtcService
-      .muteRemoteMic(userId, !user.userList[userId].isRtcMute)
-      .then(() => {
-        message.error(`${user.userList[userId].nick}${user.userList[userId].isRtcMute ? '取消' : '静音'}成功`)
+    if (userId === user.userId) {
+      window.rtcService.setMutePush(status.micAvailable).then(() => {
+        status.micAvailable ? message.info('麦克风已关闭') : message.success('麦克风已开启')
+        dispatch({
+          type: 'status/setMicAvailable',
+          payload: !status.micAvailable,
+        })
         dispatch({
           type: 'user/updateUser',
           payload: {
-            userId,
-            isRtcMute: !user.userList[userId].isRtcMute,
+            userId: user.userId,
+            isRtcMute: status.micAvailable,
           },
         })
       })
-      .catch((err: any) => {
-        console.error(err)
-        message.error('操作失败')
-      })
+    } else {
+      window.rtcService
+        .muteRemoteMic(userId, !user.userList[userId].isRtcMute)
+        .then(() => {
+          message.success(`${user.userList[userId].nick}${user.userList[userId].isRtcMute ? '取消' : '静音'}成功`)
+          dispatch({
+            type: 'user/updateUser',
+            payload: {
+              userId,
+              isRtcMute: !user.userList[userId].isRtcMute,
+            },
+          })
+        })
+        .catch((err: any) => {
+          console.error(err)
+          message.error('操作失败')
+        })
+    }
   }
   const kickRtcHandler = (userId: string) => {
     window.rtcService
@@ -132,10 +141,9 @@ const UserList: FC<PageProps> = ({ room, status, user, dispatch, from }) => {
   }
   const inviteLinkHandler = (userId: string) => {
     if (!status.isInClass) {
-      message.error('课程未开始')
+      message.error('课程未在进行中')
       return
     }
-    console.log(user.userList[userId])
     if (user.userList[userId].isInviting) return
     window.rtcService
       .inviteJoinChannel([
@@ -167,6 +175,7 @@ const UserList: FC<PageProps> = ({ room, status, user, dispatch, from }) => {
           <div className={styles['link-mic-list']}>
             {Object.values(user.userList)
               .filter((item) => item.isInSeat)
+              .sort((a, b) => a.enterSeatTime - b.enterSeatTime)
               .map((item, index) => (
                 <div className={styles['list-item']} key={index}>
                   <div className={styles['user-info']}>
@@ -183,8 +192,8 @@ const UserList: FC<PageProps> = ({ room, status, user, dispatch, from }) => {
                     </div>
                   </div>
                   <div className={styles['user-operation']}>
-                    <div className={styles['user-operation-item']}>
-                      {item.isRtcMuteCamera ? (
+                    {/* <div className={styles['user-operation-item']}>
+                      {item && item.isRtcMuteCamera ? (
                         <svg className="icon" aria-hidden="true">
                           <use xlinkHref="#icon-ic_toolbar_guanshexiangtou"></use>
                         </svg>
@@ -193,7 +202,7 @@ const UserList: FC<PageProps> = ({ room, status, user, dispatch, from }) => {
                           <use xlinkHref="#icon-ic_toolbar_shexiangtou"></use>
                         </svg>
                       )}
-                    </div>
+                    </div> */}
                     <div className={styles['user-operation-item']} onClick={() => muteMicHandler(item.userId)}>
                       {item.isRtcMute ? (
                         <svg className="icon" aria-hidden="true">
@@ -217,7 +226,8 @@ const UserList: FC<PageProps> = ({ room, status, user, dispatch, from }) => {
         )}
         <div className={styles['normal-list']}>
           {Object.values(user.userList)
-            .filter((item) => !item.isInSeat)
+            .filter((item) => !item.isInSeat && item.isApplying)
+            .sort((a, b) => a.enterRoomTime - b.enterRoomTime)
             .map((item, index) => (
               <div className={styles['list-item']} key={index}>
                 <div className={styles['user-info']}>
@@ -229,38 +239,53 @@ const UserList: FC<PageProps> = ({ room, status, user, dispatch, from }) => {
                       <span>{item.nick}</span>
                       {item.isMe && <span>(自己)</span>}
                     </div>
-                    {item.isApplying && <div className={styles['sub-info']}>申请连麦中</div>}
+                    <div className={styles['sub-info']}>申请连麦中</div>
                   </div>
                 </div>
-                {item.isApplying ? (
-                  <div className={styles['user-operation']}>
-                    <div className={styles['user-operation-item']} onClick={() => agreeLinkHandler(item.userId)}>
-                      <div className={`${styles['btn']}`}>同意</div>
-                    </div>
-                    <div className={styles['user-operation-item']} onClick={() => refuseLinkHandler(item.userId)}>
-                      <div className={`${styles['btn']} ${styles['btn-danger']}`}>拒绝</div>
+                <div className={styles['user-operation']}>
+                  <div className={styles['user-operation-item']} onClick={() => agreeLinkHandler(item.userId)}>
+                    <div className={`${styles['btn']}`}>同意</div>
+                  </div>
+                  <div className={styles['user-operation-item']} onClick={() => refuseLinkHandler(item.userId)}>
+                    <div className={`${styles['btn']} ${styles['btn-danger']}`}>拒绝</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          {Object.values(user.userList)
+            .filter((item) => !item.isInSeat && !item.isApplying)
+            .sort((a, b) => a.enterRoomTime - b.enterRoomTime)
+            .map((item, index) => (
+              <div className={styles['list-item']} key={index}>
+                <div className={styles['user-info']}>
+                  <div className={styles.avatar}>
+                    <div className={styles['name-avatar']}>{item.nick.substr(0, 1).toUpperCase()}</div>
+                  </div>
+                  <div className={styles['name-part']}>
+                    <div className={styles.name} title={item.nick}>
+                      <span>{item.nick}</span>
+                      {item.isMe && <span>(自己)</span>}
                     </div>
                   </div>
-                ) : (
-                  <div className={styles['user-operation']}>
-                    {!item.isMe && status.isInClass && (
-                      <div className={styles['user-operation-item']} onClick={() => inviteLinkHandler(item.userId)}>
-                        {item.isInviting ? (
-                          <div className={`${styles['btn']}`}>邀请中</div>
-                        ) : (
-                          <div className={`${styles['btn']}`}>邀请</div>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                )}
+                </div>
+                <div className={styles['user-operation']}>
+                  {!item.isMe && status.isInClass && (
+                    <div className={styles['user-operation-item']} onClick={() => inviteLinkHandler(item.userId)}>
+                      {item.isInviting ? (
+                        <div className={`${styles['btn']}`}>邀请中</div>
+                      ) : (
+                        <div className={`${styles['btn']}`}>邀请</div>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
         </div>
       </div>
       <div className={styles['operation-bar']}>
         <div className={styles['operation-item']}>
-          <Checkbox onChange={muteAllMicHandler} className={styles.checkbox}>
+          <Checkbox onChange={muteAllMicHandler} className={styles.checkbox} checked={status.isRtcMuteAll}>
             全员静音
           </Checkbox>
         </div>
@@ -269,10 +294,7 @@ const UserList: FC<PageProps> = ({ room, status, user, dispatch, from }) => {
   )
 }
 
-export default connect(
-  ({ room, status, user }: { room: RoomModelState; status: StatusModelState; user: UserModelState }) => ({
-    room,
-    status,
-    user,
-  }),
-)(UserList)
+export default connect(({ status, user }: { status: StatusModelState; user: UserModelState }) => ({
+  status,
+  user,
+}))(memo(UserList))
