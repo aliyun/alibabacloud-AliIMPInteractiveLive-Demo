@@ -129,7 +129,7 @@ class _MyAppState extends State<MyApp> {
       res = await IMPSdkRoomEngine.init(param);
       res = await IMPSdkRoomEngine.login();
       res = await IMPSdkRoomChannel.setRoomId({
-        'roomId': 'ceba71c7-145e-436f-8a2b-cf23daf307be',
+        'roomId': demoParam['roomId'],
       });
       res = await IMPSdkRoomChannel.enterRoom({
         'nick': 'nickOf' + userId,
