@@ -11,9 +11,15 @@ import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.aliyun.roompaas.app.R;
+import com.aliyun.roompaas.app.activity.classroom.ClassroomActivity;
 import com.aliyun.roompaas.app.viewmodel.inter.IWhiteBoardOperate;
 import com.aliyun.roompaas.base.exposable.Callback;
+import com.aliyun.roompaas.base.util.Utils;
 import com.aliyun.roompaas.uibase.util.ViewUtil;
+import com.aliyun.roompaas.whiteboard.exposable.ToolbarOrientation;
+
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 
 
 /**
@@ -25,9 +31,11 @@ public class DocumentView extends BasePanelView {
     private boolean isWhiteBoardOpen = false;
     private TextView switchWhiteBoard;
     private IWhiteBoardOperate whiteBoardOperate;
+    private Reference<ClassroomActivity> classroomActivityRef;
 
     public DocumentView(@NonNull Context context) {
         super(context);
+        classroomActivityRef = new WeakReference<>(context instanceof ClassroomActivity ? (ClassroomActivity) context : null);
 
         View view = LayoutInflater.from(context).inflate(R.layout.layout_doc_view, null, false);
         addView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -72,6 +80,9 @@ public class DocumentView extends BasePanelView {
                 int count = getChildCount();
                 boolean alreadyAdded = false;
                 String roomId = whiteBoardOperate.getRoomId();
+                whiteBoardOperate.setToolbarOrientation(ToolbarOrientation.TOOLBAR_ORIENTATION_BOTTOM);
+                ClassroomActivity act = Utils.getRef(classroomActivityRef);
+                whiteBoardOperate.setToolbarVisibility(act != null && act.isOwner() ? View.VISIBLE : View.GONE);
                 for (int i = 0; i < count; i++) {
                     View child = getChildAt(i);
                     Object tag = child.getTag(R.integer.viewTagIdForRoomId);
@@ -99,7 +110,7 @@ public class DocumentView extends BasePanelView {
                         if (c instanceof WebView) {
                             reload((WebView) c);
                             break;
-                        } else if( c instanceof ViewGroup){
+                        } else if (c instanceof ViewGroup) {
                             reloadPageIfPossible(c);
                         }
                     }

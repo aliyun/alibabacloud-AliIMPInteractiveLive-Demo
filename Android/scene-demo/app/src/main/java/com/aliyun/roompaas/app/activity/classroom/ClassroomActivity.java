@@ -1,5 +1,7 @@
 package com.aliyun.roompaas.app.activity.classroom;
 
+import static com.aliyun.roompaas.app.activity.classroom.ClassFunctionsAdapter.FunctionName.Join_RTC;
+
 import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -46,6 +48,7 @@ import com.aliyun.roompaas.rtc.exposable.RtcUserStatus;
 import com.aliyun.roompaas.rtc.exposable.event.ConfUserEvent;
 import com.aliyun.roompaas.rtc.exposable.event.RtcStreamEvent;
 import com.aliyun.roompaas.uibase.util.ViewUtil;
+import com.aliyun.roompaas.whiteboard.exposable.ToolbarOrientation;
 import com.aliyun.roompaas.whiteboard.exposable.WhiteboardService;
 
 import org.webrtc.sdk.SophonSurfaceView;
@@ -55,8 +58,6 @@ import java.util.Collection;
 import java.util.List;
 
 import java8.util.stream.StreamSupport;
-
-import static com.aliyun.roompaas.app.activity.classroom.ClassFunctionsAdapter.FunctionName.Join_RTC;
 
 /**
  * 课堂场景房间
@@ -72,7 +73,7 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
 
     private ClassroomView view;
     private RtcUserManager rtcUserManager;
-    private WhiteBoardVM whiteBoardVM;
+    private IWhiteBoardOperate whiteBoardVM = IWhiteBoardOperate.NULL;
 
     private WhiteboardService whiteboardService;
     private RtcService rtcService;
@@ -90,10 +91,38 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
     }
 
     @Override
+    public void whiteBoardProcess() {
+        whiteBoardVM.whiteBoardProcess();
+    }
+
+    @Override
     public void openWhiteBoard(Callback<View> callback) {
-        if (whiteBoardVM != null) {
-            whiteBoardVM.openWhiteBoard(callback);
-        }
+        whiteBoardVM.openWhiteBoard(callback);
+    }
+
+    @Override
+    public void setToolbarOrientation(ToolbarOrientation orientation) {
+       whiteBoardVM.setToolbarOrientation(orientation);
+    }
+
+    @Override
+    public void setToolbarVisibility(int visibility) {
+        whiteBoardVM.setToolbarVisibility(visibility);
+    }
+
+    @Override
+    public void getScale(Callback<Float> callback) {
+        whiteBoardVM.getScale(callback);
+    }
+
+    @Override
+    public void setScale(float scale, @Nullable Runnable resultAction) {
+        whiteBoardVM.setScale(scale, resultAction);
+    }
+
+    @Override
+    public void startWhiteboardRecording() {
+        whiteBoardVM.startWhiteboardRecording();
     }
 
     @Override
