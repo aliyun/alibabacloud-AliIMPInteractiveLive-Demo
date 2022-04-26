@@ -89,7 +89,6 @@
 			globalEvent.addEventListener(EventNameEnum.LeaveRoom, this.reciveLikeHandler)
 			globalEvent.addEventListener(EventNameEnum.LiveFirstFrameRendered, this.liveFirstFrameRendered)
 			this.enterRoom().then((res) => {
-				new u()
 				this.player = this.roomChannel.getPlayerService(this.$refs.player)
 				this.chatService = this.roomChannel.getChatService()
 				return this.chatService.listComment(0, 1, 50)
