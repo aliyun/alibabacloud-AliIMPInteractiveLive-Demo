@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.dingpaas.room.RoomDetail;
 import com.aliyun.liveroom.demo.R;
-import com.aliyun.liveroom.demo.linkmic.rendercontainer.GridMicContainer;
 import com.aliyun.roompaas.base.util.CollectionUtil;
 import com.aliyun.roompaas.roombase.Const;
 import com.aliyun.roompaas.uibase.util.DialogUtil;
@@ -24,9 +23,7 @@ import com.aliyun.standard.liveroom.lib.linkmic.enums.ContentMode;
 import com.aliyun.standard.liveroom.lib.linkmic.impl.SampleLinkMicEventHandler;
 import com.aliyun.standard.liveroom.lib.linkmic.model.LinkMicUserModel;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 直播间连麦组件
@@ -44,20 +41,19 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
     private final Button mic;
     private final Button camera;
 
-    private final Map<String, View> userId2View = new HashMap<>();
     private final String myUserId;
 
     public CustomAnchorRenderView(Context context, AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_live_linkmic_anchor_view, this);
         renderContainer = findViewById(R.id.render_container);
-        GridMicContainer micRenderContainer = findViewById(R.id.mic_render_container);
-        micRenderContainer.setCallback(userId2View::get);
-        micRenderContainer.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            int childCount = micRenderContainer.getChildCount();
+        micRenderContainer = findViewById(R.id.mic_render_container);
+        ViewGroup container = (ViewGroup) this.micRenderContainer;
+        container.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            int childCount = container.getChildCount();
             @Override
             public void onGlobalLayout() {
-                int currentChildCount = micRenderContainer.getChildCount();
+                int currentChildCount = container.getChildCount();
                 if (this.childCount != currentChildCount) {
                     this.childCount = currentChildCount;
                     if (currentChildCount == 1) {
@@ -70,7 +66,6 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
                 }
             }
         });
-        this.micRenderContainer = micRenderContainer;
 
         mic = findViewById(R.id.mic);
         camera = findViewById(R.id.camera);
@@ -96,11 +91,11 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
                 }
             }
             refreshButtonUI();
-            LinkMicUserModel user = micRenderContainer.getUser(myUserId);
+            LinkMicUserModel user = this.micRenderContainer.getUser(myUserId);
             if (user != null) {
                 user.isMicOpen = anchorService.isMicOpened();
             }
-            micRenderContainer.update(myUserId, false);
+            this.micRenderContainer.update(myUserId, false);
         });
         camera.setOnClickListener(v -> {
             AnchorService anchorService = component.anchorService;
@@ -110,11 +105,11 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
                 component.anchorService.openCamera();
             }
             refreshButtonUI();
-            LinkMicUserModel user = micRenderContainer.getUser(myUserId);
+            LinkMicUserModel user = this.micRenderContainer.getUser(myUserId);
             if (user != null) {
                 user.isCameraOpen = anchorService.isCameraOpened();
             }
-            micRenderContainer.update(myUserId, true);
+            this.micRenderContainer.update(myUserId, true);
         });
     }
 
@@ -163,14 +158,12 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
                     anchorService.closeMic();
                     refreshButtonUI();
                     renderContainer.removeAllViews();
-                    userId2View.put(Const.getCurrentUserId(), view);
                 }
 
 
                 @Override
                 public void onLeftSuccess() {
                     refreshButtonUI();
-
                     micRenderContainer.removeAll();
                 }
 
@@ -202,14 +195,6 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
                     for (LinkMicUserModel userId : users) {
                         micRenderContainer.remove(userId.userId);
                     }
-                }
-
-                @Override
-                public void onCameraStreamAvailable(String userId, boolean isAnchor, View view) {
-                    // 存下 userId=>渲染视图 的映射关系
-                    userId2View.put(userId, view);
-                    // 刷新该userId对应的ItemView
-                    micRenderContainer.update(userId, true);
                 }
 
                 @Override

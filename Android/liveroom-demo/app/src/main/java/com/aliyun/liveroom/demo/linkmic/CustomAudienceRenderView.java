@@ -25,9 +25,7 @@ import com.aliyun.standard.liveroom.lib.linkmic.model.LinkMicUserModel;
 import com.aliyun.standard.liveroom.lib.wrapper.LivePlayerServiceExtends;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 直播间连麦组件
@@ -45,7 +43,6 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
     private final Button mic;
     private final Button camera;
 
-    private final Map<String, View> userId2View = new HashMap<>();
     private final String myUserId;
 
     private boolean isApplying;
@@ -55,7 +52,6 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
         inflate(context, R.layout.view_live_linkmic_audience_view, this);
         renderContainer = findViewById(R.id.render_container);
         micRenderContainer = findViewById(R.id.mic_render_container);
-        micRenderContainer.setCallback(userId2View::get);
         mic = findViewById(R.id.mic);
         camera = findViewById(R.id.camera);
         myUserId = Const.getCurrentUserId();
@@ -175,13 +171,12 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
                 @Override
                 public void onJoinedSuccess(View view) {
                     isApplying = false;
-                    audienceService.closeMic();
+//                    audienceService.closeMic();
                     refreshButtonUI();
                     // 加入连麦之后
                     playerService.stopPlay();
                     // 移除旁路流
                     renderContainer.removeAllViews();
-                    userId2View.put(Const.getCurrentUserId(), view);
                 }
 
 
@@ -234,7 +229,7 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
                     ));
 
                     // 主播同意我的申请时, 进行处理 (!!!注意比较, uid可能是别人)
-                    if (approve && TextUtils.equals(userId, Const.getCurrentUserId())) {
+                    if (approve && isSelf) {
                         // 这里需要手动调用该方法才会执行连麦操作
                         audienceService.handleApplyResponse(true);
                     }
@@ -287,30 +282,14 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
                 }
 
                 @Override
-                public void onCameraStreamAvailable(String userId, boolean isAnchor, View view) {
-                    // 存下 userId=>渲染视图 的映射关系
-                    userId2View.put(userId, view);
-                    // 刷新该userId对应的ItemView
-                    micRenderContainer.update(userId, true);
-                }
-
-                @Override
                 public void onRemoteCameraStateChanged(String userId, boolean open) {
                     // 更新摄像头状态
-                    LinkMicUserModel user = micRenderContainer.getUser(userId);
-                    if (user != null) {
-                        user.isCameraOpen = open;
-                    }
                     micRenderContainer.update(userId, true);
                 }
 
                 @Override
                 public void onRemoteMicStateChanged(String userId, boolean open) {
                     // 更新麦克风状态
-                    LinkMicUserModel user = micRenderContainer.getUser(userId);
-                    if (user != null) {
-                        user.isMicOpen = open;
-                    }
                     micRenderContainer.update(userId, false);
                 }
 

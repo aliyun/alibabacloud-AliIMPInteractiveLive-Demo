@@ -1,5 +1,6 @@
 package com.aliyun.liveroom.demo.linkmic.rendercontainer;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -39,6 +40,7 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
     // 最多展示的连麦画面数量
     private static final int MAX_COUNT = 10;
     // 主播占位符
+    @SuppressLint("StaticFieldLeak")
     private static final LinkMicUserModel OCCUPY_ANCHOR = new LinkMicUserModel();
 
     private final List<LinkMicUserModel> users = new ArrayList<>();
@@ -46,7 +48,6 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
 
     // 只有一个视图时, 展示大图
     private boolean showLargeWhenSingle = true;
-    private Callback callback;
 
     public GridMicContainer(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -73,21 +74,22 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
 
     @Override
     public void add(List<LinkMicUserModel> addedUsers) {
+        List<LinkMicUserModel> userModels = new ArrayList<>(addedUsers);
         // 排序, 主播排前面
-        Collections.sort(addedUsers, (o1, o2) -> {
+        Collections.sort(userModels, (o1, o2) -> {
             if (o1.isAnchor ^ o2.isAnchor) {
                 return o1.isAnchor ? -1 : 1;
             }
             return 0;
         });
 
-        LinkMicUserModel first = CollectionUtil.getFirst(addedUsers);
+        LinkMicUserModel first = CollectionUtil.getFirst(userModels);
         if (first != null && first.isAnchor) {
             // 新加用户中包含主播
             int anchorIndex = users.indexOf(OCCUPY_ANCHOR);
             if (anchorIndex >= 0) {
                 // 当前列表包含占位, 将占位替换为主播数据
-                addedUsers.remove(first);
+                userModels.remove(first);
                 users.remove(anchorIndex);
                 users.add(anchorIndex, first);
                 adapter.notifyItemChanged(anchorIndex);
@@ -98,11 +100,11 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
             // 新加用户中不含主播
             if (users.isEmpty()) {
                 // 首次添加, 手动塞一个占位到第一项代表主播
-                addedUsers.add(0, OCCUPY_ANCHOR);
+                userModels.add(0, OCCUPY_ANCHOR);
             }
         }
 
-        for (LinkMicUserModel user : addedUsers) {
+        for (LinkMicUserModel user : userModels) {
             add(user);
         }
     }
@@ -188,16 +190,6 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
         return index >= 0 && index < users.size();
     }
 
-    @Nullable
-    private View getRenderView(String userId) {
-        return callback == null ? null : callback.getView(userId);
-    }
-
-    @Override
-    public void setCallback(Callback callback) {
-        this.callback = callback;
-    }
-
     private boolean needShowLarge() {
         return adapter.getItemCount() == 1 && showLargeWhenSingle;
     }
@@ -277,7 +269,8 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
                 holder.mic.setText(String.format("麦克风: %s", user.isMicOpen ? "开" : "关"));
             }
 
-            View renderView = getRenderView(user.userId);
+//            View renderView = getRenderView(user.userId);
+            View renderView = user.cameraView;
 
             if (renderView == null || !user.isCameraOpen) {
 //            if (renderView == null) {
