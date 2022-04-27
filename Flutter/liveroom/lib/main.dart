@@ -85,7 +85,7 @@ class _MyAppState extends State<MyApp> {
   }
 
   void setUpAsAnchor() {
-    setUp(null, null);
+    setUp(null, 'anchor');
   }
 
   void setUpAsAudience() {
