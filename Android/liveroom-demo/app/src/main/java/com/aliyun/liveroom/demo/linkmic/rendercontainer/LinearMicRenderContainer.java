@@ -92,7 +92,7 @@ public class LinearMicRenderContainer extends LinearLayout implements IMicRender
 
         View renderView = user.cameraView;
 
-        itemView.userLabel.setText(user.userId);
+        itemView.userLabel.setText(user.nickname);
         itemView.mic.setText(String.format("麦克风: %s", user.isMicOpen ? "开" : "关"));
 
         if (refreshRenderView) {

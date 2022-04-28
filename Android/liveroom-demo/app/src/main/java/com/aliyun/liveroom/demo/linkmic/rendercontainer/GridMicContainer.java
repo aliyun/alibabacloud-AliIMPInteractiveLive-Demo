@@ -265,7 +265,7 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
                 holder.userLabel.setText(null);
                 holder.mic.setText(null);
             } else {
-                holder.userLabel.setText(user.userId);
+                holder.userLabel.setText(user.nickname);
                 holder.mic.setText(String.format("麦克风: %s", user.isMicOpen ? "开" : "关"));
             }
 

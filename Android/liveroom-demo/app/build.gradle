@@ -33,10 +33,12 @@ dependencies {
     if (shouldLoadLocalDepFun()) {
         api project(':liveroom')
         api project(':rtc')
+        api project(':beauty_pro')
     } else {
         def LATEST_VERSION = '1.7.0.20220330001'
         api "com.aliyun.roompaas.biz:liveroom:$LATEST_VERSION"
         api "com.aliyun.roompaas.biz:rtc:$LATEST_VERSION"
+        api "com.aliyun.roompaas.biz:beauty_pro:$LATEST_VERSION"
     }
 
     // 图片加载库
