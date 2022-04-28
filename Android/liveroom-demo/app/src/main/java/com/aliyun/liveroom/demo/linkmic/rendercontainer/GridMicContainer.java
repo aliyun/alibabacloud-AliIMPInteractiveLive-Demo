@@ -38,7 +38,7 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
     private static final String PAYLOAD_IGNORE_RENDER = "ignoreRender";
 
     // 最多展示的连麦画面数量
-    private static final int MAX_COUNT = 10;
+    private static final int MAX_COUNT = 25;
     // 主播占位符
     @SuppressLint("StaticFieldLeak")
     private static final LinkMicUserModel OCCUPY_ANCHOR = new LinkMicUserModel();
@@ -167,15 +167,6 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
         }
     }
 
-    @Override
-    public LinkMicUserModel getUser(String userId) {
-        int index = getIndex(userId);
-        if (!isValidIndex(index)) {
-            return null;
-        }
-        return users.get(index);
-    }
-
     private int getIndex(String userId) {
         for (int i = 0; i < users.size(); i++) {
             LinkMicUserModel user = users.get(i);
@@ -211,7 +202,7 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
         @Override
         public void onBindViewHolder(@NonNull GridMicContainer.ViewHolder holder, int position, @NonNull List<Object> payloads) {
             if (CollectionUtil.isEmpty(payloads)) {
-                super.onBindViewHolder(holder, position, payloads);
+                onBindViewHolder(holder, position);
             } else {
                 LinkMicUserModel user = users.get(position);
                 if (payloads.contains(PAYLOAD_IGNORE_RENDER)) {
@@ -281,7 +272,6 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
 
             // 以下case都需要展示出来
             container.setVisibility(VISIBLE);
-
 
             ViewParent parent = renderView.getParent();
             if (parent instanceof ViewGroup) {

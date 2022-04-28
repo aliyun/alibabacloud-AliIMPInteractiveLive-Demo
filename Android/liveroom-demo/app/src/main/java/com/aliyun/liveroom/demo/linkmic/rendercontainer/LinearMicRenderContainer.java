@@ -41,12 +41,6 @@ public class LinearMicRenderContainer extends LinearLayout implements IMicRender
         }
     }
 
-    @Override
-    public LinkMicUserModel getUser(String userId) {
-        ItemView itemView = (ItemView) userId2ItemView.get(userId);
-        return itemView == null ? null : itemView.user;
-    }
-
     private void add(LinkMicUserModel user) {
         ItemView itemView = (ItemView) userId2ItemView.get(user.userId);
         if (itemView == null) {

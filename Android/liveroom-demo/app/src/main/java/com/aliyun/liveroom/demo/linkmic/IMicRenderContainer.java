@@ -19,6 +19,4 @@ public interface IMicRenderContainer {
     void removeAll();
 
     void update(String userId, boolean refreshRenderView);
-
-    LinkMicUserModel getUser(String userId);
 }

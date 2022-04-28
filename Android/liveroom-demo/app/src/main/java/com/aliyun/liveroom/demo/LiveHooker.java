@@ -16,21 +16,15 @@ import com.aliyun.liveroom.demo.custom.CustomLiveStartView;
 import com.aliyun.liveroom.demo.custom.CustomLiveStopView;
 import com.aliyun.liveroom.demo.linkmic.CustomAnchorRenderView;
 import com.aliyun.liveroom.demo.linkmic.CustomAudienceRenderView;
-import com.aliyun.liveroom.demo.linkmic.CustomContentLayer;
-import com.aliyun.liveroom.demo.linkmic.CustomReadyLayer;
-import com.aliyun.liveroom.demo.linkmic.CustomStopView;
 import com.aliyun.standard.liveroom.lib.LiveHook;
 import com.aliyun.standard.liveroom.lib.LivePrototype;
 import com.aliyun.standard.liveroom.lib.component.view.LiveBeautyView;
-import com.aliyun.standard.liveroom.lib.component.view.LiveContentLayer;
-import com.aliyun.standard.liveroom.lib.component.view.LiveCurtainView;
 import com.aliyun.standard.liveroom.lib.component.view.LiveGestureView;
 import com.aliyun.standard.liveroom.lib.component.view.LiveInfoView;
 import com.aliyun.standard.liveroom.lib.component.view.LiveInputView;
 import com.aliyun.standard.liveroom.lib.component.view.LiveLikeView;
 import com.aliyun.standard.liveroom.lib.component.view.LiveMessageView;
 import com.aliyun.standard.liveroom.lib.component.view.LiveMoreView;
-import com.aliyun.standard.liveroom.lib.component.view.LiveReadyLayer;
 import com.aliyun.standard.liveroom.lib.component.view.LiveRenderView;
 import com.aliyun.standard.liveroom.lib.component.view.LiveShareView;
 import com.aliyun.standard.liveroom.lib.component.view.LiveStopView;
@@ -94,19 +88,11 @@ public class LiveHooker {
      */
     public static void setLinkMicStyle(boolean isAnchor) {
         LiveHook liveHook = new LiveHook()
-                // 隐藏幕布组件
-                .replaceComponentView(LiveCurtainView.class, CustomLiveEmptyView.class)
-                // 隐藏手势组件
-                .replaceComponentView(LiveGestureView.class, CustomLiveEmptyView.class)
-                // 替换结束组件
-                .replaceComponentView(LiveStopView.class, CustomStopView.class);
+//                // 隐藏手势组件
+                .replaceComponentView(LiveGestureView.class, CustomLiveEmptyView.class);
 
         if (isAnchor) {
             liveHook
-                    // 将普通直播的启播图层, 替换为连麦直播的启播图层
-                    .replaceComponentView(LiveReadyLayer.class, CustomReadyLayer.class)
-                    // 将普通直播的内容图层, 替换为连麦直播的内容图层
-                    .replaceComponentView(LiveContentLayer.class, CustomContentLayer.class)
                     // 将普通直播的渲染组件, 替换为连麦直播的渲染组件
                     .replaceComponentView(LiveRenderView.class, CustomAnchorRenderView.class);
         } else {

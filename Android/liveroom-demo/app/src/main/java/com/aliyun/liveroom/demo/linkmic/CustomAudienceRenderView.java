@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.dingpaas.room.RoomDetail;
 import com.aliyun.liveroom.demo.R;
+import com.aliyun.roompaas.base.callback.Callbacks;
 import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.util.CollectionUtil;
 import com.aliyun.roompaas.roombase.Const;
@@ -26,6 +27,7 @@ import com.aliyun.standard.liveroom.lib.wrapper.LivePlayerServiceExtends;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 直播间连麦组件
@@ -60,9 +62,9 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
         apply.setOnClickListener(v -> {
             AudienceService audienceService = component.audienceService;
             if (isApplying) {
-                audienceService.cancelApply(new ToastCallback<>("取消申请连麦"));
+                audienceService.cancelApply(new Callbacks.Toast<>(context, "取消申请连麦"));
             } else {
-                audienceService.apply(new ToastCallback<>("申请连麦"));
+                audienceService.apply(new Callbacks.Toast<>(context, "申请连麦"));
             }
             isApplying = !isApplying;
             refreshButtonUI();
@@ -83,7 +85,7 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
                 }
             }
             refreshButtonUI();
-            LinkMicUserModel user = micRenderContainer.getUser(myUserId);
+            LinkMicUserModel user = getUser(myUserId);
             if (user != null) {
                 user.isMicOpen = audienceService.isMicOpened();
             }
@@ -97,7 +99,7 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
                 component.audienceService.openCamera();
             }
             refreshButtonUI();
-            LinkMicUserModel user = micRenderContainer.getUser(myUserId);
+            LinkMicUserModel user = getUser(myUserId);
             if (user != null) {
                 user.isCameraOpen = audienceService.isCameraOpened();
             }
@@ -132,28 +134,14 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
         }
     }
 
+    private LinkMicUserModel getUser(String userId) {
+        Map<String, LinkMicUserModel> joinedUsers = component.audienceService.getJoinedUsers();
+        return joinedUsers.get(userId);
+    }
+
     @Override
     public IComponent getComponent() {
         return component;
-    }
-
-    private class ToastCallback<T> implements Callback<T> {
-
-        final String action;
-
-        ToastCallback(String action) {
-            this.action = action;
-        }
-
-        @Override
-        public void onSuccess(T t) {
-            component.showToast(String.format("%s成功", action));
-        }
-
-        @Override
-        public void onError(String errorMsg) {
-            component.showToast(String.format("%s失败, %s", action, errorMsg));
-        }
     }
 
     private class Component extends BaseComponent {
@@ -229,9 +217,15 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
                     ));
 
                     // 主播同意我的申请时, 进行处理 (!!!注意比较, uid可能是别人)
-                    if (approve && isSelf) {
-                        // 这里需要手动调用该方法才会执行连麦操作
-                        audienceService.handleApplyResponse(true);
+                    if (isSelf) {
+                        if (approve) {
+                            // 这里需要手动调用该方法才会执行连麦操作
+                            audienceService.handleApplyResponse(true);
+                        } else {
+                            // 主播拒绝后, 申请连麦状态重置
+                            isApplying = false;
+                            refreshButtonUI();
+                        }
                     }
                 }
 
