@@ -87,10 +87,6 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
                 }
             }
             refreshButtonUI();
-            LinkMicUserModel user = getUser(myUserId);
-            if (user != null) {
-                user.isMicOpen = audienceService.isMicOpened();
-            }
             smallRenderContainer.update(myUserId, false);
         });
         camera.setOnClickListener(v -> {
@@ -101,10 +97,6 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
                 component.audienceService.openCamera();
             }
             refreshButtonUI();
-            LinkMicUserModel user = getUser(myUserId);
-            if (user != null) {
-                user.isCameraOpen = audienceService.isCameraOpened();
-            }
             smallRenderContainer.update(myUserId, true);
         });
         findViewById(R.id.leave).setOnClickListener(v -> component.audienceService.leave());
