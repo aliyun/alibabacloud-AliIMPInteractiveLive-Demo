@@ -25,6 +25,8 @@ import com.aliyun.standard.liveroom.lib.linkmic.impl.SampleLinkMicEventHandler;
 import com.aliyun.standard.liveroom.lib.linkmic.model.LinkMicUserModel;
 import com.aliyun.standard.liveroom.lib.wrapper.LivePlayerServiceExtends;
 
+import org.webrtc.sdk.SophonSurfaceView;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +41,8 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
 
     private final Component component = new Component();
 
-    private final ViewGroup renderContainer;
-    private final IMicRenderContainer micRenderContainer;
+    private final ViewGroup bigRenderContainer;
+    private final IMicRenderContainer smallRenderContainer;
     private final Button apply;
     private final Button mic;
     private final Button camera;
@@ -52,8 +54,8 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
     public CustomAudienceRenderView(Context context, AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_live_linkmic_audience_view, this);
-        renderContainer = findViewById(R.id.render_container);
-        micRenderContainer = findViewById(R.id.mic_render_container);
+        bigRenderContainer = findViewById(R.id.big_render_container);
+        smallRenderContainer = findViewById(R.id.small_render_container);
         mic = findViewById(R.id.mic);
         camera = findViewById(R.id.camera);
         myUserId = Const.getCurrentUserId();
@@ -89,7 +91,7 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
             if (user != null) {
                 user.isMicOpen = audienceService.isMicOpened();
             }
-            micRenderContainer.update(myUserId, false);
+            smallRenderContainer.update(myUserId, false);
         });
         camera.setOnClickListener(v -> {
             AudienceService audienceService = component.audienceService;
@@ -103,7 +105,7 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
             if (user != null) {
                 user.isCameraOpen = audienceService.isCameraOpened();
             }
-            micRenderContainer.update(myUserId, true);
+            smallRenderContainer.update(myUserId, true);
         });
         findViewById(R.id.leave).setOnClickListener(v -> component.audienceService.leave());
     }
@@ -159,12 +161,11 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
                 @Override
                 public void onJoinedSuccess(View view) {
                     isApplying = false;
-//                    audienceService.closeMic();
                     refreshButtonUI();
                     // 加入连麦之后
                     playerService.stopPlay();
                     // 移除旁路流
-                    renderContainer.removeAllViews();
+                    bigRenderContainer.removeAllViews();
                 }
 
 
@@ -173,14 +174,30 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
                     isApplying = false;
                     refreshButtonUI();
 
-                    micRenderContainer.removeAll();
+                    smallRenderContainer.removeAll();
                     playBypassLive();
                 }
 
                 @Override
-                public void onUserJoined(boolean newJoined, List<LinkMicUserModel> users) {
-                    if (audienceService.isJoined() && CollectionUtil.isNotEmpty(users)) {
-                        micRenderContainer.add(users);
+                public void onUserJoined(List<LinkMicUserModel> users) {
+                    if (CollectionUtil.isEmpty(users) && !audienceService.isJoined()) {
+                        return;
+                    }
+
+                    List<LinkMicUserModel> audiences = new ArrayList<>();
+                    for (LinkMicUserModel user : users) {
+                        if (user.isAnchor) {
+                            // 主播
+                            updateRenderContainer(user.cameraView);
+                        } else {
+                            // 观众
+                            audiences.add(user);
+                        }
+                    }
+
+                    if (CollectionUtil.isNotEmpty(audiences)) {
+                        // 更新观众视图
+                        smallRenderContainer.add(audiences);
                     }
                 }
 
@@ -191,8 +208,11 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
                     }
 
                     for (LinkMicUserModel user : users) {
-                        String userId = user.userId;
-                        micRenderContainer.remove(userId);
+                        if (user.isAnchor) {
+                            updateRenderContainer(null);
+                        } else {
+                            smallRenderContainer.remove(user.userId);
+                        }
                     }
                 }
 
@@ -202,8 +222,12 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
                         return;
                     }
 
-                    for (LinkMicUserModel userId : users) {
-                        micRenderContainer.remove(userId.userId);
+                    for (LinkMicUserModel user : users) {
+                        if (user.isAnchor) {
+                            updateRenderContainer(null);
+                        } else {
+                            smallRenderContainer.remove(user.userId);
+                        }
                     }
                 }
 
@@ -278,13 +302,18 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
                 @Override
                 public void onRemoteCameraStateChanged(String userId, boolean open) {
                     // 更新摄像头状态
-                    micRenderContainer.update(userId, true);
+                    LinkMicUserModel user = getUser(userId);
+                    if (user.isAnchor) {
+                        updateRenderContainer(user.cameraView);
+                    } else {
+                        smallRenderContainer.update(userId, true);
+                    }
                 }
 
                 @Override
                 public void onRemoteMicStateChanged(String userId, boolean open) {
                     // 更新麦克风状态
-                    micRenderContainer.update(userId, false);
+                    smallRenderContainer.update(userId, false);
                 }
 
                 @Override
@@ -302,10 +331,11 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
 
         private void playBypassLive() {
             // 刚进房间时, 尝试拉取主播视频流
+            playerService.setViewContentMode(getOpenLiveParam().liveShowMode);
             playerService.tryPlay(new Callback<View>() {
                 @Override
                 public void onSuccess(View view) {
-                    updateRoadRender(view);
+                    updateRenderContainer(view);
                 }
 
                 @Override
@@ -314,9 +344,16 @@ public class CustomAudienceRenderView extends RelativeLayout implements Componen
             });
         }
 
-        private void updateRoadRender(View toAdd) {
-            ViewUtil.removeSelfSafely(ViewUtil.findFirstSurfaceViewAtLevel0(renderContainer));
-            ViewUtil.addChildMatchParentSafely(true, renderContainer, 0, toAdd);
+        private void updateRenderContainer(View toAdd) {
+            if (toAdd != null && toAdd.getParent() == bigRenderContainer) {
+                return;
+            }
+
+            if (toAdd instanceof SophonSurfaceView ) {
+                ((SophonSurfaceView) toAdd).setZOrderMediaOverlay(false);
+            }
+            ViewUtil.removeSelfSafely(ViewUtil.findFirstSurfaceViewAtLevel0(bigRenderContainer));
+            ViewUtil.addChildMatchParentSafely(true, bigRenderContainer, 0, toAdd);
         }
 
         @Override

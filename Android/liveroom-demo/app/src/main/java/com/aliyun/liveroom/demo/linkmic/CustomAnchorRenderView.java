@@ -19,8 +19,11 @@ import com.aliyun.standard.liveroom.lib.component.ComponentHolder;
 import com.aliyun.standard.liveroom.lib.component.IComponent;
 import com.aliyun.standard.liveroom.lib.linkmic.impl.SampleLinkMicEventHandler;
 import com.aliyun.standard.liveroom.lib.linkmic.model.LinkMicUserModel;
-import com.aliyun.standard.liveroom.lib.wrapper.LivePusherServiceExtends;
+import com.aliyun.standard.liveroom.lib.wrapper.LinkMicPusherService;
 
+import org.webrtc.sdk.SophonSurfaceView;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -34,8 +37,8 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
 
     private final Component component = new Component();
 
-    private final ViewGroup renderContainer;
-    private final IMicRenderContainer micRenderContainer;
+    private final ViewGroup bigRenderContainer;
+    private final IMicRenderContainer smallRenderContainer;
     private final Button mic;
     private final Button camera;
 
@@ -44,9 +47,8 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
     public CustomAnchorRenderView(Context context, AttributeSet attrs) {
         super(context, attrs);
         inflate(context, R.layout.view_live_linkmic_anchor_view, this);
-        renderContainer = findViewById(R.id.render_container);
-        micRenderContainer = findViewById(R.id.mic_render_container);
-        ViewGroup container = (ViewGroup) this.micRenderContainer;
+        bigRenderContainer = findViewById(R.id.big_render_container);
+        smallRenderContainer = findViewById(R.id.small_render_container);
 
         mic = findViewById(R.id.mic);
         camera = findViewById(R.id.camera);
@@ -56,7 +58,7 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
                 component.pusherService.switchCamera()
         );
         mic.setOnClickListener(v -> {
-            LivePusherServiceExtends pusherService = component.pusherService;
+            LinkMicPusherService pusherService = component.pusherService;
             if (pusherService.isMicOpened()) {
                 pusherService.closeMic();
             } else {
@@ -68,31 +70,24 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
                 }
             }
             refreshButtonUI();
-            LinkMicUserModel user = getUser(myUserId);
-            if (user != null) {
-                user.isMicOpen = pusherService.isMicOpened();
-            }
-            this.micRenderContainer.update(myUserId, false);
+            smallRenderContainer.update(myUserId, false);
         });
         camera.setOnClickListener(v -> {
-            LivePusherServiceExtends pusherService = component.pusherService;
+            LinkMicPusherService pusherService = component.pusherService;
             if (pusherService.isCameraOpened()) {
                 component.pusherService.closeCamera();
+                component.updateRenderContainer(null);
             } else {
-                component.pusherService.openCamera();
+                View view = component.pusherService.openCamera();
+                component.updateRenderContainer(view);
             }
             refreshButtonUI();
-            LinkMicUserModel user = getUser(myUserId);
-            if (user != null) {
-                user.isCameraOpen = pusherService.isCameraOpened();
-            }
-            this.micRenderContainer.update(myUserId, true);
         });
         refreshButtonUI();
     }
 
     private void refreshButtonUI() {
-        LivePusherServiceExtends pusherService = component.pusherService;
+        LinkMicPusherService pusherService = component.pusherService;
         if (pusherService == null) {
             return;
         }
@@ -122,32 +117,47 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
 
     private class Component extends BaseComponent {
 
-        private LivePusherServiceExtends pusherService;
+        private LinkMicPusherService pusherService;
 
         @Override
         public void onInit(LiveContext liveContext) {
             super.onInit(liveContext);
-            pusherService = getPusherService();
+            pusherService = liveService.getLinkMicPusherService();
 
             pusherService.addEventHandler(new SampleLinkMicEventHandler() {
                 @Override
                 public void onJoinedSuccess(View view) {
                     pusherService.closeMic();
                     refreshButtonUI();
-                    renderContainer.removeAllViews();
                 }
 
 
                 @Override
                 public void onLeftSuccess() {
                     refreshButtonUI();
-                    micRenderContainer.removeAll();
+                    smallRenderContainer.removeAll();
                 }
 
                 @Override
-                public void onUserJoined(boolean newJoined, List<LinkMicUserModel> users) {
-                    if (pusherService.isJoined() && CollectionUtil.isNotEmpty(users)) {
-                        micRenderContainer.add(users);
+                public void onUserJoined(List<LinkMicUserModel> users) {
+                    if (CollectionUtil.isEmpty(users) && !pusherService.isJoined()) {
+                        return;
+                    }
+
+                    List<LinkMicUserModel> audiences = new ArrayList<>();
+                    for (LinkMicUserModel user : users) {
+                        if (user.isAnchor) {
+                            // 主播
+                            updateRenderContainer(user.cameraView);
+                        } else {
+                            // 观众
+                            audiences.add(user);
+                        }
+                    }
+
+                    if (CollectionUtil.isNotEmpty(audiences)) {
+                        // 更新观众视图
+                        smallRenderContainer.add(audiences);
                     }
                 }
 
@@ -159,7 +169,7 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
 
                     for (LinkMicUserModel user : users) {
                         String userId = user.userId;
-                        micRenderContainer.remove(userId);
+                        smallRenderContainer.remove(userId);
                     }
                 }
 
@@ -170,7 +180,7 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
                     }
 
                     for (LinkMicUserModel userId : users) {
-                        micRenderContainer.remove(userId.userId);
+                        smallRenderContainer.remove(userId.userId);
                     }
                 }
 
@@ -193,13 +203,18 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
                 @Override
                 public void onRemoteCameraStateChanged(String userId, boolean open) {
                     // 更新摄像头状态
-                    micRenderContainer.update(userId, true);
+                    LinkMicUserModel user = getUser(userId);
+                    if (user.isAnchor) {
+                        updateRenderContainer(user.cameraView);
+                    } else {
+                        smallRenderContainer.update(userId, true);
+                    }
                 }
 
                 @Override
                 public void onRemoteMicStateChanged(String userId, boolean open) {
                     // 更新麦克风状态
-                    micRenderContainer.update(userId, false);
+                    smallRenderContainer.update(userId, false);
                 }
 
                 @Override
@@ -218,8 +233,15 @@ public class CustomAnchorRenderView extends RelativeLayout implements ComponentH
         }
 
         private void updateRenderContainer(View toAdd) {
-            ViewUtil.removeSelfSafely(ViewUtil.findFirstSurfaceViewAtLevel0(renderContainer));
-            ViewUtil.addChildMatchParentSafely(true, renderContainer, 0, toAdd);
+            if (toAdd != null && toAdd.getParent() == bigRenderContainer) {
+                return;
+            }
+
+            if (toAdd instanceof SophonSurfaceView) {
+                ((SophonSurfaceView) toAdd).setZOrderMediaOverlay(false);
+            }
+            ViewUtil.removeSelfSafely(ViewUtil.findFirstSurfaceViewAtLevel0(bigRenderContainer));
+            ViewUtil.addChildMatchParentSafely(true, bigRenderContainer, 0, toAdd);
         }
     }
 }

@@ -6,31 +6,31 @@
 
     <!-- 大流 -->
     <FrameLayout
-        android:id="@+id/render_container"
+        android:id="@+id/big_render_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
     <!-- 小流线性容器 -->
-<!--    <ScrollView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="150dp"-->
-<!--        android:layout_marginBottom="150dp"-->
-<!--        android:scrollbars="none">-->
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_marginBottom="150dp"
+        android:scrollbars="none">
 
-<!--        <com.aliyun.liveroom.demo.linkmic.rendercontainer.LinearMicRenderContainer-->
-<!--            android:id="@+id/mic_render_container"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:orientation="vertical" />-->
-<!--    </ScrollView>-->
+        <com.aliyun.liveroom.demo.linkmic.rendercontainer.LinearMicRenderContainer
+            android:id="@+id/small_render_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
 
     <!-- 小流表格容器 -->
-        <com.aliyun.liveroom.demo.linkmic.rendercontainer.GridMicContainer
-            android:id="@+id/mic_render_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true" />
+    <!--        <com.aliyun.liveroom.demo.linkmic.rendercontainer.GridMicContainer-->
+    <!--            android:id="@+id/small_render_container"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_centerInParent="true" />-->
 
     <ScrollView
         android:layout_width="wrap_content"

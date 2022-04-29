@@ -1,6 +1,5 @@
 package com.aliyun.liveroom.demo.linkmic.rendercontainer;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -22,8 +21,9 @@ import com.aliyun.roompaas.uibase.util.AppUtil;
 import com.aliyun.roompaas.uibase.util.ViewUtil;
 import com.aliyun.standard.liveroom.lib.linkmic.model.LinkMicUserModel;
 
+import org.webrtc.sdk.SophonSurfaceView;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -39,34 +39,13 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
 
     // 最多展示的连麦画面数量
     private static final int MAX_COUNT = 25;
-    // 主播占位符
-    @SuppressLint("StaticFieldLeak")
-    private static final LinkMicUserModel OCCUPY_ANCHOR = new LinkMicUserModel();
-
+    private static final int SPAN_COUNT = 3;
     private final List<LinkMicUserModel> users = new ArrayList<>();
     private final Adapter adapter;
 
-    // 只有一个视图时, 展示大图
-    private boolean showLargeWhenSingle = true;
-
     public GridMicContainer(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        final int spanCount = 3;
-        GridLayoutManager layoutManager = new GridLayoutManager(context, spanCount);
-        layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                if (needShowLarge()) {
-                    return spanCount;
-                }
-
-                // 首项是主播占两格, 其他占一格
-                if (position == 0) {
-                    return 2;
-                }
-                return 1;
-            }
-        });
+        GridLayoutManager layoutManager = new GridLayoutManager(context, SPAN_COUNT);
         setLayoutManager(layoutManager);
         adapter = new Adapter();
         setAdapter(adapter);
@@ -74,37 +53,7 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
 
     @Override
     public void add(List<LinkMicUserModel> addedUsers) {
-        List<LinkMicUserModel> userModels = new ArrayList<>(addedUsers);
-        // 排序, 主播排前面
-        Collections.sort(userModels, (o1, o2) -> {
-            if (o1.isAnchor ^ o2.isAnchor) {
-                return o1.isAnchor ? -1 : 1;
-            }
-            return 0;
-        });
-
-        LinkMicUserModel first = CollectionUtil.getFirst(userModels);
-        if (first != null && first.isAnchor) {
-            // 新加用户中包含主播
-            int anchorIndex = users.indexOf(OCCUPY_ANCHOR);
-            if (anchorIndex >= 0) {
-                // 当前列表包含占位, 将占位替换为主播数据
-                userModels.remove(first);
-                users.remove(anchorIndex);
-                users.add(anchorIndex, first);
-                adapter.notifyItemChanged(anchorIndex);
-            } else {
-                // 当前列表不含占位, 不需要额外处理
-            }
-        } else {
-            // 新加用户中不含主播
-            if (users.isEmpty()) {
-                // 首次添加, 手动塞一个占位到第一项代表主播
-                userModels.add(0, OCCUPY_ANCHOR);
-            }
-        }
-
-        for (LinkMicUserModel user : userModels) {
+        for (LinkMicUserModel user : addedUsers) {
             add(user);
         }
     }
@@ -135,17 +84,8 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
             return;
         }
 
-        LinkMicUserModel removed = users.get(index);
-        if (removed.isAnchor) {
-            // 是主播, 不能删除, 要做占位替换
-            users.remove(index);
-            users.add(index, OCCUPY_ANCHOR);
-//            adapter.notifyItemChanged(index);
-        } else {
-            // 不是主播, 直接删除
-            users.remove(index);
-//            adapter.notifyItemRemoved(index);
-        }
+        users.remove(index);
+        // adapter.notifyItemRemoved(index);
         adapter.notifyDataSetChanged();
     }
 
@@ -181,10 +121,6 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
         return index >= 0 && index < users.size();
     }
 
-    private boolean needShowLarge() {
-        return adapter.getItemCount() == 1 && showLargeWhenSingle;
-    }
-
     private class Adapter extends RecyclerView.Adapter<ViewHolder> {
 
         @NonNull
@@ -194,7 +130,13 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
             View itemView = inflater.inflate(R.layout.item_render_view, parent, false);
             itemView.setLayoutParams(new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
-                    AppUtil.getDeviceWidth() / 3
+                    AppUtil.getScreenWidth() / SPAN_COUNT
+            ));
+            Random random = new Random();
+            itemView.setBackgroundColor(Color.rgb(
+                    random.nextInt(255),
+                    random.nextInt(255),
+                    random.nextInt(255)
             ));
             return new ViewHolder(itemView);
         }
@@ -206,65 +148,22 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
             } else {
                 LinkMicUserModel user = users.get(position);
                 if (payloads.contains(PAYLOAD_IGNORE_RENDER)) {
-                    boolean needShowLarge = needShowLarge();
-                    if (user == OCCUPY_ANCHOR) {
-                        holder.userLabel.setText(null);
-                        holder.mic.setText(null);
-                    } else if (needShowLarge) {
-                        // 显示大图时, 不展示边界信息
-                        holder.userLabel.setText(null);
-                        holder.mic.setText(null);
-                    } else {
-                        holder.userLabel.setText(user.userId);
-                        holder.mic.setText(String.format("麦克风: %s", user.isMicOpen ? "开" : "关"));
-                    }
-
+                    holder.userLabel.setText(user.userId);
+                    holder.mic.setText(String.format("麦克风: %s", user.isMicOpen ? "开" : "关"));
                 }
             }
         }
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            boolean needShowLarge = needShowLarge();
-            // 设置itemView大小
-            ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
-            layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
-            layoutParams.height = needShowLarge ? ViewGroup.LayoutParams.MATCH_PARENT : AppUtil.getDeviceWidth() / 3;
-            holder.itemView.setLayoutParams(layoutParams);
-
             LinkMicUserModel user = users.get(position);
-
-            Random random = new Random();
-            holder.itemView.setBackgroundColor(Color.rgb(
-                    random.nextInt(255),
-                    random.nextInt(255),
-                    random.nextInt(255)
-            ));
-
             ViewGroup container = holder.container;
-            if (user == OCCUPY_ANCHOR) {
-                // 主播数据还没来时, 第一项的展示样式
-                holder.userLabel.setText(null);
-                holder.mic.setText(null);
-                container.removeAllViews();
-                container.setVisibility(GONE);
-                return;
-            }
+            holder.userLabel.setText(user.nickname);
+            holder.mic.setText(String.format("麦克风: %s", user.isMicOpen ? "开" : "关"));
 
-            if (needShowLarge) {
-                // 显示大图时, 不展示边界信息
-                holder.userLabel.setText(null);
-                holder.mic.setText(null);
-            } else {
-                holder.userLabel.setText(user.nickname);
-                holder.mic.setText(String.format("麦克风: %s", user.isMicOpen ? "开" : "关"));
-            }
-
-//            View renderView = getRenderView(user.userId);
             View renderView = user.cameraView;
 
             if (renderView == null || !user.isCameraOpen) {
-//            if (renderView == null) {
                 // 没画面或没开摄像头, 不展示 (没有直接remove, 为了降低的add和remove的性能消耗)
                 container.setVisibility(GONE);
                 return;
@@ -282,6 +181,10 @@ public class GridMicContainer extends RecyclerView implements IMicRenderContaine
                 ((ViewGroup) parent).removeView(renderView);
             }
 
+            // 设置图层盖在上方
+            if (renderView instanceof SophonSurfaceView) {
+                ((SophonSurfaceView) renderView).setZOrderMediaOverlay(true);
+            }
             container.removeAllViews();
             ViewUtil.addChildMatchParentSafely(container, renderView);
         }

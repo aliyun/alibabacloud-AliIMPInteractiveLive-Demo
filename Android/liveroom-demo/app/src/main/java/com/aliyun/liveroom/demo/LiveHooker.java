@@ -88,19 +88,16 @@ public class LiveHooker {
      */
     public static void setLinkMicStyle(boolean isAnchor) {
         LiveHook liveHook = new LiveHook()
-//                // 隐藏手势组件
+                // 隐藏手势组件
                 .replaceComponentView(LiveGestureView.class, CustomLiveEmptyView.class);
 
         if (isAnchor) {
-            liveHook
-                    // 将普通直播的渲染组件, 替换为连麦直播的渲染组件
-                    .replaceComponentView(LiveRenderView.class, CustomAnchorRenderView.class);
+            // 将普通直播的渲染组件, 替换为连麦直播的渲染组件
+            liveHook.replaceComponentView(LiveRenderView.class, CustomAnchorRenderView.class);
         } else {
-            liveHook
-                    // 将普通直播的渲染组件, 替换为连麦直播的渲染组件
-                    .replaceComponentView(LiveRenderView.class, CustomAudienceRenderView.class);
+            // 将普通直播的渲染组件, 替换为连麦直播的渲染组件
+            liveHook.replaceComponentView(LiveRenderView.class, CustomAudienceRenderView.class);
         }
-
         LivePrototype.getInstance().setLiveHook(liveHook);
     }
 }

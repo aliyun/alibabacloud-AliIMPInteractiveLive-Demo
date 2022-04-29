@@ -16,6 +16,8 @@ import com.aliyun.liveroom.demo.linkmic.IMicRenderContainer;
 import com.aliyun.roompaas.uibase.util.ViewUtil;
 import com.aliyun.standard.liveroom.lib.linkmic.model.LinkMicUserModel;
 
+import org.webrtc.sdk.SophonSurfaceView;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,6 +95,10 @@ public class LinearMicRenderContainer extends LinearLayout implements IMicRender
             if (renderView == null || !user.isCameraOpen) {
                 itemView.container.removeAllViews();
             } else {
+                // 设置图层盖在上方
+                if (renderView instanceof SophonSurfaceView) {
+                    ((SophonSurfaceView) renderView).setZOrderMediaOverlay(true);
+                }
                 ViewUtil.addChildMatchParentSafely(itemView.container, renderView);
             }
         }
