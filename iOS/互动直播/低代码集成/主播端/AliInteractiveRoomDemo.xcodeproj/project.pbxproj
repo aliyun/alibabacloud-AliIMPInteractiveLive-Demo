@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		6061C1118A6CD9C9491D3614 /* libPods-StandardLiveRoomForAnchor.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 69367096B885C2CFDF20CD1F /* libPods-StandardLiveRoomForAnchor.a */; };
+		7DF87044281BD3FF00C23929 /* AIRBDLinkMicCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF87042281BD3FF00C23929 /* AIRBDLinkMicCollectionViewCell.m */; };
+		7DF87045281BD3FF00C23929 /* AIRBDLinkMicCollectionViewHolder.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DF87043281BD3FF00C23929 /* AIRBDLinkMicCollectionViewHolder.m */; };
 		ED9D7E61274F84060007A22A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = ED9D7E60274F84060007A22A /* AppDelegate.m */; };
 		ED9D7E64274F84060007A22A /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = ED9D7E63274F84060007A22A /* SceneDelegate.m */; };
 		ED9D7E67274F84060007A22A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ED9D7E66274F84060007A22A /* ViewController.m */; };
@@ -28,6 +30,10 @@
 		3831EDE44F400811FC5C3E8A /* Pods-StandardLiveRoomForAnchor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StandardLiveRoomForAnchor.release.xcconfig"; path = "Target Support Files/Pods-StandardLiveRoomForAnchor/Pods-StandardLiveRoomForAnchor.release.xcconfig"; sourceTree = "<group>"; };
 		69367096B885C2CFDF20CD1F /* libPods-StandardLiveRoomForAnchor.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StandardLiveRoomForAnchor.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E1CC726C05F4DF4104D32A9 /* Pods-StandardLiveRoomForAnchor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StandardLiveRoomForAnchor.debug.xcconfig"; path = "Target Support Files/Pods-StandardLiveRoomForAnchor/Pods-StandardLiveRoomForAnchor.debug.xcconfig"; sourceTree = "<group>"; };
+		7DF87040281BD3FF00C23929 /* AIRBDLinkMicCollectionViewHolder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDLinkMicCollectionViewHolder.h; sourceTree = "<group>"; };
+		7DF87041281BD3FF00C23929 /* AIRBDLinkMicCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDLinkMicCollectionViewCell.h; sourceTree = "<group>"; };
+		7DF87042281BD3FF00C23929 /* AIRBDLinkMicCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDLinkMicCollectionViewCell.m; sourceTree = "<group>"; };
+		7DF87043281BD3FF00C23929 /* AIRBDLinkMicCollectionViewHolder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDLinkMicCollectionViewHolder.m; sourceTree = "<group>"; };
 		ED9D7E5D274F84060007A22A /* StandardLiveRoomForAnchor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StandardLiveRoomForAnchor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED9D7E5F274F84060007A22A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		ED9D7E60274F84060007A22A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -95,6 +101,10 @@
 				ED9D7F67275073D70007A22A /* AIRBDShareViewController.m */,
 				ED9D7F6B275073D70007A22A /* AIRBDShopWindowViewController.h */,
 				ED9D7F69275073D70007A22A /* AIRBDShopWindowViewController.m */,
+				7DF87041281BD3FF00C23929 /* AIRBDLinkMicCollectionViewCell.h */,
+				7DF87042281BD3FF00C23929 /* AIRBDLinkMicCollectionViewCell.m */,
+				7DF87040281BD3FF00C23929 /* AIRBDLinkMicCollectionViewHolder.h */,
+				7DF87043281BD3FF00C23929 /* AIRBDLinkMicCollectionViewHolder.m */,
 				ED9D7E5F274F84060007A22A /* AppDelegate.h */,
 				ED9D7E60274F84060007A22A /* AppDelegate.m */,
 				ED9D7E62274F84060007A22A /* SceneDelegate.h */,
@@ -277,7 +287,9 @@
 				ED9D7E72274F840A0007A22A /* main.m in Sources */,
 				ED9D7F77275075700007A22A /* UIColor+HexColor.m in Sources */,
 				ED9D7F71275073D70007A22A /* AIRBDShopWindowViewController.m in Sources */,
+				7DF87045281BD3FF00C23929 /* AIRBDLinkMicCollectionViewHolder.m in Sources */,
 				ED9D7E64274F84060007A22A /* SceneDelegate.m in Sources */,
+				7DF87044281BD3FF00C23929 /* AIRBDLinkMicCollectionViewCell.m in Sources */,
 				ED9D7F6E275073D70007A22A /* AIRBDLiveRoomViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -311,7 +323,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3QR448XZXA;
+				DEVELOPMENT_TEAM = 4JGNJS32Q8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = StandardLiveRoomForAnchor/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -319,7 +331,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoess;
+				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoess.liveAnchor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -332,7 +344,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 3QR448XZXA;
+				DEVELOPMENT_TEAM = 4JGNJS32Q8;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = StandardLiveRoomForAnchor/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -340,7 +352,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoess;
+				PRODUCT_BUNDLE_IDENTIFIER = AliInteractiveRoomDemoess.liveAnchor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

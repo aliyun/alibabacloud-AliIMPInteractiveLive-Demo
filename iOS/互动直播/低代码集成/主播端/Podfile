@@ -5,7 +5,7 @@ source 'https://cdn.cocoapods.org/'
 source 'https://github.com/CocoaPods/Specs.git'
 
   def common_version
-  '1.8.0'
+  '1.8.20220429002-SNAPSHOT'
   end
 
 #基于互动直播低代码主播侧实现逻辑
@@ -21,6 +21,11 @@ source 'https://github.com/CocoaPods/Specs.git'
    pod 'AliInteractiveFaceBeautyCore', common_version
    pod 'AlivcLivePusher', '4.4.1'
    pod 'Queen', '1.9.1-official-pro'
+   
+#   #阿里云低代码音视频工厂RTC相关库 (需要连麦才加)
+#   pod 'AliInteractiveRTCCore', common_version
+#   pod 'AliRTCSdk', '2.5.7'
+
  end
 
 
