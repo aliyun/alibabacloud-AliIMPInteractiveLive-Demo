@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private Mode currentMode = Mode.LINK_MIC;
+    private Mode currentMode = Mode.CUSTOM;
     private EditText liveIdInput;
 
     @SuppressLint("SetTextI18n")
