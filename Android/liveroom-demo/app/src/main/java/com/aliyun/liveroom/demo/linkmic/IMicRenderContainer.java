@@ -1,7 +1,5 @@
 package com.aliyun.liveroom.demo.linkmic;
 
-import android.view.View;
-
 import com.aliyun.standard.liveroom.lib.linkmic.model.LinkMicUserModel;
 
 import java.util.List;
@@ -20,13 +18,5 @@ public interface IMicRenderContainer {
 
     void removeAll();
 
-    void update(String userId);
-
-    LinkMicUserModel getUser(String userId);
-
-    void setCallback(Callback callback);
-
-    interface Callback {
-        View getView(String userId);
-    }
+    void update(String userId, boolean refreshRenderView);
 }
