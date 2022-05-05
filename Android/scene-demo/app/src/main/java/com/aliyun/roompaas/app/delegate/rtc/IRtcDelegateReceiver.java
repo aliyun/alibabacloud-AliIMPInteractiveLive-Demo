@@ -26,6 +26,8 @@ public interface IRtcDelegateReceiver {
 
     void onUpdateSelfMicStatus(boolean mute);
 
+    void onUpdateSelfCameraStatus(boolean mute);
+
     void startRoadPublishSuccess();
 
     void updateUser(Collection<RtcUser> user);

@@ -1,0 +1,1 @@
+package com.aliyun.roompaas.app.delegate.rtc;/** * Created by KyleCe on 2022/4/11 */public interface IDisplayVideo {    boolean showDisplayVideo(String uid);}

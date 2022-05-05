@@ -445,7 +445,7 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
     private RtcDelegate ofRtcDelegate() {
         if (rtcDelegate == null) {
             rtcDelegate = new RtcDelegate(this, this, getUserId(), nick
-                    , roomChannel ,rtcService, view.rtcRenderContainer, this);
+                    , roomChannel ,rtcService, livePlayerService, view.rtcRenderContainer, this);
         }
 
         return rtcDelegate;
@@ -497,6 +497,11 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
 
     @Override
     public void onUpdateSelfMicStatus(boolean mute) {
+
+    }
+
+    @Override
+    public void onUpdateSelfCameraStatus(boolean mute) {
 
     }
 
@@ -597,7 +602,7 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
             case Mute_Mic:
                 // 静音
                 if (isJoined) {
-                    ofRtcDelegate().muteLocalMic();
+                    ofRtcDelegate().toggleMic();
                 } else {
                     result = false;
                     showToast("上麦后可操作");
@@ -606,7 +611,7 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
             case Mute_Camera:
                 // 摄像头
                 if (isJoined) {
-                    ofRtcDelegate().muteLocalCamera();
+                    ofRtcDelegate().toggleCamera();
                 } else {
                     result = false;
                     showToast("上麦后可操作");

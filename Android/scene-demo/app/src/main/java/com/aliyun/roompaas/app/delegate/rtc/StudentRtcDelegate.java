@@ -19,16 +19,20 @@ import com.aliyun.roompaas.rtc.exposable.RtcService;
 import com.aliyun.roompaas.rtc.exposable.event.RtcStreamEvent;
 import com.aliyun.roompaas.uibase.util.ViewUtil;
 
+import java.lang.ref.Reference;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by KyleCe on 2021/9/13
  */
-public class StudentRtcDelegate implements IDestroyable, IReset {
+public class StudentRtcDelegate implements IDestroyable, IReset, IDisplayVideo {
     private StudentListAdapter adapter;
 
     private View pageUp;
@@ -43,13 +47,19 @@ public class StudentRtcDelegate implements IDestroyable, IReset {
     private RtcSubscribeDelegate rtcSubscribeDelegate;
     private Context context;
     private RecyclerView studentRTCRV;
+    private Set<String> displayIds = new HashSet<>();
+    private Reference<RoomChannel> roomChannelRef;
+    private final String userId;
 
     public StudentRtcDelegate(@NonNull Activity activity, RoomChannel roomChannel, RtcService rtcService) {
 
         context = activity.getApplicationContext();
         adapter = new StudentListAdapter(roomChannel, context);
+        adapter.setSubStatusQuery(this);
         initStudentList(activity);
         rtcSubscribeDelegate = new RtcSubscribeDelegate(rtcService, roomChannel);
+        roomChannelRef = new WeakReference<>(roomChannel);
+        this.userId = roomChannel.getUserId();
     }
 
     public void setItemClickListener(StudentListAdapter.ItemClickListener itemClickListener) {
@@ -85,14 +95,16 @@ public class StudentRtcDelegate implements IDestroyable, IReset {
     private void refreshFocusing() {
         List<RtcStreamEvent> toFill = fullDataList.subList(currentPageIndex * DEFAULT_SUPPORTING_STUDENT_VIEW_COUNT
                 , Math.min(fullDataList.size(), (currentPageIndex + 1) * DEFAULT_SUPPORTING_STUDENT_VIEW_COUNT));
+        remoteDisplayIds(Arrays.asList(focusingDataArray));
         for (int i = 0, size = focusingDataArray.length; i < size; i++) {
             adapter.detachedPreview(focusingDataArray[i]);
+            rtcSubscribeDelegate.unsubscribe(focusingDataArray[i]);
             focusingDataArray[i] = Utils.isIndexInRange(i, toFill) ? toFill.get(i) : null;
         }
         adapter.refreshData(focusingDataArray);
 
-        rtcSubscribeDelegate.unsubscribe(toUnsubscribe());
         rtcSubscribeDelegate.subscribe(Arrays.asList(focusingDataArray));
+        addDisplayIds(Arrays.asList(focusingDataArray));
 
         updatePageIndicator();
     }
@@ -111,7 +123,7 @@ public class StudentRtcDelegate implements IDestroyable, IReset {
         if (position < 0) {
             fullDataList.add(event);
         } else {
-            interceptCanvasViewForReuse(event, fullDataList.get(position));
+            //interceptDetailIfVital(event, fullDataList.get(position));
             fullDataList.set(position, event);
         }
 
@@ -134,12 +146,18 @@ public class StudentRtcDelegate implements IDestroyable, IReset {
         }
     }
 
-    private void interceptCanvasViewForReuse(@NonNull RtcStreamEvent newE, @NonNull RtcStreamEvent oldE) {
+    private void interceptDetailIfVital(@NonNull RtcStreamEvent newE, @NonNull RtcStreamEvent oldE) {
         if (newE.aliVideoCanvas != null && oldE.aliVideoCanvas != null) {
-            newE.aliVideoCanvas.view = Utils.acceptFirstNonNull(newE.aliVideoCanvas.view, oldE.aliVideoCanvas.view);
+            if (newE.aliVideoCanvas.view == null && oldE.aliVideoCanvas.view != null) {
+                newE.aliVideoCanvas = oldE.aliVideoCanvas;
+            }
         } else if (newE.aliVideoCanvas == null) {
             newE.aliVideoCanvas = oldE.aliVideoCanvas;
         }
+
+        newE.userName = !isSelf(oldE.userId) ? Utils.acceptFirstNotEmpty(oldE.userName, newE.userName) : RtcDelegate.NICK4SELF;
+        newE.closeMic = !isSelf(oldE.userId) ? oldE.closeMic : newE.closeMic;
+        newE.closeCamera = !isSelf(oldE.userId) ? oldE.closeCamera : newE.closeCamera;
     }
 
     private void updatePageIndicator() {
@@ -147,6 +165,7 @@ public class StudentRtcDelegate implements IDestroyable, IReset {
         if ((count = fullDataList.size()) <= DEFAULT_SUPPORTING_STUDENT_VIEW_COUNT) {
             hidePageIndicator();
             rtcSubscribeDelegate.subscribe(fullDataList);
+            addDisplayIds(fullDataList);
             return;
         }
         int maxPageIndex = (count - 1) / DEFAULT_SUPPORTING_STUDENT_VIEW_COUNT;
@@ -208,9 +227,43 @@ public class StudentRtcDelegate implements IDestroyable, IReset {
         adapter.removeAll();
     }
 
+    private void remoteDisplayIds(List<RtcStreamEvent> eventList) {
+        for (RtcStreamEvent event : eventList) {
+            if (event == null || TextUtils.isEmpty(event.userId)) {
+                continue;
+            }
+            displayIds.remove(event.userId);
+        }
+    }
+
+    private void addDisplayIds(List<RtcStreamEvent> eventList) {
+        for (RtcStreamEvent event : eventList) {
+            if (event == null || TextUtils.isEmpty(event.userId)) {
+                continue;
+            }
+            displayIds.add(event.userId);
+        }
+    }
+
+    private boolean isSelf(String uid) {
+        return userId.equals(uid);
+    }
+
+    private boolean isOwner(String uid) {
+        RoomChannel roomChannel = Utils.getRef(roomChannelRef);
+        return roomChannel != null && roomChannel.isOwner(uid);
+    }
+
+    @Override
+    public boolean showDisplayVideo(String uid) {
+        return displayIds.contains(uid);
+    }
+
     @Override
     public void reset() {
         currentPageIndex = 0;
+        rtcSubscribeDelegate.unsubscribe(displayIds);
+        Utils.clear(displayIds);
         rtcSubscribeDelegate.unsubscribe(Arrays.asList(focusingDataArray));
         fullDataList.clear();
         Arrays.fill(focusingDataArray, null);
