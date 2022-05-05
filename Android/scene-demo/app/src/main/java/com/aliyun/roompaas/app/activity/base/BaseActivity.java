@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.aliyun.roompaas.app.util.StatusBarUtil;
 import com.aliyun.roompaas.base.util.CommonUtil;
+import com.aliyun.roompaas.base.util.ThreadUtil;
 
 /**
  * 通用Activity, 封装最基础的复用逻辑
@@ -39,5 +40,13 @@ public class BaseActivity extends AppCompatActivity {
 
     protected void showToast(String toast) {
         CommonUtil.showToast(this, toast);
+    }
+
+    protected void postToMain(@Nullable Runnable task) {
+        ThreadUtil.runOnUiThread(task);
+    }
+
+    protected void postDelay(@Nullable Runnable task, long delayMillis) {
+        ThreadUtil.postDelay(delayMillis, task);
     }
 }

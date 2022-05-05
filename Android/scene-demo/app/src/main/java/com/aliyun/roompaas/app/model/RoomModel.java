@@ -1,10 +1,12 @@
 package com.aliyun.roompaas.app.model;
 
+import java.io.Serializable;
+
 /**
  * @author puke
  * @version 2021/5/12
  */
-public class RoomModel {
+public class RoomModel implements Serializable {
     public String appId;
     public String chatId;
     public String coverUrl;
