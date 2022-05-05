@@ -78,6 +78,8 @@ public class RtcDelegate extends SampleRtcEventHandler {
     private ViewGroup rtcContainer;
     private IRtcDelegateReceiver rtcDelegateReceiver;
     private boolean muteToastHint;
+    private RtcStreamEvent selfRtcStreamEvent;
+    public static final String NICK4SELF = "我";
 
     public RtcDelegate(Activity activity, ISystemMessage systemMessage, String userId, String nick
             , RoomChannel roomChannel, RtcService rtcService
@@ -247,13 +249,75 @@ public class RtcDelegate extends SampleRtcEventHandler {
 
     public void muteLocalCamera() {
         muteLocalCamera = !muteLocalCamera;
-        ofStudentRtcDelegate().updateLocalCamera(userId, muteLocalCamera);
+        toggleCamera(muteLocalCamera);
+    }
+
+    public void toggleCamera(boolean target) {
+        closeCamera(target);
+    }
+
+    private void closeCamera(boolean closeCamera) {
+        if (Utils.isActivityInvalid(activity) || closeCamera == ofSelfRtcStreamEvent().closeCamera) {
+            Logger.e(TAG, "closeCamera: end--invalid param: " + closeCamera);
+            return;
+        }
+
+        ofSelfRtcStreamEvent().closeCamera = closeCamera;
+        ofStudentRtcDelegate().updateLocalCamera(userId, closeCamera);
 
         RtcService rtcService = Utils.getRef(rtcServiceRef);
-        if (rtcService != null) {
-            rtcService.muteLocalCamera(muteLocalCamera);
+        if (rtcService == null) {
+            return;
+        }
+
+        if (closeCamera) {
+            closeCameraProcess(rtcService);
+        } else {
+            openCameraProcess(rtcService);
         }
     }
+
+    private void closeCameraProcess(@NonNull RtcService rtcService) {
+        // 停止预览
+        rtcService.stopPreview();
+        // 是否发布本地相机流到远端
+        rtcService.publishLocalVideo(false);
+        // 采集
+        rtcService.enableLocalVideo(false);
+        // 发布
+        rtcService.muteLocalCamera(true);
+    }
+
+    private void openCameraProcess(@NonNull RtcService rtcService) {
+        rtcService.startPreview();
+        // 是否发布本地相机流到远端
+        rtcService.publishLocalVideo(true);
+        // 采集 (如果关闭, 采集黑帧)
+        rtcService.enableLocalVideo(true);
+        // 发布
+        rtcService.muteLocalCamera(false);
+    }
+
+    private RtcStreamEvent ofSelfRtcStreamEvent() {
+        if (selfRtcStreamEvent == null) {
+            selfRtcStreamEvent = new RtcStreamEvent.Builder()
+                    .setUserId(userId)
+                    .setAliRtcVideoTrack(AliRtcEngine.AliRtcVideoTrack.AliRtcVideoTrackCamera)
+                    .setUserName(NICK4SELF)
+                    .setLocalStream(true)
+                    .setTeacher(isTeacherAndOwner())
+                    .setAliVideoCanvas(new AliRtcEngine.AliRtcVideoCanvas())
+                    .setCloseCamera(false)
+                    .build();
+
+            if (rtcDelegateReceiver != null) {
+                rtcDelegateReceiver.onUpdateSelfMicStatus(selfRtcStreamEvent.closeMic);
+                //rtcDelegateReceiver.onUpdateSelfCameraStatus(selfRtcStreamEvent.closeCamera);
+            }
+        }
+        return selfRtcStreamEvent;
+    }
+
 
     public void switchCamera() {
         RtcService rtcService = Utils.getRef(rtcServiceRef);
@@ -299,7 +363,18 @@ public class RtcDelegate extends SampleRtcEventHandler {
                 String message = teacherNick + "邀请你上麦，是否同意？";
                 if (rtcService != null) {
                     DialogUtil.confirm(activity, message,
-                            () -> rtcService.joinRtcWithConfig(new RtcStreamConfig(480, 360), nick),
+                            () -> {
+                                if (ofSelfRtcStreamEvent().closeCamera) {
+                                    closeCameraProcess(rtcService);
+                                } else{
+                                    openCameraProcess(rtcService);
+                                }
+                                //if (ofSelfRtcStreamEvent().closeMic) {
+                                //    closeMic(true);
+                                //}
+
+                                rtcService.joinRtcWithConfig(new RtcStreamConfig(480, 360), nick);
+                            },
                             () -> rtcService.reportJoinStatus(RtcUserStatus.JOIN_FAILED, null)
                     );
                 }
@@ -768,7 +843,7 @@ public class RtcDelegate extends SampleRtcEventHandler {
 
     private RtcSubscribeDelegate ofRtcSubscribeDelegate() {
         if (rtcSubscribeDelegate == null) {
-            rtcSubscribeDelegate = new RtcSubscribeDelegate(Utils.getRef(rtcServiceRef));
+            rtcSubscribeDelegate = new RtcSubscribeDelegate(Utils.getRef(rtcServiceRef), Utils.getRef(roomChannelRef));
         }
 
         return rtcSubscribeDelegate;

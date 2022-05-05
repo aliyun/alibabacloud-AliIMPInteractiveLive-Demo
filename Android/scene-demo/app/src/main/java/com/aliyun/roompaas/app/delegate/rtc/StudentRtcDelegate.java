@@ -14,6 +14,7 @@ import com.aliyun.roompaas.base.IDestroyable;
 import com.aliyun.roompaas.base.IReset;
 import com.aliyun.roompaas.base.util.Utils;
 import com.aliyun.roompaas.biz.exposable.RoomChannel;
+import com.aliyun.roompaas.rtc.RtcStreamEventHelper;
 import com.aliyun.roompaas.rtc.exposable.RtcService;
 import com.aliyun.roompaas.rtc.exposable.event.RtcStreamEvent;
 import com.aliyun.roompaas.uibase.util.ViewUtil;
@@ -48,7 +49,7 @@ public class StudentRtcDelegate implements IDestroyable, IReset {
         context = activity.getApplicationContext();
         adapter = new StudentListAdapter(roomChannel, context);
         initStudentList(activity);
-        rtcSubscribeDelegate = new RtcSubscribeDelegate(rtcService);
+        rtcSubscribeDelegate = new RtcSubscribeDelegate(rtcService, roomChannel);
     }
 
     public void setItemClickListener(StudentListAdapter.ItemClickListener itemClickListener) {
@@ -177,7 +178,7 @@ public class StudentRtcDelegate implements IDestroyable, IReset {
         for (int i = 0; iterator.hasNext(); i++) {
             String is = iterator.next();
             if (!TextUtils.isEmpty(is)) {
-                RtcStreamEvent event = RtcSubscribeDelegate.asRtcStreamEvent(is);
+                RtcStreamEvent event = RtcStreamEventHelper.asRtcStreamEvent(is);
                 list.add(event);
 
                 if (!shownMatches) {
@@ -194,7 +195,7 @@ public class StudentRtcDelegate implements IDestroyable, IReset {
     }
 
     public void removeData(String userId) {
-        RtcStreamEvent event = RtcSubscribeDelegate.asRtcStreamEvent(userId);
+        RtcStreamEvent event = RtcStreamEventHelper.asRtcStreamEvent(userId);
         fullDataList.remove(event);
         int index = Utils.parseIndex(event, focusingDataArray);
         if (index != -1) {
