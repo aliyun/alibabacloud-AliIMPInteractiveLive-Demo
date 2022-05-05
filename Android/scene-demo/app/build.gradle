@@ -52,7 +52,7 @@ android {
     // 互动PaaS SDK依赖
     dependencies {
         // 互动PaaS-一体化SDK依赖
-        def LATEST_VERSION = '1.8.0.20220427001'
+        def LATEST_VERSION = '1.8.0.20220505001'
         api "com.aliyun.roompaas.biz:biz:${LATEST_VERSION}"
         api "com.aliyun.roompaas.biz:uibase:${LATEST_VERSION}"
         api "com.aliyun.roompaas.biz:chat:${LATEST_VERSION}"
