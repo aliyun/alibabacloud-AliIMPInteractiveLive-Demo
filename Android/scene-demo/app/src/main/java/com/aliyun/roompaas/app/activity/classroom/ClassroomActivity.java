@@ -43,6 +43,7 @@ import com.aliyun.roompaas.chat.exposable.event.CommentEvent;
 import com.aliyun.roompaas.chat.exposable.event.MuteCommentEvent;
 import com.aliyun.roompaas.live.SampleLiveEventHandler;
 import com.aliyun.roompaas.live.exposable.event.LiveCommonEvent;
+import com.aliyun.roompaas.rtc.RtcLayoutModel;
 import com.aliyun.roompaas.rtc.exposable.RtcService;
 import com.aliyun.roompaas.rtc.exposable.RtcUserStatus;
 import com.aliyun.roompaas.rtc.exposable.event.ConfUserEvent;
@@ -196,15 +197,21 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
     }
 
     private void loadUser(boolean loadRtcUserList) {
+        loadUser(loadRtcUserList, null);
+    }
+
+    private void loadUser(boolean loadRtcUserList, @Nullable Callback<List<RtcUser>> callback) {
         rtcUserManager.loadUserList(loadRtcUserList, new Callback<List<RtcUser>>() {
             @Override
             public void onSuccess(List<RtcUser> data) {
                 view.studentView.setData(data);
+                Utils.callSuccess(callback, data);
             }
 
             @Override
             public void onError(String errorMsg) {
                 showToast("获取用户列表失败: " + errorMsg);
+                Utils.callError(callback, errorMsg);
             }
         });
     }
@@ -477,7 +484,18 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
     @Override
     public void onRtcRemoteJoinSuccess(ConfUserEvent userEvent) {
         isJoined = true;
-        loadUser(true);
+        loadUser(true, new Callback<List<RtcUser>>() {
+            @Override
+            public void onSuccess(List<RtcUser> rtcUsers) {
+                if (isOwner()){
+                    ofRtcDelegate().setLayoutModel(RtcLayoutModel.ONE_SUPPORT_FOUR);
+                }
+            }
+
+            @Override
+            public void onError(String s) {
+            }
+        });
     }
 
     @Override
