@@ -413,15 +413,6 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
         }
     }
 
-    private void parseRtcStreamInfoIfMyselfPreviewIsInRoadRender() {
-        View surfaceView;
-        if (displayVideoStreamInfo == null && (surfaceView = parsePossibleSurfaceView()) instanceof SophonSurfaceView) {
-            RtcStreamEvent me = assembleRtcStreamEventForSelf(false);
-            me.aliVideoCanvas.view = surfaceView;
-            displayVideoStreamInfo = me;
-        }
-    }
-
     @Nullable
     private View parsePossibleSurfaceView() {
         ViewGroup roadVG;
@@ -436,17 +427,6 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
             }
         }
         return null;
-    }
-
-    private RtcStreamEvent assembleRtcStreamEventForSelf(boolean certainlyNotTeacher) {
-        return new RtcStreamEvent.Builder()
-                .setUserId(roomChannel.getUserId())
-                .setAliRtcVideoTrack(AliRtcEngine.AliRtcVideoTrack.AliRtcVideoTrackCamera)
-                .setUserName("我")
-                .setLocalStream(true)
-                .setTeacher(!certainlyNotTeacher && isOwner())
-                .setAliVideoCanvas(new AliRtcEngine.AliRtcVideoCanvas())
-                .build();
     }
 
     private RtcDelegate ofRtcDelegate() {
@@ -651,6 +631,18 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
             default:
         }
         return result;
+    }
+
+    public void updateFunctionSelectionOfMic(boolean closeMic){
+        if (functionAdapter != null) {
+            functionAdapter.updateFunctionSelected(ClassFunctionsAdapter.FunctionName.Mute_Mic, closeMic);
+        }
+    }
+
+    public void updateFunctionSelectionOfCamera(boolean closeCamera){
+        if (functionAdapter != null) {
+            functionAdapter.updateFunctionSelected(ClassFunctionsAdapter.FunctionName.Mute_Camera, closeCamera);
+        }
     }
 
     private void updateConfUserData(ConfUserEvent confUserEvent, RtcUserStatus status) {

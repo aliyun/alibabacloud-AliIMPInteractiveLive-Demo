@@ -32,6 +32,21 @@ public  class ClassFunctionsAdapter extends RecyclerView.Adapter {
         notifyItemChanged(functionName.function);
     }
 
+    public void updateFunctionSelected(FunctionName functionName, boolean selected) {
+        if (selected) {
+            mSelectedViews.add(functionName.function);
+        } else {
+            if (mSelectedViews.contains(functionName.function)) {
+                mSelectedViews.remove(functionName.function);
+            }
+        }
+
+        if (mFunctions == null) {
+            return;
+        }
+        notifyItemChanged(functionName.function);
+    }
+
     public ClassFunctionsAdapter(Context context) {
         mContext = context;
         mFunctions = getFunctions();
