@@ -59,6 +59,7 @@ android {
         api "com.aliyun.roompaas.biz:live:${LATEST_VERSION}"
         api "com.aliyun.roompaas.biz:rtc:${LATEST_VERSION}"
         api "com.aliyun.roompaas.biz:whiteboard:${LATEST_VERSION}"
+        api "com.aliyun.roompaas.biz:beauty_lite:${LATEST_VERSION}"
     }
 
     dependencies {

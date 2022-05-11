@@ -2,6 +2,7 @@ package com.aliyun.roompaas.app.activity.business;
 
 import android.animation.Animator;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
@@ -40,6 +41,8 @@ import com.aliyun.roompaas.base.callback.Callbacks;
 import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.model.PageModel;
 import com.aliyun.roompaas.base.util.CollectionUtil;
+import com.aliyun.roompaas.beauty_base.BeautyStrategy;
+import com.aliyun.roompaas.beauty_base.IBeautyOptUpdate;
 import com.aliyun.roompaas.biz.SampleRoomEventHandler;
 import com.aliyun.roompaas.biz.exposable.event.KickUserEvent;
 import com.aliyun.roompaas.biz.exposable.event.RoomInOutEvent;
@@ -88,7 +91,7 @@ public class BusinessActivity extends BaseRoomActivity {
     private TextView onlineCount;
     private TextView likeCount;
     private View bottomLayout;
-    private ActivityFloatHelper moreViewFloat, beautyOptionsViewFloat;
+    private ActivityFloatHelper moreViewFloat;
 
     private View likeIcon;
     private LottieAnimationView likeLottieView;
@@ -101,6 +104,8 @@ public class BusinessActivity extends BaseRoomActivity {
     private boolean isMutePlay = false;
     private boolean isMirror = false;
     private RecyclerViewHelper<MessageModel> recyclerViewHelper;
+
+    private Dialog dialog;
 
     //private static final boolean DEBUG_SCALE_MODE = BuildConfig.DEBUG;
     private static final boolean DEBUG_SCALE_MODE = false;
@@ -138,8 +143,6 @@ public class BusinessActivity extends BaseRoomActivity {
         likeIcon = findViewById(R.id.likeIcon);
         likeLottieView = findViewById(R.id.likeLottieView);
         moreViewFloat = new ActivityFloatHelper(this, R.layout.view_float_live_more);
-        beautyOptionsViewFloat = new ActivityFloatHelper(this, R.layout.view_float_live_beauty);
-
         audienceView.setCallback(this::handleUserManageLogic);
 
         commentInput.setOnEditorActionListener((v, actionId, event) -> {
@@ -554,9 +557,22 @@ public class BusinessActivity extends BaseRoomActivity {
 
     @SuppressLint("SetTextI18n")
     public void onBeauty(View view) {
-        beautyOptionsViewFloat.setTopOffset(AppUtil.getScreenHeight() * 4 / 5);
-        beautyOptionsViewFloat.show();
-        setBeautyToolbarListener();
+        ofDialog().show();
+    }
+
+    private Dialog ofDialog(){
+        if (dialog == null) {
+            dialog = com.aliyun.roompaas.uibase.util.DialogUtil.createDialogOfBottom(context, FrameLayout.LayoutParams.WRAP_CONTENT,
+                    R.layout.ilr_view_float_live_queen_beauty, true);
+            BeautyStrategy.INSTANCE.setUp(dialog.findViewById(R.id.beautyContainer), new IBeautyOptUpdate() {
+                @Override
+                public void onUpdateBeautyOpt(AliLiveBeautyOptions aliLiveBeautyOptions) {
+                    livePusherService.updateBeautyOptions(aliLiveBeautyOptions);
+                }
+            });
+        }
+
+        return dialog;
     }
 
     private void setOnlineCount(int count) {
@@ -721,142 +737,6 @@ public class BusinessActivity extends BaseRoomActivity {
 
     private AliLiveBeautyOptions beautyOptions = new AliLiveBeautyOptions.Builder().build();;
     private BeautyOptions currentSelected = BeautyOptions.beautyCheekPink;
-
-    private void setBeautyToolbarListener() {
-        Drawable indicator = getResources().getDrawable(R.drawable.bg_live_beauty_indicator);
-
-        TextView beautyCheekPink = beautyOptionsViewFloat.findViewById(R.id.beauty_cheek_pink);
-        TextView beautyBrightness = beautyOptionsViewFloat.findViewById(R.id.beauty_brightness);
-        TextView beautyWhite = beautyOptionsViewFloat.findViewById(R.id.beauty_white);
-        TextView beautyBuffing = beautyOptionsViewFloat.findViewById(R.id.beauty_buffing);
-        TextView beautyRuddy = beautyOptionsViewFloat.findViewById(R.id.beauty_ruddy);
-        TextView beautySlimFace = beautyOptionsViewFloat.findViewById(R.id.beauty_slim_face);
-        TextView beautyShortenFace = beautyOptionsViewFloat.findViewById(R.id.beauty_shorten_face);
-        TextView beautyBigEye = beautyOptionsViewFloat.findViewById(R.id.beauty_big_eye);
-        SeekBar seekBar = beautyOptionsViewFloat.findViewById(R.id.beauty_seek_bar);
-        TextView beautyValue = beautyOptionsViewFloat.findViewById(R.id.beauty_value);
-
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                livePusherService.updateBeautyOptions(beautyOptions);
-                beautyValue.setText(String.valueOf(i));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                beautyValue.setText(String.valueOf(seekBar.getProgress()));
-                setBeautyValue(seekBar.getProgress());
-            }
-        });
-
-        View.OnClickListener listener = view ->  {
-             beautyCheekPink.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-             beautyBrightness.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-             beautyWhite.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-             beautyBuffing.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-             beautyRuddy.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-             beautySlimFace.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-             beautyShortenFace.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-             beautyBigEye.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-
-             beautyCheekPink.setTextColor(Color.parseColor("#999999"));
-             beautyBrightness.setTextColor(Color.parseColor("#999999"));
-             beautyWhite.setTextColor(Color.parseColor("#999999"));
-             beautyBuffing.setTextColor(Color.parseColor("#999999"));
-             beautyRuddy.setTextColor(Color.parseColor("#999999"));
-             beautySlimFace.setTextColor(Color.parseColor("#999999"));
-             beautyShortenFace.setTextColor(Color.parseColor("#999999"));
-             beautyBigEye.setTextColor(Color.parseColor("#999999"));
-
-            TextView clickView = ((TextView)view);
-            clickView.setCompoundDrawablesWithIntrinsicBounds(null, null, null, indicator);
-            clickView.setTextColor(Color.parseColor("#ffffff"));
-            setBeautyOptionSelected(seekBar, view);
-        };
-
-        beautyCheekPink.setOnClickListener(listener);
-        beautyBrightness.setOnClickListener(listener);
-        beautyBuffing.setOnClickListener(listener);
-        beautyWhite.setOnClickListener(listener);
-        beautyRuddy.setOnClickListener(listener);
-        beautySlimFace.setOnClickListener(listener);
-        beautyShortenFace.setOnClickListener(listener);
-        beautyBigEye.setOnClickListener(listener);
-
-        beautyCheekPink.callOnClick();
-    }
-
-    private void setBeautyValue(int value) {
-        switch (currentSelected) {
-            case beautyRuddy:
-                beautyOptions.beautyRuddy = value;
-                break;
-            case beautyWhite:
-                beautyOptions.beautyWhite = value;
-                break;
-            case beautyBigEye:
-                beautyOptions.beautyBigEye = value;
-                break;
-            case beautyBuffing:
-                beautyOptions.beautyBuffing = value;
-                break;
-            case beautySlimFace:
-                beautyOptions.slimFace = value;
-                break;
-            case beautyCheekPink:
-                beautyOptions.beautyCheekPink = value;
-                break;
-            case beautyBrightness:
-                beautyOptions.beautyBrightness = value;
-                break;
-            case beautyShortenFace:
-                beautyOptions.shortenFace = value;
-                break;
-        }
-        livePusherService.updateBeautyOptions(beautyOptions);
-    }
-
-    private void setBeautyOptionSelected(SeekBar seekBar, View view) {
-        switch (view.getId()) {
-            case R.id.beauty_cheek_pink:
-                currentSelected = BeautyOptions.beautyCheekPink;
-                seekBar.setProgress(beautyOptions.beautyCheekPink);
-                break;
-            case R.id.beauty_brightness:
-                currentSelected = BeautyOptions.beautyBrightness;
-                seekBar.setProgress(beautyOptions.beautyBrightness);
-                break;
-            case R.id.beauty_white:
-                currentSelected = BeautyOptions.beautyWhite;
-                seekBar.setProgress(beautyOptions.beautyWhite);
-                break;
-            case R.id.beauty_buffing:
-                currentSelected = BeautyOptions.beautyBuffing;
-                seekBar.setProgress(beautyOptions.beautyBuffing);
-                break;
-            case R.id.beauty_ruddy:
-                currentSelected = BeautyOptions.beautyRuddy;
-                seekBar.setProgress(beautyOptions.beautyRuddy);
-                break;
-            case R.id.beauty_slim_face:
-                currentSelected = BeautyOptions.beautySlimFace;
-                seekBar.setProgress(beautyOptions.slimFace);
-                break;
-            case R.id.beauty_shorten_face:
-                currentSelected = BeautyOptions.beautyShortenFace;
-                seekBar.setProgress(beautyOptions.shortenFace);
-                break;
-            case R.id.beauty_big_eye:
-                currentSelected = BeautyOptions.beautyBigEye;
-                seekBar.setProgress(beautyOptions.beautyBigEye);
-                break;
-        }
-    }
 
     private enum BeautyOptions {
         beautyCheekPink,
