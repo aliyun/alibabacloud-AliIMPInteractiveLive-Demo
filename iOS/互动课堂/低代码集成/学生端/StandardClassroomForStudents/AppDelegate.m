@@ -19,6 +19,14 @@
     return YES;
 }
 
+// 使得不同viewController配置的界面方向生效（即课堂样板间可以横竖屏切换）
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window{
+    UINavigationController *navigationController = (id)window.rootViewController;
+    if ([navigationController isKindOfClass:[UINavigationController class]]) {
+        return [navigationController.visibleViewController supportedInterfaceOrientations];
+    }
+    return navigationController.supportedInterfaceOrientations;
+}
 
 #pragma mark - UISceneSession lifecycle
 
