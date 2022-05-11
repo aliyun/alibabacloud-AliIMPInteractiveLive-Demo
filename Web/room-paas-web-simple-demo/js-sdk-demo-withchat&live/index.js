@@ -3,7 +3,7 @@ const { RoomEngine, EventNameEnum } = window.RoomPaasSdk
 window.onload = () => {
     // 设置配置参数，userId及roomId请提前获取
     const userId = 'testname1'
-    const roomId = '891bc1de-5a32-4997-a12a-62b527e4871b'
+    const roomId = '***-***-***' // 客户修改为自己的roomId
     const path = '/api/login/getToken' // 这里写客户自己的api地址path
     const appKey = config_appKey
     const appId = config_appId
@@ -54,14 +54,16 @@ window.onload = () => {
         try {
             roomEngineInstance.init(config) // 使用配置信息初始化RoomEngine的配置
             createNode(`执行初始化roomEngine实例操作，得到deviceId为${deviceId}`)
-        } catch {
+        } catch (err) {
+            console.error(err)
             createNode(`执行初始化roomEngine实例操作失败`)
         }
         try {
             roomEngineInstance.auth(userId) 
             roomEngineInstance.setIsAutoInitRtc(false) // 关闭自动加入rtc
             createNode('执行登录操作')
-        } catch {
+        } catch (err) {
+            console.error(err)
             createNode('登录失败')
         }
     }
@@ -72,19 +74,22 @@ window.onload = () => {
             const roomChannel = roomEngineInstance.getRoomChannel(roomId);
             window.roomChannel = roomChannel;
             createNode('获取房间频道')
-        } catch {
+        } catch (err) {
+            console.error(err)
             createNode('获取房间频道失败')
         }
         try {
             window.chatService = window.roomChannel.getPluginService('chat')
             createNode('注册chat服务')
-        } catch {
+        } catch (err) {
+            console.error(err)
             createNode('注册chat服务失败')
         }
         try {
             window.liveService = window.roomChannel.getPluginService('live')
             createNode('注册live服务')
-        } catch {
+        } catch (err) {
+            console.error(err)
             createNode('注册live服务失败')
         }
         // 6. 监听事件
@@ -104,13 +109,15 @@ window.onload = () => {
                 container: '#J_player'
             })
             createNode('在id="play"节点处创建播放器')
-        } catch {
+        } catch (err) {
+            console.error(err)
             createNode('创建播放器失败')
         }
         try {
             window.liveService.tryPlayLive()
             createNode('尝试播放')
-        } catch {
+        } catch (err) {
+            console.error(err)
             createNode('播放失败')
         }
     }
@@ -150,7 +157,8 @@ window.onload = () => {
         try {
             window.chatService.sendLike()
             createNode('点赞成功')
-        } catch {
+        } catch (err) {
+            console.error(err)
             createNode('点赞失败')
         }
     }
@@ -160,7 +168,8 @@ window.onload = () => {
         try {
             roomChannel.leaveRoom()
             createNode('离开房间')
-        } catch {
+        } catch (err) {
+            console.log(err)
             createNode('离开房间失败')
         }
     }
