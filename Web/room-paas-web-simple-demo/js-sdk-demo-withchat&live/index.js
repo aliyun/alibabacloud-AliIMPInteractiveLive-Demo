@@ -82,7 +82,7 @@ window.onload = () => {
             createNode('注册chat服务失败')
         }
         try {
-            window.chatService = window.roomChannel.getPluginService('live')
+            window.liveService = window.roomChannel.getPluginService('live')
             createNode('注册live服务')
         } catch {
             createNode('注册live服务失败')
