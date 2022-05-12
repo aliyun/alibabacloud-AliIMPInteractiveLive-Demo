@@ -465,7 +465,7 @@ public class BusinessActivity extends BaseRoomActivity {
 
             @Override
             public void onError(String errorMsg) {
-                showToast("开始直播失败: " + errorMsg);
+                showToast("开始直播失败:  " + errorMsg);
             }
         });
     }
