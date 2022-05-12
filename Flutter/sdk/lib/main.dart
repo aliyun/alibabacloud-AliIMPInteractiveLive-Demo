@@ -66,7 +66,9 @@ class _MyAppState extends State<MyApp> {
   var appSettings;
   var demoParam;
 
-  var roleChoosen = false;
+  static const ROLE_ANCHOR = 'anchor';
+  static const ROLE_AUDIENCE = 'audience';
+  var roleChoosen = '';
 
   var eventChannelCancel;
 
@@ -98,7 +100,7 @@ class _MyAppState extends State<MyApp> {
     M res = {'result': 'unknown'};
     try {
       String config =
-          anchor ? 'app_settings_anchor.json' : 'app_settings_audience.json';
+      anchor ? 'app_settings_anchor.json' : 'app_settings_audience.json';
       final String settingJson = await rootBundle.loadString('assets/$config');
       appSettings = await json.decode(settingJson);
       String userId = (appSettings['userId'] as String).isEmpty
@@ -106,7 +108,7 @@ class _MyAppState extends State<MyApp> {
           : appSettings['userId'];
 
       final String paramJson =
-          await rootBundle.loadString('assets/demo_param.json');
+      await rootBundle.loadString('assets/demo_param.json');
       demoParam = await json.decode(paramJson);
 
       String deviceId = await Utils.getId() ?? '';
@@ -135,21 +137,48 @@ class _MyAppState extends State<MyApp> {
         'nick': 'nickOf' + userId,
       });
 
-      if (appSettings['role'] == 'anchor') {
+      roleChoosen = appSettings['role'];
+      if (roleChoosen == ROLE_ANCHOR) {
         res = await IMPSdkLivePusher.startPreview();
         res = await IMPSdkLivePusher.startLive();
       } else {
-        res = await IMPSdkLivePlayer.start();
+        var param = {
+          'showMode': 'aspect_fill',
+          'lowDelay': 'true',
+        };
+        res = await IMPSdkLivePlayer.start(param);
       }
     } on PlatformException catch (e) {
       res!['result'] =
-          'api e: code=${e.code}, msg=${e.message}, details=${e.details}';
+      'api e: code=${e.code}, msg=${e.message}, details=${e.details}';
       debugPrint('startPreview result:${res['result']}');
     }
 
     if (!mounted) return;
 
     debugPrint('init result:${res!['result']}');
+    setState(() {
+      _initResult = res!['result'];
+    });
+  }
+
+  Future<void> toggleBeautyPanel() async {
+    M res = {'result': 'unknown'};
+    try {
+      if (roleChoosen == ROLE_ANCHOR) {
+        res = await IMPSdkLivePusher.toggleBeautyPanel();
+      } else {
+        res['result'] = 'error:only valid for anchor';
+      }
+    } on PlatformException catch (e) {
+      res!['result'] =
+      'api e: code=${e.code}, msg=${e.message}, details=${e.details}';
+      debugPrint('toggleBeautyPanel result:${res['result']}');
+    }
+
+    if (!mounted) return;
+
+    debugPrint('toggleBeautyPanel:${res!['result']}');
     setState(() {
       _initResult = res!['result'];
     });
@@ -164,7 +193,7 @@ class _MyAppState extends State<MyApp> {
       res = await IMPSdkChat.listComment(param);
     } on PlatformException catch (e) {
       res!['result'] =
-          'listComment e: code=${e.code}, msg=${e.message}, details=${e.details}';
+      'listComment e: code=${e.code}, msg=${e.message}, details=${e.details}';
     }
 
     debugPrint('listComment result:${res!['result']}');
@@ -182,7 +211,7 @@ class _MyAppState extends State<MyApp> {
       res = await IMPSdkRoomEngine.login(param);
     } on PlatformException catch (e) {
       res!['result'] =
-          'login e: code=${e.code}, msg=${e.message}, details=${e.details}';
+      'login e: code=${e.code}, msg=${e.message}, details=${e.details}';
     }
 
     debugPrint('login result:${res!['result']}');
@@ -218,7 +247,7 @@ class _MyAppState extends State<MyApp> {
     Widget widget;
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        // return widget on Android.
+      // return widget on Android.
         widget = PlatformViewLink(
           viewType: viewType,
           surfaceFactory:
@@ -267,57 +296,72 @@ class _MyAppState extends State<MyApp> {
         body: Stack(
           children: <Widget>[
             widget,
-            if (!roleChoosen)
-              Positioned.fill(
-                child: ButtonBar(
-                  alignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  roleChoosen = true;
-                                });
-                                initPlugin(true);
-                              },
-                              child: const Icon(Icons.radar),
-                              // color: Colors.green,
-                            ),
-                            const SizedBox(width: 10),
-                            const Text(
-                              "主播",
-                              style: TextStyle(color: Colors.blue),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  roleChoosen = true;
-                                });
-                                initPlugin(false);
-                              },
-                              child: const Icon(Icons.connected_tv),
-                              // color: Colors.red,
-                            ),
-                            const SizedBox(width: 10),
-                            const Text(
-                              "观众",
-                              style: TextStyle(color: Colors.blue),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+            Positioned.fill(
+              child: ButtonBar(
+                alignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      if (roleChoosen.isEmpty) Row(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                roleChoosen = ROLE_ANCHOR;
+                              });
+                              initPlugin(true);
+                            },
+                            child: const Icon(Icons.radar),
+                            // color: Colors.green,
+                          ),
+                          const SizedBox(width: 10),
+                          const Text(
+                            "主播",
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                        ],
+                      ),
+                      if (roleChoosen.isEmpty) Row(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                roleChoosen = ROLE_AUDIENCE;
+                              });
+                              initPlugin(false);
+                            },
+                            child: const Icon(Icons.connected_tv),
+                            // color: Colors.red,
+                          ),
+                          const SizedBox(width: 10),
+                          const Text(
+                            "观众",
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                        ],
+                      ),
+                      if (roleChoosen == ROLE_ANCHOR) Row(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              toggleBeautyPanel();
+                            },
+                            child: const Icon(Icons.face),
+                            // color: Colors.red,
+                          ),
+                          const SizedBox(width: 10),
+                          const Text(
+                            "美颜",
+                            style: TextStyle(color: Colors.blue),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
+            ),
           ],
         ),
         // floatingActionButton:
