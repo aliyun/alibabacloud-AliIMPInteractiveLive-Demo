@@ -3,8 +3,6 @@ package com.aliyun.roompaas.app.activity.business;
 import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -13,7 +11,6 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -474,32 +471,11 @@ public class BusinessActivity extends BaseRoomActivity {
     }
 
     public void onStopLive(View view) {
-        showUpStopLiveConfirmDialog();
+        readyStopLive();
     }
 
-    private void showUpStopLiveConfirmDialog(){
-        stopConfirmDialog(this::onLiveExitProcess);
-    }
-
-    private void stopConfirmDialog(@NonNull Runnable action){
-        DialogUtil.showCustomDialog(this, "还有观众正在路上，确定要结束直播吗？", action, null);
-    }
-
-    private void onLiveExitProcess() {
-        livePusherService.stopLive(new Callback<Void>() {
-            @Override
-            public void onSuccess(Void data) {
-                addMessage("主播", "直播已结束");
-                startLive.setVisibility(View.VISIBLE);
-                stopLive.setVisibility(View.GONE);
-                isPushing = false;
-            }
-
-            @Override
-            public void onError(String errorMsg) {
-                showToast("结束直播失败: " + errorMsg);
-            }
-        });
+    private void readyStopLive(){
+        DialogUtil.showCustomDialog(this, "还有观众正在路上，确定要结束直播吗？", this::finish, null);
     }
 
     private void onCommentSubmit() {
@@ -637,7 +613,7 @@ public class BusinessActivity extends BaseRoomActivity {
         boolean isOwner = roomChannel != null && roomChannel.isOwner();
         boolean shouldShowConfirm = isOwner & ((liveService != null && liveService.hasLive()) || isPushing);
         if (shouldShowConfirm) {
-            showUpStopLiveConfirmDialog();
+            readyStopLive();
         } else {
             super.onBackPressed();
         }
