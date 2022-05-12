@@ -153,6 +153,11 @@
     [self setupStudentVC4Phone];
 }
 
+// 支持的界面方向（仅竖屏）
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
+    return UIInterfaceOrientationMaskPortrait;
+}
+
 #pragma -mark UITextFieldDelegate
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];

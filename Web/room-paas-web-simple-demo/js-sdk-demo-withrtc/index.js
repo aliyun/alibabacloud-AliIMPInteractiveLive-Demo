@@ -10,7 +10,7 @@ window.initUserId = paramObj.userId || ''
 window.onload = () => {
     // 设置配置参数，userId及roomId请提前获取
     const userId = window.initUserId || 'testname'
-    const roomId = 'ae8a015b-f7a9-484f-972c-d3abcf7edeef'
+    const roomId = '***-***-***' // 客户替换成自己的roomId
     const path = '/api/login/getToken' // 这里写客户自己的api地址path
     const appKey = config_appKey
     const appId = config_appId
@@ -61,7 +61,8 @@ window.onload = () => {
         try {
             roomEngineInstance.init(config) // 使用配置信息初始化RoomEngine的配置
             createNode(`执行初始化roomEngine实例操作，得到deviceId为${deviceId}`)
-        }catch {
+        }catch (err) {
+            console.error(err)
             createNode(`执行初始化roomEngine实例操作失败`)
         }
         try {
@@ -69,7 +70,8 @@ window.onload = () => {
             // roomEngineInstance.setIsAutoInitRtc(false) // 关闭自动加入rtc
             createNode(`执行登录操作, 当前userId为${userId}`)
         }
-        catch {
+        catch (err) {
+            console.error(err)
             createNode('登录失败')
         }
     }
@@ -83,7 +85,8 @@ window.onload = () => {
                 },
             })
             createNode('添加事件监听成功')
-        }catch {
+        }catch (err) {
+            console.error(err)
             createNode('添加事件监听失败')
         }
     }
@@ -94,13 +97,15 @@ window.onload = () => {
             const roomChannel = roomEngineInstance.getRoomChannel(roomId);
             window.roomChannel = roomChannel;
             createNode('获取房间频道')
-        }catch {
+        }catch (err) {
+            console.error(err)
             createNode('获取房间频道失败')
         }
         try {
             window.rtcService = window.roomChannel.getPluginService('rtc')
             createNode('注册rtc服务')
-        }catch {
+        }catch (err) {
+            console.error(err)
             createNode('注册rtc服务失败')
         }
     }
@@ -154,7 +159,8 @@ window.onload = () => {
         try {
             window.rtcService.applyJoinChannel(true)
             createNode('申请连麦中')
-        }catch {
+        }catch (err) {
+            console.error(err)
             createNode('申请连麦失败')
         }
     }
@@ -163,7 +169,8 @@ window.onload = () => {
         try {
             window.rtcService.kickUserFromChannel([otherUserId])
             createNode(`用户${otherUserId}已被踢出`)
-        }catch {
+        }catch (err) {
+            console.error(err)
             createNode('踢出用户失败')
         }
     }
@@ -172,7 +179,8 @@ window.onload = () => {
         try {
             window.rtcService.leaveRtc()
             createNode('已结束连麦')
-        }catch {
+        }catch (err) {
+            console.error(err)
             createNode('结束连麦失败')
         }
     }
@@ -203,7 +211,8 @@ window.onload = () => {
             try {
                 window.rtcService.joinChannel(userId)
                 createNode('开始连麦')
-            }catch {
+            }catch (err) {
+                console.error(err)
                 createNode('连麦失败')
             }
         })
@@ -224,7 +233,8 @@ window.onload = () => {
         try {
             window.rtcService.startRtcPreview(document.querySelector('#preview'))
             createNode('开启预览成功')
-        }catch {
+        }catch (err) {
+            console.error(err)
             createNode('开启预览失败')
         }
     }
@@ -234,7 +244,8 @@ window.onload = () => {
         try {
             window.rtcService.stopRtcPreview(document.querySelector('#preview'))
             createNode('结束预览成功')
-        }catch {
+        }catch (err) {
+            console.error(err)
             createNode('结束预览失败')
         }
     }
@@ -244,7 +255,8 @@ window.onload = () => {
         try {
             window.rtcService.setMuteCamera(false)
             createNode('摄像头已开启')
-        }catch {
+        }catch (err) {
+            console.error(err)
             createNode('摄像头开启失败')
         }
     }
@@ -252,7 +264,8 @@ window.onload = () => {
         try {
             window.rtcService.setMuteCamera(true)
             createNode('摄像头已关闭')
-        }catch {
+        }catch (err) {
+            console.error(err)
             createNode('摄像头关闭失败')
         }
     }
@@ -262,7 +275,8 @@ window.onload = () => {
         try {
             window.rtcService.setMutePush(false)
             createNode('音频已开启')
-        }catch {
+        }catch (err) {
+            console.error(err)
             createNode('音频开启失败')
         }
     }
@@ -270,7 +284,8 @@ window.onload = () => {
         try {
             window.rtcService.setMutePush(true)
             createNode('音频已关闭')
-        }catch {
+        }catch (err) {
+            console.error(err)
             createNode('音频关闭失败')
         }
     }
@@ -280,7 +295,8 @@ window.onload = () => {
         try {
             window.rtcService.leaveRtc()
             createNode('已退出RTC')
-        }catch {
+        }catch (err) {
+            console.error(err)
             createNode('退出RTC失败')
         }
     }
@@ -290,7 +306,8 @@ window.onload = () => {
         try {
             roomChannel.leaveRoom()
             createNode('离开房间')
-        }catch {
+        }catch (err) {
+            console.error(err)
             createNode('离开房间失败')
         }
     }
