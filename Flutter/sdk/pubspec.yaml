@@ -19,7 +19,7 @@ dependencies:
     sdk: flutter
   http: ^0.13.4
   device_info_plus: ^3.0.1
-  alicloud_impinteraction_sdk: ^1.8.5
+  alicloud_impinteraction_sdk: ^1.8.6
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
