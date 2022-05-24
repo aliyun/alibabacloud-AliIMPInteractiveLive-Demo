@@ -82,6 +82,8 @@
             ASLRBLiveInitConfig* config = [[ASLRBLiveInitConfig alloc] init];
             config.liveID = weakSelf.liveID;
             config.role = weakSelf.role;
+            config.middleViewsConfig.liveMembersButtonHidden = NO;
+            config.middleViewsConfig.liveNoticeButtonHidden = NO;
 //            config.enableLinkMic = YES; // 连麦开关
             config;
         }) onCompletion:^(ASLRBLiveRoomViewController * _Nonnull liveRoomVC) {
