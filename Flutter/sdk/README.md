@@ -36,9 +36,9 @@
 
 ```groovy
 android {
-    defaultConfig {
-        minSdkVersion 21
-    }
+  defaultConfig {
+    minSdkVersion 21
+  }
 }
 ```
 
@@ -68,6 +68,7 @@ iOS 10.0
 |  Privacy - Microphone Usage Description |  Use microphone |
 |  Application uses Wi-Fi |  YES |
 
+
 ## 配置应用与API使用
 
 完整的代码实现逻辑请参见[开源工程](https://github.com/aliyun/alibabacloud-AliIMPInteractiveLive-Demo/tree/master/Flutter/sdk)
@@ -80,8 +81,8 @@ iOS 10.0
 
 /assets 目录下创建
 > app_settings_anchor.json
-app_settings_audience.json
-demo_param.json
+> app_settings_audience.json
+> demo_param.json
 
 分别配置：
 app_settings_anchor.json
@@ -162,7 +163,10 @@ demo_param.json
       });
 
       if (appSettings['role'] == 'anchor') {
-        res = await IMPSdkLivePusher.startPreview();
+        var param = {
+          'resolution': 'VALUE_540P',
+        };
+        res = await IMPSdkLivePusher.startPreview(param);
         res = await IMPSdkLivePusher.startLive();
       } else {
         res = await IMPSdkLivePlayer.start();
@@ -182,22 +186,37 @@ demo_param.json
   }
 ```
 
+#### 配置主播推流分辨率：
+```dart
+      var param = {
+        'resolution': 'VALUE_540P',
+      };
+      res = await IMPSdkLivePusher.startPreview(param);
+```
+'resolution' 可取值：
+
+| Key               | Value |
+|-----------------|-----|
+| 'VALUE_480P'    | 480P  |
+| 'VALUE_540P'   | 540P  |
+| 'VALUE_720P'   | 720P  |
+
 ### 开启直播或者进入直播间
 ```dart
   void setUpAsAnchor() {
+  listComment();
+  login();
+}
+
+void setUpAsAudience() {
+  String inputId = sceneIdController.text;
+  String? sceneId = inputId.isEmpty ? demoParam['liveId'] : inputId;
+  if (sceneId?.isEmpty ?? true) {
+    debugPrint('empty input');
+  } else {
     listComment();
     login();
   }
-
-  void setUpAsAudience() {
-    String inputId = sceneIdController.text;
-    String? sceneId = inputId.isEmpty ? demoParam['liveId'] : inputId;
-    if (sceneId?.isEmpty ?? true) {
-      debugPrint('empty input');
-    } else {
-      listComment();
-      login();
-    }
-  }
+}
 ```
 

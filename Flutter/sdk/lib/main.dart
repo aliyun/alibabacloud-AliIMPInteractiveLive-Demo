@@ -139,7 +139,10 @@ class _MyAppState extends State<MyApp> {
 
       roleChoosen = appSettings['role'];
       if (roleChoosen == ROLE_ANCHOR) {
-        res = await IMPSdkLivePusher.startPreview();
+        var param = {
+          'resolution': 'VALUE_540P',
+        };
+        res = await IMPSdkLivePusher.startPreview(param);
         res = await IMPSdkLivePusher.startLive();
       } else {
         var param = {
