@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dialog_root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginStart="32dp"
+    android:layout_marginEnd="32dp"
+    app:cardBackgroundColor="#ffffff"
+    app:cardCornerRadius="16dp"
+    tools:ignore="HardcodedText">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- 标题 -->
+        <TextView
+            android:id="@+id/dialog_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="24dp"
+            android:text="立即预约"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/dialog_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:autofillHints="@null"
+            android:background="@drawable/ep_bg_live_subscribe_input"
+            android:gravity="start"
+            android:hint="请填写手机号"
+            android:inputType="number"
+            android:maxLength="11"
+            android:padding="8dp"
+            android:scrollbars="vertical"
+            android:singleLine="true"
+            android:textColor="#333333"
+            android:textColorHint="#999999"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/dialog_input_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="24dp"
+            android:scrollbars="vertical"
+            android:text="开播前10分钟通过短信提醒"
+            android:textColor="#D93026"
+            android:textSize="10sp"
+            tools:ignore="SmallSp" />
+
+        <!-- 分割线 -->
+        <View
+            android:id="@+id/dialog_message_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#d4d4d4" />
+
+        <!-- 底部Action -->
+        <LinearLayout
+            android:id="@+id/dialog_action_container"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/dialog_action_cancel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ep_bg_common_click"
+                android:gravity="center"
+                android:text="取消"
+                android:textColor="#aaaaaa"
+                android:textSize="16sp"
+                tools:visibility="visible" />
+
+            <View
+                android:id="@+id/dialog_action_divider"
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="#d4d4d4"
+                tools:visibility="visible" />
+
+            <TextView
+                android:id="@+id/dialog_action_confirm"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/ep_bg_common_click"
+                android:gravity="center"
+                android:text="提交"
+                android:textColor="@color/ep_colorPrimary"
+                android:textSize="16sp" />
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

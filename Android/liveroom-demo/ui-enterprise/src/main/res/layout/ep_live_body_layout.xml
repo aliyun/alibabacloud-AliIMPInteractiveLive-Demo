@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:layout_height="wrap_content"
+    tools:layout_width="match_parent"
+    tools:orientation="vertical"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/body_tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        app:tabIconTint="#00BCD4"
+        app:tabIndicator="@drawable/ep_live_body_tab_indicator"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorHeight="3dp"
+        app:tabMinWidth="80dp"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="#333333"
+        app:tabTextColor="#999999" />
+    <!--        app:tabTextAppearance="@style/LiveBodyTabStyle"-->
+    <!--        app:tabIndicatorColor="#00BCD4"-->
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/body_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#f5f5f5"
+        android:overScrollMode="never" />
+</merge>

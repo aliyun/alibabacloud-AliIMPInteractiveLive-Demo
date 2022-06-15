@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="#3300ff00"
+    tools:layout_gravity="bottom"
+    tools:layout_height="300dp"
+    tools:layout_marginBottom="61.5dp"
+    tools:layout_marginEnd="79dp"
+    tools:layout_marginStart="14dp"
+    tools:layout_width="match_parent"
+    tools:parentTag="android.widget.RelativeLayout">
+
+    <!-- 弹幕 -->
+    <com.aliyun.standard.liveroom.lib.LimitSizeRecyclerView
+        android:id="@+id/message_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/message_fly_view"
+        tools:background="#330000ff"
+        tools:layout_height="80dp"
+        tools:layout_width="match_parent" />
+</merge>

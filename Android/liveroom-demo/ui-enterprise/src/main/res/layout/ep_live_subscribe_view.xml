@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="#ffffff"
+    tools:ignore="MissingDefaultResource"
+    tools:layout_height="100dp"
+    tools:layout_width="match_parent"
+    tools:parentTag="android.widget.FrameLayout">
+
+    <Button
+        android:id="@+id/subscribe_submit"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_gravity="center"
+        android:background="@drawable/ep_bg_live_subscribe"
+        android:elevation="1dp"
+        android:gravity="center"
+        android:singleLine="true"
+        android:text="立即预约"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
+</merge>

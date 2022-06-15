@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:clipChildren="false"
+    android:keepScreenOn="true"
+    tools:ignore="HardcodedText,SmallSp">
+
+    <!-- 主内容的线性布局 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:orientation="vertical">
+
+        <!-- 顶部导航栏 -->
+        <com.aliyun.vpaas.standard.enterprise.view.LiveNavigationView
+            android:id="@+id/view_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout_height="44dp" />
+
+        <!-- 渲染模块 -->
+        <com.aliyun.vpaas.standard.enterprise.view.LiveRenderLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <!-- 主体模块 -->
+        <com.aliyun.vpaas.standard.enterprise.view.LiveBodyLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="#FBFBFB" />
+
+        <!-- 底部模块 -->
+        <com.aliyun.vpaas.standard.enterprise.view.LiveBottomLayout
+            android:id="@+id/room_bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="@dimen/ep_bottom_layout_margin_bottom">
+
+            <!-- 输入框 -->
+            <com.aliyun.vpaas.standard.enterprise.view.LiveInputView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="12dp"
+                android:layout_weight="1" />
+
+            <!-- 分享 -->
+            <com.aliyun.vpaas.standard.enterprise.view.LiveShareView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="12dp" />
+
+            <!-- 点赞 -->
+            <com.aliyun.vpaas.standard.enterprise.view.LiveLikeView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp" />
+
+            <!-- 礼物 -->
+            <com.aliyun.vpaas.standard.enterprise.view.LiveGiftView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                tools:layout_marginEnd="12dp" />
+
+            <!-- 预约 -->
+            <com.aliyun.vpaas.standard.enterprise.view.LiveSubscribeView
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:visibility="gone"
+                tools:visibility="visible" />
+        </com.aliyun.vpaas.standard.enterprise.view.LiveBottomLayout>
+    </LinearLayout>
+
+    <!-- 纯逻辑组件 (不含视图部分) -->
+    <com.aliyun.standard.liveroom.lib.component.ComponentHostContainer
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- 踢人逻辑组件 -->
+        <com.aliyun.standard.liveroom.lib.component.ComponentHost
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:component="com.aliyun.standard.liveroom.lib.component.component.LiveKickOutComponent" />
+
+        <!-- 进房间失败逻辑组件 -->
+        <com.aliyun.standard.liveroom.lib.component.ComponentHost
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:component="com.aliyun.standard.liveroom.lib.component.component.LiveEnterRoomErrorComponent" />
+    </com.aliyun.standard.liveroom.lib.component.ComponentHostContainer>
+</RelativeLayout>

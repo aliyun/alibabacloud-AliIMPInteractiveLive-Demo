@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="42dp"
+    android:background="@drawable/bg_live_info_view"
+    android:gravity="center"
+    android:orientation="horizontal"
+    tools:ignore="HardcodedText"
+    tools:layout_gravity="center"
+    tools:parentTag="android.widget.FrameLayout">
+
+    <ImageView
+        android:id="@+id/live_info_avatar"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:layout_margin="4dp"
+        android:contentDescription="@null" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:gravity="start"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/live_info_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxEms="15"
+            android:singleLine="true"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            tools:text="这里是直播标题" />
+
+        <TextView
+            android:id="@+id/live_info_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="#ffffff"
+            android:textSize="10sp"
+            tools:ignore="SmallSp"
+            tools:text="1234 观看" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/live_info_follow"
+        android:layout_width="64dp"
+        android:layout_height="26dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/bg_follow"
+        android:text="+关注"
+        android:textColor="#ffffff"
+        android:textSize="14sp"
+        tools:visibility="visible" />
+
+    <Space
+        android:layout_width="8dp"
+        android:layout_height="0dp" />
+</LinearLayout>

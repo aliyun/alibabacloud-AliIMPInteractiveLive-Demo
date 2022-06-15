@@ -28,6 +28,8 @@ import com.aliyun.standard.liveroom.lib.component.view.LiveMoreView;
 import com.aliyun.standard.liveroom.lib.component.view.LiveRenderView;
 import com.aliyun.standard.liveroom.lib.component.view.LiveShareView;
 import com.aliyun.standard.liveroom.lib.component.view.LiveStopView;
+import com.aliyun.vpaas.standard.ecommerce.LiveHook4Ecommerce;
+import com.aliyun.vpaas.standard.enterprise.LiveHook4EnterPrise;
 
 /**
  * 设置直播间UI
@@ -38,14 +40,14 @@ import com.aliyun.standard.liveroom.lib.component.view.LiveStopView;
 public class LiveHooker {
 
     /**
-     * 设置直播间默认样式, 即不做任何额外UI定制
+     * 设置默认样式, 即不做任何额外UI定制
      */
     public static void setDefaultStyle() {
         LivePrototype.getInstance().setLiveHook(null);
     }
 
     /**
-     * 设置直播间自定义样式, 根据业务诉求做额外定制
+     * 设置自定义样式, 根据业务诉求做额外定制
      */
     public static void setCustomStyle() {
         LivePrototype.getInstance().setLiveHook(new LiveHook()
@@ -82,7 +84,7 @@ public class LiveHooker {
     }
 
     /**
-     * 设置直播间连麦样式
+     * 设置连麦样式
      *
      * @param isAnchor 是否是主播
      */
@@ -99,5 +101,23 @@ public class LiveHooker {
             liveHook.replaceComponentView(LiveRenderView.class, CustomAudienceRenderView.class);
         }
         LivePrototype.getInstance().setLiveHook(liveHook);
+    }
+
+    /**
+     * 设置电商样式
+     *
+     * @param isAnchor 是否是主播
+     */
+    public static void setEcommerceStyle(boolean isAnchor) {
+        LivePrototype.getInstance().setLiveHook(new LiveHook4Ecommerce());
+    }
+
+    /**
+     * 设置企业直播样式
+     *
+     * @param isAnchor 是否是主播
+     */
+    public static void setEnterPriseStyle(boolean isAnchor) {
+        LivePrototype.getInstance().setLiveHook(new LiveHook4EnterPrise());
     }
 }

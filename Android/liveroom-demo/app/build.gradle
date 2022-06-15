@@ -2,6 +2,8 @@ plugins {
     id 'com.android.application'
 }
 
+apply plugin: 'kotlin-android'
+
 apply from: 'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/release/config/config.gradle'
 
 android {
@@ -29,17 +31,23 @@ android {
 }
 
 dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
     // 低代码SDK依赖
     if (shouldLoadLocalDepFun()) {
         api project(':liveroom')
         api project(':rtc')
         api project(':beauty_pro')
     } else {
-        def LATEST_VERSION = '1.8.0.20220429002-SNAPSHOT'
+        def LATEST_VERSION = '1.8.0.20220615001-SNAPSHOT'
         api "com.aliyun.roompaas.biz:liveroom:$LATEST_VERSION"
         api "com.aliyun.roompaas.biz:rtc:$LATEST_VERSION"
         api "com.aliyun.roompaas.biz:beauty_pro:$LATEST_VERSION"
     }
+
+    // 开源标准UI实现
+    api project(':ui-ecommerce')
+    api project(':ui-enterprise')
 
     // 图片加载库
     implementation 'com.github.bumptech.glide:glide:4.9.0'

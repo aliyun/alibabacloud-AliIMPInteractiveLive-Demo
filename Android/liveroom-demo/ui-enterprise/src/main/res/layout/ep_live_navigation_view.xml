@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="44dp"
+    android:background="#ffffff"
+    tools:ignore="MissingDefaultResource"
+    tools:parentTag="android.widget.FrameLayout">
+
+    <ImageView
+        android:id="@+id/navigation_back"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center_vertical"
+        android:contentDescription="@null"
+        android:padding="13dp"
+        android:src="@drawable/ep_icon_back_black" />
+
+    <TextView
+        android:id="@+id/navigation_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:ellipsize="marquee"
+        android:maxLength="12"
+        android:singleLine="true"
+        android:textColor="#333333"
+        android:textSize="15sp"
+        tools:text="有效打造企业品牌，企业如何" />
+</FrameLayout>

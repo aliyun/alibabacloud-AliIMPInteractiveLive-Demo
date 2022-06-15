@@ -10,19 +10,20 @@ if (localPropertiesFile.exists()) {
     localPropertiesFile.withInputStream {
         localProperties.load(it)
     }
-    loadLocalDep =  localProperties.getProperty('loadLocalDep') == 'true'
+    loadLocalDep = localProperties.getProperty('loadLocalDep') == 'true'
     workspace = localProperties.getProperty('workspace') ?: workspace
     println "loadLocalDep=$loadLocalDep"
     println "workspace=$workspace"
 } else {
     println "配置文件不存在"
-    loadLocalDep =  false
+    loadLocalDep = false
 }
 
 if (loadLocalDep) {
     println "加载本地配置"
     def ANDROID_WORKSPACE_4_LIVE_ROOM_SDK = "$workspace/standard-liveroom-android"
     def ANDROID_WORKSPACE_4_BASE_SDK = "$workspace/room-paas-android"
+    def ANDROID_WORKSPACE_4_STANDARD_UI = "$workspace/standard-ui-android"
 
     if (new File(ANDROID_WORKSPACE_4_LIVE_ROOM_SDK).exists()) {
         include(':liveroom')
@@ -72,4 +73,17 @@ if (loadLocalDep) {
         include(':app-release')
         project(':app-release').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/app-release")
     }
+
+    println('*' * 50)
+    println(ANDROID_WORKSPACE_4_STANDARD_UI)
+    if (new File(ANDROID_WORKSPACE_4_STANDARD_UI).exists()) {
+        include(':ui-ecommerce')
+        project(':ui-ecommerce').projectDir = new File("$ANDROID_WORKSPACE_4_STANDARD_UI/ui-ecommerce")
+
+        include(':ui-enterprise')
+        project(':ui-enterprise').projectDir = new File("$ANDROID_WORKSPACE_4_STANDARD_UI/ui-enterprise")
+    }
+} else {
+    include(':ui-ecommerce')
+    include(':ui-enterprise')
 }

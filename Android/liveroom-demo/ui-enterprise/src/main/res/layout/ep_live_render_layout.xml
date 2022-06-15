@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    tools:ignore="HardcodedText"
+    tools:layout_height="212dp">
+
+    <!-- 媒体渲染组件 -->
+    <com.aliyun.standard.liveroom.lib.component.view.LiveRenderView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- 直播信息组件 -->
+    <com.aliyun.vpaas.standard.enterprise.view.LiveInfoView
+        android:id="@+id/render_live_info_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="16dp"
+        tools:layout_height="42dp"
+        tools:layout_width="130dp" />
+
+    <!-- 直播状态组件 -->
+    <com.aliyun.vpaas.standard.enterprise.view.LiveStateView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <!-- 横屏布局 -->
+    <com.aliyun.vpaas.standard.enterprise.view.LiveLandscapeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <!-- Loading组件 -->
+    <com.aliyun.vpaas.standard.enterprise.view.LiveLoadingView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <!-- 刷新组件 -->
+    <com.aliyun.vpaas.standard.enterprise.view.LiveRefreshView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <!-- 全屏切换组件 -->
+    <com.aliyun.vpaas.standard.enterprise.view.LiveFullscreenView
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_gravity="end|bottom"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="10dp" />
+</FrameLayout>

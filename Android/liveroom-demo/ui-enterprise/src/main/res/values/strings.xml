@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ui-enterprise</string>
+
+    <string name="ep_live_input_default_tips">说些什么吧…</string>
+</resources>

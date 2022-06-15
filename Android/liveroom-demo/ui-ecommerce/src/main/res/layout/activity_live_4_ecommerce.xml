@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/generalAlphaGrayBg"
+    android:clipChildren="false"
+    android:keepScreenOn="true"
+    tools:ignore="HardcodedText,SmallSp">
+
+    <!-- 媒体容器层 -->
+    <com.aliyun.standard.liveroom.lib.component.view.LiveRenderView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- 直播内容图层 -->
+    <com.aliyun.standard.liveroom.lib.component.view.LiveContentLayer
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- 手势层 -->
+        <com.aliyun.standard.liveroom.lib.component.view.LiveGestureView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- 背景幕布 -->
+        <com.aliyun.standard.liveroom.lib.component.view.LiveCurtainView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!-- 页头布局 -->
+        <LinearLayout
+            android:id="@+id/room_header_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="14dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.aliyun.vpaas.standard.ecommerce.view.LiveInfoView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.aliyun.standard.liveroom.lib.component.view.LiveUpperRightLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.aliyun.standard.liveroom.lib.component.view.LiveStopView
+                android:layout_width="29dp"
+                android:layout_height="29dp"
+                android:contentDescription="@null" />
+        </LinearLayout>
+
+        <!-- 直播公告 -->
+        <com.aliyun.vpaas.standard.ecommerce.view.LiveNoticeView
+            android:id="@+id/room_notice_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/room_header_layout"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="8dp" />
+
+        <!-- 排行榜 -->
+        <com.aliyun.vpaas.standard.ecommerce.view.LiveTopListView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/room_notice_view"
+            android:layout_marginStart="6dp"
+            android:layout_toEndOf="@id/room_notice_view" />
+
+        <!-- 直播回放控制条 -->
+        <com.aliyun.standard.liveroom.lib.component.view.LivePlaybackView
+            android:id="@+id/room_playback_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            tools:background="#ffffff"
+            tools:layout_height="40dp"
+            tools:visibility="visible" />
+
+        <!-- 页尾布局 -->
+        <com.aliyun.standard.liveroom.lib.component.view.LiveBottomLayout
+            android:id="@+id/room_bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/room_playback_layout"
+            android:layout_marginStart="17dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="@dimen/room_bottom_layout_margin_bottom"
+            android:gravity="bottom">
+
+            <!-- 购物袋 -->
+            <com.aliyun.vpaas.standard.ecommerce.view.LiveGoodsBagView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <!-- 输入框 -->
+            <com.aliyun.vpaas.standard.ecommerce.view.LiveInputView
+                android:layout_width="0dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="7dp"
+                android:layout_weight="1" />
+
+            <!-- 更多 -->
+            <com.aliyun.vpaas.standard.ecommerce.view.LiveMoreView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="4dp" />
+
+            <!-- 小窗 -->
+            <com.aliyun.vpaas.standard.ecommerce.view.LiveFloatWindowView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="4dp" />
+
+            <!-- 分享 -->
+            <com.aliyun.vpaas.standard.ecommerce.view.LiveShareView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="4dp" />
+
+            <!-- 点赞 -->
+            <com.aliyun.vpaas.standard.ecommerce.view.LiveLikeView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp" />
+        </com.aliyun.standard.liveroom.lib.component.view.LiveBottomLayout>
+
+        <!-- 商品卡片视图容器 -->
+        <com.aliyun.standard.liveroom.lib.component.view.LiveGoodsLayout
+            android:id="@+id/room_goods_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/room_bottom_layout"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <!-- 信息面板 -->
+        <com.aliyun.vpaas.standard.ecommerce.view.LiveMessageView
+            android:id="@+id/room_message_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/room_goods_layout"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="79dp"
+            android:layout_marginBottom="11.5dp" />
+
+        <!-- 页中视图容器 -->
+        <com.aliyun.standard.liveroom.lib.component.view.LiveMiddleLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/room_message_layout"
+            android:layout_below="@id/room_header_layout">
+
+            <com.aliyun.vpaas.standard.ecommerce.view.LiveGiftView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="12dp" />
+
+
+            <!-- 主播推流参数 -->
+            <com.aliyun.vpaas.standard.ecommerce.view.LivePusherInfoView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center_vertical" />
+        </com.aliyun.standard.liveroom.lib.component.view.LiveMiddleLayout>
+
+        <!-- 直播未开始视图 -->
+        <com.aliyun.standard.liveroom.lib.component.view.LiveNotStartView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:visibility="gone" />
+    </com.aliyun.standard.liveroom.lib.component.view.LiveContentLayer>
+
+    <!-- 直播准备图层 -->
+    <com.aliyun.standard.liveroom.lib.component.view.LiveReadyLayer
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Loading组件 -->
+    <com.aliyun.standard.liveroom.lib.component.view.LiveLoadingView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <!-- 纯逻辑组件 (不含视图部分) -->
+    <com.aliyun.standard.liveroom.lib.component.ComponentHostContainer
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <!-- 踢人逻辑组件 -->
+        <com.aliyun.standard.liveroom.lib.component.ComponentHost
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:component="com.aliyun.standard.liveroom.lib.component.component.LiveKickOutComponent" />
+
+        <!-- 进房间失败逻辑组件 -->
+        <com.aliyun.standard.liveroom.lib.component.ComponentHost
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:component="com.aliyun.standard.liveroom.lib.component.component.LiveEnterRoomErrorComponent" />
+    </com.aliyun.standard.liveroom.lib.component.ComponentHostContainer>
+
+</RelativeLayout>

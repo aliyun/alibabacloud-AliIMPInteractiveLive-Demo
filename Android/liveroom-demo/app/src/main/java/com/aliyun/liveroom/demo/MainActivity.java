@@ -133,6 +133,12 @@ public class MainActivity extends Activity {
             case LINK_MIC:
                 LiveHooker.setLinkMicStyle(isAnchor);
                 break;
+            case ECOMMERCE:
+                LiveHooker.setEcommerceStyle(isAnchor);
+                break;
+            case ENTERPRISE:
+                LiveHooker.setEnterPriseStyle(isAnchor);
+                break;
         }
     }
 }
