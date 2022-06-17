@@ -84,7 +84,6 @@
             ASLRBLiveInitConfig* config = [[ASLRBLiveInitConfig alloc] init];
             config.liveID = weakSelf.liveID;
             config.role = weakSelf.role;
-//            config.enableLinkMic = YES;   // 连麦开关
             config;
         }) onCompletion:^(ASLRBLiveRoomViewController * _Nonnull liveRoomVC) {
             
@@ -120,7 +119,7 @@
 }
 
 - (void) customizeAudienceLiveRoom {
-//    [self customizeLinkMicLiveRoom];    // 需要体验连麦请取消该行代码注释以及取消代码行{config.enableLinkMic = YES;}的注释
+//    [self customizeLinkMicLiveRoom];    // 需要体验连麦请取消该行代码注释
 }
 
 #pragma mark - ASLRBLiveRoomViewControllerDelegate
@@ -202,8 +201,8 @@
 }
 
 /* *********** 观众连麦相关 ************* */
-/* 需要体验连麦请取消以下代码行的注释：
- *      config.enableLinkMic = YES;
+/* 需要体验连麦请在主播端创建直播时打开连麦开关 config.enableLinkMic = YES;
+ * 并在此观众端取消以下代码行的注释：
  *      [self customizeLinkMicLiveRoom];
  * 以及Podfile文件中的代码行的注释：
  *      pod 'AliInteractiveRTCCore', common_version
@@ -549,15 +548,40 @@
     }
 }
 
-- (void) onASLRBLinkMicSelfMicAllowed:(BOOL)allowed{
+- (void) onASLRBLinkMicSelfMicClosedByAnchor{
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"自己被禁音(%d)", allowed] duration:2.0];
+        [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"已被主播静音"] duration:2.0];
+        self.micButton.selected = YES;
+        [self.linkMicCollectionViewHolder reloadCollectionViewData];
+    });
+}
+
+- (void) onASLRBLinkMicAnchorInviteToOpenMic{
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"主播请求取消你的静音" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"取消静音" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [weakSelf.liveRoomVC linkMicOpenMic];
+            weakSelf.micButton.selected = NO;
+            [self.linkMicCollectionViewHolder reloadCollectionViewData];
+        }]];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"保持静音" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            
+        }]];
         
-        if (allowed){
-            self.micButton.selected = NO;
-            [self.liveRoomVC linkMicOpenMic];
-        } else{
+        weakSelf.alertController = alertController;
+        [weakSelf.liveRoomVC presentViewController:weakSelf.alertController animated:YES completion:nil];
+    });
+}
+
+- (void) onASLRBLinkMicAllMicAllowed:(BOOL)allowed{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (allowed) {
+            [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"主播关闭了全员静音"] duration:2.0];
+        } else {
+            [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"主播开启了全员静音"] duration:2.0];
             self.micButton.selected = YES;
+            [self.linkMicCollectionViewHolder reloadCollectionViewData];
         }
     });
 }

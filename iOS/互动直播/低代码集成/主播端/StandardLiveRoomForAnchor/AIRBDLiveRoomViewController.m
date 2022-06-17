@@ -746,8 +746,15 @@
     }
 }
 
-- (void) onASLRBLinkMicSelfMicAllowed:(BOOL)allowed{
+- (void) onASLRBLinkMicSelfMicClosedByAnchor{
     
 }
 
+- (void) onASLRBLinkMicAnchorInviteToOpenMic{
+    
+}
+
+- (void) onASLRBLinkMicAllMicAllowed:(BOOL)allowed{
+    
+}
 @end
