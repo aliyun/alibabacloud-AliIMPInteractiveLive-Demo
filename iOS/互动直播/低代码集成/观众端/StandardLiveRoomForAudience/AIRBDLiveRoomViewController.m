@@ -396,7 +396,7 @@
             break;
         case ASLRBLinkMicErrorNotAllowedToOpenMic:{
             dispatch_async(dispatch_get_main_queue(), ^{
-                [[AIRBDToast shareInstance] makeToast:@"被禁音中，无法打开麦克风" duration:2.0];
+                [[AIRBDToast shareInstance] makeToast:@"全体静音中，无法打开麦克风" duration:2.0];
                 self.micButton.selected = YES;
             });
         }
