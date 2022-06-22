@@ -1,0 +1,47 @@
+{
+  "private": true,
+  "name": "ui-enterprise-web",
+  "version": "0.0.2",
+  "scripts": {
+    "start": "umi dev",
+    "build": "umi build",
+    "postinstall": "umi generate tmp",
+    "prettier": "prettier --write '**/*.{js,jsx,tsx,ts,less,md,json}'",
+    "test": "umi-test",
+    "test:coverage": "umi-test --coverage"
+  },
+  "gitHooks": {
+    "pre-commit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,less,md,json}": [
+      "prettier --write"
+    ],
+    "*.ts?(x)": [
+      "prettier --parser=typescript --write"
+    ]
+  },
+  "dependencies": {
+    "@ant-design/pro-layout": "^6.5.0",
+    "@types/qs": "^6.9.7",
+    "ahooks": "^3.4.1",
+    "antd-mobile": "^5.14.3",
+    "clipboard": "^2.0.8",
+    "crypto-es": "^1.2.7",
+    "immutability-helper": "^3.1.1",
+    "qs": "^6.10.1",
+    "react": "17.x",
+    "react-dom": "17.x",
+    "umi": "^3.5.18"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@umijs/preset-react": "^2.1.4",
+    "@umijs/test": "^3.5.18",
+    "lint-staged": "^10.0.7",
+    "prettier": "^2.2.0",
+    "typescript": "^4.1.2",
+    "yorkie": "^2.0.0"
+  }
+}

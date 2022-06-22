@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <title>企业直播Demo</title>
+</head>
+<body>
+  <script>
+    var width = document.documentElement.clientWidth
+    if (width > 450) width = 450
+    document.documentElement.style.fontSize = width / 7.5 + 'px';
+    window.onresize = () => {
+      var width = document.documentElement.clientWidth
+      if (width > 450) width = 450
+      document.documentElement.style.fontSize = width / 7.5 + 'px';
+    };
+  </script>
+  <div id="root"></div>
+  <script src="//at.alicdn.com/t/font_2619249_qrqess67lnb.js"></script>
+  <script src="//g.alicdn.com/code/npm/@ali/room-paas-web-engine/2.0.0/RoomPaasInteractionSdk.web.min.js"></script>
+</body>
+</html>

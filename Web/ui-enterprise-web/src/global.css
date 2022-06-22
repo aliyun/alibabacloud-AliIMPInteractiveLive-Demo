@@ -1,0 +1,39 @@
+body, #root {
+  min-height: 100vh;
+}
+.hidden {
+  display: none;
+}
+.icon {
+  width: 1em; height: 1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+
+.pcmodal .ant-modal-content {
+  background-color: #1e1e1e;
+}
+.pcmodal .ant-modal-header {
+  background-color: #1e1e1e;
+  border-bottom: none;
+}
+.pcmodal .ant-modal-title {
+  color: #fff;
+}
+.pcmodal .ant-modal-close {
+  color: #fff;
+}
+.pcmodal .ant-modal-footer {
+  border-top: none;
+}
+.pcmodal .ant-btn-primary {
+  color: #fff;
+  border-color: rgba(0,188,212,1);
+  background-color: rgba(0,188,212,1);
+}
+.pcmodal .ant-btn-default {
+  color: rgba(0,188,212,1);
+  border-color: rgba(0,188,212,1);
+  background-color: #1e1e1e;
+}
