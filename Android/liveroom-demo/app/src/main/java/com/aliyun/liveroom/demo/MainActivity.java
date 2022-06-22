@@ -93,9 +93,10 @@ public class MainActivity extends Activity {
 
         // 企业直播特殊设置
         if (currentMode == Mode.ENTERPRISE) {
-            DialogUtil.confirm(this, "企业直播不支持主播端哦", null);
-            return;
-        } else {
+            if (isAnchor) {
+                DialogUtil.confirm(this, "企业直播不支持主播端哦", null);
+                return;
+            }
             param.supportPlayback = false;
             param.disableImmersive = true;
             param.statusBarColorStringWhenDisableImmersive = "#ffffff";
@@ -103,7 +104,6 @@ public class MainActivity extends Activity {
 
         if (isAnchor) {
             // 主播端: 开启直播
-
 
             // 设置角色
             param.role = LivePrototype.Role.ANCHOR;
