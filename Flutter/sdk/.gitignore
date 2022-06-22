@@ -1,0 +1,65 @@
+.DS_Store
+.dart_tool/
+
+.packages
+.pub/
+
+.idea/
+.vagrant/
+.sconsign.dblite
+.svn/
+
+*.swp
+profile
+
+DerivedData/
+
+.generated/
+
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+
+!default.pbxuser
+!default.mode1v3
+!default.mode2v3
+!default.perspectivev3
+
+xcuserdata
+
+*.moved-aside
+
+*.pyc
+*sync/
+Icon?
+.tags*
+
+build/
+.android/
+.ios/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Miscellaneous
+*.class
+*.log
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+
+/pubspec.lock
+**/doc/api/
+
+# local app config
+/assets/app_settings_anchor.json
+/assets/app_settings_audience.json
+/assets/demo_param.json

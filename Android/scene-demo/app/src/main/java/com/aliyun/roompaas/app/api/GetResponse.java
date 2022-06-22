@@ -1,0 +1,1 @@
+package com.aliyun.roompaas.app.api;import java.io.Serializable;/** * @author puke * @version 2021/5/14 */public class GetResponse<T> implements Serializable {    public boolean responseSuccess;    public String message;    public T result;}

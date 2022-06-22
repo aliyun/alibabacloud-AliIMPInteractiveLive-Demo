@@ -16,6 +16,7 @@
 //#import "AIRBDShopWindowViewController.h"
 #import "AIRBDShareViewController.h"
 #import "AIRBDEnvironments.h"
+#import "AIRBDLinkMicCollectionViewHolder.h"
 
 @import AliStandardLiveRoomBundle;
 
@@ -34,6 +35,13 @@
 //@property (nonatomic, strong) AIRBDShopWindowViewController* shopWindowVC;
 @property (nonatomic, strong) UIView* goodsCardView;
 @property (nonatomic, strong) AIRBDShareViewController* shareVC;
+
+// **************  主播连麦相关 *************** //
+@property (nonatomic, strong) UIView* linkMicViewHolder; // 承载连麦画面的view
+@property(nonatomic, strong) AIRBDLinkMicCollectionViewHolder* linkMicCollectionViewHolder; // 可滑动的连麦中的画面
+@property(nonatomic, strong) NSMutableArray<NSString*>* linkMicUserArray; // 可滑动的连麦中的画面的顺序
+// ***************************************** //
+
 @end
 
 @implementation AIRBDLiveRoomViewController
@@ -74,9 +82,13 @@
             ASLRBLiveInitConfig* config = [[ASLRBLiveInitConfig alloc] init];
             config.liveID = weakSelf.liveID;
             config.role = weakSelf.role;
+            config.middleViewsConfig.liveMembersButtonHidden = NO;
+            config.middleViewsConfig.liveNoticeButtonHidden = NO;
+//            config.enableLinkMic = YES; // 连麦开关
             config;
         }) onCompletion:^(ASLRBLiveRoomViewController * _Nonnull liveRoomVC) {
             [liveRoomVC setupOnSuccess:^(NSString * _Nonnull liveID) {
+                NSLog(@"liveID:%@", liveID);
                 weakSelf.liveID = liveID;
                 dispatch_async(dispatch_get_main_queue(), ^{
                     liveRoomVC.modalPresentationStyle = UIModalPresentationFullScreen;
@@ -108,6 +120,7 @@
     
 }
 
+// 自定义起播页
 - (void)customizeAnchorLiveRoomPrestartView {
     UIView* roomSettingHolder;
 //    UIImageView* userAvatar;
@@ -538,4 +551,210 @@
 //    }];
 //}
 
+#pragma mark - linkMic
+// **************  主播连麦相关 *************** //
+/* 需要体验连麦请取消以下代码行的注释：
+ *      config.enableLinkMic = YES;
+ * 以及Podfile文件中的代码行的注释：
+ *      pod 'AliInteractiveRTCCore', common_version
+ *      pod 'AliRTCSdk', '2.5.7'
+ */
+- (NSMutableArray<NSString*>*) linkMicUserArray{
+    if (!_linkMicUserArray){
+        _linkMicUserArray = [[NSMutableArray<NSString*> alloc] init];
+    }
+    return _linkMicUserArray;
+}
+
+- (AIRBDLinkMicCollectionViewHolder*)linkMicCollectionViewHolder{
+    if (!_linkMicCollectionViewHolder){
+        AIRBDLinkMicCollectionViewHolder* collectionViewHolder = [[AIRBDLinkMicCollectionViewHolder alloc] initWithFrame:CGRectMake(4, 150, self.view.bounds.size.width / 3.0, self.view.bounds.size.width / 2.0) userID:self.userID userNick:[NSString stringWithFormat:@"%@的昵称", self.userID]];
+        collectionViewHolder.delegate = self;
+        _linkMicCollectionViewHolder = collectionViewHolder;
+        
+        [self.linkMicViewHolder addSubview:_linkMicCollectionViewHolder];
+        [self.linkMicViewHolder bringSubviewToFront:_linkMicCollectionViewHolder];
+    }
+    return _linkMicCollectionViewHolder;
+}
+
+- (UIView*)linkMicViewHolder{
+    if (!_linkMicViewHolder) {
+        UIView* view = [[UIView alloc] init];
+        view.backgroundColor = [UIColor blackColor];
+        _linkMicViewHolder = view;
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.liveRoomVC.view addSubview:self->_linkMicViewHolder];
+            [self.liveRoomVC.view sendSubviewToBack:self->_linkMicViewHolder];
+            [self->_linkMicViewHolder mas_makeConstraints:^(MASConstraintMaker * _Nonnull make) {
+                make.edges.equalTo(self.liveRoomVC.view);
+            }];
+        });
+    }
+    return _linkMicViewHolder;
+}
+
+- (void) onASLRBLinkMicEvent:(ASLRBLinkMicEvent)event info:(NSDictionary*)info{
+    switch (event) {
+        case ASLRBLinkMicEventLocalPreviewStarted:{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.linkMicViewHolder addSubview:self.liveRoomVC.linkMicLocalPreview];
+                [self.linkMicViewHolder sendSubviewToBack:self.liveRoomVC.linkMicLocalPreview];
+                [self.liveRoomVC.linkMicLocalPreview mas_remakeConstraints:^(MASConstraintMaker * _Nonnull make) {
+                    make.edges.equalTo(self.linkMicViewHolder);
+                }];
+            });
+        }
+            break;
+        case ASLRBLinkMicEventLocalJoinSucceeded:{
+            
+        }
+            break;
+        case ASLRBLinkMicEventLocalLeaveSucceeded:{
+            [self.linkMicUserArray removeAllObjects];
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void) onASLRBLinkMicError:(ASLRBLinkMicError)error message:(NSString*)msg{
+    switch (error) {
+        case ASLRBLinkMicErrorLinkMicNotEnabled:{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [[AIRBDToast shareInstance] makeToast:@"连麦不可用(not enabled)" duration:2.0];
+            });
+        }
+            break;
+        case ASLRBLinkMicErrorNotAllowedToOpenMic:{
+            
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+- (void) onASLRBLinkMicUserJoined:(NSArray<ASLRBLinkMicUserModel*>*)userList{
+    for (ASLRBLinkMicUserModel* user in userList){
+        if (!user.isAnchor){
+            if (![self.linkMicUserArray containsObject:user.userID]){
+                [self.linkMicUserArray addObject:user.userID];
+            }
+        }
+        NSLog(@"%@加入连麦", user.nickname);
+    }
+    
+    [self.linkMicCollectionViewHolder reloadCollectionViewData];
+    
+    // 主播根据人连麦数等设置旁路直播布局，即麦下的观众看到的画面
+//        [self.liveRoomVC linkMicSetEnumBypassLiveLayout:ASLRBEnumBypassLiveLayoutTypeFivePeer userIDs:userIDs onSuccess:^{
+//
+//        } onFailure:^(NSString * _Nonnull error) {
+//
+//        }];
+        
+//        [self.liveRoomVC linkMicSetCustomBypassLiveLayout:(nonnull NSArray<ASLRBCustomBypassLiveLayoutUserModel *> *) onSuccess:^{
+//
+//        } onFailure:^(NSString * _Nonnull error) {
+//
+//        }];
+}
+
+- (void) onASLRBLinkMicUserLeft:(NSArray<ASLRBLinkMicUserModel*>*)userList{
+    for (ASLRBLinkMicUserModel* user in userList){
+        [self.linkMicUserArray removeObject:user.userID];
+        NSLog(@"%@退出连麦", user.nickname);
+    }
+    [self.linkMicCollectionViewHolder reloadCollectionViewData];
+}
+
+- (void) onASLRBLinkMicCameraStreamAvailable:(NSString*)userID isAnchor:(BOOL)isAnchor view:(UIView*)view{
+    [self.linkMicCollectionViewHolder reloadCollectionViewData];
+}
+
+- (void) onASLRBLinkMicRemoteCameraStateChanged:(NSString*)userID open:(BOOL)open{
+    NSLog(@"%@开关摄像头(%d)", userID, open);
+    [self.linkMicCollectionViewHolder reloadCollectionViewData];
+}
+
+- (void) onASLRBLinkMicRemoteMicStateChanged:(NSArray<NSString*>*)userIDList open:(BOOL)open{
+    for (NSString* userID in userIDList){
+        NSLog(@"%@开关麦克风(%d)", userID, open);
+    }
+    [self.linkMicCollectionViewHolder reloadCollectionViewData];
+}
+
+- (void) onASLRBLinkMicInvited:(ASLRBLinkMicUserModel*)inviter userInvitedList:(NSArray<ASLRBLinkMicUserModel*>*)userInvitedList{
+    
+}
+
+- (void) onASLRBLinkMicInviteCanceledForMe{
+    
+}
+
+- (void) onASLRBLinkMicInviteRejected:(NSArray<ASLRBLinkMicUserModel*>*)userList{
+    for (ASLRBLinkMicUserModel* user in userList){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@拒绝了连麦邀请", user.nickname] duration:2.0];
+        });
+    }
+}
+
+- (void) onASLRBLinkMicApplied:(BOOL)isNewApplied userList:(NSArray<ASLRBLinkMicUserModel*>*)userList{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        for (ASLRBLinkMicUserModel* user in userList){
+            [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@申请连麦(%d)", user.nickname, isNewApplied] duration:2.0];
+            
+            if (self.role == AIRBDLiveRoomUserRoleAnchor){
+                __weak typeof(self) weakSelf = self;
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@申请连麦，是否同意？", user.nickname] message:@"" preferredStyle:UIAlertControllerStyleAlert];
+                [alertController addAction:[UIAlertAction actionWithTitle:@"同意" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [weakSelf.liveRoomVC linkMicHandleApply:user.userID agree:YES];
+                }]];
+                [alertController addAction:[UIAlertAction actionWithTitle:@"拒绝" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                    [weakSelf.liveRoomVC linkMicHandleApply:user.userID agree:NO];
+                }]];
+                
+                [weakSelf.liveRoomVC presentViewController:alertController animated:YES completion:nil];
+            }
+        }
+    });
+}
+
+- (void) onASLRBLinkMicApplyCanceled:(NSArray<ASLRBLinkMicUserModel*>*)userList{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        for (ASLRBLinkMicUserModel* user in userList){
+            [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@取消了连麦申请", user.nickname] duration:2.0];
+        }
+    });
+}
+
+- (void) onASLRBLinkMicApplyResponse:(BOOL)approve user:(NSString*)userID{
+    
+}
+
+- (void) onASLRBLinkMicKicked:(NSArray<ASLRBLinkMicUserModel*>*)userList{
+    for (ASLRBLinkMicUserModel* user in userList){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[AIRBDToast shareInstance] makeToast:[NSString stringWithFormat:@"%@被踢出连麦", user.nickname] duration:2.0];
+        });
+    }
+}
+
+- (void) onASLRBLinkMicSelfMicClosedByAnchor{
+    
+}
+
+- (void) onASLRBLinkMicAnchorInviteToOpenMic{
+    
+}
+
+- (void) onASLRBLinkMicAllMicAllowed:(BOOL)allowed{
+    
+}
 @end

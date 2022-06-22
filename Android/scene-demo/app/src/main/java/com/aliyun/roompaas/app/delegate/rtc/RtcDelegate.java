@@ -1,6 +1,5 @@
 package com.aliyun.roompaas.app.delegate.rtc;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,7 +12,9 @@ import com.alibaba.dingpaas.rtc.ConfInfoModel;
 import com.alibaba.dingpaas.rtc.ConfUserModel;
 import com.alibaba.fastjson.JSON;
 import com.alivc.rtc.AliRtcEngine;
+import com.alivc.rtc.AliRtcRemoteUserInfo;
 import com.aliyun.roompaas.app.R;
+import com.aliyun.roompaas.app.activity.classroom.ClassroomActivity;
 import com.aliyun.roompaas.app.delegate.chat.ISystemMessage;
 import com.aliyun.roompaas.app.helper.AliRtcHelper;
 import com.aliyun.roompaas.app.helper.RoomHelper;
@@ -32,7 +33,9 @@ import com.aliyun.roompaas.base.util.CollectionUtil;
 import com.aliyun.roompaas.base.util.CommonUtil;
 import com.aliyun.roompaas.base.util.Utils;
 import com.aliyun.roompaas.biz.exposable.RoomChannel;
+import com.aliyun.roompaas.live.exposable.LivePlayerService;
 import com.aliyun.roompaas.rtc.RtcLayoutModel;
+import com.aliyun.roompaas.rtc.RtcStreamEventHelper;
 import com.aliyun.roompaas.rtc.SampleRtcEventHandler;
 import com.aliyun.roompaas.rtc.exposable.RTCBypassPeerVideoConfig;
 import com.aliyun.roompaas.rtc.exposable.RtcService;
@@ -53,7 +56,11 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import java8.util.stream.Collectors;
 import java8.util.stream.StreamSupport;
@@ -63,24 +70,29 @@ import java8.util.stream.StreamSupport;
  */
 public class RtcDelegate extends SampleRtcEventHandler {
     public static final String TAG = "RtcDelegate";
-    private Activity activity;
+    private ClassroomActivity activity;
     private Reference<ISystemMessage> systemMessageRef;
     private final Reference<RtcService> rtcServiceRef;
+    private final Reference<LivePlayerService> livePlayerServiceRef;
     private final Reference<RoomChannel> roomChannelRef;
     private final String userId;
     private final String nick;
     private StudentRtcDelegate studentRtcDelegate;
     private RtcSubscribeDelegate rtcSubscribeDelegate;
     private boolean hasShowNetwork;
-    private boolean muteLocalMic;
-    private boolean muteLocalCamera;
     private Context context;
     private ViewGroup rtcContainer;
     private IRtcDelegateReceiver rtcDelegateReceiver;
     private boolean muteToastHint;
+    private RtcStreamEvent selfRtcStreamEvent;
+    public static final String NICK4SELF = "我";
+    private Set<String> offlineUidSet = new HashSet<>(0);
+    private Map<String, Boolean> audioMuteCacheMap = new HashMap<>(0);
+    private Map<String, Boolean> videoMuteCacheMap = new HashMap<>(0);
+    private Map<String, Reference<RtcStreamEvent>> streamCacheMap = new HashMap<>(0);
 
-    public RtcDelegate(Activity activity, ISystemMessage systemMessage, String userId, String nick
-            , RoomChannel roomChannel, RtcService rtcService
+    public RtcDelegate(ClassroomActivity activity, ISystemMessage systemMessage, String userId, String nick
+            , RoomChannel roomChannel, RtcService rtcService, LivePlayerService livePlayerService
             , ViewGroup rtcContainer, IRtcDelegateReceiver receiver) {
         this.context = activity.getApplicationContext();
         this.activity = activity;
@@ -88,6 +100,7 @@ public class RtcDelegate extends SampleRtcEventHandler {
         this.userId = userId;
         this.nick = nick;
         this.rtcServiceRef = new WeakReference<>(rtcService);
+        this.livePlayerServiceRef = new WeakReference<>(livePlayerService);
         this.roomChannelRef = new WeakReference<>(roomChannel);
         this.rtcContainer = rtcContainer;
         this.rtcDelegateReceiver = receiver;
@@ -231,29 +244,104 @@ public class RtcDelegate extends SampleRtcEventHandler {
         });
     }
 
-    public void muteLocalMic() {
-        muteLocalMic = !muteLocalMic;
-        ofStudentRtcDelegate().updateLocalMic(userId, muteLocalMic);
-
-        rtcMuteLocalMic(muteLocalMic);
+    public void toggleMic() {
+        toggleMic(!ofSelfRtcStreamEvent().closeMic);
     }
 
-    private void rtcMuteLocalMic(boolean muteLocalMic) {
+    public void toggleMic(boolean target) {
+        closeMic(target);
+    }
+
+    private void closeMic(boolean closeMic) {
+        Logger.i(TAG, "closeMic: " + closeMic);
+        if (Utils.isActivityInvalid(activity) || closeMic == ofSelfRtcStreamEvent().closeMic) {
+            Logger.e(TAG, "closeMic: end--invalid param: " + closeMic);
+            return;
+        }
+
+        ofSelfRtcStreamEvent().closeMic = closeMic;
+        ofStudentRtcDelegate().updateLocalMic(userId, closeMic);
+
         RtcService rtcService = Utils.getRef(rtcServiceRef);
         if (rtcService != null) {
-            rtcService.muteLocalMic(muteLocalMic);
+            rtcService.muteLocalMic(closeMic);
+            /**
+             * 不能主动切换publish 状态，底层状态上报有问题，会导致web状态不同步，默认闭麦之后推禁音音频帧 2022-04-18
+             */
+//            rtcService.publishLocalAudio(!closeMic);
         }
     }
 
-    public void muteLocalCamera() {
-        muteLocalCamera = !muteLocalCamera;
-        ofStudentRtcDelegate().updateLocalCamera(userId, muteLocalCamera);
+    public void toggleCamera() {
+        toggleCamera(!ofSelfRtcStreamEvent().closeCamera);
+    }
+
+    public void toggleCamera(boolean target) {
+        closeCamera(target);
+    }
+
+    private void closeCamera(boolean closeCamera) {
+        if (Utils.isActivityInvalid(activity) || closeCamera == ofSelfRtcStreamEvent().closeCamera) {
+            Logger.e(TAG, "closeCamera: end--invalid param: " + closeCamera);
+            return;
+        }
+
+        ofSelfRtcStreamEvent().closeCamera = closeCamera;
+        ofStudentRtcDelegate().updateLocalCamera(userId, closeCamera);
 
         RtcService rtcService = Utils.getRef(rtcServiceRef);
-        if (rtcService != null) {
-            rtcService.muteLocalCamera(muteLocalCamera);
+        if (rtcService == null) {
+            return;
+        }
+
+        if (closeCamera) {
+            closeCameraProcess(rtcService);
+        } else {
+            openCameraProcess(rtcService);
         }
     }
+
+    private void closeCameraProcess(@NonNull RtcService rtcService) {
+        // 停止预览
+        rtcService.stopPreview();
+        // 是否发布本地相机流到远端
+        rtcService.publishLocalVideo(false);
+        // 采集
+        rtcService.enableLocalVideo(false);
+        // 发布
+        rtcService.muteLocalCamera(true);
+    }
+
+    private void openCameraProcess(@NonNull RtcService rtcService) {
+        rtcService.startPreview();
+        // 是否发布本地相机流到远端
+        rtcService.publishLocalVideo(true);
+        // 采集 (如果关闭, 采集黑帧)
+        rtcService.enableLocalVideo(true);
+        // 发布
+        rtcService.muteLocalCamera(false);
+    }
+
+    private RtcStreamEvent ofSelfRtcStreamEvent() {
+        if (selfRtcStreamEvent == null) {
+            selfRtcStreamEvent = new RtcStreamEvent.Builder()
+                    .setUserId(userId)
+                    .setAliRtcVideoTrack(AliRtcEngine.AliRtcVideoTrack.AliRtcVideoTrackCamera)
+                    .setUserName(NICK4SELF)
+                    .setLocalStream(true)
+                    .setTeacher(isTeacherAndOwner())
+                    .setAliVideoCanvas(new AliRtcEngine.AliRtcVideoCanvas())
+                    .setCloseCamera(false)
+                    .build();
+
+            if (rtcDelegateReceiver != null) {
+                rtcDelegateReceiver.onUpdateSelfMicStatus(selfRtcStreamEvent.closeMic);
+                //rtcDelegateReceiver.onUpdateSelfCameraStatus(selfRtcStreamEvent.closeCamera);
+            }
+        }
+        return selfRtcStreamEvent;
+    }
+
 
     public void switchCamera() {
         RtcService rtcService = Utils.getRef(rtcServiceRef);
@@ -265,7 +353,7 @@ public class RtcDelegate extends SampleRtcEventHandler {
     @Override
     public void onRtcStreamIn(RtcStreamEvent event) {
         addSystemMessage("Rtc流进入: " + event.userId);
-        playRtc(event);
+        rtcStreamIn(event);
     }
 
     @Override
@@ -274,9 +362,40 @@ public class RtcDelegate extends SampleRtcEventHandler {
     }
 
     @Override
-    public void onRtcStreamOut(String userId) {
-        addSystemMessage("Rtc流退出: " + userId);
-        ofStudentRtcDelegate().removeData(userId);
+    public void onRtcStreamOut(String uid) {
+        removeJoinedData(uid, "Rtc流退出: ");
+    }
+
+    @Override
+    public void onRemoteUserOnLineNotify(String uid, AliRtcRemoteUserInfo i, int elapsed) {
+        addSystemMessage("Rtc用户上线: " + uid);
+        if (i == null || TextUtils.isEmpty(uid)) {
+            return;
+        }
+
+        offlineUidSet.remove(uid);
+        RtcStreamEvent e = Utils.getRef(streamCacheMap.get(uid));
+        if (e != null) {
+            e.userName = i.getDisplayName();
+            e.isTeacher = isOwner(uid);
+            e.isLocalStream = isSelf(uid);
+        } else {
+            e = RtcStreamEventHelper.asRtcStreamEvent(uid, i.getDisplayName(), isOwner(uid),
+                    isSelf(uid), AliRtcEngine.AliRtcVideoTrack.AliRtcVideoTrackCamera);
+        }
+        e.closeMic = Boolean.TRUE.equals(Utils.acceptFirstNonNull(audioMuteCacheMap.get(uid), false));
+        e.closeCamera = Boolean.TRUE.equals(videoMuteCacheMap.get(uid));
+        if (!isOwner(uid)) {
+            ofStudentRtcDelegate().updateData(e);
+        }
+    }
+
+    @Override
+    public void onRemoteUserOffLineNotify(String uid, AliRtcRemoteUserInfo userInfo, AliRtcEngine.AliRtcUserOfflineReason reason) {
+        offlineUidSet.add(uid);
+        audioMuteCacheMap.remove(uid);
+        videoMuteCacheMap.remove(uid);
+        removeJoinedData(uid, "Rtc用户下线: ");
     }
 
     @Override
@@ -299,7 +418,20 @@ public class RtcDelegate extends SampleRtcEventHandler {
                 String message = teacherNick + "邀请你上麦，是否同意？";
                 if (rtcService != null) {
                     DialogUtil.confirm(activity, message,
-                            () -> rtcService.joinRtcWithConfig(new RtcStreamConfig(480, 360), nick),
+                            () -> {
+                                if (ofSelfRtcStreamEvent().closeCamera) {
+                                    closeCameraProcess(rtcService);
+                                } else{
+                                    openCameraProcess(rtcService);
+                                }
+                                if (ofSelfRtcStreamEvent().closeMic) {
+                                    closeMic(true);
+                                }
+                                activity.updateFunctionSelectionOfMic(ofSelfRtcStreamEvent().closeMic);
+                                activity.updateFunctionSelectionOfCamera(ofSelfRtcStreamEvent().closeCamera);
+
+                                rtcService.joinRtcWithConfig(new RtcStreamConfig(180, 135, false), nick);
+                            },
                             () -> rtcService.reportJoinStatus(RtcUserStatus.JOIN_FAILED, null)
                     );
                 }
@@ -358,12 +490,18 @@ public class RtcDelegate extends SampleRtcEventHandler {
     }
 
     public void leaveRtcProcess() {
+        // 教师成员列表不准确时，入场立即被踢，设备状态会出现不匹配，主动关闭
+        closeDeviceToSyncStatusWithEngine();
+
         ofStudentRtcDelegate().removeAll();
 
         leaveRtc(false);
-        muteLocalMic = false;
-        muteLocalCamera = false;
         ofRtcSubscribeDelegate().unsubscribe(parseOwnerId());
+    }
+
+    private void closeDeviceToSyncStatusWithEngine() {
+        closeMic(true);
+        closeCamera(true);
     }
 
     public void leaveRtc(boolean destroy) {
@@ -377,6 +515,14 @@ public class RtcDelegate extends SampleRtcEventHandler {
         return RoomHelper.getOwnerId(Utils.getRef(roomChannelRef));
     }
 
+    private boolean isOwner(String uid) {
+        return TextUtils.equals(uid, parseOwnerId());
+    }
+
+    private boolean isTeacherAndOwner(String uid) {
+        return TextUtils.equals(uid, parseOwnerId());
+    }
+
     @Override
     public void onRtcLeaveUser(ConfUserEvent leaveUserEvent) {
         if (rtcDelegateReceiver != null) {
@@ -384,10 +530,7 @@ public class RtcDelegate extends SampleRtcEventHandler {
         }
 
         List<ConfUserModel> leaveUserList = leaveUserEvent.userList;
-        filterUserListWithValidId(leaveUserList, new Callbacks.PosLambda<>((pair) -> {
-            ofStudentRtcDelegate().removeData(pair.first);
-            addSystemMessage(pair.first + ":已离开会议");
-        }));
+        filterUserListWithValidId(leaveUserList, new Callbacks.PosLambda<>(pair -> removeJoinedData(pair.first, "已离开会议: ")));
     }
 
     public static void filterUserListWithValidId(Collection<ConfUserModel> collection, Callbacks.PosLambda<Pair<String, ConfUserModel>> callback) {
@@ -513,7 +656,7 @@ public class RtcDelegate extends SampleRtcEventHandler {
         if (isTeacherAndOwner()) {
             startRoadPublish();
         } else {
-            ofStudentRtcDelegate().updateData(assembleRtcStreamEventForSelf(true));
+            ofStudentRtcDelegate().updateData(ofSelfRtcStreamEvent());
             if (rtcDelegateReceiver != null) {
                 rtcDelegateReceiver.onRtcJoinRtcSuccess();
             }
@@ -552,17 +695,6 @@ public class RtcDelegate extends SampleRtcEventHandler {
         }));
     }
 
-    private RtcStreamEvent assembleRtcStreamEventForSelf(boolean certainlyNotTeacher) {
-        return new RtcStreamEvent.Builder()
-                .setUserId(userId)
-                .setAliRtcVideoTrack(AliRtcEngine.AliRtcVideoTrack.AliRtcVideoTrackCamera)
-                .setUserName("我")
-                .setLocalStream(true)
-                .setTeacher(!certainlyNotTeacher && isTeacherAndOwner())
-                .setAliVideoCanvas(new AliRtcEngine.AliRtcVideoCanvas())
-                .build();
-    }
-
     @Override
     public void onRtcJoinRtcError(String event) {
         addSystemMessage("上课失败, " + event);
@@ -581,70 +713,91 @@ public class RtcDelegate extends SampleRtcEventHandler {
     }
 
     @Override
-    public void onRtcUserAudioMuted(String uid) {
-        if (isSelf(uid)) {
-            muteLocalMic = true;
-            rtcMuteLocalMic(true);
-
-            if (rtcDelegateReceiver != null) {
-                rtcDelegateReceiver.onUpdateSelfMicStatus(true);
-            }
+    public void onSelfAudioMuted(boolean isMute) {
+        Logger.i(TAG, "onSelfAudioMuted: " + isMute);
+        closeMic(isMute);
+        if (rtcDelegateReceiver != null) {
+            rtcDelegateReceiver.onUpdateSelfMicStatus(ofSelfRtcStreamEvent().closeMic);
         }
-        ofStudentRtcDelegate().updateLocalMic(uid, true);
     }
 
     @Override
-    public void onRtcUserAudioEnable(String uid) {
-        if (isSelf(uid)) {
-            muteLocalMic = false;
-            rtcMuteLocalMic(false);
-
-            if (rtcDelegateReceiver != null) {
-                rtcDelegateReceiver.onUpdateSelfMicStatus(false);
-            }
-        }
-        ofStudentRtcDelegate().updateLocalMic(uid, false);
+    public void onOthersAudioMuted(String uid, boolean isMute) {
+        Logger.i(TAG, "onOthersAudioMuted: " + isMute);
+        audioMuteCacheMap.put(uid, isMute);
+        ofStudentRtcDelegate().updateLocalMic(uid, isMute);
     }
 
     @Override
-    public void onRtcUserVideoMuted(String uid) {
-        if (isSelf(uid)) {
-            muteLocalCamera = true;
+    public void onSelfVideoMuted(boolean isMute) {
+        Logger.i(TAG, "onSelfVideoMuted: " + isMute);
+        closeCamera(isMute);
+        if (rtcDelegateReceiver != null) {
+            rtcDelegateReceiver.onUpdateSelfCameraStatus(ofSelfRtcStreamEvent().closeCamera);
         }
-        ofStudentRtcDelegate().updateLocalCamera(uid, true);
     }
 
     @Override
-    public void onRtcUserVideoEnable(String uid) {
-        if (isSelf(uid)) {
-            muteLocalCamera = false;
-        }
-        ofStudentRtcDelegate().updateLocalCamera(uid, false);
+    public void onOthersVideoMuted(String uid, boolean isMute) {
+        Logger.i(TAG, "onOthersVideoMuted: " + isMute);
+        videoMuteCacheMap.put(uid, isMute);
+        ofStudentRtcDelegate().updateLocalCamera(uid, isMute);
     }
 
     private boolean isSelf(String uid) {
         return TextUtils.equals(uid, userId);
     }
 
-    private void playRtc(RtcStreamEvent rtcStreamEvent) {
+    private void rtcStreamIn(RtcStreamEvent event) {
         RtcService rtcService = Utils.getRef(rtcServiceRef);
-        if (rtcStreamEvent == null || rtcService == null) {
+        if (event == null || rtcService == null) {
             return;
         }
-        if (rtcStreamEvent.isTeacher) {
+        String uid = event.userId;
+        if (isOwner(uid)) {
             rtcService.stopPlayRoad();
+            stopLivePlay();
             removeRoadSurfaceView();
 
-            AliRtcEngine.AliRtcVideoCanvas aliVideoCanvas = rtcStreamEvent.aliVideoCanvas;
-            AliRtcHelper.fillCanvasViewIfNecessary(aliVideoCanvas, context, false);
-            ViewUtil.addChildMatchParentSafely(true, rtcContainer, aliVideoCanvas.view);
+            AliRtcEngine.AliRtcVideoCanvas canvas = event.aliVideoCanvas;
+            SophonSurfaceView ssv = parsePossibleSophonSurfaceView(rtcContainer);
+            if (ssv != null) {
+                canvas.view = ssv;
+            } else {
+                AliRtcHelper.fillCanvasViewIfNecessary(canvas, context, false);
+            }
+            AliRtcEngine.AliRtcVideoTrack targetTrack = AliRtcHelper.interceptTrack(event.aliRtcVideoTrack);
+            boolean trackIsTrackNo = targetTrack == AliRtcEngine.AliRtcVideoTrack.AliRtcVideoTrackNo;
+            //ViewUtil.switchVisibilityIfNecessary(trackIsTrackNo, noTrackHintIcon);
+            if (trackIsTrackNo) {
+                ViewUtil.removeSelfSafely(canvas.view);
+            } else {
+                ViewUtil.addChildMatchParentSafely(true, rtcContainer, canvas.view);
+            }
+            rtcService.setRemoteViewConfig(canvas, uid, targetTrack);
 
-            rtcService.setRemoteViewConfig(aliVideoCanvas, rtcStreamEvent.userId
-                    , AliRtcHelper.interceptTrack(rtcStreamEvent.aliRtcVideoTrack));
-
-            ofRtcSubscribeDelegate().subscribe(rtcStreamEvent);
+            ofRtcSubscribeDelegate().subscribe(event);
         } else {
-            ofStudentRtcDelegate().updateData(rtcStreamEvent);
+            if (offlineUidSet.contains(uid)) {
+                Logger.e(TAG, "playRtc: end--invalid param: " + event.aliRtcVideoTrack);
+                return;
+            }
+            streamCacheMap.put(uid, new WeakReference<>(event));
+        }
+    }
+
+    private void removeJoinedData(String uid, String reason){
+        Logger.i(TAG, "removeJoinedData: " + uid + ", reason:" + reason);
+        addSystemMessage(reason + uid);
+
+        ofStudentRtcDelegate().removeData(uid);
+        streamCacheMap.remove(uid);
+    }
+
+    private void stopLivePlay() {
+        LivePlayerService lps = Utils.getRef(livePlayerServiceRef);
+        if (lps != null) {
+            lps.stopPlay();
         }
     }
 
@@ -673,7 +826,7 @@ public class RtcDelegate extends SampleRtcEventHandler {
     }
 
     @Nullable
-    private View parsePossibleSophonSurfaceView(@Nullable ViewGroup roadVG) {
+    private SophonSurfaceView parsePossibleSophonSurfaceView(@Nullable ViewGroup roadVG) {
         if (roadVG == null) {
             return null;
         }
@@ -681,7 +834,7 @@ public class RtcDelegate extends SampleRtcEventHandler {
         for (int i = 0, size = roadVG.getChildCount(); i < size; i++) {
             View child = roadVG.getChildAt(i);
             if (child instanceof SophonSurfaceView) {
-                return child;
+                return (SophonSurfaceView) child;
             }
         }
         return null;
@@ -768,7 +921,7 @@ public class RtcDelegate extends SampleRtcEventHandler {
 
     private RtcSubscribeDelegate ofRtcSubscribeDelegate() {
         if (rtcSubscribeDelegate == null) {
-            rtcSubscribeDelegate = new RtcSubscribeDelegate(Utils.getRef(rtcServiceRef));
+            rtcSubscribeDelegate = new RtcSubscribeDelegate(Utils.getRef(rtcServiceRef), Utils.getRef(roomChannelRef));
         }
 
         return rtcSubscribeDelegate;
@@ -779,7 +932,7 @@ public class RtcDelegate extends SampleRtcEventHandler {
         super.destroy();
         EventHandlerUtil.removeEventHandler(rtcServiceRef, this);
 
-        Utils.clear(rtcServiceRef, systemMessageRef);
+        Utils.clear(rtcServiceRef, systemMessageRef, offlineUidSet, audioMuteCacheMap, videoMuteCacheMap, streamCacheMap);
         Utils.destroy(studentRtcDelegate, rtcSubscribeDelegate);
         rtcDelegateReceiver = null;
         activity = null;

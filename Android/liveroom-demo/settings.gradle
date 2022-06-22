@@ -51,6 +51,15 @@ if (loadLocalDep) {
         include(':beauty_base')
         project(':beauty_base').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/beauty_base")
 
+        include(':beauty_common')
+        project(':beauty_common').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/beauty_common")
+
+        include(':beauty_lite')
+        project(':beauty_lite').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/beauty_lite")
+
+        include(':beauty_pro')
+        project(':beauty_pro').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/beauty_pro")
+
         include(':player')
         project(':player').projectDir = new File("$ANDROID_WORKSPACE_4_BASE_SDK/player")
 

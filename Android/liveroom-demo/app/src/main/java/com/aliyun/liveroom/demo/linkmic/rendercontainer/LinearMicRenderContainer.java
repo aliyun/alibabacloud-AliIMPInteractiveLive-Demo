@@ -16,6 +16,8 @@ import com.aliyun.liveroom.demo.linkmic.IMicRenderContainer;
 import com.aliyun.roompaas.uibase.util.ViewUtil;
 import com.aliyun.standard.liveroom.lib.linkmic.model.LinkMicUserModel;
 
+import org.webrtc.sdk.SophonSurfaceView;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +31,6 @@ import java.util.Map;
 public class LinearMicRenderContainer extends LinearLayout implements IMicRenderContainer {
 
     private final Map<String, View> userId2ItemView = new HashMap<>();
-    private Callback callback;
 
     public LinearMicRenderContainer(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -42,26 +43,15 @@ public class LinearMicRenderContainer extends LinearLayout implements IMicRender
         }
     }
 
-    @Override
-    public LinkMicUserModel getUser(String userId) {
-        ItemView itemView = (ItemView) userId2ItemView.get(userId);
-        return itemView == null ? null : itemView.user;
-    }
-
-    @Override
-    public void setCallback(Callback callback) {
-        this.callback = callback;
-    }
-
     private void add(LinkMicUserModel user) {
         ItemView itemView = (ItemView) userId2ItemView.get(user.userId);
         if (itemView == null) {
             View view = new ItemView(getContext(), user);
             addView(view);
             userId2ItemView.put(user.userId, view);
-            update(getChildCount() - 1);
+            update(getChildCount() - 1, true);
         } else {
-            update(indexOfChild(itemView));
+            update(indexOfChild(itemView), true);
         }
     }
 
@@ -83,12 +73,12 @@ public class LinearMicRenderContainer extends LinearLayout implements IMicRender
     }
 
     @Override
-    public void update(String userId) {
+    public void update(String userId, boolean refreshRenderView) {
         int index = getIndex(userId);
-        update(index);
+        update(index, refreshRenderView);
     }
 
-    private void update(int index) {
+    private void update(int index, boolean refreshRenderView) {
         if (isInValidIndex(index)) {
             return;
         }
@@ -96,14 +86,21 @@ public class LinearMicRenderContainer extends LinearLayout implements IMicRender
         ItemView itemView = (ItemView) getChildAt(index);
         LinkMicUserModel user = itemView.user;
 
-        View renderView = getRenderView(user.userId);
+        View renderView = user.cameraView;
 
-        itemView.userLabel.setText(user.userId);
+        itemView.userLabel.setText(user.nickname);
         itemView.mic.setText(String.format("麦克风: %s", user.isMicOpen ? "开" : "关"));
-        if (renderView == null || !user.isCameraOpen) {
-            itemView.container.removeAllViews();
-        } else {
-            ViewUtil.addChildMatchParentSafely(itemView.container, renderView);
+
+        if (refreshRenderView) {
+            if (renderView == null || !user.isCameraOpen) {
+                itemView.container.removeAllViews();
+            } else {
+                // 设置图层盖在上方
+                if (renderView instanceof SophonSurfaceView) {
+                    ((SophonSurfaceView) renderView).setZOrderMediaOverlay(true);
+                }
+                ViewUtil.addChildMatchParentSafely(itemView.container, renderView);
+            }
         }
     }
 
@@ -114,11 +111,6 @@ public class LinearMicRenderContainer extends LinearLayout implements IMicRender
 
     private boolean isInValidIndex(int index) {
         return index < 0 || index >= getChildCount();
-    }
-
-    @Nullable
-    private View getRenderView(String userId) {
-        return callback == null ? null : callback.getView(userId);
     }
 
     @SuppressLint("ViewConstructor")

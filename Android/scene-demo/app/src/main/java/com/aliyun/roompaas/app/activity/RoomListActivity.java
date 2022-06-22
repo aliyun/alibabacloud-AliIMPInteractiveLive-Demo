@@ -1,5 +1,6 @@
 package com.aliyun.roompaas.app.activity;
 
+import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,13 +19,16 @@ import com.aliyun.roompaas.app.api.DestroyRoomApi;
 import com.aliyun.roompaas.app.api.GetRoomListApi;
 import com.aliyun.roompaas.app.helper.RoomHelper;
 import com.aliyun.roompaas.app.helper.Router;
+import com.aliyun.roompaas.app.model.ClassBean;
 import com.aliyun.roompaas.app.model.RoomModel;
 import com.aliyun.roompaas.app.request.DestroyRoomRequest;
 import com.aliyun.roompaas.app.request.RoomListRequest;
 import com.aliyun.roompaas.app.util.DialogUtil;
+import com.aliyun.roompaas.app.viewmodel.RoomListViewModel;
 import com.aliyun.roompaas.base.callback.Callbacks;
 import com.aliyun.roompaas.base.exposable.Callback;
 import com.aliyun.roompaas.base.util.CollectionUtil;
+import com.aliyun.roompaas.base.util.Utils;
 import com.aliyun.roompaas.uibase.util.ViewUtil;
 
 import java.util.ArrayList;
@@ -43,6 +47,7 @@ public class RoomListActivity extends BaseActivity {
     private TabInfo roomType2TabInfo = new TabInfo();
     private Adapter adapter;
     private boolean isRequesting;
+    private RoomListViewModel roomListViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,6 +88,10 @@ public class RoomListActivity extends BaseActivity {
         TextView startCreateRoomButtonText = findViewById(R.id.startCreateRoomButtonText);
         ViewUtil.applyText(startCreateRoomButtonText, RoomHelper.isTypeBusiness()
                 ? "开启\n直播" : "开启\n上课");
+
+        roomListViewModel = new RoomListViewModel();
+        roomListViewModel.getRoomListLiveData().observe(this, getRoomListVMObserver());
+        roomListViewModel.query();
     }
 
     private void startCreateRoom(){
@@ -101,6 +110,10 @@ public class RoomListActivity extends BaseActivity {
 
     private void loadData(boolean loadMore) {
         if (isRequesting) {
+            return;
+        }
+
+        if (!RoomHelper.isTypeBusiness()) {
             return;
         }
 
@@ -159,6 +172,26 @@ public class RoomListActivity extends BaseActivity {
         ));
     }
 
+    private Observer<List<ClassBean>> getRoomListVMObserver() {
+        return requestList -> {
+            if (context == null || requestList == null || Utils.isEmpty(requestList)) {
+                return;
+            }
+
+            postToMain(() -> {
+                isRequesting = false;
+                refreshLayout.setRefreshing(false);
+
+                TabInfo newTabInfo = new TabInfo();
+                newTabInfo.pageNum = 1;
+                newTabInfo.dataList = requestList;
+                newTabInfo.hasMore = false;
+                roomType2TabInfo = newTabInfo;
+                adapter.notifyDataSetChanged();
+            });
+        };
+    }
+
     private List<RoomModel> getDataList() {
         return roomType2TabInfo == null ? null : roomType2TabInfo.dataList;
     }
@@ -176,12 +209,23 @@ public class RoomListActivity extends BaseActivity {
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
             List<RoomModel> dataList = getDataList();
-            if (dataList == null) {
+            if (Utils.isEmpty(dataList)) {
                 return;
             }
 
             String currentUserId = Const.currentUserId;
             final RoomModel model = dataList.get(position);
+
+            // class type
+            if (model instanceof ClassBean){
+                ClassBean bean = (ClassBean) model;
+                holder.title.setText(bean.title);
+
+                ViewUtil.bindClickActionWithClickCheck(holder.itemView, () ->
+                        Router.openRoomViaBizType(context, bean.roomId, bean.title, currentUserId));
+                return;
+            }
+
             holder.title.setText(model.title);
             //boolean isOwner = TextUtils.equals(currentUserId, model.ownerId);
             //ViewUtil.setVisibilityIfNecessary(holder.isOwner, isOwner ? View.VISIBLE : View.GONE);
@@ -258,9 +302,9 @@ public class RoomListActivity extends BaseActivity {
         }
     }
 
-    private static class TabInfo {
+    private static class TabInfo<T extends RoomModel> {
         int pageNum;
-        List<RoomModel> dataList;
+        List<T> dataList;
         boolean hasMore;
     }
 }

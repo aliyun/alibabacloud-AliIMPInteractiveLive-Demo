@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 
 import com.alivc.rtc.AliRtcEngine;
 import com.aliyun.roompaas.app.R;
+import com.aliyun.roompaas.app.delegate.rtc.IDisplayVideo;
 import com.aliyun.roompaas.app.delegate.rtc.StudentRtcDelegate;
 import com.aliyun.roompaas.app.helper.AliRtcHelper;
 import com.aliyun.roompaas.base.IDestroyable;
@@ -37,10 +39,13 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
     private ItemClickListener itemClickListener;
 
     private RtcService rtcService;
+    private IDisplayVideo subStatusQuery;
+    private String userId;
 
     public StudentListAdapter(RoomChannel roomChannel, Context context) {
         this.context = context;
         this.rtcService = roomChannel.getPluginService(RtcService.class);
+        this.userId = roomChannel.getUserId();
     }
 
     public void setItemClickListener(@Nullable ItemClickListener itemClickListener) {
@@ -65,28 +70,28 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
         return new RtcStreamEvent[StudentRtcDelegate.DEFAULT_SUPPORTING_STUDENT_VIEW_COUNT];
     }
 
-    public void updateLocalMic(String uid, boolean muteLocalMic) {
+    public void updateLocalMic(String uid, boolean closeMic) {
         for (int i = 0; i < focusingDataArray.length; i++) {
             RtcStreamEvent rtcStreamEvent = focusingDataArray[i];
             if (rtcStreamEvent == null) {
                 continue;
             }
             if (rtcStreamEvent.userId.equals(uid)) {
-                rtcStreamEvent.muteMic = muteLocalMic;
+                rtcStreamEvent.closeMic = closeMic;
                 notifyItemChanged(i);
                 break;
             }
         }
     }
 
-    public void updateLocalCamera(String uid, boolean muteLocalCamera) {
+    public void updateLocalCamera(String uid, boolean closeCamera) {
         for (int i = 0; i < focusingDataArray.length; i++) {
             RtcStreamEvent rtcStreamEvent = focusingDataArray[i];
             if (rtcStreamEvent == null) {
                 continue;
             }
             if (rtcStreamEvent.userId.equals(uid)) {
-                rtcStreamEvent.muteCamera = muteLocalCamera;
+                rtcStreamEvent.closeCamera = closeCamera;
                 notifyItemChanged(i);
                 break;
             }
@@ -128,7 +133,7 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
      * @param info 流信息
      */
     public void detachedPreview(@Nullable RtcStreamEvent info) {
-        if (info != null && info.isLocalStream && info.aliVideoCanvas != null) {
+        if (info != null && info.aliVideoCanvas != null) {
             ViewUtil.removeSelfSafely(info.aliVideoCanvas.view);
         }
     }
@@ -152,62 +157,61 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
 
         private void bindView(final int position, final List<Object> payloads) {
             // 取到当前小屏项的数据源
-            RtcStreamEvent streamInfo = focusingDataArray[position];
-            ViewUtil.switchVisibilityIfNecessary(streamInfo != null, itemView);
-            if (streamInfo == null) {
+            RtcStreamEvent event = focusingDataArray[position];
+            ViewUtil.switchVisibilityIfNecessary(event != null, itemView);
+            if (event == null) {
                 return;
             }
 
             // 设置小屏点击事件
             ViewUtil.bindClickActionWithClickCheck(itemView, () -> {
                 if (itemClickListener != null) {
-                    itemClickListener.onItemClicked(position, streamInfo);
+                    itemClickListener.onItemClicked(position, event);
                 }
             });
 
+            String uid = event.userId;
+            boolean notDisplayVideo = event.closeCamera || (subStatusQuery != null && !subStatusQuery.showDisplayVideo(uid));
+            String nickName = Utils.firstNotEmpty(event.userName, "");
+            updateNickMicNoVideo(nickName, notDisplayVideo, event);
             if (!payloads.isEmpty()) {
                 // 这里可以刷新item的局部view，防止画面预览view出现黑屏抖动
                 int type = (int) payloads.get(0);
                 if (type == 1) {
-                    nick.setText(streamInfo.userName);
-                    mute.setImageResource(streamInfo.muteMic
-                            ? R.drawable.alivc_biginteractiveclass_item_mute_mic
-                            : R.drawable.alivc_biginteractiveclass_item_unmute_mic);
-                    cameraLayout.setVisibility(streamInfo.muteCamera ? View.VISIBLE : View.GONE);
+                    updateNickMicNoVideo(nickName, notDisplayVideo, event);
                 }
                 return;
             }
 
-            nick.setText(Utils.firstNotEmpty(streamInfo.userName, ""));
-            mute.setImageResource(streamInfo.muteMic
-                    ? R.drawable.alivc_biginteractiveclass_item_mute_mic
-                    : R.drawable.alivc_biginteractiveclass_item_unmute_mic);
-            cameraLayout.setVisibility(streamInfo.muteCamera ? View.VISIBLE : View.GONE);
-
-            final View canvasView = streamInfo.aliVideoCanvas.view;
-
-            if (canvasView == null) {
-                AliRtcHelper.fillCanvasViewIfNecessary(streamInfo.aliVideoCanvas, itemView.getContext(), true);
-                configSurfaceViewAndAttachToContainer(renderContainer, streamInfo.aliVideoCanvas.view);
-                if (streamInfo.isLocalStream) {
-                    // preview
-                    startPreview(streamInfo);
-                } else {
-                    displayStream(streamInfo);
+            if (notDisplayVideo) {
+                ViewUtil.removeSelfSafely(event.aliVideoCanvas.view);
+                if (isSelf(uid)) {
+                    previewProcess(event, true);
                 }
             } else {
-                configSurfaceViewAndAttachToContainer(renderContainer, canvasView);
-                if (!streamInfo.isLocalStream || rtcService == null) {
-                    return;
+                if (event.aliVideoCanvas.view == null) {
+                    AliRtcHelper.fillCanvasViewIfNecessary(event.aliVideoCanvas, itemView.getContext(), true);
                 }
-                // 点击关闭摄像头需要掉rtc sdk的停止预览展示黑背景
-                if (streamInfo.muteLocalCamera) {
-                    rtcService.stopPreview();
+                configSurfaceViewAndAttachToContainer(renderContainer, event.aliVideoCanvas.view);
+                if (isSelf(uid)) {
+                    previewProcess(event, false);
                 } else {
-                    rtcService.startPreview();
+                    displayStream(event);
                 }
             }
         }
+
+        private void updateNickMicNoVideo(String nickName, boolean notDisplayVideo, RtcStreamEvent streamInfo) {
+            nick.setText(nickName);
+            ViewUtil.switchVisibilityIfNecessary(!TextUtils.isEmpty(nickName), nick);
+            ViewUtil.switchVisibilityIfNecessary(notDisplayVideo, cameraLayout);
+            updateCloseMicIcon(streamInfo.closeMic);
+        }
+
+        private void updateCloseMicIcon(boolean closeMic) {
+            mute.setImageResource(closeMic ? R.drawable.alivc_biginteractiveclass_item_mute_mic : R.drawable.alivc_biginteractiveclass_item_unmute_mic);
+        }
+
 
         private void configSurfaceViewAndAttachToContainer(@NonNull ViewGroup holdOnlyOneChildVG, @NonNull View v) {
             if (holdOnlyOneChildVG.getChildCount() > 0 && !Objects.equals(holdOnlyOneChildVG, v.getParent())) {
@@ -220,35 +224,39 @@ public class StudentListAdapter extends RecyclerView.Adapter<StudentListAdapter.
     /**
      * 展示远端流
      */
-    private void displayStream(RtcStreamEvent streamEvent) {
-        AliRtcEngine.AliRtcVideoCanvas aliVideoCanvas = streamEvent.aliVideoCanvas;
+    private void displayStream(RtcStreamEvent event) {
+        AliRtcEngine.AliRtcVideoCanvas aliVideoCanvas = event.aliVideoCanvas;
         if (aliVideoCanvas != null && rtcService != null) {
             // 小屏渲染内容从远端读
-            rtcService.setRemoteViewConfig(aliVideoCanvas, streamEvent.userId,
-                    AliRtcHelper.interceptTrack(streamEvent.aliRtcVideoTrack));
+            rtcService.setRemoteViewConfig(aliVideoCanvas, event.userId, AliRtcHelper.interceptTrack(event.aliRtcVideoTrack));
         }
     }
 
     /**
      * 展示本地流
      */
-    private void startPreview(RtcStreamEvent alivcVideoStreamInfo) {
+    private void previewProcess(RtcStreamEvent event, boolean notDisplayVideo) {
         if (rtcService == null) {
             return;
         }
 
-        AliRtcEngine.AliRtcVideoCanvas aliVideoCanvas = alivcVideoStreamInfo.aliVideoCanvas;
-        if (aliVideoCanvas != null) {
-            // 小屏渲染内容从本地摄像头读
-            rtcService.setLocalViewConfig(aliVideoCanvas, alivcVideoStreamInfo.aliRtcVideoTrack);
-        }
-
-        // 控制自己的摄像头是否打开
-        if (alivcVideoStreamInfo.muteLocalCamera) {
+        if (notDisplayVideo) {
             rtcService.stopPreview();
         } else {
+            AliRtcEngine.AliRtcVideoCanvas canvas = event.aliVideoCanvas;
+            if (canvas != null) {
+                rtcService.setLocalViewConfig(canvas, event.aliRtcVideoTrack);
+            }
             rtcService.startPreview();
         }
+    }
+
+    private boolean isSelf(String uid) {
+        return TextUtils.equals(userId, uid);
+    }
+
+    public void setSubStatusQuery(IDisplayVideo subStatusQuery) {
+        this.subStatusQuery = subStatusQuery;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.aliyun.roompaas.app.viewmodel;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -8,15 +9,17 @@ import android.view.View;
 import com.alibaba.dingpaas.base.DPSError;
 import com.alibaba.dingpaas.room.CreateWhiteboardCb;
 import com.alibaba.dingpaas.room.CreateWhiteboardRsp;
+import com.alibaba.dingpaas.wb.OpenWhiteboardRsp;
+import com.alibaba.dingpaas.wb.StartWhiteboardRecordingRsp;
 import com.alibaba.fastjson.JSON;
-import com.aliyun.roompaas.app.api.OpenWhiteBoardAPI;
 import com.aliyun.roompaas.app.model.DocumentAccessInfo;
-import com.aliyun.roompaas.app.response.OpenWhiteBoardResponse;
-import com.aliyun.roompaas.app.response.Response;
 import com.aliyun.roompaas.app.viewmodel.inter.IWhiteBoardOperate;
 import com.aliyun.roompaas.base.exposable.Callback;
+import com.aliyun.roompaas.base.log.Logger;
 import com.aliyun.roompaas.biz.exposable.RoomChannel;
+import com.aliyun.roompaas.whiteboard.exposable.ToolbarOrientation;
 import com.aliyun.roompaas.whiteboard.exposable.WhiteboardService;
+import com.aliyun.roompaas.whiteboard.exposable.event.WhiteBoardOption;
 
 /**
  * Created by KyleCe on 2021/5/27
@@ -29,15 +32,15 @@ public class WhiteBoardVM implements IWhiteBoardOperate {
 
     private String whiteBoardInstanceId;
 
-    private static final int PERMISSION_NONE = 0;
-    private static final int PERMISSION_READ_ONLY = 1;
-    private static final int PERMISSION_READ_AND_WRITE = 2;
+    private DocumentAccessInfo accessInfo;
+    private final boolean CONFIG_DS_DOMAIN = false; // 不配置版本
 
     public WhiteBoardVM(@NonNull RoomChannel roomChannel) {
         this.roomChannel = roomChannel;
         this.whiteboardService = roomChannel.getPluginService(WhiteboardService.class);
     }
 
+    @Override
     public void whiteBoardProcess() {
         String whiteboardId = whiteboardService.getWhiteboardId();
         if (whiteboardId != null) {
@@ -74,24 +77,42 @@ public class WhiteBoardVM implements IWhiteBoardOperate {
             return;
         }
 
-        OpenWhiteBoardAPI.openWhiteBoard(instanceId, roomChannel.getUserId(), new Callback<Response<OpenWhiteBoardResponse>>() {
+        whiteboardService.openWhiteboardService(instanceId, new Callback<OpenWhiteboardRsp>() {
             @Override
-            public void onSuccess(Response<OpenWhiteBoardResponse> data) {
-                Log.i(TAG, "onSuccess: ");
-                OpenWhiteBoardResponse response;
-                DocumentAccessInfo accessInfo;
-                if (data != null && (response = data.result) != null && (accessInfo = response.documentAccessInfo) != null) {
+            public void onSuccess(OpenWhiteboardRsp data) {
+                Logger.i(TAG, "openWhiteboardService onSuccess: " + data);
+                if (data != null && (accessInfo = convert(data)) != null) {
                     accessInfo.docKey = whiteBoardInstanceId;
-                    accessInfo.permission = roomChannel.isOwner() ? PERMISSION_READ_AND_WRITE : PERMISSION_READ_ONLY;
-                    whiteboardService.initWhiteBoard(JSON.toJSONString(accessInfo));
+                    boolean isTeacherAndOwner = roomChannel.isOwner();
+                    accessInfo.permission = isTeacherAndOwner ? DocumentAccessInfo.PERMISSION_READ_AND_WRITE : DocumentAccessInfo.PERMISSION_READ_ONLY;
+                    WhiteBoardOption option = new WhiteBoardOption();
+                    option.forceSync = true;
+                    whiteboardService.initWhiteBoard(JSON.toJSONString(accessInfo), option);
+                    //Utils.run(whiteBoardInitializedAction);
                 }
             }
 
             @Override
             public void onError(String errorMsg) {
-                Log.i(TAG, "onError: ");
+                Logger.e(TAG, "openWhiteboardService onError: " + errorMsg);
             }
         });
+    }
+
+    @Nullable
+    private DocumentAccessInfo convert(OpenWhiteboardRsp rsp) {
+        if (rsp == null) {
+            return null;
+        }
+
+        DocumentAccessInfo info = new DocumentAccessInfo();
+        info.accessToken = rsp.documentAccessInfo.accessToken;
+        info.collabHost = rsp.documentAccessInfo.collabHost;
+        info.permission = rsp.documentAccessInfo.permission;
+        if (CONFIG_DS_DOMAIN) {
+            info.wsDomain = rsp.documentAccessInfo.wsDomain;
+        }
+        return info;
     }
 
     @Override
@@ -102,5 +123,40 @@ public class WhiteBoardVM implements IWhiteBoardOperate {
     @Override
     public void openWhiteBoard(Callback<View> callback) {
         whiteboardService.openWhiteBoard(callback);
+    }
+
+    @Override
+    public void setToolbarOrientation(ToolbarOrientation orientation) {
+        whiteboardService.setToolbarOrientation(orientation);
+    }
+
+    @Override
+    public void setToolbarVisibility(int visibility) {
+        whiteboardService.setToolbarVisibility(visibility);
+    }
+
+    @Override
+    public void getScale(Callback<Float> callback) {
+        whiteboardService.getScale(callback);
+    }
+
+    @Override
+    public void setScale(float scale, @Nullable Runnable resultAction) {
+        whiteboardService.setScale(scale, resultAction);
+    }
+
+    @Override
+    public void startWhiteboardRecording() {
+        whiteboardService.startWhiteboardRecording(new Callback<StartWhiteboardRecordingRsp>() {
+            @Override
+            public void onSuccess(StartWhiteboardRecordingRsp data) {
+                Logger.i(TAG, "onSuccess: ");
+            }
+
+            @Override
+            public void onError(String errorMsg) {
+                Logger.e(TAG, "onError: " + errorMsg);
+            }
+        });
     }
 }

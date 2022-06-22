@@ -1,5 +1,7 @@
 package com.aliyun.roompaas.app.activity.classroom;
 
+import static com.aliyun.roompaas.app.activity.classroom.ClassFunctionsAdapter.FunctionName.Join_RTC;
+
 import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -41,11 +43,13 @@ import com.aliyun.roompaas.chat.exposable.event.CommentEvent;
 import com.aliyun.roompaas.chat.exposable.event.MuteCommentEvent;
 import com.aliyun.roompaas.live.SampleLiveEventHandler;
 import com.aliyun.roompaas.live.exposable.event.LiveCommonEvent;
+import com.aliyun.roompaas.rtc.RtcLayoutModel;
 import com.aliyun.roompaas.rtc.exposable.RtcService;
 import com.aliyun.roompaas.rtc.exposable.RtcUserStatus;
 import com.aliyun.roompaas.rtc.exposable.event.ConfUserEvent;
 import com.aliyun.roompaas.rtc.exposable.event.RtcStreamEvent;
 import com.aliyun.roompaas.uibase.util.ViewUtil;
+import com.aliyun.roompaas.whiteboard.exposable.ToolbarOrientation;
 import com.aliyun.roompaas.whiteboard.exposable.WhiteboardService;
 
 import org.webrtc.sdk.SophonSurfaceView;
@@ -55,8 +59,6 @@ import java.util.Collection;
 import java.util.List;
 
 import java8.util.stream.StreamSupport;
-
-import static com.aliyun.roompaas.app.activity.classroom.ClassFunctionsAdapter.FunctionName.Join_RTC;
 
 /**
  * 课堂场景房间
@@ -72,7 +74,7 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
 
     private ClassroomView view;
     private RtcUserManager rtcUserManager;
-    private WhiteBoardVM whiteBoardVM;
+    private IWhiteBoardOperate whiteBoardVM = IWhiteBoardOperate.NULL;
 
     private WhiteboardService whiteboardService;
     private RtcService rtcService;
@@ -90,10 +92,38 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
     }
 
     @Override
+    public void whiteBoardProcess() {
+        whiteBoardVM.whiteBoardProcess();
+    }
+
+    @Override
     public void openWhiteBoard(Callback<View> callback) {
-        if (whiteBoardVM != null) {
-            whiteBoardVM.openWhiteBoard(callback);
-        }
+        whiteBoardVM.openWhiteBoard(callback);
+    }
+
+    @Override
+    public void setToolbarOrientation(ToolbarOrientation orientation) {
+       whiteBoardVM.setToolbarOrientation(orientation);
+    }
+
+    @Override
+    public void setToolbarVisibility(int visibility) {
+        whiteBoardVM.setToolbarVisibility(visibility);
+    }
+
+    @Override
+    public void getScale(Callback<Float> callback) {
+        whiteBoardVM.getScale(callback);
+    }
+
+    @Override
+    public void setScale(float scale, @Nullable Runnable resultAction) {
+        whiteBoardVM.setScale(scale, resultAction);
+    }
+
+    @Override
+    public void startWhiteboardRecording() {
+        whiteBoardVM.startWhiteboardRecording();
     }
 
     @Override
@@ -167,15 +197,21 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
     }
 
     private void loadUser(boolean loadRtcUserList) {
+        loadUser(loadRtcUserList, null);
+    }
+
+    private void loadUser(boolean loadRtcUserList, @Nullable Callback<List<RtcUser>> callback) {
         rtcUserManager.loadUserList(loadRtcUserList, new Callback<List<RtcUser>>() {
             @Override
             public void onSuccess(List<RtcUser> data) {
                 view.studentView.setData(data);
+                Utils.callSuccess(callback, data);
             }
 
             @Override
             public void onError(String errorMsg) {
                 showToast("获取用户列表失败: " + errorMsg);
+                Utils.callError(callback, errorMsg);
             }
         });
     }
@@ -377,15 +413,6 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
         }
     }
 
-    private void parseRtcStreamInfoIfMyselfPreviewIsInRoadRender() {
-        View surfaceView;
-        if (displayVideoStreamInfo == null && (surfaceView = parsePossibleSurfaceView()) instanceof SophonSurfaceView) {
-            RtcStreamEvent me = assembleRtcStreamEventForSelf(false);
-            me.aliVideoCanvas.view = surfaceView;
-            displayVideoStreamInfo = me;
-        }
-    }
-
     @Nullable
     private View parsePossibleSurfaceView() {
         ViewGroup roadVG;
@@ -402,21 +429,10 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
         return null;
     }
 
-    private RtcStreamEvent assembleRtcStreamEventForSelf(boolean certainlyNotTeacher) {
-        return new RtcStreamEvent.Builder()
-                .setUserId(roomChannel.getUserId())
-                .setAliRtcVideoTrack(AliRtcEngine.AliRtcVideoTrack.AliRtcVideoTrackCamera)
-                .setUserName("我")
-                .setLocalStream(true)
-                .setTeacher(!certainlyNotTeacher && isOwner())
-                .setAliVideoCanvas(new AliRtcEngine.AliRtcVideoCanvas())
-                .build();
-    }
-
     private RtcDelegate ofRtcDelegate() {
         if (rtcDelegate == null) {
             rtcDelegate = new RtcDelegate(this, this, getUserId(), nick
-                    , roomChannel ,rtcService, view.rtcRenderContainer, this);
+                    , roomChannel ,rtcService, livePlayerService, view.rtcRenderContainer, this);
         }
 
         return rtcDelegate;
@@ -448,7 +464,18 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
     @Override
     public void onRtcRemoteJoinSuccess(ConfUserEvent userEvent) {
         isJoined = true;
-        loadUser(true);
+        loadUser(true, new Callback<List<RtcUser>>() {
+            @Override
+            public void onSuccess(List<RtcUser> rtcUsers) {
+                if (isOwner()){
+                    ofRtcDelegate().setLayoutModel(RtcLayoutModel.ONE_SUPPORT_FOUR);
+                }
+            }
+
+            @Override
+            public void onError(String s) {
+            }
+        });
     }
 
     @Override
@@ -468,6 +495,11 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
 
     @Override
     public void onUpdateSelfMicStatus(boolean mute) {
+
+    }
+
+    @Override
+    public void onUpdateSelfCameraStatus(boolean mute) {
 
     }
 
@@ -568,7 +600,7 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
             case Mute_Mic:
                 // 静音
                 if (isJoined) {
-                    ofRtcDelegate().muteLocalMic();
+                    ofRtcDelegate().toggleMic();
                 } else {
                     result = false;
                     showToast("上麦后可操作");
@@ -577,7 +609,7 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
             case Mute_Camera:
                 // 摄像头
                 if (isJoined) {
-                    ofRtcDelegate().muteLocalCamera();
+                    ofRtcDelegate().toggleCamera();
                 } else {
                     result = false;
                     showToast("上麦后可操作");
@@ -599,6 +631,18 @@ public class ClassroomActivity extends BaseRoomActivity implements IWhiteBoardOp
             default:
         }
         return result;
+    }
+
+    public void updateFunctionSelectionOfMic(boolean closeMic){
+        if (functionAdapter != null) {
+            functionAdapter.updateFunctionSelected(ClassFunctionsAdapter.FunctionName.Mute_Mic, closeMic);
+        }
+    }
+
+    public void updateFunctionSelectionOfCamera(boolean closeCamera){
+        if (functionAdapter != null) {
+            functionAdapter.updateFunctionSelected(ClassFunctionsAdapter.FunctionName.Mute_Camera, closeCamera);
+        }
     }
 
     private void updateConfUserData(ConfUserEvent confUserEvent, RtcUserStatus status) {

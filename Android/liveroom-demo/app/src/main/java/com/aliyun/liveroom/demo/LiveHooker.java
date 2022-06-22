@@ -14,11 +14,11 @@ import com.aliyun.liveroom.demo.custom.CustomLiveRightUpperView;
 import com.aliyun.liveroom.demo.custom.CustomLiveShareView;
 import com.aliyun.liveroom.demo.custom.CustomLiveStartView;
 import com.aliyun.liveroom.demo.custom.CustomLiveStopView;
-import com.aliyun.liveroom.demo.linkmic.CustomLiveLinkMicView;
+import com.aliyun.liveroom.demo.linkmic.CustomAnchorRenderView;
+import com.aliyun.liveroom.demo.linkmic.CustomAudienceRenderView;
 import com.aliyun.standard.liveroom.lib.LiveHook;
 import com.aliyun.standard.liveroom.lib.LivePrototype;
 import com.aliyun.standard.liveroom.lib.component.view.LiveBeautyView;
-import com.aliyun.standard.liveroom.lib.component.view.LiveCurtainView;
 import com.aliyun.standard.liveroom.lib.component.view.LiveGestureView;
 import com.aliyun.standard.liveroom.lib.component.view.LiveInfoView;
 import com.aliyun.standard.liveroom.lib.component.view.LiveInputView;
@@ -82,15 +82,22 @@ public class LiveHooker {
     }
 
     /**
-     * 设置直播间连麦样式, 目前仅支持观众端
+     * 设置直播间连麦样式
+     *
+     * @param isAnchor 是否是主播
      */
-    public static void setLinkMicStyle() {
-        LivePrototype.getInstance().setLiveHook(new LiveHook()
-                .replaceComponentView(LiveMessageView.class, CustomLiveEmptyView.class)
-                .replaceComponentView(LiveCurtainView.class, CustomLiveEmptyView.class)
-                .replaceComponentView(LiveGestureView.class, CustomLiveEmptyView.class)
-                // 普通直播 => 连麦直播
-                .replaceComponentView(LiveRenderView.class, CustomLiveLinkMicView.class)
-        );
+    public static void setLinkMicStyle(boolean isAnchor) {
+        LiveHook liveHook = new LiveHook()
+                // 隐藏手势组件
+                .replaceComponentView(LiveGestureView.class, CustomLiveEmptyView.class);
+
+        if (isAnchor) {
+            // 将普通直播的渲染组件, 替换为连麦直播的渲染组件
+            liveHook.replaceComponentView(LiveRenderView.class, CustomAnchorRenderView.class);
+        } else {
+            // 将普通直播的渲染组件, 替换为连麦直播的渲染组件
+            liveHook.replaceComponentView(LiveRenderView.class, CustomAudienceRenderView.class);
+        }
+        LivePrototype.getInstance().setLiveHook(liveHook);
     }
 }

@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private Mode currentMode = Mode.DEFAULT;
+    private Mode currentMode = Mode.CUSTOM;
     private EditText liveIdInput;
 
     @SuppressLint("SetTextI18n")
@@ -68,7 +68,7 @@ public class MainActivity extends Activity {
 
     // 设置直播间样式
     public void onStartLive(View view) {
-        setLiveStyle();
+        setLiveStyle(true);
 
         // 主播端: 开启直播
         String currentUserId = Const.getCurrentUserId();
@@ -94,7 +94,7 @@ public class MainActivity extends Activity {
     // 观众端: 观看直播
     public void onViewLive(View view) {
         // 设置直播间样式
-        setLiveStyle();
+        setLiveStyle(false);
 
         String liveId = liveIdInput.getText().toString().trim();
         if (TextUtils.isEmpty(liveId)) {
@@ -122,7 +122,7 @@ public class MainActivity extends Activity {
         });
     }
 
-    private void setLiveStyle() {
+    private void setLiveStyle(boolean isAnchor) {
         switch (currentMode) {
             case DEFAULT:
                 LiveHooker.setDefaultStyle();
@@ -131,7 +131,7 @@ public class MainActivity extends Activity {
                 LiveHooker.setCustomStyle();
                 break;
             case LINK_MIC:
-                LiveHooker.setLinkMicStyle();
+                LiveHooker.setLinkMicStyle(isAnchor);
                 break;
         }
     }
