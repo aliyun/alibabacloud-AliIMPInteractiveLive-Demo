@@ -39,7 +39,7 @@ dependencies {
         api project(':rtc')
         api project(':beauty_pro')
     } else {
-        def LATEST_VERSION = '1.8.0.20220615001-SNAPSHOT'
+        def LATEST_VERSION = '2.0.0-rc1'
         api "com.aliyun.roompaas.biz:liveroom:$LATEST_VERSION"
         api "com.aliyun.roompaas.biz:rtc:$LATEST_VERSION"
         api "com.aliyun.roompaas.biz:beauty_pro:$LATEST_VERSION"
