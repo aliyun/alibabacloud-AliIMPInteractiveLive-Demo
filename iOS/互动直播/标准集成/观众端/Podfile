@@ -9,8 +9,8 @@ source 'https://github.com/CocoaPods/Specs.git'
   end
 
   def pod_ailplayer
-    pod 'AliPlayerSDK_iOS', '5.4.4.0'
-    pod 'AliPlayerSDK_iOS_ARTC', '5.4.4.0'
+    pod 'AliPlayerSDK_iOS', '5.4.6.0'
+    pod 'AliPlayerSDK_iOS_ARTC', '5.4.6.0'
     pod 'RtsSDK', '1.9.0'
   end
 

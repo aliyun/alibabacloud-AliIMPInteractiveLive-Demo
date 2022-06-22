@@ -1,0 +1,4 @@
+
+
+ffprobe -show_frames -select_streams v -of xml http://imp-test-class-pull.mcsun.cn/live/057fa3f3-42a4-4750-96e8-8967aef5de82.flv?auth_key=1651113689-0-0-588cb5b1e302bce332c0d20a0b556882 >frames_capture.info
+

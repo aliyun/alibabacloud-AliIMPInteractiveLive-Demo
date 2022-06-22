@@ -55,6 +55,7 @@
 		ED9D7F7B275075CA0007A22A /* AIRBDEnvironments.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRBDEnvironments.h; sourceTree = "<group>"; };
 		ED9D7F7C275075CA0007A22A /* AIRBDEnvironments.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRBDEnvironments.m; sourceTree = "<group>"; };
 		EDCFB0BB268C8BAA00205E2D /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		EDDCA6C02835DB3B00166E28 /* AliInteractiveFaceBeautyCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AliInteractiveFaceBeautyCore.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/AliInteractiveRoomDemo-cfmjpoddlkbznucazlyfbvrjwuxe/Build/Products/Debug-iphoneos/StandardLiveRoomForAnchor.app/Frameworks/AliInteractiveFaceBeautyCore.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +132,7 @@
 		EDD116862653B70F00B69881 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EDDCA6C02835DB3B00166E28 /* AliInteractiveFaceBeautyCore.framework */,
 				EDCFB0BB268C8BAA00205E2D /* libresolv.tbd */,
 				69367096B885C2CFDF20CD1F /* libPods-StandardLiveRoomForAnchor.a */,
 			);

@@ -7,7 +7,7 @@
 
 #import "AIRBDLoginViewController.h"
 #import "AIRBDSetRoomViewController.h"
-
+#import <objc/message.h>
 #import "AIRBDToast.h"
 #import "AIRBDEnvironments.h"
 #import <Masonry/Masonry.h>
@@ -42,13 +42,13 @@
                 anchorViewController.roomModel = [[AIRBDRoomInfoModel alloc] init];
                 anchorViewController.roomModel.title = @"";
                 anchorViewController.roomModel.notice = @"";
-                anchorViewController.roomModel.userID = self.userID;
+                anchorViewController.roomModel.userID = @"jianli";
                 anchorViewController.roomModel.config = self.config;
                 [self.navigationController pushViewController:anchorViewController animated:YES];
                 [self.navigationController setNavigationBarHidden:YES];
                 [anchorViewController createRoomWithCompletion:^(NSString * _Nonnull roomID) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        anchorViewController.roomModel.roomID = roomID;
+                        anchorViewController.roomModel.roomID = @"";
                         [anchorViewController enterRoom];
                         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"房间ID" message:roomID preferredStyle:UIAlertControllerStyleAlert];
                         [alert addAction:[UIAlertAction actionWithTitle:@"拷贝" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -132,7 +132,7 @@
 
 - (void) login {
     
-    self.userID = @"xxxx"; //必传，自定义用户id，必须是英文字母或者阿拉伯数字或者二者组合
+    self.userID = @"jianli"; //必传，自定义用户id，必须是英文字母或者阿拉伯数字或者二者组合
     self.config = [[AIRBRoomEngineConfig alloc] init];
     self.config.appID = [AIRBDEnvironments shareInstance].interactiveLiveRoomAppID; //在控制台开通标准接入互动直播后获取的应用ID；
     self.config.appKey = [AIRBDEnvironments shareInstance].interactiveLiveRoomAppKey; //在控制台开通标准接入互动直播后获取的iOS端的App Key；

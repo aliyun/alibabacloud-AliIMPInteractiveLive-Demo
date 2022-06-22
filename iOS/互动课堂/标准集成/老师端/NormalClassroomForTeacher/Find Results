@@ -1,0 +1,105 @@
+Searching 638 files for "jianli"
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动直播/标准集成/主播端/NormalLiveRoomForAnchor/AIRBDLoginViewController.m:
+   43                  anchorViewController.roomModel.title = @"";
+   44                  anchorViewController.roomModel.notice = @"";
+   45:                 anchorViewController.roomModel.userID = @"jianli";
+   46                  anchorViewController.roomModel.config = self.config;
+   47                  [self.navigationController pushViewController:anchorViewController animated:YES];
+   ..
+  141      }
+  142      
+  143:     self.userID = @"jianli"; //必传，自定义用户id，必须是英文字母或者阿拉伯数字或者二者组合
+  144      self.config = [[AIRBRoomEngineConfig alloc] init];
+  145      self.config.appID = [AIRBDEnvironments shareInstance].interactiveLiveRoomAppID; //在控制台开通标准接入互动直播后获取的应用ID；
+
+2 matches in 1 file
+
+
+Searching 638 files for "AppID {"
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动消息/标准集成/参与端/InteractiveMessageForParticipant/AIRBDEnvironments.m:
+   19  }
+   20  
+   21: - (NSString*) interactiveMessageRoomAppID {
+   22      return @"";
+   23  }
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动消息/标准集成/房管端/InteractiveMessageForCreator/AIRBDEnvironments.m:
+   19  }
+   20  
+   21: - (NSString*) interactiveMessageRoomAppID {
+   22      return [NSString stringWithFormat:@"%@", @""];
+   23  }
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动直播/低代码集成/主播端/StandardLiveRoomForAnchor/AIRBDEnvironments.m:
+   19  }
+   20  
+   21: - (NSString*) interactiveLiveRoomAppID {
+   22      return [NSString stringWithFormat:@"%@", @""];
+   23  }
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动直播/低代码集成/观众端/企业直播样式/StandardLiveRoomForAudience/AIRBDEnvironments.m:
+   19  }
+   20  
+   21: - (NSString*) interactiveLiveRoomAppID {
+   22      return [NSString stringWithFormat:@"%@", @""];
+   23  }
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动直播/低代码集成/观众端/电商直播样式/StandardLiveRoomForAudience/AIRBDEnvironments.m:
+   19  }
+   20  
+   21: - (NSString*) interactiveLiveRoomAppID {
+   22      return [NSString stringWithFormat:@"%@", @""];
+   23  }
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动直播/低代码集成/观众端/默认样式/StandardLiveRoomForAudience/AIRBDEnvironments.m:
+   19  }
+   20  
+   21: - (NSString*) interactiveLiveRoomAppID {
+   22      return [NSString stringWithFormat:@"%@", @""];
+   23  }
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动直播/标准集成/主播端/NormalLiveRoomForAnchor/AIRBDEnvironments.m:
+   19  }
+   20  
+   21: - (NSString*) interactiveLiveRoomAppID {
+   22      return [NSString stringWithFormat:@"%@", @""];
+   23  }
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动直播/标准集成/观众端/NormalLiveRoomForAudience/AIRBDEnvironments.m:
+   19  }
+   20  
+   21: - (NSString*) interactiveLiveRoomAppID {
+   22      return [NSString stringWithFormat:@"%@", @""];
+   23  }
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动课堂/低代码集成/学生端/StandardClassroomForStudents/AIRBDEnvironments.m:
+   19  }
+   20  
+   21: - (NSString*) interactiveClassRoomAppID {
+   22      return [NSString stringWithFormat:@"%@", @""];
+   23  }
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动课堂/低代码集成/老师端/StandardClassroomForTeacher/AIRBDEnvironments.m:
+   19  }
+   20  
+   21: - (NSString*) interactiveClassRoomAppID {
+   22      return [NSString stringWithFormat:@"%@", @""];
+   23  }
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动课堂/标准集成/学生端/NormalClassroomForStudents/AIRBDEnvironments.m:
+   19  }
+   20  
+   21: - (NSString*) interactiveClassRoomAppID {
+   22      return [NSString stringWithFormat:@"%@", @""];
+   23  }
+
+/Users/fernando/alibabacloud-AliIMPInteractiveLive-Demo/iOS/互动课堂/标准集成/老师端/NormalClassroomForTeacher/AIRBDEnvironments.m:
+   19  }
+   20  
+   21: - (NSString*) interactiveClassRoomAppID {
+   22      return [NSString stringWithFormat:@"%@", @""];
+   23  }
+
+12 matches across 12 files
