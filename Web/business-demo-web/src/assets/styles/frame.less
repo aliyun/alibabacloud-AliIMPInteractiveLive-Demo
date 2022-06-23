@@ -1,0 +1,110 @@
+html, body, #app, .el-container{
+  height: 100%;
+}
+.el-container{
+  .el-header{
+    background-color: #242f42;
+    color: #fff;
+    padding: 0;
+    .header{
+      height: 60px;
+      line-height: 60px;
+      .badge{
+        sup{
+          margin-top: 18px;
+        }
+      }
+    }
+  }
+  .el-aside{
+    transition: all .3s;
+    border-right: solid 1px #e6e6e6;
+    .el-menu{
+      border-right: none;
+    }
+  }
+  .el-main{
+    min-width: 1000px;
+    background-color: #f6f6f6;
+    .page-content{
+      box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+      background-color: #fff;
+      border-radius: 4px;
+      padding: 20px;
+      .button-field{
+        padding-bottom: 10px;
+      }
+    }
+    .page-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      padding: 0 10px;
+      .bread {
+        font-size: 15px;
+        color: #666;
+      }
+    }
+    .search-card{
+      margin-bottom: 15px;
+      .el-card__header{
+        padding: 10px 20px 5px;
+        border-bottom: none;
+        .icon{
+          float: right;
+          font-size: 18px;
+          font-weight: bold;
+          cursor: pointer;
+        }
+      }
+      .body{
+        padding: 5px 20px;
+      }
+    }
+  }
+}
+// tabcontent
+.tab-container {
+  .el-tabs__content {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+}
+.textarea {
+  textarea {
+    height: 100%;
+  }
+}
+// common utils
+.clearfix {
+  &:after{
+    content: '';
+    display: block;
+    clear: both;
+  }
+}
+// animations
+.new-msg-shake{
+  animation: shake 1.5s infinite;
+}
+@keyframes shake {
+  0%,4%,8%,12%,16%,20%,24%,28%,32%,36%,40%{
+    transform: translateX(-2px);
+  }
+  1%,5%,9%,13%,17%,21%,25%,29%,33%,37%,41%{
+    transform: translateX(2px);
+  }
+  2%,6%,10%,14%,18%,22%,26%,30%,34%,38%,43%{
+    transform: translateX(-2px);
+  }
+  3%,7%,11%,15%,19%,23%,27%,31%,35%,39%,44%{
+    transform: translateX(2px);
+  }
+}
+.alink {
+  color: rgba(79,172,255,1);
+}
