@@ -2,6 +2,9 @@
 
 ## 开始
 
+* 修改配置
+  将appId、appKey填入到src/constants/config.js中
+
 * 安装依赖
   ```bash
   $ npm install
