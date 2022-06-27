@@ -1,0 +1,156 @@
+.room-info-container {
+  height: 2.63rem;
+
+}
+  .ant-message .anticon{
+    display: none!important;
+  }
+
+
+.room-info {
+  background-color: rgba(0, 0, 0, 0.3);
+  display: inline-flex;
+  align-items: center;
+  padding: 0.1rem 0.3rem 0.1rem 0.17rem;
+  border-radius: 1.5rem;
+
+  .subscribe {
+    height: 1.63rem;
+    width: 4rem;
+    background-color: transparent;
+    background-image: url('../../public/img/button@2x.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+.top {
+  position: relative;
+  margin-top: 0.2rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 0.3rem;
+}
+
+.avatar {
+  height: 2.13rem;
+  width: 2.13rem;
+  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.info {
+  width: 5.25rem;
+  margin: 0 0.25rem;
+  height: 1.8rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.title {
+  .animation-title {
+
+    @keyframes scrolltext {
+      0% {
+        transform: translateX(100%);
+      }
+
+      100% {
+        transform: translateX(-150%);
+      }
+    }
+
+    white-space: nowrap;
+    width: 5.25rem;
+    animation: 10s scrolltext linear infinite;
+    font-size: 0.8rem;
+  }
+
+  span {
+    font-size: 0.8rem;
+  }
+
+  overflow: hidden;
+  font-family: PingFangSC;
+  font-weight: 400;
+  color: #FFFFFF;
+  letter-spacing: 0;
+  line-height: 14px;
+  max-width: 5.25rem;
+  white-space: nowrap;
+}
+
+.data {
+  font-family: PingFangSC;
+  font-weight: 400;
+  font-size: 0.8rem;
+  color: #FFFFFF;
+  letter-spacing: 0;
+  line-height: 12px;
+}
+
+.room-notice {
+  margin-top: 0.5rem;
+  display: flex;
+
+  .notice {
+    height: 1.25rem;
+    line-height: 1.25rem;
+    font-size: 0.6rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 12.31px;
+    padding: 0 0.44rem;
+
+    .icon {
+      display: inline-block;
+      height: 0.68rem;
+      width: 0.78rem;
+      margin-right: 0.2rem;
+      background-image: url(../../public/img/直播-公告@2x.png);
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    span {
+      font-size: 0.6rem;
+    }
+
+    .expend {
+      display: inline-block;
+      margin-left: 0.33rem;
+    }
+  }
+
+  .rank {
+    margin-left: 0.38rem;
+    height: 1.25rem;
+    width: 8.5rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 12.31px;
+    display: flex;
+    line-height: 1.25rem;
+
+    .hot {
+      width: 0.72rem;
+      height: 0.83rem;
+      background-color: transparent;
+      background-image: url('../../public/img/rank@2x.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      margin: auto 0;
+    }
+
+    .rank-text {
+      height: 0.88rem;
+      margin-left: 0.38rem;
+      font-family: PingFangSC;
+      white-space: nowrap;
+      font-weight: 500;
+      font-size: 0.6rem;
+      color: #FFFFFF;
+      letter-spacing: 0;
+    }
+  }
+}

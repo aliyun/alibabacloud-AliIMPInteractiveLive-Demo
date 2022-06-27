@@ -1,0 +1,109 @@
+.commodity-list {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    border-radius: 1rem 1rem 0 0;
+    background-color: #FFFFFF;
+
+    .list-content {
+        max-height: 25.56rem;
+        overflow-y: scroll;
+        padding: 4rem 0.75rem 0;
+        border-radius: 1rem;
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    &:first-child {
+        padding: 0;
+    }
+
+    .list-top {
+        position: fixed;
+        height: 2.63rem;
+        width: 100%;
+        border-radius: 1rem 1rem 0 0;
+        padding: 0.75rem;
+        background-color: #FFFFFF;
+        display: flex;
+        justify-content: space-between;
+
+        .close-list {
+            margin: auto 0.59rem;
+            width: 0.9rem;
+            height: 0.9rem;
+            background-image: url('../../public/img/close.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+    }
+}
+
+.commodity--list-info {
+    display: flex;
+    border-bottom: 1px solid rgba(245, 245, 245, 1);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+
+    .left {
+        width: 5.88rem;
+        height: 6.63rem;
+        border-radius: 0.8rem;
+        margin-right: 0.31rem;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+    }
+
+    .right {
+        width: 13.75rem;
+        font-size: 0.8rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .commodity-title {
+            width: 100%; //宽度 
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-size: 0.8rem;
+            color: rgba(0, 0, 0, 0.6);
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            // padding-right:1rem ;
+        }
+
+        .commodity-price {
+            display: flex;
+            justify-content: space-between;
+
+            span {
+                font-size: 1.2rem;
+                color: rgba(255, 87, 34, 1);
+            }
+
+            div {
+                height: 1.50rem;
+                width: 3.75rem;
+                background-image: linear-gradient(-45deg, #FF5722 0%, #FFAB91 100%);
+                border-radius: 12px;
+                text-align: center;
+                line-height: 1.5rem;
+
+                a {
+                    color: #fff;
+                }
+            }
+        }
+    }
+}

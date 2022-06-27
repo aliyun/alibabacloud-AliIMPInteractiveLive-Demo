@@ -1,0 +1,325 @@
+.interaction {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  font-size: 0.27rem;
+  padding-bottom: 0.15rem;
+}
+
+.user-status {
+  position: relative;
+  width: fit-content;
+  display: flex;
+  margin: 0.05rem 0;
+  padding: 0.17rem 0.2rem;
+  border-radius: 0.7rem;
+  padding-right: 0.4rem;
+  align-self: flex-start;
+  word-break: break-all;
+}
+
+.user-status-one {
+  .user-status;
+  background-color: rgba(36, 205, 102, 0.5);
+
+  .fan-one {
+    height: 0.88rem;
+    width: 2.50rem;
+    position: absolute;
+    top: 0.25rem;
+    left: 0.2rem;
+    background-image: url('../../public/img/粉丝标示-新粉@2x.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+.user-status-two {
+  .user-status;
+  background-color: rgba(161, 128, 255, 0.5);
+
+  .fan-two {
+    position: absolute;
+    top: 0.25rem;
+    left: 0.2rem;
+    height: 0.88rem;
+    width: 2.50rem;
+    background-image: url('../../public/img/粉丝标示-老粉@2x.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+.user-status-three {
+  .user-status;
+  background-color: rgba(0, 180, 255, 0.5);
+
+  .fan-three {
+    position: absolute;
+    top: 0.25rem;
+    left: 0.2rem;
+    height: 0.88rem;
+    width: 2.50rem;
+    background-image: url('../../public/img/粉丝标示-铁粉@2x.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+.dialog-box {
+  height: 7.38rem;
+  width: 19.44rem;
+  border-radius: 1rem;
+  margin: auto;
+  background-color: rgba(255, 255, 255, 1);
+
+  .content-text {
+    height: 4.38rem;
+    text-align: center;
+    line-height: 4.38rem;
+    font-size: 1rem;
+    color: rgba(50, 50, 51, 1);
+  }
+
+  .btns {
+    height: 3rem;
+    line-height: 3rem;
+    text-align: center;
+    display: flex;
+    font-size: 1rem;
+    border-top: 1px solid rgb(236, 234, 234);
+
+    .close-dialog {
+      width: 50%;
+      color: rgba(50, 50, 51, 1);
+    }
+
+    .query-dialog {
+      width: 50%;
+      color: rgba(255, 106, 0, 1);
+      border-left: 1px solid rgb(236, 234, 234);
+    }
+  }
+}
+
+.message-button {
+  margin: auto 0.2rem;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  font-family: PingFangSC;
+  font-weight: 400;
+  font-size: 0.8rem;
+  color: rgba(0, 0, 0, 0.60);
+  letter-spacing: 0;
+  text-align: center;
+  line-height: 1rem;
+}
+
+.chat-window {
+  max-height: 16.88rem;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow: scroll;
+  padding: 0 0.44rem 0;
+  position: relative;
+  -webkit-mask: -webkit-gradient(linear, right 15%, right top, from(#000), to(transparent));
+
+  .plus-one {
+    margin: auto 0.2rem;
+    height: 1rem;
+    width: 1.44rem;
+    background-image: url('../../public/img/信息区-+1@2x.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .concerned {
+    height: 1rem;
+    width: 7.5rem;
+    .message-button;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.chat-item {
+  position: relative;
+
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.2);
+  margin: 0.05rem 0;
+  padding: 0.17rem 0.2rem;
+  border-radius: 0.7rem;
+  padding-right: 0.4rem;
+  align-self: flex-start;
+  word-break: break-all;
+
+  .fan-three {
+
+    position: absolute;
+    top: 0.25rem;
+    left: 0.2rem;
+    height: 0.88rem;
+    width: 2.50rem;
+    background-image: url('../../public/img/粉丝标示-铁粉@2x.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+  }
+
+  .fan-two {
+    position: absolute;
+    top: 0.25rem;
+    left: 0.2rem;
+    height: 0.88rem;
+    width: 2.50rem;
+    background-image: url('../../public/img/粉丝标示-老粉@2x.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+  }
+
+  .fan-one {
+    position: absolute;
+    top: 0.25rem;
+    left: 0.2rem;
+    height: 0.88rem;
+    width: 2.50rem;
+    background-image: url('../../public/img/粉丝标示-新粉@2x.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+
+  a {
+    color: #66b1f7;
+    text-decoration: underline;
+  }
+}
+
+.item-content {
+  max-width: 13rem;
+}
+
+.emphasize {
+  display: inline-block;
+  margin: 0 0.2rem;
+  margin-left: 2.6rem;
+  font-size: 0.8rem;
+  line-height: 1rem;
+}
+
+.chat-item-notice {
+  color: #52ede3;
+}
+
+.chat {
+  font-size: 0.8rem;
+  .chat-item;
+  .chat-item-notice;
+}
+
+.operations {
+  display: flex;
+  padding: 0.1rem 0.5rem 0.4rem;
+  justify-content: space-around;
+  margin-top: 1.13rem;
+
+  .commodity {
+    height: 2.19rem;
+    width: 2.08rem;
+    background-image: url('../../public/img/互动区-商品口袋@2x.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .chat-input-form {
+    height: 2.25rem;
+    border-radius: 20px;
+    margin: 0 0.2rem;
+    width: 8.94rem;
+
+    .chat-input {
+      color: #fff;
+      flex-grow: 1;
+      background-color: rgba(0, 0, 0, 0.3);
+      border: none;
+      outline: none;
+      font-size: 0.8rem;
+      border-radius: 3.5rem;
+      height: 100%;
+      width: 100%;
+      padding-left: 1.25rem;
+
+      &::-webkit-input-placeholder {
+        color: #fff;
+      }
+    }
+  }
+
+  .operation-share {
+    height: 2.25rem;
+    width: 2.25rem;
+    border-radius: 50%;
+    margin-right: 0.2rem;
+    background-image: url('../../public/img/share@2x.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .operation-beauty {
+    height: 2.25rem;
+    width: 2.25rem;
+    border-radius: 50%;
+    margin-right: 0.2rem;
+    background-image: url('../../public/img/beauty@2x.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .operation-like {
+    position: relative;
+    height: 2.25rem;
+    width: 2.25rem;
+    border-radius: 50%;
+    background-image: url('../../public/img/like@2x.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    .count {
+      height: 1rem;
+      width: 2.25rem;
+      line-height: 1rem;
+      background-color: #FFFFFF;
+      position: absolute;
+      top: 0;
+      border-radius: 0.5rem;
+      text-align: center;
+      position: absolute;
+      top: -0.5rem;
+      font-size: 0.8rem;
+      color: rgba(255, 87, 34, 1);
+    }
+  }
+
+  .operation-more {
+    height: 2.25rem;
+    width: 2.25rem;
+    border-radius: 50%;
+    margin-right: 0.2rem;
+    background-image: url('../../public/img/more@2x.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
+
+.like-anime-container {
+  position: absolute;
+  bottom: 80%;
+  width: 100%;
+  height: 10rem;
+  left: 0;
+}

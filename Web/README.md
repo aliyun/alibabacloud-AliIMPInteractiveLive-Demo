@@ -8,3 +8,4 @@
 * uniapp-nvue-demo: 互动直播uniapp nvue简单接入demo
 * ui-enterprise-web: 企业直播Web观看端示例demo
 * business-demo-web: Web业务流程+直播中控台demo
+* ui-commerce-web: 电商直播Web观看端示例demo

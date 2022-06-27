@@ -1,0 +1,171 @@
+.anime-loop(@max, @i: 1) when (@i <=@max) {
+  &.anime-@{i} {
+    animation-name: e('bubble@{i}');
+    animation-duration: 1.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    transform: translateX(0) translateY(0) scale(0) rotate(45deg);
+  }
+
+  .anime-loop(@max, (@i+1));
+}
+
+.bubble {
+  position: absolute;
+  z-index: 9;
+  left: 50%;
+  bottom: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-left: -0.2rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('../../public/img/like@2x.png');
+  .anime-loop(6);
+}
+
+@keyframes bubble1 {
+  from {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(0) rotate(45deg);
+  }
+
+  25% {
+    transform: translateX(-15%) translateY(-75%) scale(1) rotate(45deg);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateX(-30%) translateY(-150%) scale(1) rotate(45deg);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(-30%) translateY(-500%) scale(1) rotate(45deg);
+  }
+}
+
+@keyframes bubble2 {
+  from {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(0) rotate(15deg);
+  }
+
+  25% {
+    transform: translateX(-15%) translateY(-75%) scale(1) rotate(15deg);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateX(-30%) translateY(-150%) scale(1) rotate(15deg);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(0) translateY(-500%) scale(1) rotate(15deg);
+  }
+}
+
+@keyframes bubble3 {
+  from {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(0) rotate(0deg);
+  }
+
+  20% {
+    transform: translateX(-15%) translateY(-75%) scale(1) rotate(0deg);
+  }
+
+  40% {
+    opacity: 1;
+    transform: translateX(-30%) translateY(-150%) scale(1) rotate(0deg);
+  }
+
+  70% {
+    opacity: 0.6;
+    transform: translateX(-30%) translateY(-300%) scale(1) rotate(0deg);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(0) translateY(-500%) scale(1) rotate(0deg);
+  }
+}
+
+@keyframes bubble4 {
+  from {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(0) rotate(65deg);
+  }
+
+  20% {
+    transform: translateX(-15%) translateY(-75%) scale(1) rotate(65deg);
+  }
+
+  40% {
+    opacity: 1;
+    transform: translateX(-30%) translateY(-150%) scale(1) rotate(65deg);
+  }
+
+  70% {
+    opacity: 0.6;
+    transform: translateX(-30%) translateY(-300%) scale(1) rotate(65deg);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(-30%) translateY(-500%) scale(1) rotate(65deg);
+  }
+}
+
+@keyframes bubble5 {
+  from {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(0) rotate(-75deg);
+  }
+
+  20% {
+    transform: translateX(-70%) translateY(-75%) scale(1) rotate(-75deg);
+  }
+
+  40% {
+    opacity: 1;
+    transform: translateX(-10%) translateY(-150%) scale(1) rotate(-75deg);
+  }
+
+  70% {
+    opacity: 0.6;
+    transform: translateX(-70%) translateY(-300%) scale(1) rotate(-75deg);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(-15%) translateY(-500%) scale(1) rotate(-75deg);
+  }
+}
+
+@keyframes bubble6 {
+  from {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(0) rotate(-45deg);
+  }
+
+  20% {
+    transform: translateX(-70%) translateY(-75%) scale(1) rotate(-45deg);
+  }
+
+  40% {
+    opacity: 1;
+    transform: translateX(-10%) translateY(-150%) scale(1) rotate(-45deg);
+  }
+
+  70% {
+    opacity: 0.6;
+    transform: translateX(-70%) translateY(-300%) scale(1) rotate(-45deg);
+  }
+
+  to {
+    opacity: 0;
+    transform: translateX(-15%) translateY(-500%) scale(1) rotate(-45deg);
+  }
+}

@@ -1,0 +1,90 @@
+.App {
+  position: relative;
+  height: calc(100vh);
+}
+
+.player-container {
+  height: 100%;
+  position: relative;
+  background-color: #333;
+  z-index: 1;
+  position: relative;
+
+  .player {
+    position: absolute !important;
+    z-index: 1;
+    top: 0;
+    left: 0;
+  }
+}
+
+.live-container {
+  position: relative;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 2;
+  color: #fff;
+}
+
+.live-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  z-index: 2;
+  color: #fff;
+}
+
+.nolive {
+  z-index: 1;
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #fff;
+
+  span {
+    display: inline-block;
+    margin-top: 0.3rem;
+    font-size: 0.4rem;
+  }
+}
+
+.need-click-wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+  text-align: center;
+  color: #fff;
+  background-color: rgba(49, 49, 49, 0.95);
+
+  img {
+    width: 60%;
+    margin-bottom: 20px;
+  }
+
+  .click-btn {
+    display: inline-block;
+    color: #ff8615;
+    padding: 5px 10px;
+    border: 2px solid #ff8615;
+    border-radius: 7px;
+    font-size: 1rem;
+    margin-top: 10px;
+  }
+
+  .wrap-inner {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+  }
+}
