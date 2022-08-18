@@ -1,0 +1,6 @@
+framework module AliStandardLiveRoomBundle {
+  umbrella header "AliStandardLiveRoomBundle_Umbrella.h"
+
+  export *
+  module * { export * }
+}
