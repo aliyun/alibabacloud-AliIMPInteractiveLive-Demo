@@ -15,3 +15,31 @@
 
 
 ## SDK层
+
+### [1. 直播样板间SDK](SDK/liveroom)
+
+* 直播样板间
+  * liveroom
+* 样板间基础模块
+  * roombase（直播样板间和课堂样板间共用）
+
+### [2. 标准SDK](SDK/biz)
+
+* 插件容器
+  * biz
+
+* 插件服务
+  * chat
+  * live
+  * rtc
+
+* 基础模块
+  * base
+  * uibase
+  * app-release
+  * beauty_common
+  * beauty_base
+  * beauty_pro
+  * beauty_lite
+  * player
+
