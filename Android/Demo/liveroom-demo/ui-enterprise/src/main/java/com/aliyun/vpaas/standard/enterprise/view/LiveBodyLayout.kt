@@ -17,7 +17,7 @@ import com.aliyun.standard.liveroom.lib.component.MultiComponentHolder
 import com.aliyun.vpaas.standard.enterprise.R
 
 /**
- * 页面主题内容 (包含横滑Tab和Tab对应面板两部分)
+ * 页面主体区域 (包含横滑Tab和Tab对应面板两部分)
  *
  * @author puke
  * @version 2022/6/6

@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.Spanned
 import android.text.TextUtils
@@ -349,7 +348,7 @@ open class LiveMessageView constructor(
             chatService.addEventHandler(object : SampleChatEventHandler() {
                 override fun onCommentReceived(event: CommentEvent) {
                     val senderId = event.creatorOpenId
-                    if (TextUtils.equals(senderId, Const.getCurrentUserId())) {
+                    if (TextUtils.equals(senderId, Const.getCurrentUserId()) && showSelfCommentFromLocal()) {
                         // 自己发送的消息不做上屏显示
                         return
                     }
@@ -478,6 +477,11 @@ open class LiveMessageView constructor(
                     }
 
                     message?.run {
+                        val selfMessage = TextUtils.equals(message.userId, Const.getCurrentUserId())
+                        if (selfMessage && message.messageType == Message.MESSAGE_TYPE_TEXT && !showSelfCommentFromLocal()) {
+                            // 自己消息不支持直接上屏时, 不处理发送组件过来的事件
+                            return
+                        }
                         // 判断是否忽略弹幕频率限制
                         val ignoreFreqLimit = args.size > 1 && java.lang.Boolean.TRUE == args[1]
                         if (ignoreFreqLimit) {
@@ -547,6 +551,18 @@ open class LiveMessageView constructor(
                 return nick.substring(0, NICK_SHOW_MAX_LENGTH)
             }
             return nick
+        }
+
+        // 判断自己发送的弹幕是否直接显示, 默认发送完立马显示, 不通过服务端
+        private fun showSelfCommentFromLocal(): Boolean {
+            try {
+                // 此处反射为内部包使用, 外部根据自身诉求直接更改方法返回值即可
+                val appConfigType = Class.forName("com.aliyun.roompaas.app.sensitive.AppConfig")
+                val appConfig = appConfigType.getField("INSTANCE").get(null)
+                return appConfigType.getMethod("showSelfCommentFromLocal").invoke(appConfig) as Boolean
+            } catch (e: Exception) {
+            }
+            return true
         }
     }
 }

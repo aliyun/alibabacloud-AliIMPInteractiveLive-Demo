@@ -22,7 +22,7 @@ import com.aliyun.vpaas.standard.enterprise.R
 
 
 /**
- * 底部模块
+ * 底部区域
  *
  * @author puke
  * @version 2022/5/9

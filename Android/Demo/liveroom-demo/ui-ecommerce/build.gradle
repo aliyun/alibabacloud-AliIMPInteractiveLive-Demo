@@ -72,16 +72,8 @@ dependencies {
 
     // 低代码SDK依赖
     if (shouldLoadLocalDepFun()) {
-        // 本地
         implementation project(':liveroom')
     } else {
-        // 开源
-        def liveRoomSdk = parseStringInPropOrLocal('LIVEROOM_SDK')
-        if (liveRoomSdk != null) {
-            implementation(liveRoomSdk)
-        } else {
-            // 远程
-            implementation("${GROUP}:${PREFIX}liveroom:${VER}${SUFFIX}") { changing = true }
-        }
+        implementation ("${GROUP}:${PREFIX}liveroom:${VER}${SUFFIX}") { changing = true }
     }
 }

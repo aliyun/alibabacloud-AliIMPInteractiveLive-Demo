@@ -1,26 +1,17 @@
 package com.aliyun.vpaas.standard.enterprise.view
 
-import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.res.Configuration
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.TextView
-import com.aliyun.roompaas.live.SampleLiveEventHandler
-import com.aliyun.roompaas.live.exposable.event.LiveCommonEvent
 import com.aliyun.roompaas.uibase.util.AppUtil
-import com.aliyun.roompaas.uibase.util.ExStatusBarUtils
-import com.aliyun.standard.liveroom.lib.Actions
-import com.aliyun.standard.liveroom.lib.LiveContext
+import com.aliyun.roompaas.uibase.util.immersionbar.ImmersionBar
 import com.aliyun.standard.liveroom.lib.component.BaseComponent
 import com.aliyun.standard.liveroom.lib.component.ComponentHolder
 import com.aliyun.standard.liveroom.lib.component.IComponent
-import com.aliyun.standard.liveroom.lib.wrapper.SampleRoomEventHandlerExtends
 import com.aliyun.vpaas.standard.enterprise.R
-import java.lang.NumberFormatException
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
  * 直播渲染区域
@@ -42,8 +33,8 @@ class LiveRenderLayout(context: Context, attrs: AttributeSet?) : FrameLayout(con
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         // 宽高比
         val height = if (component.isLandscape)
-            (AppUtil.getScreenHeight() - ExStatusBarUtils.getStatusBarHeight(context))
-        else (AppUtil.getScreenWidth() * 9 / 16)
+            (AppUtil.getScreenRealHeight() - ImmersionBar.getStatusBarHeight(context as Activity))
+        else (AppUtil.getScreenRealWidth() * 9 / 16)
         super.onMeasure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY))
     }
 

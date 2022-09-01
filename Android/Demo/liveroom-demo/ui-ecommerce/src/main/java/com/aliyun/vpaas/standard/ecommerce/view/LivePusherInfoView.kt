@@ -9,6 +9,7 @@ import android.util.AttributeSet
 import com.alibaba.fastjson.JSON
 import com.aliyun.roompaas.base.util.CommonUtil
 import com.aliyun.roompaas.base.util.DeviceInfo
+import com.aliyun.roompaas.live.LivePushManager
 import com.aliyun.roompaas.live.exposable.AliLiveMediaStreamOptions
 import com.aliyun.roompaas.uibase.util.AppUtil
 import com.aliyun.standard.liveroom.lib.BuildConfig
@@ -64,8 +65,10 @@ class LivePusherInfoView(context: Context?, attrs: AttributeSet?) :
                                         "Android版本: ${extension["pusherDeviceVersion"]}\n" +
                                         "GOP: ${videoEncodeGop}\n" +
                                         "码率: ${videoBitrate}\n" +
-                                        "FPS: ${fps}\n" +
-                                        "分辨率: ${resolution}"
+                                        "FPS: ${fps}\n"
+//                                        "分辨率: ${CloudConfigCenter.getInstance().maxPushStreamResolveByLive()}\n" +
+//                                        "美颜：${CloudConfigCenter.getInstance().enableBeautify()}\n" +
+//                                        "媒体参数：${GeneralEncodeParamDelegate.getInstance().toString()}"
                         }
                     }
                 }
