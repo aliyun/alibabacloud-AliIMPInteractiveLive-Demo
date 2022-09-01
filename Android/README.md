@@ -1,11 +1,17 @@
-# Android端Demo示例
+# Android端代码结构说明
 
 
 
-## [1. 场景化Demo](scene-demo)
+## Demo层
 
-## [2. 直播低代码Demo](liveroom-demo)
+### [1. 场景化Demo](Demo/scene-demo)
 
-## [3. 课堂低代码Demo](classroom-demo)
+### [2. 直播低代码Demo](Demo/liveroom-demo)
 
-## [4. 互动消息Demo]（chatroom-demo）
+### [3. 课堂低代码Demo](Demo/classroom-demo)
+
+### [4. 互动消息Demo](Demo/chatroom-demo)
+
+
+
+## SDK层
