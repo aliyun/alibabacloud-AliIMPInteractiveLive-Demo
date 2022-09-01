@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#1e222d</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#ff00c1de</color>
+    <color name="colorFps">#00C1DE</color>
+    <color name="colorBaseStyle">#FB622B</color>
+    <color name="colorItemBg">#4B4B4B</color>
+
+    <color name="camera_panel_line">#88000000</color>
+    <color name="camera_panel_bg">#50000000</color>
+    <color name="camera_panel_title">#eeffffff</color>
+<!--    <color name="camera_panel_title_selected">#20C1DC</color>-->
+    <color name="camera_panel_title_selected">#00BCDE</color>
+    <color name="camera_panel_content">#eeffffff</color>
+    <color name="camera_panel_content_selected">#00BCDE</color>
+
+    <color name="camera_panel_edit_text">#aa000000</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="white_alpha_60">#99FFFFFF</color>
+    <color name="white_hint">#BEBEBE</color>
+    <color name="gray_alpha_66">#66666666</color>
+
+    <color name="menu_bg_color">#FFFFFF</color>
+
+    <color name="dialog_bg_color">#141414</color>
+
+</resources>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@drawable/ilr_bg_anchor_profile"
+    tools:layout_gravity="center"
+    tools:layout_height="42dp"
+    tools:layout_width="wrap_content"
+    tools:parentTag="android.widget.FrameLayout">
+
+    <!-- 主播头像 -->
+    <ImageView
+        android:layout_width="36.5dp"
+        android:layout_height="36.5dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="4dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ilr_icon_live_anchor_default_avatar" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="14.8dp"
+        android:orientation="vertical">
+
+        <!-- 房间标题 -->
+        <TextView
+            android:id="@+id/view_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxEms="5"
+            android:singleLine="true"
+            android:textColor="#ffffff"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="一二三四五六七八九十" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- 观看人数 -->
+            <TextView
+                android:id="@+id/view_view_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="#ffffff"
+                android:textSize="12sp"
+                tools:text="3.6w观看" />
+
+            <!-- 点赞人数 -->
+            <TextView
+                android:id="@+id/view_like_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="7dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:textColor="#ffffff"
+                android:textSize="12sp"
+                tools:text="30w点赞" />
+        </LinearLayout>
+    </LinearLayout>
+
+</merge>

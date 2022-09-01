@@ -1,0 +1,14 @@
+<resources>
+
+    <style name="AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- 这里设置背景为透明，为了隐藏边框 -->
+        <item name="android:windowBackground">@color/dialog_bg_color</item>
+        <item name="android:windowNoTitle">true</item>
+        <!-- 这里是修改内容区域背景颜色 -->
+        <item name="android:centerDark">@color/dialog_bg_color</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:layout_centerInParent">true</item>
+        <!--<item name="android:layout_marginLeft">@dimen/alivc_common_50</item>-->
+    </style>
+
+</resources>

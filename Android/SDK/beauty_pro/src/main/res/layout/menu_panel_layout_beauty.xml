@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/beauty_menu_panel"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:orientation="vertical">
+
+    <include layout="@layout/beauty_menu_panel_layout_seek_panel"
+        android:id="@+id/beauty_rl_seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginBottom="@dimen/alivc_common_21"
+        />
+
+    <RelativeLayout
+        android:id="@+id/panel_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/beauty_rl_seek_bar"
+        android:background="@color/menu_bg_color"
+        >
+
+        <LinearLayout
+            android:id="@+id/panel_menu_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <RelativeLayout
+                android:id="@+id/beauty_rl_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/alivc_common_padding_8"
+                android:paddingRight="@dimen/alivc_common_padding_8"
+                android:orientation="horizontal">
+
+                <com.aliyun.roompaas.beauty_pro.beauty.ViewPanel.menu.view.SimpleHorizontalScrollView
+                    android:id="@+id/beauty_panel_tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@android:id/content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/alivc_common_46"
+                        android:gravity="center"
+                        android:orientation="horizontal" />
+                </com.aliyun.roompaas.beauty_pro.beauty.ViewPanel.menu.view.SimpleHorizontalScrollView>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/beauty_tab_line"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/alivc_common_padding_1"
+                android:background="#F2F2F2"
+                android:layout_below="@+id/beauty_rl_item"
+                />
+
+            <RelativeLayout
+                android:id="@+id/beauty_rl_tab"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/alivc_common_116"
+                android:layout_marginTop="@dimen/alivc_common_padding_8"
+                android:paddingLeft="@dimen/alivc_common_padding_8"
+                android:paddingRight="@dimen/alivc_common_padding_8"
+                android:layout_below="@+id/beauty_tab_line"
+                android:layout_gravity="bottom"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/beauty_panel_parent_container"
+                    android:layout_width="@dimen/alivc_common_70"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:layout_alignParentLeft="true"
+                    android:orientation="horizontal"
+                    >
+
+                </LinearLayout>
+
+                <com.aliyun.roompaas.beauty_pro.beauty.ViewPanel.menu.view.SimpleHorizontalScrollView
+                    android:id="@+id/beauty_panel_tab_items"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/beauty_panel_parent_container"
+                    android:layout_toLeftOf="@+id/beauty_panel_son_container"
+                    android:scrollbars="none">
+
+                    <LinearLayout
+                        android:id="@android:id/content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="horizontal" />
+                </com.aliyun.roompaas.beauty_pro.beauty.ViewPanel.menu.view.SimpleHorizontalScrollView>
+
+                <LinearLayout
+                    android:id="@+id/beauty_panel_son_container"
+                    android:layout_width="@dimen/alivc_common_70"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    android:layout_alignParentRight="true"
+                    android:orientation="horizontal"
+                    >
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

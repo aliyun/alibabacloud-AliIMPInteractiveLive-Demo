@@ -1,0 +1,1 @@
+package com.aliyun.roompaas.rtc.cloudconfig.resolution;import com.aliyun.roompaas.base.IReset;import com.aliyun.roompaas.base.cloudconfig.base.IBaseCloudConfig;/** * Created by KyleCe on 2022/5/17 */public interface IResolutionStrategy extends IReset, IBaseCloudConfig {    void onRemoteUserOnLineNotify(String uid);    void onRemoteUserOffLineNotify(String uid);}

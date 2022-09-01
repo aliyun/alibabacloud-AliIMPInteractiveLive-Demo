@@ -1,0 +1,1 @@
+package com.aliyun.roompaas.rtc.cloudconfig.resolution;import com.aliyun.roompaas.rtc.exposable.RtcStreamConfig;/** * Created by KyleCe on 2022/5/17 */public interface IResolutionAdapter {    void updateVideoEncodeConfig(RtcStreamConfig config);    boolean isOwner();    boolean isChannelJoined();}

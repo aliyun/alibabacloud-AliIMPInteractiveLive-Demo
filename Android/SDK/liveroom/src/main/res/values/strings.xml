@@ -1,0 +1,7 @@
+<resources>
+    <string name="live_not_start_curtain_text">主播尚未开播，请稍后再来～</string>
+
+    <string name="live_ban_all_tips">主播已开启全员禁言…</string>
+    <string name="live_ban_tips">你被管理员禁言</string>
+    <string name="live_input_default_tips">和主播说点什么…</string>
+</resources>

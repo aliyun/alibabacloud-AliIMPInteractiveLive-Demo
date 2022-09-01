@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/item_content"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/live_message_fly_height"
+        android:layout_gravity="start"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:textSize="12sp"
+        tools:background="@drawable/ilr_bg_fly_normal"
+        tools:text="liling正在购买" />
+</FrameLayout>

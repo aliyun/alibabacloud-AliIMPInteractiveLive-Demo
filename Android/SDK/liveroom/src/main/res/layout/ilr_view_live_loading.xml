@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="50dp"
+    android:layout_height="50dp"
+    tools:layout_gravity="center"
+    tools:parentTag="android.widget.FrameLayout">
+<!--    android:background="@drawable/ilr_bg_loading"-->
+
+    <!-- 加载弹窗 -->
+    <android.support.v4.widget.ContentLoadingProgressBar
+        android:id="@+id/loading_bar"
+        style="@style/LiveLoadingStyle"
+        android:layout_width="38.5dp"
+        android:layout_height="38.5dp"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible" />
+</FrameLayout>

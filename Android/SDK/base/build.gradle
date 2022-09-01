@@ -1,0 +1,117 @@
+apply plugin: 'com.android.library'
+apply from: 'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/release/config/config.gradle'
+
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+        google()
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/releases' }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.0.2'
+        //引入其他的插件
+        classpath 'digital.wup:android-maven-publish:3.4.0'
+    }
+}
+
+def APP_RELEASE_PATH = 'app-release'
+
+apply plugin: 'digital.wup.android-maven-publish'
+configurations.maybeCreate("default")
+def MODULE = project.name
+publishing {
+    publications {
+        // publish cpp first
+        cxx(MavenPublication) {
+            artifact("../${APP_RELEASE_PATH}/app-release.aar")
+            artifactId "${PREFIX}${APP_RELEASE_PATH}"
+            groupId "${GROUP}"
+            version "${versionDefined}"
+        }
+        maven(MavenPublication) {
+            artifact("./build/outputs/aar/${MODULE}-release.aar")
+            artifactId "${PREFIX}${MODULE}"
+            groupId "${GROUP}"
+            version "${versionDefined}"
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+                configurations.implementation.allDependencies.each {
+                    println it
+                    if (it.group) {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url "${MAVEN_URL}"
+            credentials {
+                username = "${MAVEN_USERNAME}"
+                password = "${MAVEN_PASSWORD}"
+            }
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.3'
+    distributionUrl = 'https://services.gradle.org/distributions/gradle-3.3-bin.zip'
+}
+
+android {
+    compileSdkVersion 31
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 31
+        versionCode 1
+        versionName "${VER}"
+
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    android {
+        lintOptions {
+            abortOnError false
+        }
+    }
+}
+
+dependencies {
+    if (shouldLoadLocalDepFun()) {
+        api project(path: ":${APP_RELEASE_PATH}")
+    } else {
+        api("${GROUP}:${PREFIX}${APP_RELEASE_PATH}:${VER}@aar") { changing = true }
+    }
+
+    // noinspection GradleCompatible
+    compileOnly 'com.android.support:appcompat-v7:28.0.0'
+    // noinspection GradleCompatible
+    compileOnly 'com.android.support:design:28.0.0'
+
+    api "android.arch.lifecycle:extensions:1.1.1"
+    api 'com.android.support:support-annotations:28.0.0'
+    api "com.alibaba:fastjson:${getProperty('version.fastjson')}"
+
+    // lwp网络库
+    api "${GROUP}:${PREFIX}dps:0.0.18-CopyOf_3_0_0_20"
+    api "${GROUP}:${PREFIX}openssl:0.0.18-CopyOf_1_1_1-ant"
+    api "${GROUP}:${PREFIX}xlite:0.0.18-CopyOf_1_0_2_9"
+    api "${GROUP}:${PREFIX}dmojo_support:0.0.18-CopyOf_1_0_1_12"
+    api "${GROUP}:${PREFIX}gaea:0.0.18-CopyOf_2_1_0_2-cloud"
+}

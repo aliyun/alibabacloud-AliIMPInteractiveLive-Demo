@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.aliyun.roompaas.beauty_pro.beauty.ViewPanel.menu.view.BeautyMenuSeekPanel xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/beauty_seekpanel_value"
+        android:layout_width="@dimen/alivc_common_24"
+        android:layout_height="@dimen/alivc_common_28"
+        android:layout_marginLeft="@dimen/alivc_common_35"
+        android:layout_marginRight="@dimen/alivc_common_35"
+        android:text="0"
+        android:background="@mipmap/ic_progress_value_bg"
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_above="@+id/beauty_seekpanel_seekbar"
+        android:layout_marginBottom="@dimen/alivc_common_2"
+        android:textColor="@android:color/white" />
+
+    <com.aliyun.roompaas.beauty_pro.beauty.ViewPanel.menu.view.SimpleSeekBar
+        android:id="@+id/beauty_seekpanel_seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/alivc_common_35"
+        android:layout_marginRight="@dimen/alivc_common_35"
+        android:indeterminate="false"
+        android:max="9"
+        android:minHeight="@dimen/alivc_common_2"
+        android:maxHeight="@dimen/alivc_common_2"
+        android:progress="0"
+        android:thumb="@drawable/seek_bar_position_selector"
+        android:progressDrawable="@drawable/seek_bar_adjust_bg"
+        />
+</com.aliyun.roompaas.beauty_pro.beauty.ViewPanel.menu.view.BeautyMenuSeekPanel>

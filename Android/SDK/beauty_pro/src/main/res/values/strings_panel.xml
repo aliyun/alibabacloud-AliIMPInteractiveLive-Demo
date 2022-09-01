@@ -1,0 +1,154 @@
+<resources>
+
+    <string name="close">原貌</string>
+    <string name="back">返回</string>
+
+    <string name="scenes">场景</string>
+    <string name="general">通用</string>
+    <string name="online">电商</string>
+    <string name="recreation">生活娱乐</string>
+    <string name="education">教育</string>
+
+
+    <string name="take_pictures">拍照</string>
+    <string name="photo_album">相册</string>
+
+    <string name="config_auto_beauty">一键美颜</string>
+    <string name="config_auto_shape">一键美型</string>
+    <string name="config_auto_makeup">一键美妆</string>
+    <string name="config_diy">手动调整</string>
+
+    <!--风格模式-->
+    <string name="style_mode">模式</string>
+    <string name="style_origin">原生</string>
+    <string name="style_base">基础</string>
+    <string name="style_fashion">流行</string>
+    <string name="style_meihuo">魅惑</string>
+    <string name="style_cute">可爱</string>
+    <string name="style_girl">少女</string>
+
+    <!--美颜-->
+    <string name="beauty">美颜</string>
+    <string name="skin_whiting">美白</string>
+    <string name="skin_red">红润</string>
+    <string name="skin_buffing">磨皮</string>
+    <string name="skin_sharpen">锐化</string>
+    <string name="buffing_nasolabialfolds">祛法令纹</string>
+    <string name="buffing_pouch">眼袋</string>
+    <string name="buffing_white_teeth">白牙</string>
+    <string name="buffing_brighten_eye">亮眼</string>
+    <string name="buffing_lipstick">口红</string>
+    <string name="buffing_blush">腮红</string>
+    <string name="buffing_wrinkles">祛皱纹</string>
+    <string name="buffing_brighten_face">祛暗沉</string>
+
+    <string name="lipstick_tuhong">土红</string>
+    <string name="lipstick_fenhong">粉红</string>
+    <string name="lipstick_fuguhong">复古红</string>
+    <string name="lipstick_zihong">紫红</string>
+    <string name="lipstick_zhenghong">正红</string>
+    <string name="lipstick_juhong">橘红</string>
+    <string name="lipstick_zi">紫</string>
+    <string name="lipstick_ju">橘</string>
+    <string name="lipstick_huang">黄</string>
+
+    <!-- 滤镜 -->
+    <string name="filter_lut">滤镜</string>
+    <string name="ly1">元气</string>
+    <string name="ly2">清新</string>
+    <string name="ly3">浪漫</string>
+    <string name="ly4">蓝调</string>
+    <string name="ly5">怀旧</string>
+    <string name="ly6">超脱</string>
+    <string name="ly7">纯真</string>
+
+
+    <!-- 美型 -->
+    <string name="beauty_shape">美型</string>
+    <string name="grace">优雅</string>
+    <string name="delicate">精致</string>
+    <string name="wanghong">网红</string>
+    <string name="cute">可爱</string>
+    <string name="baby">婴儿</string>
+
+    <string name="cutCheek">颧骨</string>
+    <string name="cutFace">削脸</string>
+    <string name="thinFace">瘦脸</string>
+    <string name="longFace_r">脸长(双向)</string>
+    <string name="lowerJaw_r">下巴(双向)</string>
+    <string name="thinJaw">瘦下巴</string>
+    <string name="thinMandible">下颌</string>
+    <string name="bigEye">大眼</string>
+    <string name="canthus_r">眼距(双向)</string>
+    <string name="eyeAngle2_r">眼角(双向)</string>
+    <string name="thinNose_r">瘦鼻(双向)</string>
+    <string name="nosewing_r">鼻翼(双向)</string>
+    <string name="nasalHeight">鼻长</string>
+    <string name="mouthWidth_r">嘴型(双向)</string>
+    <string name="mouthHigh_r">嘴唇厚度(双向)</string>
+    <string name="philtrum_r">人中(双向)</string>
+    <string name="hairLine_r">发际线(双向)</string>
+    <string name="smile">微笑</string>
+
+    <!-- 美妆 -->
+    <string name="beauty_makeup">美妆</string>
+    <string name="mitao">蜜桃妆</string>
+    <string name="meizi">梅子妆</string>
+    <string name="naiju">奶橘妆</string>
+    <string name="meihuo">魅惑妆</string>
+    <string name="huoli">活力妆</string>
+    <string name="xingfen">杏粉妆</string>
+    <string name="jichu">基础妆</string>
+    <string name="yuanqishaonv">元气少女妆</string>
+    <string name="youya">优雅妆</string>
+    <string name="mouth">口红</string>
+    <string name="blush">腮红</string>
+    <string name="eyebrow">眼妆</string>
+    <string name="eyeball">美瞳</string>
+
+    <string name="eyeball_deep_blue">深蓝</string>
+    <string name="eyeball_pink_red">粉红</string>
+    <string name="eyeball_mixed_zong">混合棕</string>
+
+    <string name="highlight">高光</string>
+    <string name="wocan">卧蚕</string>
+    <string name="blush_daizi">黛紫</string>
+    <string name="blush_miju">蜜橘</string>
+    <string name="blush_nenfen">嫩粉</string>
+    <string name="blush_taohong">桃红</string>
+    <string name="blush_yingtao">樱桃</string>
+
+    <string name="face_sticker">贴纸</string>
+
+    <!-- 幕布抠图 -->
+    <string name="background">幕布抠图</string>
+    <string name="bg_segment_green">绿幕抠图</string>
+    <string name="bg_segment_green_auto">绿幕(Auto)</string>
+    <string name="bg_segment_blue">蓝幕抠图</string>
+    <string name="bg_segment_blue_auto">蓝幕(Auto)</string>
+
+    <!-- AI抠图 -->
+    <string name="background_ai">实景抠像</string>
+    <string name="bg_segment_ai_blur">背景虚化</string>
+    <string name="dynamic_dayuhaitang">大鱼海棠</string>
+    <string name="dynamic_niuniandaji">牛年吉祥</string>
+    <string name="dynamic_qingrenjie">情人节</string>
+    <string name="static_red">红色</string>
+    <string name="static_xiaomanyao">广州塔</string>
+    <string name="static_changlang">长廊</string>
+
+    <string name="comming">即将开放</string>
+
+    <!-- 手势 -->
+    <string name="gesture">手势</string>
+
+    <!-- 美体 -->
+    <string name="beauty_body">美体</string>
+
+    <!-- 黑科技 -->
+    <string name="black_technology">黑科技</string>
+    <string name="et_human">外星人</string>
+    <string name="force_smile">强笑</string>
+    <string name="force_cry">闭嘴</string>
+
+</resources>

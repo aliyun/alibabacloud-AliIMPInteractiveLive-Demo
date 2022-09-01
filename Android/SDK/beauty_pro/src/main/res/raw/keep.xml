@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@mipmap/ic_launcher,@mipmap/beauty_ic_smooth
+    ,@mipmap/disable,@mipmap/focus,@mipmap/cfg_auto_makeup,@mipmap/cfg_auto_beauty"/>

@@ -1,0 +1,1 @@
+package com.aliyun.roompaas.rtc.cloudconfig.resolution;import java.io.Serializable;/** * Created by KyleCe on 2022/5/16 */public class ResolutionBean implements Serializable {    public int onlineCount;    public int frameRate;    public int width;    public int height;    public int bitRate;}

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@drawable/ilr_bg_live_audience"
+    tools:gravity="center_vertical"
+    tools:layout_gravity="center"
+    tools:layout_height="20dp"
+    tools:layout_width="wrap_content"
+    tools:orientation="horizontal"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <ImageView
+        android:layout_width="17dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="5dp"
+        android:contentDescription="@null"
+        android:padding="2dp"
+        android:src="@drawable/ilr_icon_live_audience" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginEnd="4dp"
+        android:text="观众"
+        android:textColor="#ffffff"
+        android:textSize="10sp"
+        tools:ignore="HardcodedText,SmallSp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ilr_icon_arrow_down" />
+</merge>

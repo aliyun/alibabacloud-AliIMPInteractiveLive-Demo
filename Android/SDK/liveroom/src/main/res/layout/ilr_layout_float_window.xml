@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="#ff0000"
+    tools:layout_gravity="center_vertical|end"
+    tools:layout_height="333dp"
+    tools:layout_width="200dp"
+    tools:padding="5dp"
+    tools:parentTag="android.widget.FrameLayout">
+
+    <!-- 播放器容器 -->
+    <FrameLayout
+        android:id="@+id/layout_render_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:background="#0000ff" />
+
+    <!-- 关闭按钮 -->
+    <ImageView
+        android:id="@+id/layout_close"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="end"
+        android:contentDescription="@null"
+        android:padding="5dp"
+        android:src="@drawable/ilr_icon_close" />
+</merge>

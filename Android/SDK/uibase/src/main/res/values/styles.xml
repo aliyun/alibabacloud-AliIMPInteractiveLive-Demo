@@ -1,0 +1,116 @@
+<resources>
+
+    <declare-styleable name="ControlView">
+        <attr name="horizontalPadding" format="dimension" />
+    </declare-styleable>
+
+    <style name="DialogFullscreen" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <style name="SingleLineTextView">
+        <item name="android:lines">1</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="SingleLineEditText" parent="SingleLineTextView">
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="DialogOption">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">4dp</item>
+        <item name="android:textColor">@color/colorGray333</item>
+        <item name="android:checked">false</item>
+    </style>
+
+    <declare-styleable name="RoundImageView">
+        <attr name="borderWidth" format="dimension" />
+        <attr name="borderColor" format="color" />
+        <attr name="cornerRadius" format="dimension" />
+        <attr name="leftTop_corner_radius" format="dimension" />
+        <attr name="rightTop_corner_radius" format="dimension" />
+        <attr name="leftBottom_corner_radius" format="dimension" />
+        <attr name="rightBottom_corner_radius" format="dimension" />
+        <attr name="type" format="enum">
+            <enum name="oval" value="2" />
+            <enum name="round" value="1" />
+            <enum name="circle" value="0" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="FixedAspectRatioFrameLayout">
+        <attr name="aspectRatioWidth" format="integer"/>
+        <attr name="aspectRatioHeight" format="integer"/>
+    </declare-styleable>
+
+    <!-- 输入框弹窗样式 -->
+    <style name="Dialog4Input" parent="BaseAnimationDialog">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowAnimationStyle">@null</item>
+    </style>
+
+    <!-- 基础动画dialog样式 -->
+    <style name="BaseAnimationDialog" parent="@android:style/Theme.Dialog">
+        <!-- 背景透明 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 浮于Activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- Dialog以外的区域模糊效果 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 半透明 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <!--点击dialog以外区域关闭弹窗-->
+        <item name="android:windowCloseOnTouchOutside">true</item>
+        <!-- 设置默认键盘模式 -->
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    </style>
+
+    <!-- 无动画透明背景的Dialog -->
+    <style name="DialogNoAnim" parent="BaseAnimationDialog">
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <!-- 右侧进入的Dialog -->
+    <style name="DialogFromRight" parent="BaseAnimationDialog">
+        <!-- Dialog进入及退出动画 -->
+        <item name="android:windowAnimationStyle">@style/DialogFromRightAnimation</item>
+    </style>
+
+    <!-- 右侧进入的动画 -->
+    <style name="DialogFromRightAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/iub_dialog_right_in</item>
+        <item name="android:windowExitAnimation">@anim/iub_dialog_right_out</item>
+    </style>
+
+    <!-- 底部进入的Dialog -->
+    <style name="DialogFromBottom" parent="BaseAnimationDialog">
+        <!-- Dialog进入及退出动画 -->
+        <item name="android:windowAnimationStyle">@style/DialogFromBottomAnimation</item>
+    </style>
+
+    <!-- 底部进入的Dialog (透明Dialog背景) -->
+    <style name="DialogFromBottomWithTransparentBg" parent="DialogFromBottom">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+    <!-- 底部进入的动画 -->
+    <style name="DialogFromBottomAnimation" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/iub_dialog_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/iub_dialog_bottom_out</item>
+    </style>
+</resources>

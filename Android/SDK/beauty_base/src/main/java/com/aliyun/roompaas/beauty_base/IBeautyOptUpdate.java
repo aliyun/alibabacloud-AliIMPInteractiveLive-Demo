@@ -1,0 +1,1 @@
+package com.aliyun.roompaas.beauty_base;import com.aliyun.roompaas.live.exposable.AliLiveBeautyOptions;/** * Created by KyleCe on 2022/3/17 */public interface IBeautyOptUpdate {    void onUpdateBeautyOpt(AliLiveBeautyOptions beautyOptions);}

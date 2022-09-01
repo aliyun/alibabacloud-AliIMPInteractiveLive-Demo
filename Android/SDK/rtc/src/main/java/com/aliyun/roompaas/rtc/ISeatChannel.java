@@ -1,0 +1,1 @@
+package com.aliyun.roompaas.rtc;/** * Created by KyleCe on 2022/4/15 */public interface ISeatChannel {    void leaveSeatChannelAndReport();}

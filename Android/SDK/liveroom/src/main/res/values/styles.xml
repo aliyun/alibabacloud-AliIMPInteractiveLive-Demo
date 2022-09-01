@@ -1,0 +1,12 @@
+<resources>
+
+    <!-- 直播间Activity主题 -->
+    <style name="Theme4LiveActivity" parent="Theme.AppCompat.NoActionBar">
+        <item name="viewInflaterClass">com.aliyun.standard.liveroom.lib.LiveViewInflater</item>
+    </style>
+
+    <!-- 加载进度条样式 -->
+    <style name="LiveLoadingStyle" parent="@android:style/Widget.ProgressBar">
+        <item name="android:indeterminateDrawable">@drawable/ilr_loading</item>
+    </style>
+</resources>

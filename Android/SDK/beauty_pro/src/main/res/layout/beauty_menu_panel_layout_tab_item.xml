@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <RelativeLayout
+        android:id="@+id/item_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/camera_panel_margin"
+        android:layout_marginRight="@dimen/camera_panel_margin"
+        android:padding="@dimen/camera_big_icon_padding"
+        android:layout_gravity="center"
+        >
+
+        <ImageView
+            android:id="@+id/item_image_normal"
+            android:layout_width="@dimen/alivc_common_40"
+            android:layout_height="@dimen/alivc_common_40" />
+
+        <ImageView
+            android:id="@+id/item_image_focus"
+            android:layout_width="@dimen/alivc_common_40"
+            android:layout_height="@dimen/alivc_common_40"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="@dimen/camera_big_icon"
+        android:layout_height="@dimen/camera_big_icon"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/item_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#FB622B"
+            android:textSize="@dimen/camera_panel_content_text"
+            android:maxLines="2"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:text="ssss"/>
+
+        <TextView
+            android:id="@+id/item_value_valid_mark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/item_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/white"
+            android:gravity="bottom"
+            android:textStyle="bold"
+            android:textSize="@dimen/alivc_common_font_14"
+            android:text="."
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

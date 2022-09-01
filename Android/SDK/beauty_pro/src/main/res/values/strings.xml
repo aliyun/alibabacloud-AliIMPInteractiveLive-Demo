@@ -1,0 +1,44 @@
+<resources>
+    <string name="solution_recorder_face_beayty">美颜视频</string>
+    <string name="solution_recorder_face_point">美颜图片</string>
+    <string name="solution_recorder_pose_detecter">姿态识别</string>
+    <string name="tips_feature_comming">功能即将开放,敬请期待~</string>
+    <string name="alivc_common_no_camera_permission">没有权限使用摄像头，请开启摄像头权限</string>
+    <string name="tips_feature_disable_for_version">当前版本暂不支持,请升级专业版或全功能版后开启该功能</string>
+
+    <string name="version_info">版本信息</string>
+
+    <string name="gl_render_split">分屏</string>
+
+    <string name="config_info">配置信息</string>
+    <string name="power_saving">节能模式</string>
+    <string name="face_detect_debug">人脸顶点调试</string>
+    <string name="face_shape_debug">美型调试</string>
+    <string name="face_makeup_debug">美妆调试</string>
+    <string name="keep_input_texture_direction">保持输入纹理方向</string>
+    <string name="frame_synchronize">帧同步</string>
+    <string name="camera_preview_size">相机预览分辨率</string>
+    <string name="image_layer_debug">RenderTarget调试</string>
+    <string name="segment_mask_debug">抠图Mask调试</string>
+
+    <string name="tips_clearing">确认清除?</string>
+    <string name="sure">确认</string>
+    <string name="cancel">取消</string>
+
+    <string name="tips_feature_only_video">该功能仅在视频模式下才可用</string>
+
+    <string name="image_hide">隐藏</string>
+    <string name="image_pick_picture">选图</string>
+    <string name="image_pre_picture">上图</string>
+    <string name="image_next_picture">下图</string>
+    <string name="image_export_picture">导出</string>
+    <string name="image_export_picture_batch">批量导出</string>
+
+    <string name="input_test_case">输入场景</string>
+    <string name="input_test_case_full_texture">纹理与算法图像等比同大小</string>
+    <string name="input_test_case_full_texture_center_out_rect">纹理与算法图像等比同大小，居中OutRect</string>
+    <string name="input_test_case_crop_cut_texture">算法图像居中裁剪出纹理</string>
+    <string name="input_test_case_crop_cut_texture_padding_out_rect">算法图像居中裁剪出纹理，Padding为50的OutRect</string>
+    <string name="input_test_case_full_texture_to_texture2d">纹理与算法图像等比同大小(Texture2D)</string>
+    <string name="input_test_case_center_cut_texture">算法图像裁剪出中间一半大小的纹理</string>
+</resources>

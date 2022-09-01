@@ -1,0 +1,1 @@
+package com.aliyun.roompaas.uibase.view;/** * Created by KyleCe on 2022/3/18 */public interface IImmersiveSupport {    boolean shouldDisableImmersive();}

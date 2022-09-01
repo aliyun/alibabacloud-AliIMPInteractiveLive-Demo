@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="room_bottom_layout_margin_bottom">20dp</dimen>
+    <dimen name="general_margin">18dp</dimen>
+    <dimen name="vertical_margin">@dimen/general_margin</dimen>
+    <dimen name="horizontal_margin">@dimen/general_margin</dimen>
+
+    <dimen name="classroom_toolbar_height">44dp</dimen>
+    <dimen name="feature_button_size">48dp</dimen>
+    <dimen name="feature_button_icon_size">17dp</dimen>
+    <dimen name="avoiding_notch_margin">47dp</dimen>
+    <dimen name="floating_panel_width">380dp</dimen>
+    <dimen name="live_message_fly_height">26dp</dimen>
+    <dimen name="message_fly_bottom_margin">5dp</dimen>
+    <dimen name="info_bubble_vertical_margin">2dp</dimen>
+    <dimen name="ilr_beauty_icon_size">40dp</dimen>
+    <dimen name="ilr_feature_icon_left_margin">4.5dp</dimen>
+</resources>

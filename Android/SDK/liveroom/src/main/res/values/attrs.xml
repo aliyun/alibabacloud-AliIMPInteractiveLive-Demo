@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- 低代码逻辑组件 -->
+    <declare-styleable name="ComponentHost">
+        <!-- Component的全限定名 -->
+        <attr name="component" format="string" />
+    </declare-styleable>
+
+</resources>

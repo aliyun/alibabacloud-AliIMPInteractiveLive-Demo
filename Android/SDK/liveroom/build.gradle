@@ -1,0 +1,75 @@
+apply plugin: 'com.android.library'
+apply from: 'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/release/config/config.gradle'
+
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+        google()
+        maven { url 'https://maven.aliyun.com/nexus/content/repositories/releases' }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.0.2'
+        //引入其他的插件
+        classpath 'digital.wup:android-maven-publish:3.4.0'
+    }
+}
+
+apply plugin: 'digital.wup.android-maven-publish'
+apply from: 'https://paas-sdk.oss-cn-shanghai.aliyuncs.com/paas/room/android/release/config/publish.gradle'
+
+android {
+    compileSdkVersion 31
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 31
+        versionCode 1
+        versionName "${VER}"
+
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled false
+            proguardFiles 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    compileOnly 'com.android.support:support-annotations:28.0.0'
+    compileOnly "com.alibaba:fastjson:${getProperty('version.fastjson')}"
+    // noinspection GradleCompatible
+    compileOnly 'com.android.support:appcompat-v7:28.0.0'
+
+    // noinspection GradleCompatible
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+}
+
+dependencies {
+    if (shouldLoadLocalDepFun()) {
+        implementation fileTree(dir: "libs", include: ["*.aar", "*.jar"])
+        api project(':roombase')
+        api project(':chat')
+        api project(':live')
+        api project(':player')
+        compileOnly project(':rtc')
+    } else {
+        api ("${GROUP}:${PREFIX}roombase:${VER}${SUFFIX}") { changing = true }
+        api ("${GROUP}:${PREFIX}chat:${VER}${SUFFIX}") { changing = true }
+        api ("${GROUP}:${PREFIX}live:${VER}${SUFFIX}") { changing = true }
+        api ("${GROUP}:${PREFIX}player:${VER}${SUFFIX}") { changing = true }
+        compileOnly ("${GROUP}:${PREFIX}rtc:${VER}${SUFFIX}") { changing = true }
+    }
+}

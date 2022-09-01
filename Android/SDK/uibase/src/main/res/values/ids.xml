@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="status_view" type="id" />
+    <item name="translucent_view" type="id" />
+
+    <item name="immersion_status_bar_view" type="id" />
+    <item name="immersion_navigation_bar_view" type="id" />
+    <item name="immersion_fits_layout_overlap" type="id" />
+    <item name="action_bar_container" type="id" />
+
+    <integer name="viewTagForNavigationBarVisibility">2021102901</integer>
+    <integer name="viewTagForBottomAdjustViewMargin">2021102902</integer>
+    <integer name="viewTagForHorizontalAdjust">20220516</integer>
+    <integer name="viewTagForApplyWindowInsetsListener">20220105</integer>
+</resources>

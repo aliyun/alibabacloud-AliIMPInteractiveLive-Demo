@@ -1,0 +1,1 @@
+package com.aliyun.roompaas.base.base;/** * Created by KyleCe on 2022/5/29 */public interface Producer<T> {    T produce();}

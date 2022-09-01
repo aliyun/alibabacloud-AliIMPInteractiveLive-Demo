@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="holo_red_light">@android:color/holo_red_light</color>
+    <color name="transparent">@android:color/transparent</color>
+    <color name="white">@android:color/white</color>
+
+    <color name="generalAlphaGrayBg">#4d000000</color>
+
+    <color name="colorShallowWhite">#F1F2F3</color>
+    <color name="colorNegativeRed">#FF0027</color>
+    <color name="black">@android:color/black</color>
+    <color name="colorGray333">#333333</color>
+    <color name="colorGray555">#555555</color>
+    <color name="colorGray666">#666666</color>
+    <color name="colorGray999">#999999</color>
+
+    <color name="colorfulText">#99FF442C</color>
+
+</resources>
