@@ -4,8 +4,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        jcenter() // Warning: this repository is going to shut down soon
-
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/releases' }
     }
     dependencies {
@@ -17,16 +15,10 @@ buildscript {
     }
 }
 
-ext {
-    LIVEROOM_SDK = 'com.aliyun.roompaas.biz:liveroom:1.8.0.20220615001-SNAPSHOT'
-}
-
 allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter() // Warning: this repository is going to shut down soon
-
         maven { url 'https://maven.aliyun.com/nexus/content/repositories/releases' }
     }
 }
