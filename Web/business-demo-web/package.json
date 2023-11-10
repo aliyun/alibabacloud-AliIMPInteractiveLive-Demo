@@ -10,7 +10,7 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^1.6.0",
     "clipboard-vue": "^1.0.5",
     "crypto-js": "^4.1.1",
     "element-ui": "^2.15.8",
